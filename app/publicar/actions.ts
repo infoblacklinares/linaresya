@@ -89,7 +89,7 @@ export async function publicarNegocio(
     categoria_id: categoriaId,
     tipo,
     plan: "basico",
-    activo: false,       // queda pendiente de aprobacion
+    activo: false,
     verificado: false,
     telefono: telefono || null,
     whatsapp,
@@ -97,6 +97,8 @@ export async function publicarNegocio(
     sitio_web: null,
     direccion: direccion || null,
     ciudad: "Linares",
+    comuna: "Linares",
+    region: "Maule",
     a_domicilio: aDomicilio,
     zona_cobertura: zonaCobertura || null,
     disponibilidad: disponibilidad || null,
