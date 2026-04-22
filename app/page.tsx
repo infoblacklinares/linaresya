@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 type Categoria = {
@@ -79,9 +80,17 @@ export default async function Home() {
             <PinIcon /> Linares, Chile
             <ChevronIcon />
           </button>
-          <button className="ue-pill \!py-1.5 flex items-center gap-1.5">
-            <ClockIcon /> Ahora
-          </button>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/publicar"
+              className="rounded-full bg-foreground text-background text-xs font-semibold px-3 py-1.5"
+            >
+              Publicar
+            </Link>
+            <button className="ue-pill !py-1.5 flex items-center gap-1.5">
+              <ClockIcon /> Ahora
+            </button>
+          </div>
         </div>
 
         <div className="px-4 pb-3">
@@ -116,9 +125,12 @@ export default async function Home() {
             <p className="mt-2 text-sm text-foreground/70">
               Apareces frente a miles de vecinos buscando lo que ofreces.
             </p>
-            <button className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-foreground text-background text-sm font-semibold px-4 py-2">
+            <Link
+              href="/publicar"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-foreground text-background text-sm font-semibold px-4 py-2"
+            >
               Publicar negocio
-            </button>
+            </Link>
           </div>
           <div className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-7xl sm:text-8xl opacity-90 select-none">
             {"\u{1F6CD}"}
