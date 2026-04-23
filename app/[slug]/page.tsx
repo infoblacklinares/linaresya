@@ -83,13 +83,24 @@ export default async function CategoriaPage({
         </div>
 
         <div className="px-4 pb-3 flex gap-2 overflow-x-auto no-scrollbar">
-          <button className="rounded-full bg-foreground text-background text-sm font-semibold px-4 py-2 whitespace-nowrap">
+          <Link
+            href={`/${cat.slug}`}
+            className="rounded-full bg-foreground text-background text-sm font-semibold px-4 py-2 whitespace-nowrap"
+          >
             Todos
-          </button>
-          <button className="ue-pill whitespace-nowrap">Abierto ahora</button>
-          <button className="ue-pill whitespace-nowrap">Premium</button>
-          <button className="ue-pill whitespace-nowrap">A domicilio</button>
-          <button className="ue-pill whitespace-nowrap">Verificados</button>
+          </Link>
+          <Link href={`/buscar?categoria=${cat.slug}&abierto=1`} className="ue-pill whitespace-nowrap">
+            Abierto ahora
+          </Link>
+          <Link href={`/buscar?categoria=${cat.slug}&premium=1`} className="ue-pill whitespace-nowrap">
+            Premium
+          </Link>
+          <Link href={`/buscar?categoria=${cat.slug}&domicilio=1`} className="ue-pill whitespace-nowrap">
+            A domicilio
+          </Link>
+          <Link href={`/buscar?categoria=${cat.slug}&verificado=1`} className="ue-pill whitespace-nowrap">
+            Verificados
+          </Link>
         </div>
       </header>
 

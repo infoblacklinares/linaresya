@@ -94,24 +94,32 @@ export default async function Home() {
         </div>
 
         <div className="px-4 pb-3">
-          <div className="flex items-center gap-2 bg-secondary rounded-full px-4 py-3">
+          <form
+            action="/buscar"
+            method="get"
+            className="flex items-center gap-2 bg-secondary rounded-full px-4 py-3"
+          >
             <SearchIcon />
             <input
+              name="q"
               type="text"
               placeholder="Buscar negocios, oficios, servicios"
               className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground"
             />
-          </div>
+          </form>
         </div>
 
         <div className="px-4 pb-3 flex gap-2 overflow-x-auto no-scrollbar">
-          <button className="rounded-full bg-foreground text-background text-sm font-semibold px-4 py-2 whitespace-nowrap">
+          <Link
+            href="/buscar"
+            className="rounded-full bg-foreground text-background text-sm font-semibold px-4 py-2 whitespace-nowrap"
+          >
             Todos
-          </button>
-          <button className="ue-pill whitespace-nowrap">Abierto ahora</button>
-          <button className="ue-pill whitespace-nowrap">Premium</button>
-          <button className="ue-pill whitespace-nowrap">Verificados</button>
-          <button className="ue-pill whitespace-nowrap">Ofertas</button>
+          </Link>
+          <Link href="/buscar?abierto=1" className="ue-pill whitespace-nowrap">Abierto ahora</Link>
+          <Link href="/buscar?premium=1" className="ue-pill whitespace-nowrap">Premium</Link>
+          <Link href="/buscar?verificado=1" className="ue-pill whitespace-nowrap">Verificados</Link>
+          <Link href="/buscar?domicilio=1" className="ue-pill whitespace-nowrap">A domicilio</Link>
         </div>
       </header>
 
@@ -239,8 +247,8 @@ export default async function Home() {
       {/* Bottom tab nav */}
       <nav className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-border">
         <div className="mx-auto max-w-2xl grid grid-cols-4 px-2 py-2">
-          <TabItem icon={<HomeIcon />} label="Inicio" active />
-          <TabItem icon={<SearchIcon />} label="Buscar" />
+          <TabItem icon={<HomeIcon />} label="Inicio" href="/" active />
+          <TabItem icon={<SearchIcon />} label="Buscar" href="/buscar" />
           <TabItem icon={<HeartIcon />} label="Favoritos" />
           <TabItem icon={<UserIcon />} label="Cuenta" />
         </div>
@@ -270,18 +278,29 @@ function pastel(i: number) {
 function TabItem({
   icon,
   label,
+  href,
   active = false,
 }: {
   icon: React.ReactNode;
   label: string;
+  href?: string;
   active?: boolean;
 }) {
-  return (
-    <button className={`flex flex-col items-center gap-0.5 py-1.5 ${active ? "text-foreground" : "text-muted-foreground"}`}>
+  const cls = `flex flex-col items-center gap-0.5 py-1.5 ${active ? "text-foreground" : "text-muted-foreground"}`;
+  const content = (
+    <>
       <span className={active ? "scale-110" : ""}>{icon}</span>
       <span className="text-[11px] font-semibold">{label}</span>
-    </button>
+    </>
   );
+  if (href) {
+    return (
+      <Link href={href} className={cls}>
+        {content}
+      </Link>
+    );
+  }
+  return <button className={cls}>{content}</button>;
 }
 
 function PinIcon() {
