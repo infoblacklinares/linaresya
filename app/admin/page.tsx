@@ -247,6 +247,12 @@ function NegocioCardAdmin({
                 Rechazar
               </button>
             </form>
+            <Link
+              href={`/admin/negocio/${negocio.id}/editar`}
+              className="rounded-full bg-white border border-border text-foreground text-xs font-semibold px-4 py-2 hover:bg-secondary"
+            >
+              Editar
+            </Link>
           </>
         ) : (
           <>
@@ -270,6 +276,12 @@ function NegocioCardAdmin({
                 Eliminar
               </button>
             </form>
+            <Link
+              href={`/admin/negocio/${negocio.id}/editar`}
+              className="rounded-full bg-foreground text-background text-xs font-semibold px-4 py-2 hover:opacity-90"
+            >
+              Editar
+            </Link>
             <Link
               href={categoria ? `/${categoria.slug}/${negocio.slug}` : "/"}
               className="rounded-full bg-white border border-border text-foreground text-xs font-semibold px-4 py-2 hover:bg-secondary"

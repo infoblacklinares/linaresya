@@ -1,6 +1,10 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
 
 type Categoria = {
   id: number;
@@ -24,6 +28,54 @@ type Negocio = {
   a_domicilio: boolean;
   foto_portada: string | null;
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const { data } = await supabase
+    .from("categorias")
+    .select("nombre,slug,descripcion,emoji")
+    .eq("slug", slug)
+    .eq("activa", true)
+    .single();
+
+  if (!data) return { title: "Categoria no encontrada" };
+
+  const c = data as {
+    nombre: string;
+    slug: string;
+    descripcion: string | null;
+    emoji: string;
+  };
+  const titulo = `${c.nombre} en Linares`;
+  const descripcion = (
+    c.descripcion ??
+    `Encuentra ${c.nombre.toLowerCase()} en Linares. Contacto directo, horarios, ubicacion y mas en LinaresYa.`
+  ).slice(0, 160);
+  const url = `${SITE_URL}/${c.slug}`;
+
+  return {
+    title: titulo,
+    description: descripcion,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      locale: "es_CL",
+      url,
+      siteName: "LinaresYa",
+      title: titulo,
+      description: descripcion,
+    },
+    twitter: {
+      card: "summary",
+      title: titulo,
+      description: descripcion,
+    },
+  };
+}
 
 export default async function CategoriaPage({
   params,
@@ -139,7 +191,6 @@ function NegocioCard({
 
   return (
     <div className="relative flex items-stretch gap-3 p-2 rounded-2xl hover:bg-secondary/60 transition group">
-      {/* Link que cubre toda la card (detras de los botones) */}
       <Link
         href={`/${categoriaSlug}/${n.slug}`}
         aria-label={n.nombre}
@@ -155,7 +206,7 @@ function NegocioCard({
             className="h-full w-full object-cover"
           />
         ) : (
-          <span className="text-3xl opacity-60">🏪</span>
+          <span className="text-3xl opacity-60">{"\u{1F3EA}"}</span>
         )}
         {esPremium && (
           <span className="absolute top-1 left-1 text-[9px] font-bold bg-foreground text-background px-1.5 py-0.5 rounded-full">
@@ -185,7 +236,7 @@ function NegocioCard({
           )}
           {n.direccion && (
             <span className="text-muted-foreground truncate">
-              📍 {n.direccion}
+              {"\u{1F4CD}"} {n.direccion}
             </span>
           )}
         </div>
@@ -203,7 +254,7 @@ function NegocioCard({
           </a>
         ) : (
           <span className="h-9 w-9 rounded-full bg-secondary flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition text-sm">
-            →
+            {"\u2192"}
           </span>
         )}
         {n.telefono && (
@@ -225,10 +276,10 @@ function EmptyState({ emoji, nombre }: { emoji: string; nombre: string }) {
         Sos el primero? Sumate gratis y apareces en esta categoria frente a todo Linares.
       </p>
       <Link
-        href="/#publicar"
+        href="/publicar"
         className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-foreground text-background text-sm font-semibold px-4 py-2"
       >
-        Publicar mi negocio →
+        Publicar mi negocio {"\u2192"}
       </Link>
     </div>
   );

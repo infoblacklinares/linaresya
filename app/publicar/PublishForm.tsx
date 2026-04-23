@@ -1,5 +1,6 @@
 "use client";
 
+import Script from "next/script";
 import { useActionState } from "react";
 import { publicarNegocio, type PublicarState } from "./actions";
 
@@ -14,6 +15,7 @@ const estadoInicial: PublicarState = { ok: false };
 
 export default function PublishForm({ categorias }: { categorias: Categoria[] }) {
   const [state, formAction, isPending] = useActionState(publicarNegocio, estadoInicial);
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   if (state.ok) {
     return (
@@ -146,6 +148,22 @@ export default function PublishForm({ categorias }: { categorias: Categoria[] })
           className="input-ue"
         />
       </Field>
+
+      {turnstileSiteKey && (
+        <>
+          <Script
+            src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+            strategy="afterInteractive"
+            async
+            defer
+          />
+          <div
+            className="cf-turnstile flex justify-center"
+            data-sitekey={turnstileSiteKey}
+            data-theme="light"
+          />
+        </>
+      )}
 
       <div className="pt-2">
         <button

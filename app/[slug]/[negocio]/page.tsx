@@ -1,6 +1,10 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
 
 type Categoria = {
   id: number;
@@ -133,6 +137,73 @@ function mapsLink(n: Negocio): string | null {
   return null;
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; negocio: string }>;
+}): Promise<Metadata> {
+  const { slug: categoriaSlug, negocio: negocioSlug } = await params;
+
+  const { data: cat } = await supabase
+    .from("categorias")
+    .select("id,nombre,slug,emoji")
+    .eq("slug", categoriaSlug)
+    .single();
+
+  if (!cat) return { title: "Negocio no encontrado" };
+
+  const { data: neg } = await supabase
+    .from("negocios")
+    .select("nombre,slug,descripcion,direccion,foto_portada")
+    .eq("slug", negocioSlug)
+    .eq("categoria_id", (cat as { id: number }).id)
+    .eq("activo", true)
+    .single();
+
+  if (!neg) return { title: "Negocio no encontrado" };
+
+  const n = neg as {
+    nombre: string;
+    slug: string;
+    descripcion: string | null;
+    direccion: string | null;
+    foto_portada: string | null;
+  };
+  const c = cat as { nombre: string; slug: string; emoji: string };
+
+  const titulo = `${n.nombre} - ${c.nombre} en Linares`;
+  const descripcion = (
+    n.descripcion ??
+    `${n.nombre}, ${c.nombre.toLowerCase()} en Linares${
+      n.direccion ? `. Direccion: ${n.direccion}` : ""
+    }. Telefono, horarios, ubicacion y mas en LinaresYa.`
+  ).slice(0, 160);
+
+  const url = `${SITE_URL}/${c.slug}/${n.slug}`;
+  const imagen = n.foto_portada ?? undefined;
+
+  return {
+    title: titulo,
+    description: descripcion,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      locale: "es_CL",
+      url,
+      siteName: "LinaresYa",
+      title: titulo,
+      description: descripcion,
+      images: imagen ? [{ url: imagen, alt: n.nombre }] : undefined,
+    },
+    twitter: {
+      card: imagen ? "summary_large_image" : "summary",
+      title: titulo,
+      description: descripcion,
+      images: imagen ? [imagen] : undefined,
+    },
+  };
+}
+
 export default async function NegocioDetalle({
   params,
 }: {
@@ -199,7 +270,6 @@ export default async function NegocioDetalle({
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl">
-      {/* Hero */}
       <section className="relative">
         <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-secondary">
           {n.foto_portada ? (
@@ -232,7 +302,7 @@ export default async function NegocioDetalle({
         <div className="px-4 pt-4">
           <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">
             {categoria.emoji} {categoria.nombre}
-            {n.tipo === "independiente" ? " · Independiente" : ""}
+            {n.tipo === "independiente" ? " - Independiente" : ""}
           </p>
           <div className="flex items-start gap-2 mt-1">
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
@@ -258,7 +328,7 @@ export default async function NegocioDetalle({
             </span>
             {horarioHoy && !horarioHoy.cerrado && horarioHoy.abre && (
               <span className="text-muted-foreground">
-                Hoy {fmtHora(horarioHoy.abre)} – {fmtHora(horarioHoy.cierra)}
+                Hoy {fmtHora(horarioHoy.abre)} - {fmtHora(horarioHoy.cierra)}
               </span>
             )}
             {n.a_domicilio && (
@@ -268,7 +338,7 @@ export default async function NegocioDetalle({
             )}
             {ratingPromedio && (
               <span className="inline-flex items-center gap-1 font-semibold">
-                ⭐ {ratingPromedio}
+                {"\u2B50"} {ratingPromedio}
                 <span className="text-muted-foreground font-normal">
                   ({resenas.length})
                 </span>
@@ -278,7 +348,6 @@ export default async function NegocioDetalle({
         </div>
       </section>
 
-      {/* Acciones rapidas */}
       <section className="px-4 mt-5">
         <div className="grid grid-cols-3 gap-2">
           {wa ? (
@@ -309,7 +378,6 @@ export default async function NegocioDetalle({
         </div>
       </section>
 
-      {/* Descripcion */}
       {n.descripcion && (
         <section className="px-4 mt-6">
           <h2 className="text-base font-bold mb-2">Acerca de</h2>
@@ -319,7 +387,6 @@ export default async function NegocioDetalle({
         </section>
       )}
 
-      {/* Horarios */}
       <section className="px-4 mt-6">
         <h2 className="text-base font-bold mb-2">Horarios</h2>
         <ul className="rounded-2xl bg-secondary/60 divide-y divide-border overflow-hidden">
@@ -348,7 +415,7 @@ export default async function NegocioDetalle({
                 >
                   {!h || h.cerrado
                     ? "Cerrado"
-                    : `${fmtHora(h.abre)} – ${fmtHora(h.cierra)}`}
+                    : `${fmtHora(h.abre)} - ${fmtHora(h.cierra)}`}
                 </span>
               </li>
             );
@@ -356,14 +423,13 @@ export default async function NegocioDetalle({
         </ul>
       </section>
 
-      {/* Ubicacion */}
       {(n.direccion || n.zona_cobertura) && (
         <section className="px-4 mt-6">
           <h2 className="text-base font-bold mb-2">Ubicacion</h2>
           <div className="rounded-2xl bg-secondary/60 p-4 text-[14px]">
             {n.direccion && (
               <p>
-                📍 {n.direccion}
+                {"\u{1F4CD}"} {n.direccion}
                 {n.ciudad ? `, ${n.ciudad}` : ""}
               </p>
             )}
@@ -379,14 +445,13 @@ export default async function NegocioDetalle({
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-sky-600"
               >
-                Ver en Google Maps →
+                Ver en Google Maps {"\u2192"}
               </a>
             )}
           </div>
         </section>
       )}
 
-      {/* Galeria */}
       {fotos.length > 0 && (
         <section className="mt-6">
           <h2 className="px-4 text-base font-bold mb-2">Galeria</h2>
@@ -404,15 +469,14 @@ export default async function NegocioDetalle({
         </section>
       )}
 
-      {/* Resenas */}
       <section className="px-4 mt-6">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold">Resenas</h2>
           {ratingPromedio && (
             <span className="text-sm font-semibold">
-              ⭐ {ratingPromedio}{" "}
+              {"\u2B50"} {ratingPromedio}{" "}
               <span className="text-muted-foreground font-normal">
-                · {resenas.length}
+                - {resenas.length}
               </span>
             </span>
           )}
@@ -428,7 +492,7 @@ export default async function NegocioDetalle({
                 <div className="flex items-center justify-between">
                   <p className="font-semibold text-sm">{r.nombre_autor}</p>
                   <span className="text-xs font-semibold">
-                    {"⭐".repeat(Math.max(1, Math.min(5, r.calificacion)))}
+                    {"\u2B50".repeat(Math.max(1, Math.min(5, r.calificacion)))}
                   </span>
                 </div>
                 {r.comentario && (
@@ -442,7 +506,6 @@ export default async function NegocioDetalle({
         )}
       </section>
 
-      {/* Footer info */}
       <section className="px-4 mt-8 pb-6 text-center text-[11px] text-muted-foreground">
         En LinaresYa desde{" "}
         {new Date(n.creado_en).toLocaleDateString("es-CL", {
@@ -454,8 +517,6 @@ export default async function NegocioDetalle({
     </main>
   );
 }
-
-/* ---------- componentes ---------- */
 
 function ActionButton({
   href,
@@ -492,8 +553,6 @@ function ActionButton({
     </a>
   );
 }
-
-/* ---------- icons ---------- */
 
 function BackIcon() {
   return (

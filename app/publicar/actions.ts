@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export type PublicarState = {
@@ -8,7 +9,35 @@ export type PublicarState = {
   fieldErrors?: Record<string, string>;
 };
 
-// Normaliza texto a slug: minúsculas, sin acentos, sin símbolos, guiones.
+// Verifica el token de Cloudflare Turnstile. Si no hay TURNSTILE_SECRET_KEY
+// configurada devuelve true (modo dev sin captcha).
+async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) return true;
+  if (!token) return false;
+
+  try {
+    const body = new URLSearchParams();
+    body.append("secret", secret);
+    body.append("response", token);
+    if (ip) body.append("remoteip", ip);
+
+    const res = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString(),
+      },
+    );
+    const json = (await res.json()) as { success?: boolean };
+    return json.success === true;
+  } catch {
+    return false;
+  }
+}
+
+// Normaliza texto a slug: minusculas, sin acentos, sin simbolos, guiones.
 function toSlug(texto: string): string {
   return texto
     .toLowerCase()
@@ -21,8 +50,7 @@ function toSlug(texto: string): string {
     .slice(0, 60);
 }
 
-// Normaliza un número de WhatsApp a formato internacional sin +.
-// Si viene con +56 o 56 se respeta, si viene con 9 XXXX XXXX se asume Chile (+56).
+// Normaliza numero de WhatsApp a formato internacional sin +.
 function normalizarWhatsApp(raw: string): string {
   const soloDigitos = raw.replace(/\D/g, "");
   if (!soloDigitos) return "";
@@ -35,6 +63,21 @@ export async function publicarNegocio(
   _prevState: PublicarState,
   formData: FormData,
 ): Promise<PublicarState> {
+  // Captcha (Cloudflare Turnstile). Si no hay secret config, se salta.
+  const turnstileToken = String(formData.get("cf-turnstile-response") ?? "");
+  const h = await headers();
+  const ip =
+    h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    h.get("x-real-ip") ||
+    null;
+  const captchaOk = await verifyTurnstile(turnstileToken, ip);
+  if (!captchaOk) {
+    return {
+      ok: false,
+      error: "No pudimos verificar que no eres un bot. Recarga e intenta otra vez.",
+    };
+  }
+
   const nombre = String(formData.get("nombre") ?? "").trim();
   const categoriaIdRaw = String(formData.get("categoria_id") ?? "").trim();
   const tipoRaw = String(formData.get("tipo") ?? "negocio").trim();
@@ -46,7 +89,7 @@ export async function publicarNegocio(
   const zonaCobertura = String(formData.get("zona_cobertura") ?? "").trim();
   const disponibilidad = String(formData.get("disponibilidad") ?? "").trim();
 
-  // Validación
+  // Validacion
   const fieldErrors: Record<string, string> = {};
   if (nombre.length < 3) fieldErrors.nombre = "Minimo 3 caracteres";
   if (nombre.length > 80) fieldErrors.nombre = "Maximo 80 caracteres";

@@ -16,9 +16,55 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
+
 export const metadata: Metadata = {
-  title: "LinaresYa - Lo mejor de Linares en un solo lugar",
-  description: "Directorio local de negocios, oficios y servicios en Linares, Chile.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "LinaresYa - Lo mejor de Linares en un solo lugar",
+    template: "%s | LinaresYa",
+  },
+  description:
+    "Directorio local de negocios, oficios y servicios en Linares, Chile. Encuentra restaurantes, veterinarias, maestros, tiendas y mas, todo en un solo lugar.",
+  keywords: [
+    "Linares",
+    "Linares Chile",
+    "directorio Linares",
+    "negocios Linares",
+    "delivery Linares",
+    "servicios Linares",
+    "Maule",
+  ],
+  applicationName: "LinaresYa",
+  authors: [{ name: "LinaresYa" }],
+  openGraph: {
+    type: "website",
+    locale: "es_CL",
+    url: siteUrl,
+    siteName: "LinaresYa",
+    title: "LinaresYa - Lo mejor de Linares en un solo lugar",
+    description:
+      "Directorio local de negocios, oficios y servicios en Linares, Chile.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LinaresYa",
+    description:
+      "Directorio local de negocios, oficios y servicios en Linares, Chile.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
