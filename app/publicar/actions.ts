@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { sendAdminPublicacionNotification } from "@/lib/email";
 
 export type PublicarState = {
   ok: boolean;
@@ -125,33 +126,60 @@ export async function publicarNegocio(
     }
   }
 
-  const { error } = await supabaseAdmin.from("negocios").insert({
-    nombre,
-    slug,
-    descripcion: descripcion || null,
-    categoria_id: categoriaId,
-    tipo,
-    plan: "basico",
-    activo: false,
-    verificado: false,
-    telefono: telefono || null,
-    whatsapp,
-    email: null,
-    sitio_web: null,
-    direccion: direccion || null,
-    ciudad: "Linares",
-    comuna: "Linares",
-    region: "Maule",
-    a_domicilio: aDomicilio,
-    zona_cobertura: zonaCobertura || null,
-    disponibilidad: disponibilidad || null,
-  });
+  const { data: insertado, error } = await supabaseAdmin
+    .from("negocios")
+    .insert({
+      nombre,
+      slug,
+      descripcion: descripcion || null,
+      categoria_id: categoriaId,
+      tipo,
+      plan: "basico",
+      activo: false,
+      verificado: false,
+      telefono: telefono || null,
+      whatsapp,
+      email: null,
+      sitio_web: null,
+      direccion: direccion || null,
+      ciudad: "Linares",
+      comuna: "Linares",
+      region: "Maule",
+      a_domicilio: aDomicilio,
+      zona_cobertura: zonaCobertura || null,
+      disponibilidad: disponibilidad || null,
+    })
+    .select("id")
+    .single();
 
-  if (error) {
+  if (error || !insertado) {
     return {
       ok: false,
       error: "No pudimos guardar tu solicitud. Intenta de nuevo en unos minutos.",
     };
+  }
+
+  // Notificar al admin (fire-and-forget). Si falla Resend, no rompemos
+  // la publicacion; el negocio ya quedo guardado.
+  try {
+    const { data: cat } = await supabaseAdmin
+      .from("categorias")
+      .select("nombre")
+      .eq("id", categoriaId)
+      .single();
+
+    await sendAdminPublicacionNotification({
+      id: insertado.id as string,
+      nombre,
+      tipo,
+      descripcion: descripcion || null,
+      telefono: telefono || null,
+      whatsapp,
+      direccion: direccion || null,
+      categoria_nombre: (cat?.nombre as string | undefined) ?? null,
+    });
+  } catch {
+    // Ignorado a proposito: el email nunca debe romper el flujo.
   }
 
   return { ok: true };
