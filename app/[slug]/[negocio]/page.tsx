@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import type { Metadata } from "next";
 import TrackedActionButton from "./TrackedActionButton";
+import JsonLd from "@/components/JsonLd";
+import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 
 // Regex permisivo para detectar bots/crawlers conocidos. No queremos
 // inflar las vistas con Googlebot, scrapers, link previews, etc.
@@ -301,8 +303,46 @@ export default async function NegocioDetalle({
   // Fire-and-forget: no bloqueamos el render si tarda.
   void trackVista(n.id);
 
+  // JSON-LD structured data: LocalBusiness + BreadcrumbList. Google los usa
+  // para rich results, knowledge panel, y mejor ranking en "cerca de mi".
+  const negocioJsonLdData = localBusinessJsonLd(
+    {
+      id: n.id,
+      nombre: n.nombre,
+      slug: n.slug,
+      descripcion: n.descripcion,
+      tipo: n.tipo,
+      telefono: n.telefono,
+      whatsapp: n.whatsapp,
+      email: n.email,
+      sitio_web: n.sitio_web,
+      direccion: n.direccion,
+      ciudad: n.ciudad,
+      lat: n.lat,
+      lng: n.lng,
+      foto_portada: n.foto_portada,
+    },
+    {
+      nombre: categoria.nombre,
+      slug: categoria.slug,
+      emoji: categoria.emoji,
+    },
+    horarios,
+    resenas,
+  );
+  const breadcrumbData = breadcrumbJsonLd([
+    { name: "Inicio", url: SITE_URL },
+    { name: categoria.nombre, url: `${SITE_URL}/${categoria.slug}` },
+    {
+      name: n.nombre,
+      url: `${SITE_URL}/${categoria.slug}/${n.slug}`,
+    },
+  ]);
+
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl">
+      <JsonLd id="ld-negocio" data={negocioJsonLdData} />
+      <JsonLd id="ld-breadcrumb" data={breadcrumbData} />
       <section className="relative">
         <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-secondary">
           {n.foto_portada ? (

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import JsonLd from "@/components/JsonLd";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 
 type Categoria = {
   id: number;
@@ -73,6 +75,8 @@ export default async function Home() {
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl">
+      <JsonLd id="ld-organization" data={organizationJsonLd()} />
+      <JsonLd id="ld-website" data={websiteJsonLd()} />
       {/* Header sticky */}
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-border">
         <div className="px-4 pt-4 pb-3 flex items-center justify-between">

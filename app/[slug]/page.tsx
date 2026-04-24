@@ -2,6 +2,8 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/jsonld";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
@@ -111,8 +113,19 @@ export default async function CategoriaPage({
 
   const items = (negocios ?? []) as Negocio[];
 
+  const breadcrumbData = breadcrumbJsonLd([
+    { name: "Inicio", url: SITE_URL },
+    { name: cat.nombre, url: `${SITE_URL}/${cat.slug}` },
+  ]);
+  const itemListData = itemListJsonLd(
+    items.map((n) => ({ nombre: n.nombre, slug: n.slug })),
+    cat.slug,
+  );
+
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl">
+      <JsonLd id="ld-breadcrumb" data={breadcrumbData} />
+      <JsonLd id="ld-itemlist" data={itemListData} />
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-border">
         <div className="px-4 pt-4 pb-3 flex items-center gap-3">
           <Link
