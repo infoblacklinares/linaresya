@@ -70,7 +70,8 @@ export async function generateMetadata({
       description: descripcion,
     },
     twitter: {
-      card: "summary",
+      // Ahora siempre hay imagen generada via app/[slug]/opengraph-image.tsx.
+      card: "summary_large_image",
       title: titulo,
       description: descripcion,
     },

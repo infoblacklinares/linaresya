@@ -201,27 +201,36 @@ export async function generateMetadata({
   ).slice(0, 160);
 
   const url = `${SITE_URL}/${c.slug}/${n.slug}`;
-  const imagen = n.foto_portada ?? undefined;
+  const imagen = n.foto_portada ?? null;
+
+  // OpenGraph: si el negocio tiene foto_portada usamos esa (mas real).
+  // Si no, OMITIMOS la key images y Next usa app/[slug]/[negocio]/opengraph-image.tsx,
+  // que genera una tarjeta con el nombre + categoria. Twitter card siempre
+  // summary_large_image porque ahora siempre hay imagen (foto o generada).
+  const openGraph: Metadata["openGraph"] = {
+    type: "website",
+    locale: "es_CL",
+    url,
+    siteName: "LinaresYa",
+    title: titulo,
+    description: descripcion,
+  };
+  const twitter: Metadata["twitter"] = {
+    card: "summary_large_image",
+    title: titulo,
+    description: descripcion,
+  };
+  if (imagen) {
+    openGraph.images = [{ url: imagen, alt: n.nombre }];
+    twitter.images = [imagen];
+  }
 
   return {
     title: titulo,
     description: descripcion,
     alternates: { canonical: url },
-    openGraph: {
-      type: "website",
-      locale: "es_CL",
-      url,
-      siteName: "LinaresYa",
-      title: titulo,
-      description: descripcion,
-      images: imagen ? [{ url: imagen, alt: n.nombre }] : undefined,
-    },
-    twitter: {
-      card: imagen ? "summary_large_image" : "summary",
-      title: titulo,
-      description: descripcion,
-      images: imagen ? [imagen] : undefined,
-    },
+    openGraph,
+    twitter,
   };
 }
 
