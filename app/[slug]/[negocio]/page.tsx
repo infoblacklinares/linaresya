@@ -1,7 +1,28 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import type { Metadata } from "next";
+import TrackedActionButton from "./TrackedActionButton";
+
+// Regex permisivo para detectar bots/crawlers conocidos. No queremos
+// inflar las vistas con Googlebot, scrapers, link previews, etc.
+const BOT_UA_RE =
+  /bot|crawler|spider|crawl|googlebot|bingbot|yandex|baidu|duckduck|slurp|facebookexternalhit|twitterbot|linkedinbot|whatsapp|telegram|discord|preview|fetch/i;
+
+async function trackVista(negocioId: string) {
+  try {
+    const h = await headers();
+    const ua = h.get("user-agent") ?? "";
+    if (BOT_UA_RE.test(ua)) return; // skip bots
+    await supabase.rpc("incrementar_estadistica", {
+      p_negocio_id: negocioId,
+      p_evento: "vista",
+    });
+  } catch {
+    // El tracking nunca debe tirar la pagina.
+  }
+}
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
@@ -268,6 +289,9 @@ export default async function NegocioDetalle({
         ).toFixed(1)
       : null;
 
+  // Fire-and-forget: no bloqueamos el render si tarda.
+  void trackVista(n.id);
+
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl">
       <section className="relative">
@@ -351,8 +375,10 @@ export default async function NegocioDetalle({
       <section className="px-4 mt-5">
         <div className="grid grid-cols-3 gap-2">
           {wa ? (
-            <ActionButton
+            <TrackedActionButton
               href={wa}
+              negocioId={n.id}
+              evento="whatsapp"
               external
               icon={<WhatsAppIcon />}
               label="WhatsApp"
@@ -366,12 +392,25 @@ export default async function NegocioDetalle({
             />
           )}
           {tel ? (
-            <ActionButton href={tel} icon={<PhoneIcon />} label="Llamar" />
+            <TrackedActionButton
+              href={tel}
+              negocioId={n.id}
+              evento="telefono"
+              icon={<PhoneIcon />}
+              label="Llamar"
+            />
           ) : (
             <ActionButton disabled icon={<PhoneIcon />} label="Llamar" />
           )}
           {maps ? (
-            <ActionButton href={maps} external icon={<MapIcon />} label="Llegar" />
+            <TrackedActionButton
+              href={maps}
+              negocioId={n.id}
+              evento="maps"
+              external
+              icon={<MapIcon />}
+              label="Llegar"
+            />
           ) : (
             <ActionButton disabled icon={<MapIcon />} label="Sin direccion" />
           )}

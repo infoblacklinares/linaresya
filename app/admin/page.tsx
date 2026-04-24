@@ -283,6 +283,12 @@ function NegocioCardAdmin({
               Editar
             </Link>
             <Link
+              href={`/admin/negocio/${negocio.id}/estadisticas`}
+              className="rounded-full bg-sky-600 text-white text-xs font-semibold px-4 py-2 hover:bg-sky-700"
+            >
+              Estadisticas
+            </Link>
+            <Link
               href={categoria ? `/${categoria.slug}/${negocio.slug}` : "/"}
               className="rounded-full bg-white border border-border text-foreground text-xs font-semibold px-4 py-2 hover:bg-secondary"
             >
