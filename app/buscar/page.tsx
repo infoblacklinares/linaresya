@@ -94,8 +94,18 @@ export default async function BuscarPage({
     .eq("activo", true);
 
   if (q) {
-    const term = q.replace(/[%_,()]/g, "").slice(0, 60);
-    query = query.or(`nombre.ilike.%${term}%,descripcion.ilike.%${term}%`);
+    // Full-text search con la config spanish_unaccent (ver supabase/busqueda.sql).
+    // websearch_to_tsquery acepta sintaxis amigable:
+    //   "pizza don vittorio"  -> AND implicito
+    //   '"pizza napolitana"'  -> frase exacta
+    //   'comida OR almacen'   -> OR explicito
+    //   'pizza -pollo'        -> excluir "pollo"
+    // Cortamos a 80 chars por las dudas (evitar abuso).
+    const term = q.slice(0, 80);
+    query = query.textSearch("busqueda", term, {
+      type: "websearch",
+      config: "spanish_unaccent",
+    });
   }
   if (categoriaActiva) query = query.eq("categoria_id", categoriaActiva.id);
   if (tipo) query = query.eq("tipo", tipo);
