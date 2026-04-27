@@ -174,6 +174,79 @@ export async function publicarNegocio(
     };
   }
 
+  // Parsear las 7 filas de horarios del FormData e insertar en tabla horarios.
+  // Cada dia tiene: horario_<dia>_cerrado (checkbox), horario_<dia>_abre (HH:MM),
+  // horario_<dia>_cierra (HH:MM). Si el form no incluye nada (caso edge), se
+  // omite la insercion y la ficha mostrara "Consultar horario".
+  const DIAS = [
+    "lunes",
+    "martes",
+    "miercoles",
+    "jueves",
+    "viernes",
+    "sabado",
+    "domingo",
+  ] as const;
+
+  const HORA_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+  const filasHorarios: Array<{
+    negocio_id: string;
+    dia: string;
+    abre: string | null;
+    cierra: string | null;
+    cerrado: boolean;
+  }> = [];
+
+  for (const dia of DIAS) {
+    const cerrado = formData.get(`horario_${dia}_cerrado`) === "on";
+    const abreRaw = String(formData.get(`horario_${dia}_abre`) ?? "").trim();
+    const cierraRaw = String(formData.get(`horario_${dia}_cierra`) ?? "").trim();
+
+    if (cerrado) {
+      filasHorarios.push({
+        negocio_id: insertado.id as string,
+        dia,
+        abre: null,
+        cierra: null,
+        cerrado: true,
+      });
+      continue;
+    }
+
+    // Validacion blanda: si las horas no parsean, marcamos el dia como cerrado
+    // en vez de tirar la insercion completa. Asi nunca bloqueamos la publicacion.
+    if (!HORA_RE.test(abreRaw) || !HORA_RE.test(cierraRaw)) {
+      filasHorarios.push({
+        negocio_id: insertado.id as string,
+        dia,
+        abre: null,
+        cierra: null,
+        cerrado: true,
+      });
+      continue;
+    }
+
+    filasHorarios.push({
+      negocio_id: insertado.id as string,
+      dia,
+      abre: abreRaw,
+      cierra: cierraRaw,
+      cerrado: false,
+    });
+  }
+
+  if (filasHorarios.length > 0) {
+    const { error: horariosError } = await supabaseAdmin
+      .from("horarios")
+      .insert(filasHorarios);
+    if (horariosError) {
+      // No bloqueamos: el negocio ya quedo creado. El admin puede arreglar
+      // los horarios despues desde el panel.
+      console.error("Error insertando horarios:", horariosError);
+    }
+  }
+
   // Notificar al admin (fire-and-forget). Si falla Resend, no rompemos
   // la publicacion; el negocio ya quedo guardado.
   try {

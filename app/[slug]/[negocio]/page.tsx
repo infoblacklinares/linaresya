@@ -6,7 +6,6 @@ import type { Metadata } from "next";
 import TrackedActionButton from "./TrackedActionButton";
 import JsonLd from "@/components/JsonLd";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
-
 // Regex permisivo para detectar bots/crawlers conocidos. No queremos
 // inflar las vistas con Googlebot, scrapers, link previews, etc.
 const BOT_UA_RE =
@@ -55,6 +54,7 @@ type Negocio = {
   lng: number | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;
+  disponibilidad: string | null;
   foto_portada: string | null;
   creado_en: string;
 };
@@ -288,6 +288,7 @@ export default async function NegocioDetalle({
   const resenas = (resenasData ?? []) as Resena[];
 
   const { abierto, horarioHoy } = estaAbierto(horarios);
+  const tieneHorariosEstructurados = horarios.length > 0;
   const esPremium = n.plan === "premium";
   const wa = esPremium && n.whatsapp ? whatsAppLink(n.whatsapp, n.nombre) : null;
   const tel = n.telefono ? telLink(n.telefono) : null;
@@ -385,23 +386,36 @@ export default async function NegocioDetalle({
           </div>
 
           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-            <span
-              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold ${
-                abierto
-                  ? "bg-emerald-50 text-emerald-700"
-                  : "bg-rose-50 text-rose-700"
-              }`}
-            >
-              <span
-                className={`h-1.5 w-1.5 rounded-full ${
-                  abierto ? "bg-emerald-500" : "bg-rose-500"
-                }`}
-              />
-              {abierto ? "Abierto ahora" : "Cerrado ahora"}
-            </span>
-            {horarioHoy && !horarioHoy.cerrado && horarioHoy.abre && (
-              <span className="text-muted-foreground">
-                Hoy {fmtHora(horarioHoy.abre)} - {fmtHora(horarioHoy.cierra)}
+            {tieneHorariosEstructurados ? (
+              <>
+                <span
+                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold ${
+                    abierto
+                      ? "bg-emerald-50 text-emerald-700"
+                      : "bg-rose-50 text-rose-700"
+                  }`}
+                >
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      abierto ? "bg-emerald-500" : "bg-rose-500"
+                    }`}
+                  />
+                  {abierto ? "Abierto ahora" : "Cerrado ahora"}
+                </span>
+                {horarioHoy && !horarioHoy.cerrado && horarioHoy.abre && (
+                  <span className="text-muted-foreground">
+                    Hoy {fmtHora(horarioHoy.abre)} - {fmtHora(horarioHoy.cierra)}
+                  </span>
+                )}
+              </>
+            ) : n.disponibilidad ? (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold bg-sky-50 text-sky-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
+                {n.disponibilidad}
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold bg-secondary text-muted-foreground">
+                Consultar horario
               </span>
             )}
             {n.a_domicilio && (
@@ -477,38 +491,55 @@ export default async function NegocioDetalle({
 
       <section className="px-4 mt-6">
         <h2 className="text-base font-bold mb-2">Horarios</h2>
-        <ul className="rounded-2xl bg-secondary/60 divide-y divide-border overflow-hidden">
-          {DIAS_ORDEN.map((d) => {
-            const h = horarios.find((x) => x.dia === d);
-            const isToday = d === diaHoy();
-            return (
-              <li
-                key={d}
-                className={`flex items-center justify-between px-4 py-2.5 text-[13px] ${
-                  isToday ? "bg-white font-semibold" : ""
-                }`}
-              >
-                <span>
-                  {DIAS_LABEL[d]}
-                  {isToday && (
-                    <span className="ml-2 text-[10px] font-bold text-muted-foreground uppercase">
-                      Hoy
+        {tieneHorariosEstructurados ? (
+          <>
+            <ul className="rounded-2xl bg-secondary/60 divide-y divide-border overflow-hidden">
+              {DIAS_ORDEN.map((d) => {
+                const h = horarios.find((x) => x.dia === d);
+                const isToday = d === diaHoy();
+                return (
+                  <li
+                    key={d}
+                    className={`flex items-center justify-between px-4 py-2.5 text-[13px] ${
+                      isToday ? "bg-white font-semibold" : ""
+                    }`}
+                  >
+                    <span>
+                      {DIAS_LABEL[d]}
+                      {isToday && (
+                        <span className="ml-2 text-[10px] font-bold text-muted-foreground uppercase">
+                          Hoy
+                        </span>
+                      )}
                     </span>
-                  )}
-                </span>
-                <span
-                  className={
-                    !h || h.cerrado ? "text-muted-foreground" : "text-foreground"
-                  }
-                >
-                  {!h || h.cerrado
-                    ? "Cerrado"
-                    : `${fmtHora(h.abre)} - ${fmtHora(h.cierra)}`}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
+                    <span
+                      className={
+                        !h || h.cerrado ? "text-muted-foreground" : "text-foreground"
+                      }
+                    >
+                      {!h || h.cerrado
+                        ? "Cerrado"
+                        : `${fmtHora(h.abre)} - ${fmtHora(h.cierra)}`}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+            {n.disponibilidad && (
+              <p className="mt-2 text-[12px] text-muted-foreground italic px-1">
+                {n.disponibilidad}
+              </p>
+            )}
+          </>
+        ) : n.disponibilidad ? (
+          <div className="rounded-2xl bg-secondary/60 px-4 py-3 text-[14px] whitespace-pre-line">
+            {n.disponibilidad}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-border p-4 text-center text-sm text-muted-foreground">
+            Consulta directamente con el negocio.
+          </div>
+        )}
       </section>
 
       {(n.direccion || n.zona_cobertura) && (

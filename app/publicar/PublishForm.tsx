@@ -3,6 +3,7 @@
 import Script from "next/script";
 import { useActionState } from "react";
 import { publicarNegocio, type PublicarState } from "./actions";
+import ScheduleInput from "./ScheduleInput";
 
 type Categoria = {
   id: number;
@@ -154,11 +155,16 @@ export default function PublishForm({ categorias }: { categorias: Categoria[] })
         />
       </Field>
 
-      <Field label="Disponibilidad" hint="Cuando estas disponible (resumen)">
+      <Field label="Horarios" hint="Marca los dias que atiendes y el horario de cada uno">
+        <ScheduleInput />
+      </Field>
+
+      <Field label="Nota de horario" hint="Opcional - texto extra para mostrar (ej: 'Solo con cita previa')">
         <input
           type="text"
           name="disponibilidad"
-          placeholder="Ej: Lun a Sab 9:00 - 19:00"
+          placeholder="Ej: Cerrado feriados"
+          maxLength={120}
           className="input-ue"
         />
       </Field>
