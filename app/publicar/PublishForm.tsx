@@ -102,6 +102,20 @@ export default function PublishForm({ categorias }: { categorias: Categoria[] })
         />
       </Field>
 
+      <Field
+        label="Email"
+        hint="Opcional - te avisamos por aca cuando aprobemos tu negocio"
+        error={fe.email}
+      >
+        <input
+          type="email"
+          name="email"
+          placeholder="tu@email.com"
+          maxLength={120}
+          className="input-ue"
+        />
+      </Field>
+
       <Field label="WhatsApp" hint="Solo numero, se usa para el boton WhatsApp">
         <input
           type="tel"

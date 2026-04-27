@@ -45,8 +45,16 @@ export async function sendAdminPublicacionNotification(
   try {
     const c = getClient();
     const to = process.env.ADMIN_EMAIL;
-    if (!c || !to) {
-      // Dev/sin configurar: no enviamos nada, no es error.
+    if (!c) {
+      console.warn(
+        "[email] Salto notificacion admin: falta RESEND_API_KEY en .env.local (recordar reiniciar npm run dev).",
+      );
+      return;
+    }
+    if (!to) {
+      console.warn(
+        "[email] Salto notificacion admin: falta ADMIN_EMAIL en .env.local.",
+      );
       return;
     }
 
@@ -104,7 +112,7 @@ export async function sendAdminPublicacionNotification(
 
     const text = `Nuevo negocio pendiente: ${negocio.nombre}\n\n${filas.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\nRevisar: ${adminUrl}`;
 
-    const { error } = await c.emails.send({
+    const { data, error } = await c.emails.send({
       from: FROM,
       to,
       subject,
@@ -113,10 +121,132 @@ export async function sendAdminPublicacionNotification(
     });
 
     if (error) {
-      console.error("[email] Resend error:", error);
+      console.error("[email] Resend error (admin):", error);
+    } else {
+      console.log("[email] Notificacion admin enviada:", { id: data?.id, to });
     }
   } catch (err) {
     // Nunca romper el flujo de publicacion por un email fallido.
     console.error("[email] Notificacion admin fallo:", err);
+  }
+}
+
+// --- Aprobacion: email al duenio cuando activamos su negocio --------------
+
+export type NegocioAprobado = {
+  nombre: string;
+  slug: string;
+  email: string;
+  verificado: boolean;
+  categoria: {
+    nombre: string;
+    slug: string;
+    emoji: string;
+  };
+};
+
+export async function sendOwnerAprobacionNotification(
+  negocio: NegocioAprobado,
+): Promise<void> {
+  try {
+    const c = getClient();
+    if (!c) {
+      console.warn(
+        "[email] Salto notificacion duenio: falta RESEND_API_KEY en .env.local.",
+      );
+      return;
+    }
+    if (!negocio.email) {
+      console.warn(
+        "[email] Salto notificacion duenio: el negocio no tiene email cargado.",
+      );
+      return;
+    }
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://linaresya.cl";
+    const fichaUrl = `${siteUrl}/${negocio.categoria.slug}/${negocio.slug}`;
+
+    const subject = negocio.verificado
+      ? `Tu negocio ya esta publicado y verificado en LinaresYa`
+      : `Tu negocio ya esta publicado en LinaresYa`;
+
+    const badge = negocio.verificado
+      ? `<span style="display:inline-block;background:#d1fae5;color:#065f46;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;margin-left:8px;">Verificado</span>`
+      : "";
+
+    const html = `<!doctype html>
+<html>
+<body style="margin:0;padding:24px;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+    <div style="padding:24px;background:#0f172a;color:#fff;">
+      <p style="margin:0;font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:0.7;">LinaresYa · Publicado</p>
+      <h1 style="margin:6px 0 0;font-size:22px;font-weight:800;">Tu negocio ya esta en LinaresYa ${escapeHtml(negocio.categoria.emoji)}</h1>
+    </div>
+    <div style="padding:24px;">
+      <p style="margin:0 0 16px;color:#334155;font-size:15px;line-height:1.5;">
+        Aprobamos <strong>${escapeHtml(negocio.nombre)}</strong>${badge}. Ya aparece en la categoria
+        <strong>${escapeHtml(negocio.categoria.nombre)}</strong> y se puede encontrar desde el buscador.
+      </p>
+      <div style="margin:20px 0;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;">
+        <p style="margin:0 0 6px;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;">Tu ficha publica</p>
+        <a href="${escapeHtml(fichaUrl)}" style="color:#0f172a;font-size:15px;font-weight:600;word-break:break-all;">${escapeHtml(fichaUrl)}</a>
+      </div>
+      <div style="margin:24px 0;">
+        <a href="${escapeHtml(fichaUrl)}" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:15px;font-weight:600;">
+          Ver mi ficha
+        </a>
+      </div>
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid #e2e8f0;">
+        <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#0f172a;">Que hacer ahora</p>
+        <ul style="margin:0;padding-left:20px;color:#475569;font-size:14px;line-height:1.7;">
+          <li>Compartir el link por WhatsApp con tus clientes: llega con una tarjeta con tu nombre y categoria.</li>
+          <li>Si queres cambiar datos (horarios, descripcion, foto), escribinos y lo editamos.</li>
+          <li>Pedir a clientes contentos que dejen una resena cuando habilitemos resenas publicas.</li>
+        </ul>
+      </div>
+    </div>
+    <div style="padding:16px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+      <p style="margin:0;color:#94a3b8;font-size:12px;">
+        Recibiste este correo porque publicaste tu negocio en LinaresYa.cl
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const text = `Tu negocio "${negocio.nombre}" ya esta publicado en LinaresYa${negocio.verificado ? " (verificado)" : ""}.\n\nTu ficha publica: ${fichaUrl}\n\nCompartila por WhatsApp para que te encuentren.`;
+
+    const { data, error } = await c.emails.send({
+      from: FROM,
+      to: negocio.email,
+      subject,
+      html,
+      text,
+    });
+
+    if (error) {
+      // Resend en plan free sin dominio verificado solo acepta enviar al
+      // email de la cuenta. Lo detectamos para mostrar un warning amigable
+      // en vez de un error rojo que asusta.
+      const errMsg = String((error as { message?: unknown }).message ?? "");
+      const errStatus = (error as { statusCode?: number }).statusCode;
+      const esLimiteFree =
+        errStatus === 403 || /testing emails|verify a domain/i.test(errMsg);
+      if (esLimiteFree) {
+        console.warn(
+          `[email] Resend rechazo enviar a ${negocio.email} porque el dominio no esta verificado. ` +
+            `Verificar linaresya.cl en https://resend.com/domains o usar un email coincidente con la cuenta Resend.`,
+        );
+      } else {
+        console.error("[email] Resend error (aprobacion):", error);
+      }
+    } else {
+      console.log("[email] Notificacion duenio enviada:", {
+        id: data?.id,
+        to: negocio.email,
+      });
+    }
+  } catch (err) {
+    console.error("[email] Notificacion duenio fallo:", err);
   }
 }

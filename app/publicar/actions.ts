@@ -84,6 +84,7 @@ export async function publicarNegocio(
   const tipoRaw = String(formData.get("tipo") ?? "negocio").trim();
   const descripcion = String(formData.get("descripcion") ?? "").trim();
   const telefono = String(formData.get("telefono") ?? "").trim();
+  const emailRaw = String(formData.get("email") ?? "").trim().toLowerCase();
   const whatsappRaw = String(formData.get("whatsapp") ?? "").trim();
   const direccion = String(formData.get("direccion") ?? "").trim();
   const aDomicilio = formData.get("a_domicilio") === "on";
@@ -102,6 +103,20 @@ export async function publicarNegocio(
   const tipo: "negocio" | "independiente" =
     tipoRaw === "independiente" ? "independiente" : "negocio";
   if (descripcion.length > 500) fieldErrors.descripcion = "Maximo 500 caracteres";
+
+  // Email: opcional, pero si se proveio debe tener forma razonable.
+  // Regex simple: algo@algo.algo, 3-120 chars. No pretende ser RFC 5322.
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let email: string | null = null;
+  if (emailRaw) {
+    if (emailRaw.length > 120) {
+      fieldErrors.email = "Maximo 120 caracteres";
+    } else if (!EMAIL_RE.test(emailRaw)) {
+      fieldErrors.email = "Email no parece valido";
+    } else {
+      email = emailRaw;
+    }
+  }
 
   if (Object.keys(fieldErrors).length > 0) {
     return { ok: false, fieldErrors, error: "Revisa los campos marcados" };
@@ -139,7 +154,7 @@ export async function publicarNegocio(
       verificado: false,
       telefono: telefono || null,
       whatsapp,
-      email: null,
+      email,
       sitio_web: null,
       direccion: direccion || null,
       ciudad: "Linares",
