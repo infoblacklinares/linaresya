@@ -120,6 +120,74 @@ export async function updateNegocio(
     };
   }
 
+  // Sincronizar horarios: si el form trae los campos horario_*, borramos las
+  // filas viejas e insertamos las nuevas. Si no trae nada (caso raro, p.ej.
+  // request manual), no tocamos los horarios existentes.
+  const DIAS = [
+    "lunes",
+    "martes",
+    "miercoles",
+    "jueves",
+    "viernes",
+    "sabado",
+    "domingo",
+  ] as const;
+  const HORA_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+  const formTraeHorarios = DIAS.some(
+    (dia) =>
+      formData.has(`horario_${dia}_abre`) ||
+      formData.has(`horario_${dia}_cierra`) ||
+      formData.has(`horario_${dia}_cerrado`),
+  );
+
+  if (formTraeHorarios) {
+    const filas: Array<{
+      negocio_id: string;
+      dia: string;
+      abre: string | null;
+      cierra: string | null;
+      cerrado: boolean;
+    }> = [];
+
+    for (const dia of DIAS) {
+      const cerrado = formData.get(`horario_${dia}_cerrado`) === "on";
+      const abreRaw = String(formData.get(`horario_${dia}_abre`) ?? "").trim();
+      const cierraRaw = String(formData.get(`horario_${dia}_cierra`) ?? "").trim();
+
+      if (cerrado || !HORA_RE.test(abreRaw) || !HORA_RE.test(cierraRaw)) {
+        filas.push({
+          negocio_id: id,
+          dia,
+          abre: null,
+          cierra: null,
+          cerrado: true,
+        });
+      } else {
+        filas.push({
+          negocio_id: id,
+          dia,
+          abre: abreRaw,
+          cierra: cierraRaw,
+          cerrado: false,
+        });
+      }
+    }
+
+    // Borramos las filas viejas y reinsertamos. Operacion no atomica, pero
+    // la tabla es chica y el riesgo de race aca es bajo (solo el admin edita).
+    await supabaseAdmin.from("horarios").delete().eq("negocio_id", id);
+    const { error: horariosError } = await supabaseAdmin
+      .from("horarios")
+      .insert(filas);
+    if (horariosError) {
+      return {
+        ok: false,
+        error: `Negocio guardado pero fallaron los horarios: ${horariosError.message}`,
+      };
+    }
+  }
+
   revalidatePath("/admin");
   revalidatePath("/");
   revalidatePath(`/admin/negocio/${id}/editar`);

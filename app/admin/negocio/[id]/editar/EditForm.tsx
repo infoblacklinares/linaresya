@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { updateNegocio, type UpdateState } from "./actions";
+import ScheduleInput, { type HorarioInicial } from "@/app/publicar/ScheduleInput";
 
 type Categoria = {
   id: number;
@@ -47,9 +48,11 @@ function toDateInput(iso: string | null): string {
 export default function EditForm({
   negocio,
   categorias,
+  horarios,
 }: {
   negocio: Negocio;
   categorias: Categoria[];
+  horarios: HorarioInicial[];
 }) {
   const [state, formAction, pending] = useActionState(
     updateNegocio,
@@ -209,14 +212,23 @@ export default function EditForm({
             placeholder="Linares centro, Yerbas Buenas..."
           />
         </Field>
-        <Field label="Disponibilidad">
+        <Field label="Nota de horario">
           <input
             name="disponibilidad"
             defaultValue={negocio.disponibilidad ?? ""}
             className="input-ue"
-            placeholder="L-V 9-19, sabados 10-14..."
+            maxLength={120}
+            placeholder="Opcional - ej: Cerrado feriados"
           />
         </Field>
+      </section>
+
+      {/* HORARIOS */}
+      <section className="space-y-3">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+          Horarios
+        </h2>
+        <ScheduleInput initialHorarios={horarios} />
       </section>
 
       {/* MEDIA */}

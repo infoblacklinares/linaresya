@@ -37,6 +37,25 @@ const ESTADO_DEFAULT: Record<Dia, DiaState> = {
   domingo: { cerrado: true, abre: "", cierra: "" },
 };
 
+export type HorarioInicial = {
+  dia: Dia;
+  abre: string | null;
+  cierra: string | null;
+  cerrado: boolean;
+};
+
+function fromInitial(initial: HorarioInicial[]): Record<Dia, DiaState> {
+  const base: Record<Dia, DiaState> = { ...ESTADO_DEFAULT };
+  for (const h of initial) {
+    base[h.dia] = {
+      cerrado: h.cerrado,
+      abre: h.abre ? h.abre.slice(0, 5) : "",
+      cierra: h.cierra ? h.cierra.slice(0, 5) : "",
+    };
+  }
+  return base;
+}
+
 type Preset = {
   label: string;
   apply: () => Record<Dia, DiaState>;
@@ -81,8 +100,16 @@ const PRESETS: Preset[] = [
   },
 ];
 
-export default function ScheduleInput() {
-  const [estado, setEstado] = useState<Record<Dia, DiaState>>(ESTADO_DEFAULT);
+export default function ScheduleInput({
+  initialHorarios,
+}: {
+  initialHorarios?: HorarioInicial[];
+}) {
+  const [estado, setEstado] = useState<Record<Dia, DiaState>>(
+    initialHorarios && initialHorarios.length > 0
+      ? fromInitial(initialHorarios)
+      : ESTADO_DEFAULT,
+  );
 
   function actualizar(dia: Dia, patch: Partial<DiaState>) {
     setEstado((prev) => ({ ...prev, [dia]: { ...prev[dia], ...patch } }));
