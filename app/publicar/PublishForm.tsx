@@ -4,6 +4,7 @@ import Script from "next/script";
 import { useActionState } from "react";
 import { publicarNegocio, type PublicarState } from "./actions";
 import ScheduleInput from "./ScheduleInput";
+import PhotoUpload from "./PhotoUpload";
 
 type Categoria = {
   id: number;
@@ -153,6 +154,23 @@ export default function PublishForm({ categorias }: { categorias: Categoria[] })
           placeholder="Ej: Todo Linares urbano"
           className="input-ue"
         />
+      </Field>
+
+      <Field label="Foto de portada" hint="Se ve grande en la ficha y en las tarjetas. Recomendado.">
+        <PhotoUpload
+          name="foto_portada"
+          label=""
+          hint="Si no subis una, se muestra el emoji de la categoria"
+        />
+      </Field>
+
+      <Field label="Mas fotos" hint="Galeria - hasta 4 mas">
+        <div className="grid grid-cols-2 gap-3">
+          <PhotoUpload name="foto_galeria_1" label="" />
+          <PhotoUpload name="foto_galeria_2" label="" />
+          <PhotoUpload name="foto_galeria_3" label="" />
+          <PhotoUpload name="foto_galeria_4" label="" />
+        </div>
       </Field>
 
       <Field label="Horarios" hint="Marca los dias que atiendes y el horario de cada uno">

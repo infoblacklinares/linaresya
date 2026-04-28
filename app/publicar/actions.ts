@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendAdminPublicacionNotification } from "@/lib/email";
+import { uploadNegocioFoto, uploadNegocioGaleria } from "@/lib/storage";
 
 export type PublicarState = {
   ok: boolean;
@@ -244,6 +245,42 @@ export async function publicarNegocio(
       // No bloqueamos: el negocio ya quedo creado. El admin puede arreglar
       // los horarios despues desde el panel.
       console.error("Error insertando horarios:", horariosError);
+    }
+  }
+
+  // Subida de fotos (no bloqueante: si falla Storage, el negocio queda creado).
+  // Foto de portada: una sola, opcional.
+  const fotoPortadaFile = formData.get("foto_portada");
+  if (fotoPortadaFile instanceof File && fotoPortadaFile.size > 0) {
+    const url = await uploadNegocioFoto(fotoPortadaFile, slug, "portada");
+    if (url) {
+      await supabaseAdmin
+        .from("negocios")
+        .update({ foto_portada: url })
+        .eq("id", insertado.id as string);
+    }
+  }
+
+  // Galeria: hasta 4 archivos en campos foto_galeria_1..4.
+  const galeriaFiles: File[] = [];
+  for (let i = 1; i <= 4; i++) {
+    const f = formData.get(`foto_galeria_${i}`);
+    if (f instanceof File && f.size > 0) galeriaFiles.push(f);
+  }
+  if (galeriaFiles.length > 0) {
+    const urls = await uploadNegocioGaleria(galeriaFiles, slug);
+    if (urls.length > 0) {
+      const filasFotos = urls.map((url, idx) => ({
+        negocio_id: insertado.id as string,
+        url,
+        orden: idx,
+      }));
+      const { error: fotosError } = await supabaseAdmin
+        .from("fotos")
+        .insert(filasFotos);
+      if (fotosError) {
+        console.error("Error insertando fotos:", fotosError);
+      }
     }
   }
 
