@@ -250,15 +250,30 @@ export async function publicarNegocio(
 
   // Subida de fotos (no bloqueante: si falla Storage, el negocio queda creado).
   // Foto de portada: una sola, opcional.
-  const fotoPortadaFile = formData.get("foto_portada");
-  if (fotoPortadaFile instanceof File && fotoPortadaFile.size > 0) {
-    const url = await uploadNegocioFoto(fotoPortadaFile, slug, "portada");
+  const fotoPortadaRaw = formData.get("foto_portada");
+  console.log("[publicar] foto_portada raw:", {
+    isFile: fotoPortadaRaw instanceof File,
+    type: typeof fotoPortadaRaw,
+    constructor: fotoPortadaRaw?.constructor?.name,
+    size: fotoPortadaRaw instanceof File ? fotoPortadaRaw.size : null,
+    mime: fotoPortadaRaw instanceof File ? fotoPortadaRaw.type : null,
+    name: fotoPortadaRaw instanceof File ? fotoPortadaRaw.name : null,
+  });
+  if (fotoPortadaRaw instanceof File && fotoPortadaRaw.size > 0) {
+    console.log("[publicar] uploading foto_portada to Storage...");
+    const url = await uploadNegocioFoto(fotoPortadaRaw, slug, "portada");
+    console.log("[publicar] upload result:", url);
     if (url) {
       await supabaseAdmin
         .from("negocios")
         .update({ foto_portada: url })
         .eq("id", insertado.id as string);
+      console.log("[publicar] foto_portada saved to negocio");
+    } else {
+      console.warn("[publicar] foto_portada upload returned null");
     }
+  } else {
+    console.log("[publicar] no foto_portada attached or empty");
   }
 
   // Galeria: hasta 4 archivos en campos foto_galeria_1..4.
@@ -267,8 +282,10 @@ export async function publicarNegocio(
     const f = formData.get(`foto_galeria_${i}`);
     if (f instanceof File && f.size > 0) galeriaFiles.push(f);
   }
+  console.log("[publicar] galeria files:", galeriaFiles.length);
   if (galeriaFiles.length > 0) {
     const urls = await uploadNegocioGaleria(galeriaFiles, slug);
+    console.log("[publicar] galeria urls:", urls.length);
     if (urls.length > 0) {
       const filasFotos = urls.map((url, idx) => ({
         negocio_id: insertado.id as string,
