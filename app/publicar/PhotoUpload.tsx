@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 
-const MAX_BYTES = 8 * 1024 * 1024; // 8 MB
+const MAX_BYTES = 4 * 1024 * 1024; // 4 MB
 const ACCEPTED = ["image/jpeg", "image/png", "image/webp"];
 
 export default function PhotoUpload({
@@ -35,7 +35,7 @@ export default function PhotoUpload({
     }
     if (file.size > MAX_BYTES) {
       setError(
-        `Archivo demasiado grande (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximo 8 MB.`,
+        `Archivo demasiado grande (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximo 4 MB.`,
       );
       e.target.value = "";
       setPreview(null);
@@ -91,7 +91,7 @@ export default function PhotoUpload({
           <div className="text-2xl mb-1">{"📷"}</div>
           <p className="text-[13px] font-semibold">Subir foto</p>
           <p className="text-[11px] text-muted-foreground mt-0.5">
-            JPG, PNG o WEBP - hasta 8 MB
+            JPG, PNG o WEBP - hasta 4 MB
           </p>
         </label>
       )}

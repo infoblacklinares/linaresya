@@ -1,7 +1,7 @@
 import { supabaseAdmin } from "./supabase-admin";
 
 const BUCKET = "negocios";
-const MAX_BYTES = 8 * 1024 * 1024;
+const MAX_BYTES = 4 * 1024 * 1024;
 const ACCEPTED_MIMES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 const EXT_BY_MIME: Record<string, string> = {
