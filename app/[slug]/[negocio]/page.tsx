@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import type { Metadata } from "next";
 import TrackedActionButton from "./TrackedActionButton";
+import LeaveReviewForm from "./LeaveReviewForm";
 import JsonLd from "@/components/JsonLd";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 // Regex permisivo para detectar bots/crawlers conocidos. No queremos
@@ -623,6 +624,19 @@ export default async function NegocioDetalle({
             ))}
           </ul>
         )}
+
+        <details className="mt-4 group">
+          <summary className="cursor-pointer list-none rounded-full bg-foreground text-background text-sm font-semibold px-5 py-3 text-center hover:opacity-90 transition group-open:hidden">
+            Dejar tu resena
+          </summary>
+          <div className="mt-3">
+            <LeaveReviewForm
+              negocioId={n.id}
+              categoriaSlug={categoria.slug}
+              negocioSlug={n.slug}
+            />
+          </div>
+        </details>
       </section>
 
       <section className="px-4 mt-8 pb-6 text-center text-[11px] text-muted-foreground">

@@ -41,7 +41,12 @@ export default async function AdminPage() {
     redirect("/admin/login");
   }
 
-  const [{ data: pendientes }, { data: activos }, { data: cats }] = await Promise.all([
+  const [
+    { data: pendientes },
+    { data: activos },
+    { data: cats },
+    { count: resenasPendientes },
+  ] = await Promise.all([
     supabaseAdmin
       .from("negocios")
       .select(
@@ -58,10 +63,15 @@ export default async function AdminPage() {
       .order("creado_en", { ascending: false })
       .limit(50),
     supabaseAdmin.from("categorias").select("id, nombre, emoji, slug"),
+    supabaseAdmin
+      .from("resenas")
+      .select("id", { count: "exact", head: true })
+      .eq("aprobada", false),
   ]);
 
   const pend = (pendientes ?? []) as NegocioRow[];
   const act = (activos ?? []) as NegocioRow[];
+  const resCount = resenasPendientes ?? 0;
   const catsMap = new Map<number, Categoria>(
     ((cats ?? []) as Categoria[]).map((c) => [c.id, c]),
   );
@@ -87,9 +97,22 @@ export default async function AdminPage() {
       </header>
 
       <section className="px-4 pt-4">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <StatCard label="Pendientes" value={pend.length} accent />
           <StatCard label="Activos" value={act.length} />
+          <Link
+            href="/admin/resenas"
+            className={`block rounded-2xl p-4 ue-shadow-sm transition hover:opacity-90 ${
+              resCount > 0
+                ? "bg-[oklch(0.94_0.04_80)]"
+                : "bg-white border border-border"
+            }`}
+          >
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              Resenas
+            </p>
+            <p className="text-3xl font-extrabold mt-1">{resCount}</p>
+          </Link>
         </div>
       </section>
 
