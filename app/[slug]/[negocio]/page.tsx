@@ -668,13 +668,23 @@ export default async function NegocioDetalle({
         </details>
       </section>
 
-      <section className="px-4 mt-8 pb-6 text-center text-[11px] text-muted-foreground">
-        En LinaresYa desde{" "}
-        {new Date(n.creado_en).toLocaleDateString("es-CL", {
-          month: "long",
-          year: "numeric",
-          timeZone: "America/Santiago",
-        })}
+      <section className="px-4 mt-8 pb-6 text-center text-[11px] text-muted-foreground space-y-1.5">
+        <p>
+          En LinaresYa desde{" "}
+          {new Date(n.creado_en).toLocaleDateString("es-CL", {
+            month: "long",
+            year: "numeric",
+            timeZone: "America/Santiago",
+          })}
+        </p>
+        <p>
+          <Link
+            href="/dueno/solicitar"
+            className="underline hover:text-foreground transition"
+          >
+            ¿Sos el dueño? Editar este negocio
+          </Link>
+        </p>
       </section>
     </main>
   );

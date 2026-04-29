@@ -250,3 +250,85 @@ export async function sendOwnerAprobacionNotification(
     console.error("[email] Notificacion duenio fallo:", err);
   }
 }
+
+// Envia un magic link al duenio para que pueda editar su negocio.
+// Devuelve true si el envio salio bien, false si fallo o no esta configurado.
+// Devuelve true incluso si Resend no esta configurado (modo dev), para que la
+// UI no se rompa: el server log avisa que no se envio nada.
+export async function sendDuenoMagicLink(opts: {
+  to: string;
+  nombreNegocio: string;
+  link: string;
+  expiraHoras: number;
+}): Promise<boolean> {
+  try {
+    const c = getClient();
+    if (!c) {
+      console.warn(
+        "[email] Salto magic link: falta RESEND_API_KEY. Link generado:",
+        opts.link,
+      );
+      return false;
+    }
+
+    const nombreEsc = escapeHtml(opts.nombreNegocio);
+    const linkEsc = escapeHtml(opts.link);
+    const subject = `Editar tu negocio en LinaresYa: ${opts.nombreNegocio}`;
+
+    const html = `<!doctype html>
+<html lang="es">
+<body style="margin:0;background:#f8fafc;font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#0f172a;">
+  <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+    <div style="padding:24px;background:#0f172a;color:#fff;">
+      <h1 style="margin:0;font-size:18px;font-weight:800;">LinaresYa</h1>
+      <p style="margin:6px 0 0;font-size:13px;opacity:.85;">Editar tu negocio</p>
+    </div>
+    <div style="padding:24px;">
+      <p style="margin:0 0 16px;font-size:15px;line-height:1.6;">
+        Solicitaste editar tu negocio <strong>${nombreEsc}</strong> en LinaresYa.
+      </p>
+      <p style="margin:0 0 20px;font-size:15px;line-height:1.6;">
+        Hacé click en el botón de abajo para acceder al editor. El link es valido por ${opts.expiraHoras} horas.
+      </p>
+      <p style="margin:0 0 24px;text-align:center;">
+        <a href="${linkEsc}" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px;font-weight:600;font-size:14px;">
+          Editar mi negocio
+        </a>
+      </p>
+      <p style="margin:0 0 8px;font-size:13px;color:#64748b;">
+        O copia este link en tu navegador:
+      </p>
+      <p style="margin:0;font-size:12px;color:#475569;word-break:break-all;">
+        ${linkEsc}
+      </p>
+    </div>
+    <div style="padding:16px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+      <p style="margin:0;color:#94a3b8;font-size:12px;">
+        Si vos no pediste este link, podes ignorar este correo. Nadie podra editar tu negocio sin acceso a este email.
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const text = `Solicitaste editar tu negocio "${opts.nombreNegocio}" en LinaresYa.\n\nLink al editor (valido por ${opts.expiraHoras} hs):\n${opts.link}\n\nSi no pediste este link, ignoralo.`;
+
+    const { data, error } = await c.emails.send({
+      from: FROM,
+      to: opts.to,
+      subject,
+      html,
+      text,
+    });
+
+    if (error) {
+      console.error("[email] Magic link Resend error:", error);
+      return false;
+    }
+    console.log("[email] Magic link enviado:", { id: data?.id, to: opts.to });
+    return true;
+  } catch (err) {
+    console.error("[email] Magic link fallo:", err);
+    return false;
+  }
+}
