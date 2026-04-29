@@ -161,6 +161,20 @@ function mapsLink(n: Negocio): string | null {
   return null;
 }
 
+// URL del iframe embed de Google Maps. Usa el endpoint /maps?q=...&output=embed
+// que no requiere API key (a diferencia del Embed API oficial). Si hay lat/lng
+// los usa; si no, geocodifica con la direccion + ciudad.
+function mapsEmbed(n: Negocio): string | null {
+  if (n.lat != null && n.lng != null) {
+    return `https://www.google.com/maps?q=${n.lat},${n.lng}&z=16&output=embed`;
+  }
+  if (n.direccion) {
+    const q = encodeURIComponent(`${n.direccion}, ${n.ciudad ?? "Linares"}, Chile`);
+    return `https://www.google.com/maps?q=${q}&z=16&output=embed`;
+  }
+  return null;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -294,6 +308,7 @@ export default async function NegocioDetalle({
   const wa = esPremium && n.whatsapp ? whatsAppLink(n.whatsapp, n.nombre) : null;
   const tel = n.telefono ? telLink(n.telefono) : null;
   const maps = mapsLink(n);
+  const mapEmbedUrl = mapsEmbed(n);
 
   const ratingPromedio =
     resenas.length > 0
@@ -569,6 +584,20 @@ export default async function NegocioDetalle({
               </a>
             )}
           </div>
+          {mapEmbedUrl && (
+            <div className="mt-3 rounded-2xl overflow-hidden border border-border bg-secondary/40">
+              <iframe
+                src={mapEmbedUrl}
+                title={`Mapa de ${n.nombre}`}
+                width="100%"
+                height="240"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+          )}
         </section>
       )}
 
