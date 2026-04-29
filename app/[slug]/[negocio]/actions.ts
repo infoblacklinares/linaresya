@@ -102,9 +102,21 @@ export async function dejarResena(
   });
 
   if (error) {
+    console.error("[dejarResena] Supabase insert error:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+      payload: {
+        negocio_id: negocioId,
+        nombre_autor: nombre,
+        calificacion,
+        comentario_length: comentario.length,
+      },
+    });
     return {
       ok: false,
-      error: "No pudimos guardar tu resena. Intenta otra vez en unos minutos.",
+      error: `No pudimos guardar tu resena: ${error.message}`,
     };
   }
 
