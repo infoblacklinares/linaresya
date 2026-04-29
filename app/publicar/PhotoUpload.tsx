@@ -20,17 +20,20 @@ export default function PhotoUpload({
   label,
   hint,
   required = false,
+  initialUrl,
 }: {
   name: string;
   label: string;
   hint?: string;
   required?: boolean;
+  initialUrl?: string | null;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [publicUrl, setPublicUrl] = useState<string>("");
-  const [status, setStatus] = useState<Status>("idle");
+  const [preview, setPreview] = useState<string | null>(initialUrl ?? null);
+  const [publicUrl, setPublicUrl] = useState<string>(initialUrl ?? "");
+  const [status, setStatus] = useState<Status>(initialUrl ? "done" : "idle");
   const [error, setError] = useState<string | null>(null);
+  const [isExisting, setIsExisting] = useState<boolean>(!!initialUrl);
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setError(null);
@@ -53,6 +56,7 @@ export default function PhotoUpload({
     // Mostrar preview inmediatamente
     setPreview(URL.createObjectURL(file));
     setStatus("uploading");
+    setIsExisting(false);
 
     // Subir directo a Supabase Storage (bypass Vercel)
     try {
@@ -124,9 +128,14 @@ export default function PhotoUpload({
               </div>
             </div>
           )}
-          {status === "done" && (
+          {status === "done" && !isExisting && (
             <div className="absolute top-2 left-2 rounded-full bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5">
               Subida
+            </div>
+          )}
+          {status === "done" && isExisting && (
+            <div className="absolute top-2 left-2 rounded-full bg-black/70 text-white text-[10px] font-bold px-2 py-0.5">
+              Actual
             </div>
           )}
           {status === "error" && (

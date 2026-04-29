@@ -78,8 +78,15 @@ export async function updateNegocio(
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     fieldErrors.email = "Email invalido";
   }
-  if (fotoPortada && !/^https?:\/\//i.test(fotoPortada)) {
-    fieldErrors.foto_portada = "Debe ser una URL http:// o https://";
+  // foto_portada ahora viene del PhotoUpload (URL del bucket de Storage).
+  // Validamos que pertenezca a nuestro Storage para evitar inyeccion de URLs.
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const fotoPortadaValida =
+    !fotoPortada ||
+    (supabaseUrl &&
+      fotoPortada.startsWith(`${supabaseUrl}/storage/v1/object/public/negocios/`));
+  if (!fotoPortadaValida) {
+    fieldErrors.foto_portada = "URL de foto invalida";
   }
 
   if (Object.keys(fieldErrors).length > 0) {

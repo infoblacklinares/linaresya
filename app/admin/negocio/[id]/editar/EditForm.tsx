@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { updateNegocio, type UpdateState } from "./actions";
 import ScheduleInput, { type HorarioInicial } from "@/app/publicar/ScheduleInput";
+import PhotoUpload from "@/app/publicar/PhotoUpload";
 
 type Categoria = {
   id: number;
@@ -234,27 +235,14 @@ export default function EditForm({
       {/* MEDIA */}
       <section className="space-y-3">
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
-          Media
+          Foto de portada
         </h2>
-        <Field label="Foto de portada (URL)" error={fe.foto_portada}>
-          <input
-            name="foto_portada"
-            type="url"
-            defaultValue={negocio.foto_portada ?? ""}
-            className="input-ue"
-            placeholder="https://..."
-          />
-        </Field>
-        {negocio.foto_portada && (
-          <div className="rounded-xl overflow-hidden border border-border">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={negocio.foto_portada}
-              alt="Portada actual"
-              className="w-full h-32 object-cover"
-            />
-          </div>
-        )}
+        <PhotoUpload
+          name="foto_portada"
+          label=""
+          hint="Click para reemplazar"
+          initialUrl={negocio.foto_portada}
+        />
       </section>
 
       {/* PLAN / ESTADO */}
