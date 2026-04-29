@@ -3,7 +3,6 @@
 import { headers } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendAdminPublicacionNotification } from "@/lib/email";
-import { uploadNegocioFoto, uploadNegocioGaleria } from "@/lib/storage";
 
 export type PublicarState = {
   ok: boolean;
@@ -248,56 +247,41 @@ export async function publicarNegocio(
     }
   }
 
-  // Subida de fotos (no bloqueante: si falla Storage, el negocio queda creado).
-  // Foto de portada: una sola, opcional.
-  const fotoPortadaRaw = formData.get("foto_portada");
-  console.log("[publicar] foto_portada raw:", {
-    isFile: fotoPortadaRaw instanceof File,
-    type: typeof fotoPortadaRaw,
-    constructor: fotoPortadaRaw?.constructor?.name,
-    size: fotoPortadaRaw instanceof File ? fotoPortadaRaw.size : null,
-    mime: fotoPortadaRaw instanceof File ? fotoPortadaRaw.type : null,
-    name: fotoPortadaRaw instanceof File ? fotoPortadaRaw.name : null,
-  });
-  if (fotoPortadaRaw instanceof File && fotoPortadaRaw.size > 0) {
-    console.log("[publicar] uploading foto_portada to Storage...");
-    const url = await uploadNegocioFoto(fotoPortadaRaw, slug, "portada");
-    console.log("[publicar] upload result:", url);
-    if (url) {
-      await supabaseAdmin
-        .from("negocios")
-        .update({ foto_portada: url })
-        .eq("id", insertado.id as string);
-      console.log("[publicar] foto_portada saved to negocio");
-    } else {
-      console.warn("[publicar] foto_portada upload returned null");
-    }
-  } else {
-    console.log("[publicar] no foto_portada attached or empty");
+  // Fotos: ahora el browser sube directo a Supabase Storage (bypass Vercel
+  // body limit). Aca solo recibimos las URLs ya subidas en hidden inputs.
+  // Validamos que vengan del bucket correcto para evitar inyeccion de URLs
+  // arbitrarias.
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const isUrlValida = (url: string): boolean => {
+    if (!url) return false;
+    if (!supabaseUrl) return false;
+    return url.startsWith(`${supabaseUrl}/storage/v1/object/public/negocios/`);
+  };
+
+  const fotoPortadaUrl = String(formData.get("foto_portada") ?? "").trim();
+  if (isUrlValida(fotoPortadaUrl)) {
+    await supabaseAdmin
+      .from("negocios")
+      .update({ foto_portada: fotoPortadaUrl })
+      .eq("id", insertado.id as string);
   }
 
-  // Galeria: hasta 4 archivos en campos foto_galeria_1..4.
-  const galeriaFiles: File[] = [];
+  const galeriaUrls: string[] = [];
   for (let i = 1; i <= 4; i++) {
-    const f = formData.get(`foto_galeria_${i}`);
-    if (f instanceof File && f.size > 0) galeriaFiles.push(f);
+    const url = String(formData.get(`foto_galeria_${i}`) ?? "").trim();
+    if (isUrlValida(url)) galeriaUrls.push(url);
   }
-  console.log("[publicar] galeria files:", galeriaFiles.length);
-  if (galeriaFiles.length > 0) {
-    const urls = await uploadNegocioGaleria(galeriaFiles, slug);
-    console.log("[publicar] galeria urls:", urls.length);
-    if (urls.length > 0) {
-      const filasFotos = urls.map((url, idx) => ({
-        negocio_id: insertado.id as string,
-        url,
-        orden: idx,
-      }));
-      const { error: fotosError } = await supabaseAdmin
-        .from("fotos")
-        .insert(filasFotos);
-      if (fotosError) {
-        console.error("Error insertando fotos:", fotosError);
-      }
+  if (galeriaUrls.length > 0) {
+    const filasFotos = galeriaUrls.map((url, idx) => ({
+      negocio_id: insertado.id as string,
+      url,
+      orden: idx,
+    }));
+    const { error: fotosError } = await supabaseAdmin
+      .from("fotos")
+      .insert(filasFotos);
+    if (fotosError) {
+      console.error("Error insertando fotos:", fotosError);
     }
   }
 

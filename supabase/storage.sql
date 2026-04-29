@@ -33,10 +33,19 @@ create policy "negocios_public_read" on storage.objects
   to anon, authenticated
   using (bucket_id = 'negocios');
 
--- service_role bypasea RLS automaticamente, asi que no necesitamos policy
--- explicita para insert/update/delete. Pero por claridad creamos una policy
--- denegativa explicita para anon (la ausencia de policy ya bloquea, pero
--- esto deja el intento documentado).
+-- Insert publico: anon puede subir SOLO al bucket 'negocios' (no a otros).
+-- Esto es necesario porque los uploads se hacen client-side (browser ->
+-- Storage directo) para no pasar por Vercel y evitar el limite de 4.5MB
+-- de body en funciones. El bucket tiene file_size_limit y allowed_mime_types
+-- que ya filtran abuso a nivel Storage.
+drop policy if exists "negocios_anon_insert" on storage.objects;
+create policy "negocios_anon_insert" on storage.objects
+  for insert
+  to anon, authenticated
+  with check (bucket_id = 'negocios');
+
+-- service_role bypasea RLS automaticamente para update/delete (admin desde
+-- backend cuando hay que limpiar archivos). No necesita policy explicita.
 
 -- ============================================================================
 -- LISTO. Verificar:
