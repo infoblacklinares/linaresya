@@ -48,6 +48,12 @@ type Horario = {
   cerrado: boolean;
 };
 
+type FotoGaleria = {
+  id: number;
+  url: string;
+  orden: number;
+};
+
 export default async function EditarNegocioPage({
   params,
 }: {
@@ -59,25 +65,34 @@ export default async function EditarNegocioPage({
 
   const { id } = await params;
 
-  const [{ data: negocio }, { data: categorias }, { data: horariosData }] =
-    await Promise.all([
-      supabaseAdmin
-        .from("negocios")
-        .select(
-          "id,nombre,slug,categoria_id,tipo,plan,descripcion,telefono,whatsapp,email,sitio_web,direccion,a_domicilio,zona_cobertura,disponibilidad,foto_portada,activo,verificado,premium_hasta",
-        )
-        .eq("id", id)
-        .single(),
-      supabaseAdmin
-        .from("categorias")
-        .select("id,nombre,emoji")
-        .eq("activa", true)
-        .order("nombre", { ascending: true }),
-      supabaseAdmin
-        .from("horarios")
-        .select("dia,abre,cierra,cerrado")
-        .eq("negocio_id", id),
-    ]);
+  const [
+    { data: negocio },
+    { data: categorias },
+    { data: horariosData },
+    { data: fotosData },
+  ] = await Promise.all([
+    supabaseAdmin
+      .from("negocios")
+      .select(
+        "id,nombre,slug,categoria_id,tipo,plan,descripcion,telefono,whatsapp,email,sitio_web,direccion,a_domicilio,zona_cobertura,disponibilidad,foto_portada,activo,verificado,premium_hasta",
+      )
+      .eq("id", id)
+      .single(),
+    supabaseAdmin
+      .from("categorias")
+      .select("id,nombre,emoji")
+      .eq("activa", true)
+      .order("nombre", { ascending: true }),
+    supabaseAdmin
+      .from("horarios")
+      .select("dia,abre,cierra,cerrado")
+      .eq("negocio_id", id),
+    supabaseAdmin
+      .from("fotos")
+      .select("id,url,orden")
+      .eq("negocio_id", id)
+      .order("orden", { ascending: true }),
+  ]);
 
   if (!negocio) {
     notFound();
@@ -86,6 +101,7 @@ export default async function EditarNegocioPage({
   const n = negocio as Negocio;
   const cats = (categorias ?? []) as Categoria[];
   const horarios = (horariosData ?? []) as Horario[];
+  const fotosGaleria = (fotosData ?? []) as FotoGaleria[];
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl px-4">
@@ -130,7 +146,12 @@ export default async function EditarNegocioPage({
         </div>
       </header>
 
-      <EditForm negocio={n} categorias={cats} horarios={horarios} />
+      <EditForm
+        negocio={n}
+        categorias={cats}
+        horarios={horarios}
+        fotosGaleria={fotosGaleria}
+      />
     </main>
   );
 }

@@ -195,6 +195,69 @@ export async function updateNegocio(
     }
   }
 
+  // === SINCRONIZAR GALERIA ===
+  // 1. Borrar fotos marcadas para eliminar (foto_eliminar_<id>=on)
+  // 2. Insertar nuevas (foto_galeria_1..4 con URL del bucket)
+
+  // Recoger ids a eliminar leyendo todas las claves del FormData que matchean
+  const idsAEliminar: number[] = [];
+  for (const [key, value] of formData.entries()) {
+    const m = key.match(/^foto_eliminar_(\d+)$/);
+    if (m && value === "on") {
+      const fotoId = parseInt(m[1], 10);
+      if (Number.isFinite(fotoId)) idsAEliminar.push(fotoId);
+    }
+  }
+  if (idsAEliminar.length > 0) {
+    const { error: deleteFotosError } = await supabaseAdmin
+      .from("fotos")
+      .delete()
+      .in("id", idsAEliminar)
+      .eq("negocio_id", id); // safety: nunca borrar fotos de otro negocio
+    if (deleteFotosError) {
+      console.error("Error eliminando fotos:", deleteFotosError);
+    }
+    // Nota: los archivos en Storage quedan huerfanos. Limpieza periodica
+    // puede hacerse con un cron job que compare urls de fotos vs storage.
+  }
+
+  // Recoger nuevas fotos a insertar
+  const supabaseUrlForGaleria = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const isUrlBucket = (url: string): boolean =>
+    !!url &&
+    !!supabaseUrlForGaleria &&
+    url.startsWith(`${supabaseUrlForGaleria}/storage/v1/object/public/negocios/`);
+
+  const nuevasUrls: string[] = [];
+  for (let i = 1; i <= 4; i++) {
+    const url = String(formData.get(`foto_galeria_${i}`) ?? "").trim();
+    if (isUrlBucket(url)) nuevasUrls.push(url);
+  }
+
+  if (nuevasUrls.length > 0) {
+    // Calcular el siguiente "orden" basado en lo que ya hay
+    const { data: maxOrdenRow } = await supabaseAdmin
+      .from("fotos")
+      .select("orden")
+      .eq("negocio_id", id)
+      .order("orden", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    const inicio = ((maxOrdenRow?.orden as number | undefined) ?? -1) + 1;
+
+    const filasFotos = nuevasUrls.map((url, idx) => ({
+      negocio_id: id,
+      url,
+      orden: inicio + idx,
+    }));
+    const { error: insertFotosError } = await supabaseAdmin
+      .from("fotos")
+      .insert(filasFotos);
+    if (insertFotosError) {
+      console.error("Error insertando fotos galeria:", insertFotosError);
+    }
+  }
+
   revalidatePath("/admin");
   revalidatePath("/");
   revalidatePath(`/admin/negocio/${id}/editar`);

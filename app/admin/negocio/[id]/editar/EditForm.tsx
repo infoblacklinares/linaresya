@@ -5,6 +5,13 @@ import { useActionState } from "react";
 import { updateNegocio, type UpdateState } from "./actions";
 import ScheduleInput, { type HorarioInicial } from "@/app/publicar/ScheduleInput";
 import PhotoUpload from "@/app/publicar/PhotoUpload";
+import GaleriaManager from "./GaleriaManager";
+
+type FotoGaleria = {
+  id: number;
+  url: string;
+  orden: number;
+};
 
 type Categoria = {
   id: number;
@@ -50,10 +57,12 @@ export default function EditForm({
   negocio,
   categorias,
   horarios,
+  fotosGaleria,
 }: {
   negocio: Negocio;
   categorias: Categoria[];
   horarios: HorarioInicial[];
+  fotosGaleria: FotoGaleria[];
 }) {
   const [state, formAction, pending] = useActionState(
     updateNegocio,
@@ -243,6 +252,28 @@ export default function EditForm({
           hint="Click para reemplazar"
           initialUrl={negocio.foto_portada}
         />
+      </section>
+
+      {/* GALERIA */}
+      <section className="space-y-3">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+          Galeria
+        </h2>
+        <div className="space-y-3">
+          <div>
+            <p className="text-[12px] font-semibold mb-2">Fotos actuales</p>
+            <GaleriaManager fotos={fotosGaleria} />
+          </div>
+          <div>
+            <p className="text-[12px] font-semibold mb-2">Agregar nuevas</p>
+            <div className="grid grid-cols-2 gap-3">
+              <PhotoUpload name="foto_galeria_1" label="" />
+              <PhotoUpload name="foto_galeria_2" label="" />
+              <PhotoUpload name="foto_galeria_3" label="" />
+              <PhotoUpload name="foto_galeria_4" label="" />
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* PLAN / ESTADO */}
