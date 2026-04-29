@@ -18,7 +18,7 @@ export default function LeaveReviewForm({
     dejarResena,
     estadoInicial,
   );
-  const [calificacion, setCalificacion] = useState<number>(5);
+  const [estrellas, setEstrellas] = useState<number>(5);
   const [hover, setHover] = useState<number>(0);
 
   if (state.ok) {
@@ -42,7 +42,7 @@ export default function LeaveReviewForm({
       <input type="hidden" name="negocio_id" value={negocioId} />
       <input type="hidden" name="categoria_slug" value={categoriaSlug} />
       <input type="hidden" name="negocio_slug" value={negocioSlug} />
-      <input type="hidden" name="calificacion" value={calificacion} />
+      <input type="hidden" name="estrellas" value={estrellas} />
       {/* Honeypot: campo invisible que solo bots llenan */}
       <input
         type="text"
@@ -59,16 +59,16 @@ export default function LeaveReviewForm({
         </label>
         <input
           type="text"
-          name="nombre_autor"
+          name="autor_nombre"
           required
           minLength={2}
           maxLength={60}
           placeholder="Como te llamas"
           className="w-full bg-white rounded-xl px-3 py-2 text-sm border border-border outline-none focus:border-foreground"
         />
-        {fe.nombre_autor && (
+        {fe.autor_nombre && (
           <p className="mt-1 text-[11px] text-red-600 font-medium">
-            {fe.nombre_autor}
+            {fe.autor_nombre}
           </p>
         )}
       </div>
@@ -79,12 +79,12 @@ export default function LeaveReviewForm({
         </label>
         <div className="flex items-center gap-1">
           {[1, 2, 3, 4, 5].map((n) => {
-            const lleno = (hover || calificacion) >= n;
+            const lleno = (hover || estrellas) >= n;
             return (
               <button
                 key={n}
                 type="button"
-                onClick={() => setCalificacion(n)}
+                onClick={() => setEstrellas(n)}
                 onMouseEnter={() => setHover(n)}
                 onMouseLeave={() => setHover(0)}
                 aria-label={`${n} estrella${n > 1 ? "s" : ""}`}
@@ -97,12 +97,12 @@ export default function LeaveReviewForm({
             );
           })}
           <span className="ml-2 text-[12px] font-medium text-muted-foreground">
-            {calificacion} de 5
+            {estrellas} de 5
           </span>
         </div>
-        {fe.calificacion && (
+        {fe.estrellas && (
           <p className="mt-1 text-[11px] text-red-600 font-medium">
-            {fe.calificacion}
+            {fe.estrellas}
           </p>
         )}
       </div>

@@ -26,8 +26,8 @@ type Horario = {
 
 type Resena = {
   id: number;
-  nombre_autor: string;
-  calificacion: number;
+  autor_nombre: string;
+  estrellas: number;
   comentario: string | null;
   creado_en: string;
 };
@@ -137,7 +137,7 @@ export function localBusinessJsonLd(
   // Rating agregado si hay resenas aprobadas.
   let aggregateRating: Record<string, unknown> | undefined;
   if (resenas.length > 0) {
-    const avg = resenas.reduce((a, r) => a + r.calificacion, 0) / resenas.length;
+    const avg = resenas.reduce((a, r) => a + r.estrellas, 0) / resenas.length;
     aggregateRating = {
       "@type": "AggregateRating",
       ratingValue: Number(avg.toFixed(1)),

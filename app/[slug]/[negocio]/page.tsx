@@ -80,8 +80,8 @@ type Foto = { id: number; url: string; orden: number };
 
 type Resena = {
   id: number;
-  nombre_autor: string;
-  calificacion: number;
+  autor_nombre: string;
+  estrellas: number;
   comentario: string | null;
   creado_en: string;
 };
@@ -291,7 +291,7 @@ export default async function NegocioDetalle({
         .order("orden"),
       supabase
         .from("resenas")
-        .select("id,nombre_autor,calificacion,comentario,creado_en")
+        .select("id,autor_nombre,estrellas,comentario,creado_en")
         .eq("negocio_id", n.id)
         .eq("aprobada", true)
         .order("creado_en", { ascending: false })
@@ -313,7 +313,7 @@ export default async function NegocioDetalle({
   const ratingPromedio =
     resenas.length > 0
       ? (
-          resenas.reduce((acc, r) => acc + r.calificacion, 0) / resenas.length
+          resenas.reduce((acc, r) => acc + r.estrellas, 0) / resenas.length
         ).toFixed(1)
       : null;
 
@@ -639,9 +639,9 @@ export default async function NegocioDetalle({
             {resenas.map((r) => (
               <li key={r.id} className="rounded-2xl bg-secondary/60 p-4">
                 <div className="flex items-center justify-between">
-                  <p className="font-semibold text-sm">{r.nombre_autor}</p>
+                  <p className="font-semibold text-sm">{r.autor_nombre}</p>
                   <span className="text-xs font-semibold">
-                    {"\u2B50".repeat(Math.max(1, Math.min(5, r.calificacion)))}
+                    {"\u2B50".repeat(Math.max(1, Math.min(5, r.estrellas)))}
                   </span>
                 </div>
                 {r.comentario && (

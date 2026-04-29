@@ -12,8 +12,8 @@ export const metadata = {
 type ResenaRow = {
   id: number;
   negocio_id: string;
-  nombre_autor: string;
-  calificacion: number;
+  autor_nombre: string;
+  estrellas: number;
   comentario: string | null;
   aprobada: boolean;
   creado_en: string;
@@ -52,14 +52,14 @@ export default async function ModerarResenas() {
     supabaseAdmin
       .from("resenas")
       .select(
-        "id, negocio_id, nombre_autor, calificacion, comentario, aprobada, creado_en, negocios:negocio_id(nombre, slug, categorias:categoria_id(nombre, slug, emoji))",
+        "id, negocio_id, autor_nombre, estrellas, comentario, aprobada, creado_en, negocios:negocio_id(nombre, slug, categorias:categoria_id(nombre, slug, emoji))",
       )
       .eq("aprobada", false)
       .order("creado_en", { ascending: false }),
     supabaseAdmin
       .from("resenas")
       .select(
-        "id, negocio_id, nombre_autor, calificacion, comentario, aprobada, creado_en, negocios:negocio_id(nombre, slug, categorias:categoria_id(nombre, slug, emoji))",
+        "id, negocio_id, autor_nombre, estrellas, comentario, aprobada, creado_en, negocios:negocio_id(nombre, slug, categorias:categoria_id(nombre, slug, emoji))",
       )
       .eq("aprobada", true)
       .order("creado_en", { ascending: false })
@@ -163,12 +163,12 @@ function ResenaCard({ r, pendiente = false }: { r: ResenaRow; pendiente?: boolea
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-amber-500 font-semibold text-sm">
-              {"★".repeat(Math.max(1, Math.min(5, r.calificacion)))}
+              {"★".repeat(Math.max(1, Math.min(5, r.estrellas)))}
               <span className="text-muted-foreground/30">
-                {"★".repeat(5 - Math.max(1, Math.min(5, r.calificacion)))}
+                {"★".repeat(5 - Math.max(1, Math.min(5, r.estrellas)))}
               </span>
             </span>
-            <p className="font-bold text-[14px]">{r.nombre_autor}</p>
+            <p className="font-bold text-[14px]">{r.autor_nombre}</p>
             {pendiente && (
               <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full">
                 Pendiente

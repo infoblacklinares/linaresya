@@ -34,8 +34,8 @@ export async function dejarResena(
   const negocioId = String(formData.get("negocio_id") ?? "").trim();
   const categoriaSlug = String(formData.get("categoria_slug") ?? "").trim();
   const negocioSlug = String(formData.get("negocio_slug") ?? "").trim();
-  const nombre = String(formData.get("nombre_autor") ?? "").trim();
-  const calificacionRaw = String(formData.get("calificacion") ?? "").trim();
+  const nombre = String(formData.get("autor_nombre") ?? "").trim();
+  const estrellasRaw = String(formData.get("estrellas") ?? "").trim();
   const comentario = String(formData.get("comentario") ?? "").trim();
 
   // Honeypot: si un bot llena el campo "website", lo rechazamos en silencio
@@ -49,16 +49,16 @@ export async function dejarResena(
   }
 
   const fieldErrors: Record<string, string> = {};
-  if (nombre.length < 2) fieldErrors.nombre_autor = "Minimo 2 caracteres";
-  if (nombre.length > 60) fieldErrors.nombre_autor = "Maximo 60 caracteres";
+  if (nombre.length < 2) fieldErrors.autor_nombre = "Minimo 2 caracteres";
+  if (nombre.length > 60) fieldErrors.autor_nombre = "Maximo 60 caracteres";
 
-  const calificacion = Number(calificacionRaw);
+  const estrellas = Number(estrellasRaw);
   if (
-    !Number.isInteger(calificacion) ||
-    calificacion < 1 ||
-    calificacion > 5
+    !Number.isInteger(estrellas) ||
+    estrellas < 1 ||
+    estrellas > 5
   ) {
-    fieldErrors.calificacion = "Elige 1 a 5 estrellas";
+    fieldErrors.estrellas = "Elige 1 a 5 estrellas";
   }
 
   if (comentario.length > 500) {
@@ -95,25 +95,14 @@ export async function dejarResena(
 
   const { error } = await supabaseAdmin.from("resenas").insert({
     negocio_id: negocioId,
-    nombre_autor: nombre,
-    calificacion,
+    autor_nombre: nombre,
+    estrellas,
     comentario: comentario || null,
     aprobada: false,
   });
 
   if (error) {
-    console.error("[dejarResena] Supabase insert error:", {
-      message: error.message,
-      code: error.code,
-      details: error.details,
-      hint: error.hint,
-      payload: {
-        negocio_id: negocioId,
-        nombre_autor: nombre,
-        calificacion,
-        comentario_length: comentario.length,
-      },
-    });
+    console.error("[dejarResena] Supabase insert error:", error);
     return {
       ok: false,
       error: `No pudimos guardar tu resena: ${error.message}`,
