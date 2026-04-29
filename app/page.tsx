@@ -13,50 +13,43 @@ type Categoria = {
   orden: number;
 };
 
-const destacados = [
-  {
-    nombre: "Pizzeria Don Vittorio",
-    categoria: "Gastronomia",
-    rating: 4.8,
-    tiempo: "20-30 min",
-    extra: "Envio gratis",
-    emoji: "\u{1F355}",
-    bg: "bg-orange-100",
-  },
-  {
-    nombre: "Peluqueria Camila",
-    categoria: "Belleza",
-    rating: 4.9,
-    tiempo: "Cita hoy",
-    extra: "Promo -20%",
-    emoji: "\u{1F487}",
-    bg: "bg-pink-100",
-  },
-  {
-    nombre: "Don Pedro - Soldador",
-    categoria: "Oficios",
-    rating: 4.7,
-    tiempo: "Disponible",
-    extra: "WhatsApp directo",
-    emoji: "\u{1F527}",
-    bg: "bg-blue-100",
-  },
-  {
-    nombre: "Veterinaria Patitas",
-    categoria: "Mascotas",
-    rating: 4.9,
-    tiempo: "Abre 9:00",
-    extra: "Urgencias 24h",
-    emoji: "\u{1F43E}",
-    bg: "bg-emerald-100",
-  },
-];
+type NegocioDestacado = {
+  id: string;
+  nombre: string;
+  slug: string;
+  descripcion: string | null;
+  plan: "basico" | "premium";
+  verificado: boolean;
+  foto_portada: string | null;
+  a_domicilio: boolean;
+  zona_cobertura: string | null;
+  categorias: { nombre: string; slug: string; emoji: string } | null;
+};
+
+function normalizeCategoria(raw: unknown): NegocioDestacado["categorias"] {
+  const x = Array.isArray(raw) ? raw[0] : raw;
+  if (!x || typeof x !== "object") return null;
+  return {
+    nombre: String((x as { nombre?: unknown }).nombre ?? ""),
+    slug: String((x as { slug?: unknown }).slug ?? ""),
+    emoji: String((x as { emoji?: unknown }).emoji ?? ""),
+  };
+}
 
 export default async function Home() {
-  const { data: categorias, error } = await supabase
-    .from("categorias")
-    .select("*")
-    .order("orden");
+  const [{ data: categorias, error }, { data: destacadosData }] = await Promise.all([
+    supabase.from("categorias").select("*").order("orden"),
+    supabase
+      .from("negocios")
+      .select(
+        "id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, categorias:categoria_id(nombre, slug, emoji)",
+      )
+      .eq("activo", true)
+      .order("plan", { ascending: false })
+      .order("verificado", { ascending: false })
+      .order("creado_en", { ascending: false })
+      .limit(6),
+  ]);
 
   if (error) {
     return (
@@ -72,6 +65,21 @@ export default async function Home() {
   }
 
   const cats = (categorias ?? []) as Categoria[];
+  const destacados: NegocioDestacado[] = ((destacadosData ?? []) as unknown[]).map((r) => {
+    const x = r as Record<string, unknown>;
+    return {
+      id: String(x.id ?? ""),
+      nombre: String(x.nombre ?? ""),
+      slug: String(x.slug ?? ""),
+      descripcion: (x.descripcion as string | null) ?? null,
+      plan: (x.plan as "basico" | "premium") ?? "basico",
+      verificado: Boolean(x.verificado),
+      foto_portada: (x.foto_portada as string | null) ?? null,
+      a_domicilio: Boolean(x.a_domicilio),
+      zona_cobertura: (x.zona_cobertura as string | null) ?? null,
+      categorias: normalizeCategoria(x.categorias),
+    };
+  });
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl">
@@ -184,45 +192,74 @@ export default async function Home() {
       </section>
 
       {/* Destacados */}
-      <section className="pt-8">
-        <div className="px-4 flex items-end justify-between mb-1">
-          <h3 className="text-xl font-extrabold tracking-tight">Joyitas escondidas</h3>
-          <a href="#todas" className="text-xs font-semibold text-muted-foreground">
-            Ver todo
-          </a>
-        </div>
-        <p className="px-4 text-sm text-muted-foreground mb-4">
-          Lugares y oficios que recomiendan los vecinos.
-        </p>
+      {destacados.length > 0 && (
+        <section className="pt-8">
+          <div className="px-4 flex items-end justify-between mb-1">
+            <h3 className="text-xl font-extrabold tracking-tight">Destacados</h3>
+            <Link href="/buscar" className="text-xs font-semibold text-muted-foreground">
+              Ver todo
+            </Link>
+          </div>
+          <p className="px-4 text-sm text-muted-foreground mb-4">
+            Negocios verificados y premium de la comunidad.
+          </p>
 
-        <ul className="px-4 space-y-3">
-          {destacados.map((d, i) => (
-            <li key={i}>
-              <a href="#" className="flex items-center gap-3 p-2 rounded-2xl hover:bg-secondary/60 transition">
-                <div className={`relative h-20 w-20 rounded-2xl flex items-center justify-center text-4xl shrink-0 ${d.bg}`}>
-                  {d.emoji}
-                  <button
-                    aria-label="Favorito"
-                    className="absolute top-1.5 left-1.5 h-7 w-7 rounded-full bg-white/95 flex items-center justify-center text-foreground"
+          <ul className="px-4 space-y-3">
+            {destacados.map((d, i) => {
+              const url = d.categorias
+                ? `/${d.categorias.slug}/${d.slug}`
+                : "#";
+              return (
+                <li key={d.id}>
+                  <Link
+                    href={url}
+                    className="flex items-center gap-3 p-2 rounded-2xl hover:bg-secondary/60 transition"
                   >
-                    <HeartIcon />
-                  </button>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-[15px] truncate">{d.nombre}</p>
-                  <p className="text-[13px] text-muted-foreground truncate">
-                    {d.extra} - {d.tiempo}
-                  </p>
-                  <p className="text-[12px] text-muted-foreground/80">{d.categoria}</p>
-                </div>
-                <div className="h-9 w-9 rounded-full bg-secondary text-xs font-bold flex items-center justify-center">
-                  {d.rating}
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
+                    <div
+                      className={`relative h-20 w-20 rounded-2xl flex items-center justify-center text-4xl shrink-0 overflow-hidden ${pastel(i)}`}
+                    >
+                      {d.foto_portada ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={d.foto_portada}
+                          alt={d.nombre}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span>{d.categorias?.emoji ?? "📍"}</span>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="font-semibold text-[15px] truncate">{d.nombre}</p>
+                        {d.verificado && (
+                          <span className="text-[10px] font-bold bg-sky-100 text-sky-700 px-1.5 py-0.5 rounded-full shrink-0">
+                            ✓
+                          </span>
+                        )}
+                        {d.plan === "premium" && (
+                          <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded-full shrink-0">
+                            Premium
+                          </span>
+                        )}
+                      </div>
+                      {d.descripcion && (
+                        <p className="text-[13px] text-muted-foreground truncate">
+                          {d.descripcion}
+                        </p>
+                      )}
+                      <p className="text-[12px] text-muted-foreground/80 truncate">
+                        {d.categorias?.emoji} {d.categorias?.nombre}
+                        {d.a_domicilio && " • A domicilio"}
+                      </p>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
 
       {/* Grid completo de categorias */}
       <section id="todas" className="pt-10 pb-6">

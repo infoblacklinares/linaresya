@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import type { Metadata } from "next";
 import TrackedActionButton from "./TrackedActionButton";
 import LeaveReviewForm from "./LeaveReviewForm";
+import ShareButton from "./ShareButton";
 import JsonLd from "@/components/JsonLd";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 // Regex permisivo para detectar bots/crawlers conocidos. No queremos
@@ -83,6 +84,7 @@ type Resena = {
   autor_nombre: string;
   estrellas: number;
   comentario: string | null;
+  vecino_verificado: boolean;
   creado_en: string;
 };
 
@@ -291,7 +293,9 @@ export default async function NegocioDetalle({
         .order("orden"),
       supabase
         .from("resenas")
-        .select("id,autor_nombre,estrellas,comentario,creado_en")
+        .select(
+          "id,autor_nombre,estrellas,comentario,vecino_verificado,creado_en",
+        )
         .eq("negocio_id", n.id)
         .eq("aprobada", true)
         .order("creado_en", { ascending: false })
@@ -494,6 +498,13 @@ export default async function NegocioDetalle({
             <ActionButton disabled icon={<MapIcon />} label="Sin direccion" />
           )}
         </div>
+        <div className="mt-2">
+          <ShareButton
+            url={`${SITE_URL}/${categoria.slug}/${n.slug}`}
+            title={n.nombre}
+            text={`${n.nombre} en LinaresYa - ${categoria.nombre}`}
+          />
+        </div>
       </section>
 
       {n.descripcion && (
@@ -638,9 +649,16 @@ export default async function NegocioDetalle({
           <ul className="space-y-3">
             {resenas.map((r) => (
               <li key={r.id} className="rounded-2xl bg-secondary/60 p-4">
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold text-sm">{r.autor_nombre}</p>
-                  <span className="text-xs font-semibold">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <p className="font-semibold text-sm truncate">{r.autor_nombre}</p>
+                    {r.vecino_verificado && (
+                      <span className="text-[10px] font-bold bg-sky-100 text-sky-700 px-1.5 py-0.5 rounded-full shrink-0">
+                        Vecino verificado
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs font-semibold shrink-0">
                     {"\u2B50".repeat(Math.max(1, Math.min(5, r.estrellas)))}
                   </span>
                 </div>
