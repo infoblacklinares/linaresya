@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { aprobarResena, rechazarResena } from "../actions";
+import { aprobarResena, rechazarResena, toggleVecinoVerificado } from "../actions";
 
 export const metadata = {
   title: "Moderar resenas - Admin",
@@ -16,6 +16,7 @@ type ResenaRow = {
   estrellas: number;
   comentario: string | null;
   aprobada: boolean;
+  vecino_verificado: boolean;
   creado_en: string;
   negocios: {
     nombre: string;
@@ -52,14 +53,14 @@ export default async function ModerarResenas() {
     supabaseAdmin
       .from("resenas")
       .select(
-        "id, negocio_id, autor_nombre, estrellas, comentario, aprobada, creado_en, negocios:negocio_id(nombre, slug, categorias:categoria_id(nombre, slug, emoji))",
+        "id, negocio_id, autor_nombre, estrellas, comentario, aprobada, vecino_verificado, creado_en, negocios:negocio_id(nombre, slug, categorias:categoria_id(nombre, slug, emoji))",
       )
       .eq("aprobada", false)
       .order("creado_en", { ascending: false }),
     supabaseAdmin
       .from("resenas")
       .select(
-        "id, negocio_id, autor_nombre, estrellas, comentario, aprobada, creado_en, negocios:negocio_id(nombre, slug, categorias:categoria_id(nombre, slug, emoji))",
+        "id, negocio_id, autor_nombre, estrellas, comentario, aprobada, vecino_verificado, creado_en, negocios:negocio_id(nombre, slug, categorias:categoria_id(nombre, slug, emoji))",
       )
       .eq("aprobada", true)
       .order("creado_en", { ascending: false })
@@ -239,6 +240,28 @@ function ResenaCard({ r, pendiente = false }: { r: ResenaRow; pendiente?: boolea
             </button>
           </form>
         )}
+
+        <form action={toggleVecinoVerificado}>
+          <input type="hidden" name="id" value={r.id} />
+          <input
+            type="hidden"
+            name="nuevo_estado"
+            value={String(!r.vecino_verificado)}
+          />
+          <button
+            type="submit"
+            className={
+              "rounded-full text-xs font-semibold px-4 py-2 " +
+              (r.vecino_verificado
+                ? "bg-sky-100 text-sky-800 hover:bg-sky-200"
+                : "bg-secondary text-foreground hover:bg-sky-50")
+            }
+          >
+            {r.vecino_verificado
+              ? "✓ Vecino verificado"
+              : "Marcar vecino"}
+          </button>
+        </form>
       </div>
     </li>
   );

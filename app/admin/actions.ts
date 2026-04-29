@@ -175,3 +175,41 @@ export async function rechazarResena(formData: FormData): Promise<void> {
   await supabaseAdmin.from("resenas").delete().eq("id", id);
   revalidatePath("/admin/resenas");
 }
+
+export async function toggleVecinoVerificado(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  const nuevo = formData.get("nuevo_estado") === "true";
+  if (!id) return;
+
+  // Actualizamos el flag y revalidamos la ficha publica si conocemos su slug.
+  const { data } = await supabaseAdmin
+    .from("resenas")
+    .select(
+      "negocio_id, negocios:negocio_id(slug, categorias:categoria_id(slug))",
+    )
+    .eq("id", id)
+    .single();
+
+  await supabaseAdmin
+    .from("resenas")
+    .update({ vecino_verificado: nuevo })
+    .eq("id", id);
+
+  revalidatePath("/admin/resenas");
+
+  if (data) {
+    const negRaw = (data as { negocios: unknown }).negocios;
+    const neg = Array.isArray(negRaw) ? negRaw[0] : negRaw;
+    if (neg && typeof neg === "object") {
+      const slug = String((neg as { slug?: unknown }).slug ?? "");
+      const catRaw = (neg as { categorias?: unknown }).categorias;
+      const cat = Array.isArray(catRaw) ? catRaw[0] : catRaw;
+      const catSlug =
+        cat && typeof cat === "object"
+          ? String((cat as { slug?: unknown }).slug ?? "")
+          : "";
+      if (slug && catSlug) revalidatePath(`/${catSlug}/${slug}`);
+    }
+  }
+}
