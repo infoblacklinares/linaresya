@@ -283,18 +283,26 @@ function NegocioCard({
 
 function EmptyState({ emoji, nombre }: { emoji: string; nombre: string }) {
   return (
-    <div className="mx-4 rounded-3xl border border-dashed border-border p-10 text-center">
+    <div className="mx-4 rounded-3xl border border-dashed border-border p-8 sm:p-10 text-center">
       <div className="text-5xl mb-3">{emoji}</div>
       <h2 className="text-lg font-bold">Aun no hay negocios en {nombre}</h2>
       <p className="mt-1.5 text-sm text-muted-foreground max-w-sm mx-auto">
-        Sos el primero? Sumate gratis y apareces en esta categoria frente a todo Linares.
+        Sos el primero? Sumate gratis y apareces aca apenas te aprobamos.
       </p>
-      <Link
-        href="/publicar"
-        className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-foreground text-background text-sm font-semibold px-4 py-2"
-      >
-        Publicar mi negocio {"\u2192"}
-      </Link>
+      <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-2">
+        <Link
+          href="/publicar"
+          className="inline-flex items-center gap-1.5 rounded-full bg-foreground text-background text-sm font-semibold px-5 py-2.5"
+        >
+          Publicar mi negocio {"\u2192"}
+        </Link>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 rounded-full bg-secondary text-foreground text-sm font-semibold px-5 py-2.5 hover:bg-secondary/80 transition"
+        >
+          Ver otras categorias
+        </Link>
+      </div>
     </div>
   );
 }

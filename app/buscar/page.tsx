@@ -243,21 +243,50 @@ export default async function BuscarPage({
         </div>
 
         {items.length === 0 ? (
-          <div className="mx-4 rounded-3xl border border-dashed border-border p-10 text-center">
+          <div className="mx-4 rounded-3xl border border-dashed border-border p-8 sm:p-10 text-center">
             <div className="text-5xl mb-3">{"\u{1F50D}"}</div>
-            <h2 className="text-lg font-bold">No encontramos nada</h2>
+            <h2 className="text-lg font-bold">
+              {q ? `No encontramos "${q}"` : "No encontramos nada"}
+            </h2>
             <p className="mt-1.5 text-sm text-muted-foreground max-w-sm mx-auto">
               {hayFiltros
                 ? "Prueba quitar algunos filtros o cambiar los terminos."
                 : "Escribe algo arriba o filtra por categoria."}
             </p>
-            {hayFiltros && (
+            <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-2">
+              {hayFiltros && (
+                <Link
+                  href="/buscar"
+                  className="inline-flex items-center rounded-full bg-foreground text-background text-sm font-semibold px-5 py-2.5"
+                >
+                  Limpiar filtros
+                </Link>
+              )}
               <Link
-                href="/buscar"
-                className="mt-5 inline-flex items-center rounded-full bg-foreground text-background text-sm font-semibold px-4 py-2"
+                href="/publicar"
+                className="inline-flex items-center rounded-full bg-secondary text-foreground text-sm font-semibold px-5 py-2.5 hover:bg-secondary/80 transition"
               >
-                Limpiar filtros
+                {q ? `Publicar "${q}"` : "Publicar tu negocio"}
               </Link>
+            </div>
+            {categorias.length > 0 && (
+              <div className="mt-7">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+                  Explora categorias
+                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {categorias.slice(0, 6).map((c) => (
+                    <Link
+                      key={c.id}
+                      href={`/${c.slug}`}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-secondary/60 hover:bg-secondary text-sm font-medium px-3 py-1.5 transition"
+                    >
+                      <span>{c.emoji}</span>
+                      {c.nombre}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         ) : (
