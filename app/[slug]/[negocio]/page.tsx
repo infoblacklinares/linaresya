@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import TrackedActionButton from "./TrackedActionButton";
 import LeaveReviewForm from "./LeaveReviewForm";
 import ShareButton from "./ShareButton";
+import FavoritoButton from "@/components/FavoritoButton";
 import JsonLd from "@/components/JsonLd";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 // Regex permisivo para detectar bots/crawlers conocidos. No queremos
@@ -451,6 +452,7 @@ export default async function NegocioDetalle({
                 </span>
               </span>
             )}
+            <FavoritoButton negocioId={n.id} variant="pill" />
           </div>
         </div>
       </section>

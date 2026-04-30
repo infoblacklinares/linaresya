@@ -66,10 +66,22 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.ico",
+    apple: "/icon-192.png",
+  },
+  appleWebApp: {
+    capable: true,
+    title: "LinaresYa",
+    statusBarStyle: "default",
   },
   verification: {
     google: "aVwByyabkiNUH3UAai9pY3TErwrR0c831Dh8KwsdByc",
   },
+};
+
+export const viewport = {
+  themeColor: "#0f172a",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

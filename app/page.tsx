@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import JsonLd from "@/components/JsonLd";
+import FavoritoButton from "@/components/FavoritoButton";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 
 type Categoria = {
@@ -210,7 +211,7 @@ export default async function Home() {
                 ? `/${d.categorias.slug}/${d.slug}`
                 : "#";
               return (
-                <li key={d.id}>
+                <li key={d.id} className="relative">
                   <Link
                     href={url}
                     className="flex items-center gap-3 p-2 rounded-2xl hover:bg-secondary/60 transition"
@@ -228,6 +229,9 @@ export default async function Home() {
                       ) : (
                         <span>{d.categorias?.emoji ?? "📍"}</span>
                       )}
+                      <div className="absolute top-1.5 left-1.5">
+                        <FavoritoButton negocioId={d.id} variant="icon" />
+                      </div>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5 flex-wrap">
@@ -290,8 +294,8 @@ export default async function Home() {
         <div className="mx-auto max-w-2xl grid grid-cols-4 px-2 py-2">
           <TabItem icon={<HomeIcon />} label="Inicio" href="/" active />
           <TabItem icon={<SearchIcon />} label="Buscar" href="/buscar" />
-          <TabItem icon={<HeartIcon />} label="Favoritos" />
-          <TabItem icon={<UserIcon />} label="Cuenta" />
+          <TabItem icon={<HeartIcon />} label="Favoritos" href="/favoritos" />
+          <TabItem icon={<UserIcon />} label="Publicar" href="/publicar" />
         </div>
       </nav>
     </main>
