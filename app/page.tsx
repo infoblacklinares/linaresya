@@ -24,8 +24,17 @@ type NegocioDestacado = {
   foto_portada: string | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;
+  creado_en?: string;
   categorias: { nombre: string; slug: string; emoji: string } | null;
 };
+
+const SIETE_DIAS_MS = 7 * 24 * 60 * 60 * 1000;
+function esNuevo(creado_en?: string): boolean {
+  if (!creado_en) return false;
+  const t = new Date(creado_en).getTime();
+  if (isNaN(t)) return false;
+  return Date.now() - t < SIETE_DIAS_MS;
+}
 
 function normalizeCategoria(raw: unknown): NegocioDestacado["categorias"] {
   const x = Array.isArray(raw) ? raw[0] : raw;
@@ -38,16 +47,28 @@ function normalizeCategoria(raw: unknown): NegocioDestacado["categorias"] {
 }
 
 export default async function Home() {
-  const [{ data: categorias, error }, { data: destacadosData }] = await Promise.all([
+  const [
+    { data: categorias, error },
+    { data: destacadosData },
+    { data: recientesData },
+  ] = await Promise.all([
     supabase.from("categorias").select("*").order("orden"),
     supabase
       .from("negocios")
       .select(
-        "id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, categorias:categoria_id(nombre, slug, emoji)",
+        "id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, categorias:categoria_id(nombre, slug, emoji)",
       )
       .eq("activo", true)
       .order("plan", { ascending: false })
       .order("verificado", { ascending: false })
+      .order("creado_en", { ascending: false })
+      .limit(6),
+    supabase
+      .from("negocios")
+      .select(
+        "id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, categorias:categoria_id(nombre, slug, emoji)",
+      )
+      .eq("activo", true)
       .order("creado_en", { ascending: false })
       .limit(6),
   ]);
@@ -66,7 +87,8 @@ export default async function Home() {
   }
 
   const cats = (categorias ?? []) as Categoria[];
-  const destacados: NegocioDestacado[] = ((destacadosData ?? []) as unknown[]).map((r) => {
+
+  function toNegocio(r: unknown): NegocioDestacado {
     const x = r as Record<string, unknown>;
     return {
       id: String(x.id ?? ""),
@@ -78,9 +100,17 @@ export default async function Home() {
       foto_portada: (x.foto_portada as string | null) ?? null,
       a_domicilio: Boolean(x.a_domicilio),
       zona_cobertura: (x.zona_cobertura as string | null) ?? null,
+      creado_en: (x.creado_en as string | undefined) ?? undefined,
       categorias: normalizeCategoria(x.categorias),
     };
-  });
+  }
+
+  const destacados: NegocioDestacado[] = ((destacadosData ?? []) as unknown[]).map(toNegocio);
+  const recientes: NegocioDestacado[] = ((recientesData ?? []) as unknown[])
+    .map(toNegocio)
+    // Excluir los que ya estan en destacados para no duplicar
+    .filter((r) => !destacados.some((d) => d.id === r.id))
+    .slice(0, 4);
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl">
@@ -246,6 +276,11 @@ export default async function Home() {
                             Premium
                           </span>
                         )}
+                        {esNuevo(d.creado_en) && (
+                          <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full shrink-0">
+                            Nuevo
+                          </span>
+                        )}
                       </div>
                       {d.descripcion && (
                         <p className="text-[13px] text-muted-foreground truncate">
@@ -262,6 +297,59 @@ export default async function Home() {
               );
             })}
           </ul>
+        </section>
+      )}
+
+      {/* Recientes */}
+      {recientes.length > 0 && (
+        <section className="pt-8">
+          <div className="px-4 mb-1">
+            <h3 className="text-xl font-extrabold tracking-tight">Recien sumados</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Los ultimos en publicarse en LinaresYa.
+            </p>
+          </div>
+
+          <div className="px-4 grid grid-cols-2 gap-3">
+            {recientes.map((d, i) => {
+              const url = d.categorias
+                ? `/${d.categorias.slug}/${d.slug}`
+                : "#";
+              return (
+                <Link
+                  key={d.id}
+                  href={url}
+                  className="block rounded-2xl bg-secondary/40 hover:bg-secondary/60 transition overflow-hidden"
+                >
+                  <div
+                    className={`relative h-28 w-full flex items-center justify-center text-4xl ${pastel(i + 4)}`}
+                  >
+                    {d.foto_portada ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={d.foto_portada}
+                        alt={d.nombre}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <span>{d.categorias?.emoji ?? "📍"}</span>
+                    )}
+                    {esNuevo(d.creado_en) && (
+                      <span className="absolute top-2 left-2 text-[10px] font-bold bg-emerald-500 text-white px-2 py-0.5 rounded-full">
+                        Nuevo
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <p className="font-semibold text-sm truncate">{d.nombre}</p>
+                    <p className="text-[11px] text-muted-foreground truncate">
+                      {d.categorias?.emoji} {d.categorias?.nombre}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </section>
       )}
 
