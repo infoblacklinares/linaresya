@@ -41,11 +41,19 @@ export default async function AdminPage() {
     redirect("/admin/login");
   }
 
+  // Fecha hace 7 dias en formato YYYY-MM-DD para queries de "ultima semana"
+  const haceSieteDias = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
+
   const [
     { data: pendientes },
     { data: activos },
     { data: cats },
     { count: resenasPendientes },
+    { count: nuevosNegocios7d },
+    { count: nuevasResenas7d },
+    { data: stats7dRaw },
   ] = await Promise.all([
     supabaseAdmin
       .from("negocios")
@@ -67,14 +75,82 @@ export default async function AdminPage() {
       .from("resenas")
       .select("id", { count: "exact", head: true })
       .eq("aprobada", false),
+    supabaseAdmin
+      .from("negocios")
+      .select("id", { count: "exact", head: true })
+      .eq("activo", true)
+      .gte("creado_en", haceSieteDias),
+    supabaseAdmin
+      .from("resenas")
+      .select("id", { count: "exact", head: true })
+      .gte("creado_en", haceSieteDias),
+    supabaseAdmin
+      .from("estadisticas_diarias")
+      .select(
+        "negocio_id, vistas, clicks_whatsapp, clicks_telefono, clicks_maps, negocios:negocio_id(nombre, slug, categorias:categoria_id(slug))",
+      )
+      .gte("fecha", haceSieteDias),
   ]);
 
   const pend = (pendientes ?? []) as NegocioRow[];
   const act = (activos ?? []) as NegocioRow[];
   const resCount = resenasPendientes ?? 0;
+  const nuevos7d = nuevosNegocios7d ?? 0;
+  const resenas7d = nuevasResenas7d ?? 0;
   const catsMap = new Map<number, Categoria>(
     ((cats ?? []) as Categoria[]).map((c) => [c.id, c]),
   );
+
+  // Agregar stats por negocio a partir de las filas diarias
+  type StatNeg = {
+    id: string;
+    nombre: string;
+    slug: string;
+    categoriaSlug: string;
+    vistas: number;
+    clicks: number;
+  };
+  const aggMap = new Map<string, StatNeg>();
+  let totalVistas7d = 0;
+  let totalClicks7d = 0;
+  for (const row of (stats7dRaw ?? []) as unknown[]) {
+    const x = row as Record<string, unknown>;
+    const negId = String(x.negocio_id ?? "");
+    if (!negId) continue;
+    const v = Number(x.vistas ?? 0);
+    const c =
+      Number(x.clicks_whatsapp ?? 0) +
+      Number(x.clicks_telefono ?? 0) +
+      Number(x.clicks_maps ?? 0);
+    totalVistas7d += v;
+    totalClicks7d += c;
+    const negRaw = (x as { negocios?: unknown }).negocios;
+    const neg = Array.isArray(negRaw) ? negRaw[0] : negRaw;
+    if (!neg || typeof neg !== "object") continue;
+    const catRaw = (neg as { categorias?: unknown }).categorias;
+    const cat = Array.isArray(catRaw) ? catRaw[0] : catRaw;
+    const catSlug =
+      cat && typeof cat === "object"
+        ? String((cat as { slug?: unknown }).slug ?? "")
+        : "";
+    const existing = aggMap.get(negId);
+    if (existing) {
+      existing.vistas += v;
+      existing.clicks += c;
+    } else {
+      aggMap.set(negId, {
+        id: negId,
+        nombre: String((neg as { nombre?: unknown }).nombre ?? ""),
+        slug: String((neg as { slug?: unknown }).slug ?? ""),
+        categoriaSlug: catSlug,
+        vistas: v,
+        clicks: c,
+      });
+    }
+  }
+  const topVistos = Array.from(aggMap.values())
+    .sort((a, b) => b.vistas - a.vistas)
+    .slice(0, 5);
 
   return (
     <main className="flex-1 mx-auto w-full max-w-3xl pb-10">
@@ -116,6 +192,65 @@ export default async function AdminPage() {
         </div>
       </section>
 
+      <section className="px-4 pt-6">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+          Esta semana
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <MiniStat label="Negocios nuevos" value={nuevos7d} />
+          <MiniStat label="Resenas nuevas" value={resenas7d} />
+          <MiniStat label="Vistas" value={totalVistas7d} />
+          <MiniStat label="Clicks" value={totalClicks7d} />
+        </div>
+      </section>
+
+      {topVistos.length > 0 && (
+        <section className="px-4 pt-6">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+            Top 5 mas vistos
+          </h2>
+          <ul className="rounded-2xl bg-white border border-border divide-y divide-border overflow-hidden">
+            {topVistos.map((t, i) => {
+              const fichaUrl =
+                t.categoriaSlug && t.slug
+                  ? `/${t.categoriaSlug}/${t.slug}`
+                  : null;
+              return (
+                <li
+                  key={t.id}
+                  className="flex items-center gap-3 px-3 py-2.5"
+                >
+                  <span className="text-[11px] font-bold text-muted-foreground w-5 text-center">
+                    {i + 1}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    {fichaUrl ? (
+                      <Link
+                        href={fichaUrl}
+                        className="font-semibold text-sm truncate block hover:underline"
+                      >
+                        {t.nombre}
+                      </Link>
+                    ) : (
+                      <p className="font-semibold text-sm truncate">{t.nombre}</p>
+                    )}
+                    <p className="text-[11px] text-muted-foreground">
+                      {t.vistas} vistas · {t.clicks} clicks
+                    </p>
+                  </div>
+                  <Link
+                    href={`/admin/negocio/${t.id}/estadisticas`}
+                    className="text-[11px] font-semibold text-muted-foreground hover:text-foreground"
+                  >
+                    Stats {"→"}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+
       <section className="px-4 pt-8">
         <h2 className="text-xl font-extrabold tracking-tight mb-1">Pendientes de revision</h2>
         <p className="text-sm text-muted-foreground mb-4">
@@ -155,6 +290,17 @@ function StatCard({ label, value, accent = false }: { label: string; value: numb
     <div className={`rounded-2xl p-4 ue-shadow-sm ${accent ? "bg-[oklch(0.94_0.04_80)]" : "bg-white border border-border"}`}>
       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{label}</p>
       <p className="text-3xl font-extrabold mt-1">{value}</p>
+    </div>
+  );
+}
+
+function MiniStat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-xl bg-white border border-border p-3">
+      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">
+        {label}
+      </p>
+      <p className="text-xl font-extrabold mt-0.5">{value}</p>
     </div>
   );
 }
