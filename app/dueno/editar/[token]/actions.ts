@@ -2,6 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { sendAdminEdicionDuenoNotification } from "@/lib/email";
+
+const SITE_URL_NOTIF =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
 export type DuenoUpdateState = {
   ok: boolean;
@@ -93,6 +97,15 @@ export async function updateNegocioDueno(
 
   const whatsapp = normalizarWhatsApp(whatsappRaw);
 
+  // Snapshot ANTES de actualizar, para detectar campos cambiados y notificar al admin.
+  const { data: antes } = await supabaseAdmin
+    .from("negocios")
+    .select(
+      "nombre, descripcion, telefono, whatsapp, direccion, a_domicilio, zona_cobertura, disponibilidad, foto_portada, email",
+    )
+    .eq("id", id)
+    .single();
+
   // Actualizar SOLO los campos que el dueno puede editar.
   // Campos prohibidos: activo, verificado, plan, premium_hasta, categoria_id, slug
   const update: Record<string, unknown> = {
@@ -119,6 +132,33 @@ export async function updateNegocioDueno(
       ok: false,
       error: `No pudimos guardar: ${error.message}`,
     };
+  }
+
+  // Detectar qué campos básicos cambiaron, para incluirlos en la notif al admin.
+  const labelsByField: Record<string, string> = {
+    nombre: "Nombre",
+    descripcion: "Descripcion",
+    telefono: "Telefono",
+    whatsapp: "WhatsApp",
+    direccion: "Direccion",
+    a_domicilio: "A domicilio",
+    zona_cobertura: "Zona de cobertura",
+    disponibilidad: "Nota de horario",
+    foto_portada: "Foto de portada",
+  };
+  const cambios: string[] = [];
+  if (antes) {
+    const antesObj = antes as Record<string, unknown>;
+    for (const k of Object.keys(update)) {
+      const v1 = antesObj[k];
+      const v2 = (update as Record<string, unknown>)[k];
+      // Normalizamos null vs "" para no marcar cambios fantasma
+      const norm = (x: unknown) =>
+        x === null || x === undefined || x === "" ? null : x;
+      if (norm(v1) !== norm(v2)) {
+        cambios.push(labelsByField[k] ?? k);
+      }
+    }
   }
 
   // Sincronizar horarios igual que el flujo admin
@@ -191,14 +231,15 @@ export async function updateNegocioDueno(
     await supabaseAdmin.from("fotos").insert(filasFotos);
   }
 
-  // Revalidar la ficha publica
+  // Revalidar la ficha publica + notificar al admin
   const { data: negocioFresh } = await supabaseAdmin
     .from("negocios")
-    .select("slug, categorias:categoria_id(slug)")
+    .select("slug, nombre, email, categorias:categoria_id(slug)")
     .eq("id", id)
     .single();
+  let fichaUrl = SITE_URL_NOTIF;
   if (negocioFresh) {
-    const slug = (negocioFresh as { slug?: string }).slug;
+    const slug = String((negocioFresh as { slug?: unknown }).slug ?? "");
     const catRaw = (negocioFresh as { categorias?: unknown }).categorias;
     const cat = Array.isArray(catRaw) ? catRaw[0] : catRaw;
     const catSlug =
@@ -207,7 +248,27 @@ export async function updateNegocioDueno(
         : "";
     if (slug && catSlug) {
       revalidatePath(`/${catSlug}/${slug}`);
+      fichaUrl = `${SITE_URL_NOTIF}/${catSlug}/${slug}`;
     }
+
+    // Recoger email del dueno desde el token (mas confiable que del registro)
+    const { data: tokenInfo } = await supabaseAdmin
+      .from("dueno_tokens")
+      .select("email_solicitado")
+      .eq("token", token)
+      .maybeSingle();
+    const emailDueno =
+      (tokenInfo as { email_solicitado?: string } | null)?.email_solicitado ??
+      String((negocioFresh as { email?: unknown }).email ?? "(desconocido)");
+
+    // Notif fire-and-forget al admin
+    void sendAdminEdicionDuenoNotification({
+      nombreNegocio: String((negocioFresh as { nombre?: unknown }).nombre ?? ""),
+      emailDueno,
+      fichaUrl,
+      adminEditUrl: `${SITE_URL_NOTIF}/admin/negocio/${id}/editar`,
+      cambios,
+    });
   }
   revalidatePath("/");
 
