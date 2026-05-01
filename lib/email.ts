@@ -251,6 +251,156 @@ export async function sendOwnerAprobacionNotification(
   }
 }
 
+// Resumen semanal automatico al admin (vercel cron job).
+export type WeeklyDigestData = {
+  semanaInicio: string; // ISO date
+  semanaFin: string;
+  nuevosNegocios: number;
+  nuevasResenas: number;
+  reportesPendientes: number;
+  pendientesAprobacion: number;
+  totalVistas: number;
+  totalClicks: number;
+  topVistos: Array<{
+    nombre: string;
+    fichaUrl: string;
+    vistas: number;
+    clicks: number;
+  }>;
+};
+
+export async function sendWeeklyDigest(
+  data: WeeklyDigestData,
+): Promise<boolean> {
+  try {
+    const c = getClient();
+    const to = process.env.ADMIN_EMAIL;
+    if (!c || !to) {
+      console.warn(
+        "[email] Salto weekly digest: falta RESEND_API_KEY o ADMIN_EMAIL.",
+      );
+      return false;
+    }
+
+    const fmt = (iso: string) =>
+      new Date(iso).toLocaleDateString("es-CL", {
+        day: "2-digit",
+        month: "short",
+      });
+
+    const subject = `LinaresYa semanal: ${data.nuevosNegocios} nuevos, ${data.totalVistas} vistas`;
+
+    const topItems = data.topVistos
+      .map(
+        (t, i) => `
+          <tr>
+            <td style="padding:8px 0;border-top:1px solid #f1f5f9;font-size:13px;color:#94a3b8;width:24px;">${i + 1}</td>
+            <td style="padding:8px 0;border-top:1px solid #f1f5f9;font-size:13px;">
+              <a href="${escapeHtml(t.fichaUrl)}" style="color:#0f172a;text-decoration:none;font-weight:600;">${escapeHtml(t.nombre)}</a>
+              <div style="font-size:11px;color:#94a3b8;margin-top:2px;">${t.vistas} vistas · ${t.clicks} clicks</div>
+            </td>
+          </tr>`,
+      )
+      .join("");
+
+    const html = `<!doctype html>
+<html lang="es">
+<body style="margin:0;background:#f8fafc;font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#0f172a;">
+  <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+    <div style="padding:24px;background:#0f172a;color:#fff;">
+      <h1 style="margin:0;font-size:18px;font-weight:800;">LinaresYa semanal</h1>
+      <p style="margin:6px 0 0;font-size:13px;opacity:.85;">${fmt(data.semanaInicio)} – ${fmt(data.semanaFin)}</p>
+    </div>
+
+    <div style="padding:24px;">
+      <table width="100%" cellspacing="0" cellpadding="0" style="margin-bottom:24px;">
+        <tr>
+          <td style="padding:0 8px 8px 0;width:50%;">
+            <div style="background:#f8fafc;border-radius:12px;padding:14px;">
+              <p style="margin:0;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">Nuevos negocios</p>
+              <p style="margin:4px 0 0;font-size:28px;font-weight:800;">${data.nuevosNegocios}</p>
+            </div>
+          </td>
+          <td style="padding:0 0 8px 8px;width:50%;">
+            <div style="background:#f8fafc;border-radius:12px;padding:14px;">
+              <p style="margin:0;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">Nuevas resenas</p>
+              <p style="margin:4px 0 0;font-size:28px;font-weight:800;">${data.nuevasResenas}</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:8px 8px 0 0;width:50%;">
+            <div style="background:#f8fafc;border-radius:12px;padding:14px;">
+              <p style="margin:0;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">Vistas totales</p>
+              <p style="margin:4px 0 0;font-size:28px;font-weight:800;">${data.totalVistas}</p>
+            </div>
+          </td>
+          <td style="padding:8px 0 0 8px;width:50%;">
+            <div style="background:#f8fafc;border-radius:12px;padding:14px;">
+              <p style="margin:0;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">Clicks totales</p>
+              <p style="margin:4px 0 0;font-size:28px;font-weight:800;">${data.totalClicks}</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      ${
+        data.pendientesAprobacion > 0 || data.reportesPendientes > 0
+          ? `<div style="background:#fef3c7;border:1px solid #fde68a;border-radius:12px;padding:14px;margin-bottom:20px;">
+              <p style="margin:0;font-size:13px;font-weight:700;color:#78350f;">Pendiente de tu accion:</p>
+              <ul style="margin:6px 0 0;padding-left:20px;font-size:13px;color:#78350f;">
+                ${data.pendientesAprobacion > 0 ? `<li>${data.pendientesAprobacion} negocio${data.pendientesAprobacion === 1 ? "" : "s"} esperando aprobacion</li>` : ""}
+                ${data.reportesPendientes > 0 ? `<li>${data.reportesPendientes} reporte${data.reportesPendientes === 1 ? "" : "s"} sin resolver</li>` : ""}
+              </ul>
+            </div>`
+          : ""
+      }
+
+      ${
+        topItems
+          ? `<div>
+              <p style="margin:0 0 12px;font-size:14px;font-weight:700;">Top 5 mas vistos esta semana</p>
+              <table width="100%" cellspacing="0" cellpadding="0">${topItems}</table>
+            </div>`
+          : '<p style="margin:0;text-align:center;color:#94a3b8;font-size:13px;padding:20px 0;">Sin actividad esta semana.</p>'
+      }
+
+      <div style="margin-top:28px;text-align:center;">
+        <a href="https://linaresya.cl/admin" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px;font-weight:600;font-size:14px;">
+          Ir al admin
+        </a>
+      </div>
+    </div>
+
+    <div style="padding:16px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+      <p style="margin:0;color:#94a3b8;font-size:11px;">
+        Este resumen se envia cada lunes. Si no lo queres recibir, eliminalo de la lista de cron en Vercel.
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const text = `LinaresYa semanal (${fmt(data.semanaInicio)} - ${fmt(data.semanaFin)})\n\nNuevos negocios: ${data.nuevosNegocios}\nNuevas resenas: ${data.nuevasResenas}\nVistas: ${data.totalVistas}\nClicks: ${data.totalClicks}\n\n${data.pendientesAprobacion ? `Pendiente: ${data.pendientesAprobacion} aprobaciones, ${data.reportesPendientes} reportes\n\n` : ""}Top: ${data.topVistos.map((t) => `${t.nombre} (${t.vistas})`).join(", ")}\n\nAdmin: https://linaresya.cl/admin`;
+
+    const { error } = await c.emails.send({
+      from: FROM,
+      to,
+      subject,
+      html,
+      text,
+    });
+    if (error) {
+      console.error("[email] Weekly digest error:", error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("[email] Weekly digest fallo:", err);
+    return false;
+  }
+}
+
 // Notifica al admin que un usuario reporto un negocio.
 // Fire-and-forget: no rompe el flujo si Resend falla.
 const MOTIVO_LABELS: Record<string, string> = {
