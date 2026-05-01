@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { randomBytes } from "crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { deleteFotosFromStorage } from "@/lib/storage";
@@ -289,4 +290,61 @@ export async function updateNegocio(
   revalidatePath(`/admin/negocio/${id}/editar`);
 
   return { ok: true };
+}
+
+// Genera un magic link de dueno desde el admin. Util cuando el dueno no tiene
+// email registrado o el email no le llega: el admin copia la URL y la manda
+// por WhatsApp manualmente.
+export type GenerarLinkResult = {
+  ok: boolean;
+  url?: string;
+  expiraISO?: string;
+  error?: string;
+};
+
+const SITE_URL_LINK =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
+const EXPIRA_HORAS_ADMIN = 72; // mas largo que el flow publico (mejor UX para admin)
+
+export async function generarLinkDuenoManual(
+  negocioId: string,
+): Promise<GenerarLinkResult> {
+  if (!(await isAdminAuthenticated())) {
+    return { ok: false, error: "No autorizado" };
+  }
+  if (!negocioId) return { ok: false, error: "Falta el negocio" };
+
+  // Verificar que existe
+  const { data: neg } = await supabaseAdmin
+    .from("negocios")
+    .select("id, email")
+    .eq("id", negocioId)
+    .maybeSingle();
+  if (!neg) return { ok: false, error: "Negocio no encontrado" };
+
+  const token = randomBytes(24).toString("hex");
+  const expira = new Date(
+    Date.now() + EXPIRA_HORAS_ADMIN * 60 * 60 * 1000,
+  );
+
+  const { error: insertError } = await supabaseAdmin
+    .from("dueno_tokens")
+    .insert({
+      negocio_id: negocioId,
+      token,
+      email_solicitado:
+        (neg as { email?: string | null }).email ?? "(generado por admin)",
+      expira_en: expira.toISOString(),
+      ip: "admin",
+    });
+
+  if (insertError) {
+    return { ok: false, error: `No se pudo crear el token: ${insertError.message}` };
+  }
+
+  return {
+    ok: true,
+    url: `${SITE_URL_LINK}/dueno/editar/${token}`,
+    expiraISO: expira.toISOString(),
+  };
 }

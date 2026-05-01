@@ -6,6 +6,7 @@ import { updateNegocio, type UpdateState } from "./actions";
 import ScheduleInput, { type HorarioInicial } from "@/app/publicar/ScheduleInput";
 import PhotoUpload from "@/app/publicar/PhotoUpload";
 import GaleriaManager from "./GaleriaManager";
+import GenerarLinkDueno from "./GenerarLinkDueno";
 
 type FotoGaleria = {
   id: number;
@@ -275,6 +276,9 @@ export default function EditForm({
           </div>
         </div>
       </section>
+
+      {/* MAGIC LINK PARA EL DUENO */}
+      <GenerarLinkDueno negocioId={negocio.id} />
 
       {/* PLAN / ESTADO */}
       <section className="space-y-3">
