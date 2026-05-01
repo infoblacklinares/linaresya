@@ -251,6 +251,93 @@ export async function sendOwnerAprobacionNotification(
   }
 }
 
+// Notifica al admin que un usuario reporto un negocio.
+// Fire-and-forget: no rompe el flujo si Resend falla.
+const MOTIVO_LABELS: Record<string, string> = {
+  info_incorrecta: "Info incorrecta",
+  duplicado: "Duplicado",
+  cerrado_definitivo: "Cerrado definitivamente",
+  no_existe: "No existe",
+  spam_o_falso: "Spam o informacion falsa",
+  contenido_inapropiado: "Contenido inapropiado",
+  otro: "Otro",
+};
+
+export async function sendAdminReporteNotification(opts: {
+  nombreNegocio: string;
+  motivo: string;
+  descripcion: string | null;
+  fichaUrl: string;
+  adminEditUrl: string;
+}): Promise<void> {
+  try {
+    const c = getClient();
+    const to = process.env.ADMIN_EMAIL;
+    if (!c || !to) {
+      console.warn(
+        "[email] Salto notif reporte: falta RESEND_API_KEY o ADMIN_EMAIL.",
+      );
+      return;
+    }
+
+    const motivoLabel = MOTIVO_LABELS[opts.motivo] ?? opts.motivo;
+    const subject = `Reporte: ${opts.nombreNegocio} - ${motivoLabel}`;
+    const nombreEsc = escapeHtml(opts.nombreNegocio);
+    const motivoEsc = escapeHtml(motivoLabel);
+    const descEsc = opts.descripcion ? escapeHtml(opts.descripcion) : "";
+    const fichaEsc = escapeHtml(opts.fichaUrl);
+    const adminEsc = escapeHtml(opts.adminEditUrl);
+
+    const html = `<!doctype html>
+<html lang="es">
+<body style="margin:0;background:#f8fafc;font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#0f172a;">
+  <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+    <div style="padding:24px;background:#fef2f2;color:#991b1b;border-bottom:1px solid #fecaca;">
+      <h1 style="margin:0;font-size:18px;font-weight:800;">Reporte recibido</h1>
+      <p style="margin:6px 0 0;font-size:13px;opacity:.85;">${motivoEsc}</p>
+    </div>
+    <div style="padding:24px;">
+      <p style="margin:0 0 12px;font-size:15px;line-height:1.6;">
+        Alguien reporto el negocio <strong>${nombreEsc}</strong>.
+      </p>
+      ${descEsc
+        ? `<div style="margin:12px 0;padding:12px;background:#f8fafc;border-radius:8px;border-left:3px solid #94a3b8;">
+            <p style="margin:0;font-size:13px;color:#64748b;font-style:italic;white-space:pre-line;">${descEsc}</p>
+          </div>`
+        : '<p style="margin:0 0 12px;font-size:13px;color:#94a3b8;">Sin descripcion adicional.</p>'}
+      <div style="margin-top:24px;display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="${fichaEsc}" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:10px 16px;border-radius:999px;font-weight:600;font-size:13px;">
+          Ver ficha publica
+        </a>
+        <a href="${adminEsc}" style="display:inline-block;background:#fff;color:#0f172a;text-decoration:none;padding:10px 16px;border-radius:999px;font-weight:600;font-size:13px;border:1px solid #e2e8f0;">
+          Editar / desactivar
+        </a>
+      </div>
+    </div>
+    <div style="padding:16px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+      <p style="margin:0;color:#94a3b8;font-size:12px;">
+        Tip: si el reporte es valido, podes desactivar el negocio temporalmente desde el admin hasta validar.
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const text = `Reporte de negocio: ${opts.nombreNegocio}\nMotivo: ${motivoLabel}\n${opts.descripcion ? `\nDescripcion: ${opts.descripcion}\n` : ""}\nFicha: ${opts.fichaUrl}\nEditar: ${opts.adminEditUrl}`;
+
+    const { error } = await c.emails.send({
+      from: FROM,
+      to,
+      subject,
+      html,
+      text,
+    });
+    if (error) console.error("[email] Notif reporte error:", error);
+  } catch (err) {
+    console.error("[email] Notif reporte fallo:", err);
+  }
+}
+
 // Notifica al admin que un dueno edito su negocio via magic link.
 // Fire-and-forget: no rompe el flujo del save si Resend falla.
 export async function sendAdminEdicionDuenoNotification(opts: {

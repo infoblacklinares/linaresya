@@ -3,6 +3,20 @@
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { sendAdminReporteNotification } from "@/lib/email";
+
+const SITE_URL_REPORTE =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
+
+const MOTIVOS_VALIDOS = [
+  "info_incorrecta",
+  "duplicado",
+  "cerrado_definitivo",
+  "no_existe",
+  "spam_o_falso",
+  "contenido_inapropiado",
+  "otro",
+] as const;
 
 export type DejarResenaState = {
   ok: boolean;
@@ -114,6 +128,113 @@ export async function dejarResena(
   if (categoriaSlug && negocioSlug) {
     revalidatePath(`/${categoriaSlug}/${negocioSlug}`);
   }
+
+  return { ok: true };
+}
+
+// ============= REPORTAR NEGOCIO =============
+
+export type ReportarState = {
+  ok: boolean;
+  error?: string;
+};
+
+const ipBufferReportes = new Map<string, number[]>();
+const RATE_REPORTE_WINDOW_MS = 60 * 60 * 1000;
+const RATE_REPORTE_MAX = 3;
+
+function rateLimitReporte(ip: string): boolean {
+  const now = Date.now();
+  const arr = ipBufferReportes.get(ip) ?? [];
+  const recientes = arr.filter((t) => now - t < RATE_REPORTE_WINDOW_MS);
+  if (recientes.length >= RATE_REPORTE_MAX) return false;
+  recientes.push(now);
+  ipBufferReportes.set(ip, recientes);
+  return true;
+}
+
+export async function reportarNegocio(
+  _prev: ReportarState,
+  formData: FormData,
+): Promise<ReportarState> {
+  const negocioId = String(formData.get("negocio_id") ?? "").trim();
+  const motivoRaw = String(formData.get("motivo") ?? "").trim();
+  const descripcion = String(formData.get("descripcion") ?? "").trim();
+
+  // Honeypot
+  if (String(formData.get("website") ?? "").trim()) {
+    return { ok: true };
+  }
+
+  if (!negocioId) return { ok: false, error: "Falta el negocio" };
+  if (!MOTIVOS_VALIDOS.includes(motivoRaw as (typeof MOTIVOS_VALIDOS)[number])) {
+    return { ok: false, error: "Motivo invalido" };
+  }
+  if (descripcion.length > 500) {
+    return { ok: false, error: "Descripcion muy larga (max 500)" };
+  }
+
+  // Rate limit
+  const h = await headers();
+  const ip =
+    h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    h.get("x-real-ip") ||
+    "unknown";
+  if (!rateLimitReporte(ip)) {
+    return {
+      ok: false,
+      error: "Demasiados reportes desde tu conexion. Intenta en 1 hora.",
+    };
+  }
+
+  // Verificar negocio
+  const { data: neg } = await supabaseAdmin
+    .from("negocios")
+    .select(
+      "id, nombre, slug, activo, categorias:categoria_id(slug)",
+    )
+    .eq("id", negocioId)
+    .maybeSingle();
+  if (!neg) {
+    return { ok: false, error: "Negocio no disponible" };
+  }
+
+  // Insertar reporte
+  const { error } = await supabaseAdmin.from("reportes").insert({
+    negocio_id: negocioId,
+    motivo: motivoRaw,
+    descripcion: descripcion || null,
+    ip,
+  });
+  if (error) {
+    console.error("[reportarNegocio] Insert error:", error);
+    return { ok: false, error: "No pudimos guardar el reporte. Intenta otra vez." };
+  }
+
+  // Notif al admin (fire-and-forget)
+  const negTyped = neg as {
+    nombre: string;
+    slug: string;
+    categorias?: unknown;
+  };
+  const catRaw = negTyped.categorias;
+  const cat = Array.isArray(catRaw) ? catRaw[0] : catRaw;
+  const catSlug =
+    cat && typeof cat === "object"
+      ? String((cat as { slug?: unknown }).slug ?? "")
+      : "";
+  const fichaUrl =
+    catSlug && negTyped.slug
+      ? `${SITE_URL_REPORTE}/${catSlug}/${negTyped.slug}`
+      : SITE_URL_REPORTE;
+
+  void sendAdminReporteNotification({
+    nombreNegocio: negTyped.nombre,
+    motivo: motivoRaw,
+    descripcion: descripcion || null,
+    fichaUrl,
+    adminEditUrl: `${SITE_URL_REPORTE}/admin/negocio/${negocioId}/editar`,
+  });
 
   return { ok: true };
 }

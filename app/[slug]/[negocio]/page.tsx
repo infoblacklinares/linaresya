@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import TrackedActionButton from "./TrackedActionButton";
 import LeaveReviewForm from "./LeaveReviewForm";
 import ShareButton from "./ShareButton";
+import ReportarButton from "./ReportarButton";
 import FavoritoButton from "@/components/FavoritoButton";
 import JsonLd from "@/components/JsonLd";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
@@ -704,6 +705,9 @@ export default async function NegocioDetalle({
           >
             ¿Sos el dueño? Editar este negocio
           </Link>
+        </p>
+        <p>
+          <ReportarButton negocioId={n.id} />
         </p>
       </section>
     </main>
