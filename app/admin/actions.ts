@@ -201,6 +201,33 @@ export async function rechazarResena(formData: FormData): Promise<void> {
   revalidatePath("/admin/resenas");
 }
 
+// ===== REPORTES =====
+
+export async function resolverReporte(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  const nuevo = formData.get("nuevo_estado") === "true";
+  if (!id) return;
+  await supabaseAdmin
+    .from("reportes")
+    .update({
+      resuelto: nuevo,
+      resuelto_en: nuevo ? new Date().toISOString() : null,
+    })
+    .eq("id", id);
+  revalidatePath("/admin/reportes");
+  revalidatePath("/admin");
+}
+
+export async function eliminarReporte(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  await supabaseAdmin.from("reportes").delete().eq("id", id);
+  revalidatePath("/admin/reportes");
+  revalidatePath("/admin");
+}
+
 export async function toggleVecinoVerificado(formData: FormData): Promise<void> {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");

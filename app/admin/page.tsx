@@ -54,6 +54,7 @@ export default async function AdminPage() {
     { count: nuevosNegocios7d },
     { count: nuevasResenas7d },
     { data: stats7dRaw },
+    { count: reportesPendientes },
   ] = await Promise.all([
     supabaseAdmin
       .from("negocios")
@@ -90,11 +91,16 @@ export default async function AdminPage() {
         "negocio_id, vistas, clicks_whatsapp, clicks_telefono, clicks_maps, negocios:negocio_id(nombre, slug, categorias:categoria_id(slug))",
       )
       .gte("fecha", haceSieteDias),
+    supabaseAdmin
+      .from("reportes")
+      .select("id", { count: "exact", head: true })
+      .eq("resuelto", false),
   ]);
 
   const pend = (pendientes ?? []) as NegocioRow[];
   const act = (activos ?? []) as NegocioRow[];
   const resCount = resenasPendientes ?? 0;
+  const reportesCount = reportesPendientes ?? 0;
   const nuevos7d = nuevosNegocios7d ?? 0;
   const resenas7d = nuevasResenas7d ?? 0;
   const catsMap = new Map<number, Categoria>(
@@ -173,7 +179,7 @@ export default async function AdminPage() {
       </header>
 
       <section className="px-4 pt-4">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <StatCard label="Pendientes" value={pend.length} accent />
           <StatCard label="Activos" value={act.length} />
           <Link
@@ -188,6 +194,19 @@ export default async function AdminPage() {
               Resenas
             </p>
             <p className="text-3xl font-extrabold mt-1">{resCount}</p>
+          </Link>
+          <Link
+            href="/admin/reportes"
+            className={`block rounded-2xl p-4 ue-shadow-sm transition hover:opacity-90 ${
+              reportesCount > 0
+                ? "bg-rose-50 border border-rose-200"
+                : "bg-white border border-border"
+            }`}
+          >
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              Reportes
+            </p>
+            <p className="text-3xl font-extrabold mt-1">{reportesCount}</p>
           </Link>
         </div>
       </section>
