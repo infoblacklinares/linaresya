@@ -75,3 +75,43 @@ export async function uploadNegocioGaleria(
   );
   return urls.filter((u): u is string => !!u);
 }
+
+// Extrae el path interno del bucket desde una URL publica de Supabase.
+// Ej: "https://xxxx.supabase.co/storage/v1/object/public/negocios/slug/portada-123.jpg"
+// devuelve "slug/portada-123.jpg". Devuelve null si la URL no pertenece al bucket.
+export function extractStoragePath(url: string): string | null {
+  if (!url) return null;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  if (!supabaseUrl) return null;
+  const prefix = `${supabaseUrl}/storage/v1/object/public/${BUCKET}/`;
+  if (!url.startsWith(prefix)) return null;
+  return url.slice(prefix.length);
+}
+
+// Borra una foto del bucket dada su URL publica. No tira: errores se loguean.
+// Devuelve true si borro algo, false si la URL no era valida o si fallo Storage.
+export async function deleteFotoFromStorage(url: string): Promise<boolean> {
+  const path = extractStoragePath(url);
+  if (!path) return false;
+  const { error } = await supabaseAdmin.storage.from(BUCKET).remove([path]);
+  if (error) {
+    console.error("[storage] Error eliminando archivo:", error.message, path);
+    return false;
+  }
+  return true;
+}
+
+// Borra varias fotos en una sola llamada. Mas eficiente que llamar
+// deleteFotoFromStorage en loop. Devuelve cantidad efectivamente borrada.
+export async function deleteFotosFromStorage(urls: string[]): Promise<number> {
+  const paths = urls
+    .map(extractStoragePath)
+    .filter((p): p is string => !!p);
+  if (paths.length === 0) return 0;
+  const { error } = await supabaseAdmin.storage.from(BUCKET).remove(paths);
+  if (error) {
+    console.error("[storage] Error eliminando archivos:", error.message);
+    return 0;
+  }
+  return paths.length;
+}

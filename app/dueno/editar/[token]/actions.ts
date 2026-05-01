@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendAdminEdicionDuenoNotification } from "@/lib/email";
+import { deleteFotosFromStorage } from "@/lib/storage";
 
 const SITE_URL_NOTIF =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
@@ -134,6 +135,14 @@ export async function updateNegocioDueno(
     };
   }
 
+  // Limpiar Storage si la portada cambio
+  const portadaAnterior =
+    (antes as { foto_portada?: string | null } | null)?.foto_portada ?? null;
+  const portadaNueva = (update as { foto_portada?: string | null }).foto_portada ?? null;
+  if (portadaAnterior && portadaAnterior !== portadaNueva) {
+    void deleteFotosFromStorage([portadaAnterior]);
+  }
+
   // Detectar qué campos básicos cambiaron, para incluirlos en la notif al admin.
   const labelsByField: Record<string, string> = {
     nombre: "Nombre",
@@ -202,11 +211,25 @@ export async function updateNegocioDueno(
     }
   }
   if (idsAEliminar.length > 0) {
+    // Recoger URLs antes de borrar las filas
+    const { data: aBorrar } = await supabaseAdmin
+      .from("fotos")
+      .select("url")
+      .in("id", idsAEliminar)
+      .eq("negocio_id", id);
+    const urlsABorrar = ((aBorrar ?? []) as Array<{ url: string }>)
+      .map((f) => f.url)
+      .filter(Boolean);
+
     await supabaseAdmin
       .from("fotos")
       .delete()
       .in("id", idsAEliminar)
       .eq("negocio_id", id);
+
+    if (urlsABorrar.length > 0) {
+      void deleteFotosFromStorage(urlsABorrar);
+    }
   }
 
   const nuevasUrls: string[] = [];

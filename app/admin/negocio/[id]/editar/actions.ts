@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { deleteFotosFromStorage } from "@/lib/storage";
 
 export type UpdateState = {
   ok: boolean;
@@ -95,6 +96,15 @@ export async function updateNegocio(
 
   const whatsapp = normalizarWhatsApp(whatsappRaw);
 
+  // Snapshot de foto_portada actual para comparar y limpiar Storage si cambia
+  const { data: antesNeg } = await supabaseAdmin
+    .from("negocios")
+    .select("foto_portada")
+    .eq("id", id)
+    .maybeSingle();
+  const portadaAnterior =
+    (antesNeg as { foto_portada?: string | null } | null)?.foto_portada ?? null;
+
   const update: Record<string, unknown> = {
     nombre,
     tipo,
@@ -125,6 +135,12 @@ export async function updateNegocio(
       ok: false,
       error: `Error al guardar: ${error.message}`,
     };
+  }
+
+  // Limpiar Storage si la portada cambio (la URL nueva es distinta y no nula)
+  const portadaNueva = (update as { foto_portada?: string | null }).foto_portada ?? null;
+  if (portadaAnterior && portadaAnterior !== portadaNueva) {
+    void deleteFotosFromStorage([portadaAnterior]);
   }
 
   // Sincronizar horarios: si el form trae los campos horario_*, borramos las
@@ -209,6 +225,16 @@ export async function updateNegocio(
     }
   }
   if (idsAEliminar.length > 0) {
+    // Antes de borrar las filas, recogemos las URLs para limpiar Storage
+    const { data: aBorrar } = await supabaseAdmin
+      .from("fotos")
+      .select("url")
+      .in("id", idsAEliminar)
+      .eq("negocio_id", id);
+    const urlsABorrar = ((aBorrar ?? []) as Array<{ url: string }>)
+      .map((f) => f.url)
+      .filter(Boolean);
+
     const { error: deleteFotosError } = await supabaseAdmin
       .from("fotos")
       .delete()
@@ -216,9 +242,9 @@ export async function updateNegocio(
       .eq("negocio_id", id); // safety: nunca borrar fotos de otro negocio
     if (deleteFotosError) {
       console.error("Error eliminando fotos:", deleteFotosError);
+    } else if (urlsABorrar.length > 0) {
+      void deleteFotosFromStorage(urlsABorrar);
     }
-    // Nota: los archivos en Storage quedan huerfanos. Limpieza periodica
-    // puede hacerse con un cron job que compare urls de fotos vs storage.
   }
 
   // Recoger nuevas fotos a insertar

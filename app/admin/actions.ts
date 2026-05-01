@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { clearAdminCookie, isAdminAuthenticated } from "@/lib/admin-auth";
 import { sendOwnerAprobacionNotification } from "@/lib/email";
+import { deleteFotosFromStorage } from "@/lib/storage";
 
 async function requireAdmin() {
   if (!(await isAdminAuthenticated())) {
@@ -116,7 +117,31 @@ export async function eliminarNegocio(formData: FormData): Promise<void> {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
   if (!id) return;
+
+  // Recoger todas las URLs antes de borrar las filas (foto_portada + galeria)
+  const [{ data: negocio }, { data: fotos }] = await Promise.all([
+    supabaseAdmin
+      .from("negocios")
+      .select("foto_portada")
+      .eq("id", id)
+      .maybeSingle(),
+    supabaseAdmin.from("fotos").select("url").eq("negocio_id", id),
+  ]);
+
+  const urls: string[] = [];
+  const portada = (negocio as { foto_portada?: string | null } | null)
+    ?.foto_portada;
+  if (portada) urls.push(portada);
+  for (const f of (fotos ?? []) as Array<{ url: string }>) {
+    if (f.url) urls.push(f.url);
+  }
+
+  // Borrar la fila (cascadea fotos por FK on delete cascade) y luego limpiar Storage
   await supabaseAdmin.from("negocios").delete().eq("id", id);
+  if (urls.length > 0) {
+    await deleteFotosFromStorage(urls);
+  }
+
   revalidatePath("/admin");
   revalidatePath("/");
 }
