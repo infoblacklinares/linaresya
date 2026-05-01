@@ -30,6 +30,7 @@ type Categoria = {
   id: number;
   nombre: string;
   emoji: string;
+  slug: string;
 };
 
 type Dia =
@@ -80,7 +81,7 @@ export default async function EditarNegocioPage({
       .single(),
     supabaseAdmin
       .from("categorias")
-      .select("id,nombre,emoji")
+      .select("id,nombre,emoji,slug")
       .eq("activa", true)
       .order("nombre", { ascending: true }),
     supabaseAdmin

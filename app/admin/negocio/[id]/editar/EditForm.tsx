@@ -7,6 +7,7 @@ import ScheduleInput, { type HorarioInicial } from "@/app/publicar/ScheduleInput
 import PhotoUpload from "@/app/publicar/PhotoUpload";
 import GaleriaManager from "./GaleriaManager";
 import GenerarLinkDueno from "./GenerarLinkDueno";
+import QRDescargar from "./QRDescargar";
 
 type FotoGaleria = {
   id: number;
@@ -18,6 +19,7 @@ type Categoria = {
   id: number;
   nombre: string;
   emoji: string;
+  slug: string;
 };
 
 type Negocio = {
@@ -70,6 +72,13 @@ export default function EditForm({
     estadoInicial,
   );
   const fe = state.fieldErrors ?? {};
+
+  // URL publica del negocio para el QR. Si no tiene categoria asignada,
+  // mostramos solo la home (caso edge raro).
+  const SITE_URL =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
+  const cat = categorias.find((c) => c.id === negocio.categoria_id);
+  const fichaUrl = cat ? `${SITE_URL}/${cat.slug}/${negocio.slug}` : SITE_URL;
 
   return (
     <form action={formAction} className="space-y-6 pb-8">
@@ -276,6 +285,9 @@ export default function EditForm({
           </div>
         </div>
       </section>
+
+      {/* QR DESCARGABLE */}
+      <QRDescargar fichaUrl={fichaUrl} nombreNegocio={negocio.nombre} />
 
       {/* MAGIC LINK PARA EL DUENO */}
       <GenerarLinkDueno negocioId={negocio.id} />
