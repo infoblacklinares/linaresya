@@ -1,12 +1,9 @@
 "use client";
 
-// Error boundary global de Next 13+. Captura errores que escapan a los
-// error boundaries individuales de cada ruta. Manda el error a Sentry y
-// muestra una UI minima de fallback.
-
-import * as Sentry from "@sentry/nextjs";
-import { useEffect } from "react";
 import Link from "next/link";
+
+// Error boundary global de Next 13+. Sin Sentry por ahora — los errores
+// se loguean a Vercel Functions Logs automaticamente.
 
 export default function GlobalError({
   error,
@@ -15,17 +12,12 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    Sentry.captureException(error);
-  }, [error]);
-
   return (
     <html lang="es">
       <body
         style={{
           margin: 0,
-          fontFamily:
-            "-apple-system, Segoe UI, Roboto, sans-serif",
+          fontFamily: "-apple-system, Segoe UI, Roboto, sans-serif",
           background: "#f8fafc",
           color: "#0f172a",
           minHeight: "100vh",
@@ -50,7 +42,7 @@ export default function GlobalError({
             Algo salió mal
           </h1>
           <p style={{ fontSize: 14, color: "#64748b", margin: "0 0 24px" }}>
-            Tuvimos un error inesperado. Ya nos enteramos y lo estamos revisando.
+            Tuvimos un error inesperado. Probá recargar.
           </p>
           {error.digest && (
             <p
