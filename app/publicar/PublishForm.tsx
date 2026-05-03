@@ -127,6 +127,20 @@ export default function PublishForm({ categorias }: { categorias: Categoria[] })
         />
       </Field>
 
+      <Field
+        label="Sitio web"
+        hint="Opcional. Si no tenes, te lo podemos hacer en infoblack.cl"
+        error={fe.sitio_web}
+      >
+        <input
+          type="url"
+          name="sitio_web"
+          placeholder="https://tu-negocio.cl"
+          maxLength={200}
+          className="input-ue"
+        />
+      </Field>
+
       <Field label="Direccion" hint="Opcional si trabajas solo a domicilio">
         <input
           type="text"

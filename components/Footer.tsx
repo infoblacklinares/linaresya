@@ -72,7 +72,17 @@ export default function Footer() {
 
         <div className="pt-4 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-muted-foreground">
           <p>© {year} LinaresYa. Hecho en Linares.</p>
-          <p>v1.0</p>
+          <p>
+            Diseñado y desarrollado por{" "}
+            <a
+              href="https://infoblack.cl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-foreground hover:underline"
+            >
+              infoblack
+            </a>
+          </p>
         </div>
       </div>
     </footer>

@@ -501,6 +501,19 @@ export default async function NegocioDetalle({
             <ActionButton disabled icon={<MapIcon />} label="Sin direccion" />
           )}
         </div>
+        {n.sitio_web && (
+          <div className="mt-2">
+            <a
+              href={n.sitio_web}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 rounded-2xl py-3 text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 transition w-full"
+            >
+              <GlobeIcon />
+              Visitar sitio web
+            </a>
+          </div>
+        )}
         <div className="mt-2">
           <ShareButton
             url={`${SITE_URL}/${categoria.slug}/${n.slug}`}
@@ -709,6 +722,19 @@ export default async function NegocioDetalle({
         <p>
           <ReportarButton negocioId={n.id} />
         </p>
+        {!n.sitio_web && (
+          <p className="pt-2 mt-2 border-t border-border/50">
+            ¿Sin sitio web propio?{" "}
+            <a
+              href="https://infoblack.cl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-foreground hover:underline"
+            >
+              Te lo hacemos →
+            </a>
+          </p>
+        )}
       </section>
     </main>
   );
@@ -783,6 +809,15 @@ function MapIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z" />
       <circle cx="12" cy="9" r="2.5" />
+    </svg>
+  );
+}
+function GlobeIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
     </svg>
   );
 }

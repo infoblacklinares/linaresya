@@ -86,6 +86,7 @@ export async function publicarNegocio(
   const telefono = String(formData.get("telefono") ?? "").trim();
   const emailRaw = String(formData.get("email") ?? "").trim().toLowerCase();
   const whatsappRaw = String(formData.get("whatsapp") ?? "").trim();
+  const sitioWebRaw = String(formData.get("sitio_web") ?? "").trim();
   const direccion = String(formData.get("direccion") ?? "").trim();
   const aDomicilio = formData.get("a_domicilio") === "on";
   const zonaCobertura = String(formData.get("zona_cobertura") ?? "").trim();
@@ -115,6 +116,28 @@ export async function publicarNegocio(
       fieldErrors.email = "Email no parece valido";
     } else {
       email = emailRaw;
+    }
+  }
+
+  // Sitio web: opcional. Si se proveio debe ser una URL https:// o http://.
+  // Le agregamos http:// automatico si el usuario solo puso "minegocio.cl".
+  let sitioWeb: string | null = null;
+  if (sitioWebRaw) {
+    let s = sitioWebRaw;
+    if (!/^https?:\/\//i.test(s)) s = `https://${s}`;
+    if (s.length > 200) {
+      fieldErrors.sitio_web = "Maximo 200 caracteres";
+    } else {
+      try {
+        const u = new URL(s);
+        if (u.protocol !== "http:" && u.protocol !== "https:") {
+          fieldErrors.sitio_web = "Solo http:// o https://";
+        } else {
+          sitioWeb = u.toString();
+        }
+      } catch {
+        fieldErrors.sitio_web = "URL no parece valida";
+      }
     }
   }
 
@@ -155,7 +178,7 @@ export async function publicarNegocio(
       telefono: telefono || null,
       whatsapp,
       email,
-      sitio_web: null,
+      sitio_web: sitioWeb,
       direccion: direccion || null,
       ciudad: "Linares",
       comuna: "Linares",
