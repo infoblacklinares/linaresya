@@ -49,6 +49,13 @@
 }
 
 :root {
+  /* Linares Conectado - Paleta Local */
+  --achibueno: #2B6E80;           /* Azul institucional */
+  --catedral: #C05A46;             /* Terracota CTA */
+  --cordillera: #3D5A45;           /* Verde positivo */
+  --artesania: #8E8279;            /* Gris neutro */
+  --sanambrosio: #F9F8F6;          /* Blanco cálido */
+
   /* LinaresYa — light, estilo Uber Eats */
   --background: oklch(1 0 0);
   --foreground: oklch(0.10 0 0);
@@ -56,31 +63,31 @@
   --card-foreground: oklch(0.10 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.10 0 0);
-  --primary: oklch(0.10 0 0);                /* negro acento */
+  --primary: #2B6E80;                /* Achibueno acento */
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.96 0 0);
-  --secondary-foreground: oklch(0.10 0 0);
+  --secondary: #C05A46;              /* Catedral CTA */
+  --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.96 0 0);
   --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.94 0.04 80);             /* crema/durazno suave para hero */
-  --accent-foreground: oklch(0.10 0 0);
+  --accent: #3D5A45;                 /* Cordillera */
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.60 0.24 25);
-  --border: oklch(0.92 0 0);
+  --border: #E8E4DE;
   --input: oklch(0.92 0 0);
   --ring: oklch(0.10 0 0);
-  --chart-1: oklch(0.94 0.04 80);
-  --chart-2: oklch(0.85 0.10 150);
-  --chart-3: oklch(0.85 0.10 30);
-  --chart-4: oklch(0.85 0.10 280);
-  --chart-5: oklch(0.85 0.10 200);
-  --radius: 1rem;
+  --chart-1: #C05A46;
+  --chart-2: #2B6E80;
+  --chart-3: #3D5A45;
+  --chart-4: #8E8279;
+  --chart-5: #F9F8F6;
+  --radius: 0.75rem;
   --sidebar: oklch(1 0 0);
   --sidebar-foreground: oklch(0.10 0 0);
-  --sidebar-primary: oklch(0.10 0 0);
+  --sidebar-primary: #2B6E80;
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.96 0 0);
-  --sidebar-accent-foreground: oklch(0.10 0 0);
-  --sidebar-border: oklch(0.92 0 0);
+  --sidebar-accent: #C05A46;
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: #E8E4DE;
   --sidebar-ring: oklch(0.10 0 0);
 }
 
@@ -96,6 +103,7 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    background-color: var(--sanambrosio);
     min-height: 100dvh;
     font-family: var(--font-sans);
     letter-spacing: -0.01em;
@@ -103,12 +111,60 @@
   h1, h2, h3, h4 {
     font-family: var(--font-heading);
     letter-spacing: -0.025em;
+    color: #1A1410;
   }
   h1 { letter-spacing: -0.035em; }
 }
 
-/* Utilidades estilo Uber Eats */
+/* Utilidades Linares Conectado */
 @layer utilities {
+  /* Colores de marca */
+  .text-achibueno { @apply text-[#2B6E80]; }
+  .text-catedral { @apply text-[#C05A46]; }
+  .text-cordillera { @apply text-[#3D5A45]; }
+  .text-artesania { @apply text-[#8E8279]; }
+
+  .bg-achibueno { @apply bg-[#2B6E80]; }
+  .bg-catedral { @apply bg-[#C05A46]; }
+  .bg-cordillera { @apply bg-[#3D5A45]; }
+  .bg-artesania { @apply bg-[#8E8279]; }
+
+  .border-achibueno { @apply border-[#2B6E80]; }
+  .border-catedral { @apply border-[#C05A46]; }
+  .border-cordillera { @apply border-[#3D5A45]; }
+  .border-artesania { @apply border-[#8E8279]; }
+
+  /* Shadows Linares */
+  .shadow-linares-sm {
+    box-shadow: 0 1px 2px rgba(43, 110, 128, 0.05);
+  }
+  .shadow-linares {
+    box-shadow: 0 4px 12px rgba(43, 110, 128, 0.08), 0 2px 4px rgba(43, 110, 128, 0.04);
+  }
+  .shadow-linares-lg {
+    box-shadow: 0 12px 24px rgba(43, 110, 128, 0.12);
+  }
+
+  /* Botones y pills */
+  .pill-primary {
+    @apply rounded-full bg-catedral px-4 py-2 text-sm font-medium text-white hover:bg-[#a84d3a] transition;
+  }
+  .pill-secondary {
+    @apply rounded-full bg-achibueno px-4 py-2 text-sm font-medium text-white hover:bg-[#265d70] transition;
+  }
+  .pill-outline {
+    @apply rounded-full border-2 border-achibueno px-4 py-2 text-sm font-medium text-achibueno hover:bg-achibueno hover:text-white transition;
+  }
+
+  /* Badge estados */
+  .badge-open {
+    @apply inline-flex items-center gap-2 rounded-lg bg-cordillera/10 px-3 py-1 text-xs font-medium text-cordillera;
+  }
+  .badge-closed {
+    @apply inline-flex items-center gap-2 rounded-lg bg-artesania/10 px-3 py-1 text-xs font-medium text-artesania;
+  }
+
+  /* Utiles */
   .ue-shadow {
     box-shadow: 0 1px 2px oklch(0 0 0 / 0.04), 0 4px 16px oklch(0 0 0 / 0.06);
   }
