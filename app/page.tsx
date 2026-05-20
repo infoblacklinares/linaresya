@@ -28,6 +28,19 @@ type NegocioDestacado = {
   categorias: { nombre: string; slug: string; emoji: string } | null;
 };
 
+type OfertaHome = {
+  id: number;
+  titulo: string;
+  descripcion: string | null;
+  descuento_pct: number | null;
+  precio_normal: number | null;
+  precio_oferta: number | null;
+  imagen_url: string | null;
+  fecha_fin: string;
+  boosteada: boolean;
+  negocio: { nombre: string; slug: string; categoria_slug: string; emoji: string } | null;
+};
+
 const SIETE_DIAS_MS = 7 * 24 * 60 * 60 * 1000;
 function esNuevo(creado_en?: string): boolean {
   if (!creado_en) return false;
@@ -47,10 +60,13 @@ function normalizeCategoria(raw: unknown): NegocioDestacado["categorias"] {
 }
 
 export default async function Home() {
+  const hoy = new Date().toISOString().split("T")[0];
+
   const [
     { data: categorias, error },
     { data: destacadosData },
     { data: recientesData },
+    { data: ofertasData },
   ] = await Promise.all([
     supabase.from("categorias").select("*").order("orden"),
     supabase
@@ -71,6 +87,16 @@ export default async function Home() {
       .eq("activo", true)
       .order("creado_en", { ascending: false })
       .limit(6),
+    supabase
+      .from("ofertas")
+      .select(
+        "id, titulo, descripcion, descuento_pct, precio_normal, precio_oferta, imagen_url, fecha_fin, boosteada, negocios:negocio_id(nombre, slug, categorias:categoria_id(slug, emoji))",
+      )
+      .eq("activa", true)
+      .gte("fecha_fin", hoy)
+      .order("boosteada", { ascending: false })
+      .order("boost_orden", { ascending: false })
+      .limit(10),
   ]);
 
   if (error) {
@@ -111,6 +137,33 @@ export default async function Home() {
     // Excluir los que ya estan en destacados para no duplicar
     .filter((r) => !destacados.some((d) => d.id === r.id))
     .slice(0, 4);
+
+  const ofertas: OfertaHome[] = ((ofertasData ?? []) as unknown[]).map((r) => {
+    const x = r as Record<string, unknown>;
+    const neg = Array.isArray(x.negocios) ? x.negocios[0] : x.negocios;
+    const cat = neg && typeof neg === "object"
+      ? (Array.isArray((neg as Record<string, unknown>).categorias)
+          ? (neg as Record<string, unknown>).categorias[0]
+          : (neg as Record<string, unknown>).categorias)
+      : null;
+    return {
+      id: Number(x.id),
+      titulo: String(x.titulo ?? ""),
+      descripcion: (x.descripcion as string | null) ?? null,
+      descuento_pct: (x.descuento_pct as number | null) ?? null,
+      precio_normal: (x.precio_normal as number | null) ?? null,
+      precio_oferta: (x.precio_oferta as number | null) ?? null,
+      imagen_url: (x.imagen_url as string | null) ?? null,
+      fecha_fin: String(x.fecha_fin ?? ""),
+      boosteada: Boolean(x.boosteada),
+      negocio: neg && typeof neg === "object" ? {
+        nombre: String((neg as Record<string, unknown>).nombre ?? ""),
+        slug: String((neg as Record<string, unknown>).slug ?? ""),
+        categoria_slug: cat && typeof cat === "object" ? String((cat as Record<string, unknown>).slug ?? "") : "",
+        emoji: cat && typeof cat === "object" ? String((cat as Record<string, unknown>).emoji ?? "") : "🏪",
+      } : null,
+    };
+  });
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl">
@@ -221,6 +274,86 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
+      {/* Ofertas activas */}
+      {ofertas.length > 0 && (
+        <section className="pt-8">
+          <div className="px-4 flex items-end justify-between mb-3">
+            <div>
+              <h3 className="text-xl font-extrabold tracking-tight">Ofertas activas</h3>
+              <p className="text-sm text-muted-foreground">Promociones publicadas hoy en Linares.</p>
+            </div>
+            <span className="flex items-center gap-1 text-xs font-bold text-rose-500 bg-rose-50 px-2.5 py-1 rounded-full">
+              <FlameIcon /> {ofertas.length}
+            </span>
+          </div>
+
+          <div className="px-4 flex gap-3 overflow-x-auto no-scrollbar pb-2">
+            {ofertas.map((o) => {
+              const url = o.negocio?.categoria_slug && o.negocio?.slug
+                ? `/${o.negocio.categoria_slug}/${o.negocio.slug}`
+                : "#";
+              const diasRestantes = Math.ceil(
+                (new Date(o.fecha_fin).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+              );
+              return (
+                <Link
+                  key={o.id}
+                  href={url}
+                  className="relative flex-shrink-0 w-52 rounded-2xl overflow-hidden border border-border bg-white hover:shadow-md transition"
+                >
+                  {/* Imagen o fondo de color */}
+                  <div className="relative h-28 bg-gradient-to-br from-rose-50 to-orange-50 flex items-center justify-center">
+                    {o.imagen_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={o.imagen_url} alt={o.titulo} className="h-full w-full object-cover" />
+                    ) : (
+                      <span className="text-5xl">{o.negocio?.emoji ?? "🏪"}</span>
+                    )}
+                    {/* Badge descuento */}
+                    {o.descuento_pct && (
+                      <span className="absolute top-2 right-2 bg-rose-500 text-white text-xs font-extrabold px-2 py-0.5 rounded-full">
+                        -{o.descuento_pct}%
+                      </span>
+                    )}
+                    {o.boosteada && (
+                      <span className="absolute top-2 left-2 bg-amber-400 text-amber-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                        ⭐ Destacada
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="p-3">
+                    <p className="font-bold text-sm leading-tight line-clamp-2">{o.titulo}</p>
+                    {o.negocio && (
+                      <p className="text-[11px] text-muted-foreground mt-0.5 truncate">{o.negocio.nombre}</p>
+                    )}
+                    <div className="flex items-center justify-between mt-2">
+                      {o.precio_oferta ? (
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-sm font-extrabold text-rose-600">
+                            ${o.precio_oferta.toLocaleString("es-CL")}
+                          </span>
+                          {o.precio_normal && (
+                            <span className="text-[10px] text-muted-foreground line-through">
+                              ${o.precio_normal.toLocaleString("es-CL")}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-[11px] text-muted-foreground">Ver oferta →</span>
+                      )}
+                      <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${diasRestantes <= 1 ? "bg-rose-100 text-rose-700" : "bg-secondary text-muted-foreground"}`}>
+                        {diasRestantes <= 0 ? "Hoy" : diasRestantes === 1 ? "1 día" : `${diasRestantes}d`}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Destacados */}
       {destacados.length > 0 && (
@@ -485,6 +618,13 @@ function UserIcon() {
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="12" cy="8" r="4" />
       <path d="M4 21c0-4 4-7 8-7s8 3 8 7" />
+    </svg>
+  );
+}
+function FlameIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2c0 0-5 5.5-5 10a5 5 0 0 0 10 0C17 7.5 12 2 12 2zm0 13a2 2 0 0 1-2-2c0-2 2-4.5 2-4.5s2 2.5 2 4.5a2 2 0 0 1-2 2z" />
     </svg>
   );
 }
