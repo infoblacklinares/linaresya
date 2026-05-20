@@ -157,10 +157,11 @@ export default async function Home() {
   const ofertas: OfertaHome[] = ((ofertasData ?? []) as unknown[]).map(r => {
     const x   = r as Record<string, unknown>;
     const neg = Array.isArray(x.negocios) ? x.negocios[0] : x.negocios;
+    const negObj = neg as Record<string, unknown>;
     const cat = neg && typeof neg === "object"
-      ? (Array.isArray((neg as Record<string, unknown>).categorias)
-          ? (neg as Record<string, unknown>).categorias[0]
-          : (neg as Record<string, unknown>).categorias)
+      ? (Array.isArray(negObj.categorias)
+          ? (negObj.categorias as unknown[])[0]
+          : negObj.categorias)
       : null;
     return {
       id:            Number(x.id),

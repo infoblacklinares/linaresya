@@ -147,21 +147,21 @@
 
   /* Botones y pills */
   .pill-primary {
-    @apply rounded-full bg-catedral px-4 py-2 text-sm font-medium text-white hover:bg-[#a84d3a] transition;
+    @apply rounded-full bg-[#C05A46] px-4 py-2 text-sm font-medium text-white hover:bg-[#a84d3a] transition;
   }
   .pill-secondary {
-    @apply rounded-full bg-achibueno px-4 py-2 text-sm font-medium text-white hover:bg-[#265d70] transition;
+    @apply rounded-full bg-[#2B6E80] px-4 py-2 text-sm font-medium text-white hover:bg-[#265d70] transition;
   }
   .pill-outline {
-    @apply rounded-full border-2 border-achibueno px-4 py-2 text-sm font-medium text-achibueno hover:bg-achibueno hover:text-white transition;
+    @apply rounded-full border-2 border-[#2B6E80] px-4 py-2 text-sm font-medium text-[#2B6E80] hover:bg-[#2B6E80] hover:text-white transition;
   }
 
   /* Badge estados */
   .badge-open {
-    @apply inline-flex items-center gap-2 rounded-lg bg-cordillera/10 px-3 py-1 text-xs font-medium text-cordillera;
+    @apply inline-flex items-center gap-2 rounded-lg bg-[#3D5A45]/10 px-3 py-1 text-xs font-medium text-[#3D5A45];
   }
   .badge-closed {
-    @apply inline-flex items-center gap-2 rounded-lg bg-artesania/10 px-3 py-1 text-xs font-medium text-artesania;
+    @apply inline-flex items-center gap-2 rounded-lg bg-[#8E8279]/10 px-3 py-1 text-xs font-medium text-[#8E8279];
   }
 
   /* Utiles */
