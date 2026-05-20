@@ -104,7 +104,7 @@ export default async function Home() {
     { data: destacadosData },
     { data: recientesData },
     { data: ofertasData },
-    { data: countData },
+    { count: totalCount },
   ] = await Promise.all([
     supabase.from("categorias").select("*").order("orden"),
 
@@ -191,7 +191,7 @@ export default async function Home() {
     emoji:         primerPremium.categorias?.emoji ?? "🏪",
   } : undefined;
 
-  const totalNegocios = (countData as unknown as { count?: number } | null)?.count ?? destacados.length;
+  const totalNegocios = totalCount ?? destacados.length;
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl bg-[#F9F8F6]">
