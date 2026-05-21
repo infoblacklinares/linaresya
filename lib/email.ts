@@ -141,6 +141,9 @@ export type NegocioAprobado = {
     slug: string;
     emoji: string;
   };
+  // Links personalizados opcionales (generados con magic link)
+  editarUrl?: string;
+  statsUrl?: string;
 };
 
 export async function sendOwnerAprobacionNotification(
@@ -163,6 +166,9 @@ export async function sendOwnerAprobacionNotification(
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://linaresya.cl";
     const fichaUrl = `${siteUrl}/${negocio.categoria.slug}/${negocio.slug}`;
+
+    const editarUrl = negocio.editarUrl ? escapeHtml(negocio.editarUrl) : null;
+    const statsUrl  = negocio.statsUrl  ? escapeHtml(negocio.statsUrl)  : null;
 
     const subject = negocio.verificado
       ? `Tu negocio ya esta publicado y verificado en LinaresYa`
@@ -189,17 +195,23 @@ export async function sendOwnerAprobacionNotification(
         <p style="margin:0 0 6px;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;">Tu ficha publica</p>
         <a href="${escapeHtml(fichaUrl)}" style="color:#0f172a;font-size:15px;font-weight:600;word-break:break-all;">${escapeHtml(fichaUrl)}</a>
       </div>
-      <div style="margin:24px 0;">
+      <div style="margin:24px 0;display:flex;flex-wrap:wrap;gap:10px;">
         <a href="${escapeHtml(fichaUrl)}" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:15px;font-weight:600;">
-          Ver mi ficha
+          Ver mi ficha →
         </a>
+        ${statsUrl ? `<a href="${statsUrl}" style="display:inline-block;background:#fff;color:#0f172a;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid #e2e8f0;">
+          📊 Mis estadísticas
+        </a>` : ""}
+        ${editarUrl ? `<a href="${editarUrl}" style="display:inline-block;background:#f8fafc;color:#0f172a;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid #e2e8f0;">
+          ✏️ Editar mi negocio
+        </a>` : ""}
       </div>
       <div style="margin-top:24px;padding-top:20px;border-top:1px solid #e2e8f0;">
         <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#0f172a;">Que hacer ahora</p>
         <ul style="margin:0;padding-left:20px;color:#475569;font-size:14px;line-height:1.7;">
           <li>Compartir el link por WhatsApp con tus clientes: llega con una tarjeta con tu nombre y categoria.</li>
-          <li>Si queres cambiar datos (horarios, descripcion, foto), escribinos y lo editamos.</li>
-          <li>Pedir a clientes contentos que dejen una resena cuando habilitemos resenas publicas.</li>
+          <li>Actualiza horarios, descripcion y foto desde "Editar mi negocio" (el link caduca en 24 hs, podés pedir uno nuevo cuando quieras).</li>
+          <li>Mostrá el código QR en tu mostrador para que los clientes te dejen reseñas fácil.</li>
         </ul>
       </div>
     </div>

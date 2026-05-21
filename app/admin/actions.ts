@@ -2,10 +2,48 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { randomBytes } from "crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { clearAdminCookie, isAdminAuthenticated } from "@/lib/admin-auth";
 import { sendOwnerAprobacionNotification, sendOwnerResenaAprobadaNotification } from "@/lib/email";
 import { deleteFotosFromStorage } from "@/lib/storage";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://linaresya.cl";
+const TOKEN_EXPIRA_HORAS = 72; // 3 días — más cómodo que 24 hs para el primer acceso
+
+/**
+ * Genera un magic link token para el dueño y devuelve las URLs de editar y stats.
+ * Si algo falla, devuelve null silenciosamente (no queremos romper la aprobación).
+ */
+async function generarTokenDueno(
+  negocioId: string,
+  email: string,
+): Promise<{ editarUrl: string; statsUrl: string } | null> {
+  try {
+    const token = randomBytes(24).toString("hex");
+    const expiraEn = new Date(
+      Date.now() + TOKEN_EXPIRA_HORAS * 60 * 60 * 1000,
+    ).toISOString();
+    const { error } = await supabaseAdmin.from("dueno_tokens").insert({
+      negocio_id: negocioId,
+      token,
+      email_solicitado: email,
+      expira_en: expiraEn,
+      ip: "admin-auto",
+    });
+    if (error) {
+      console.error("[generarTokenDueno] error:", error);
+      return null;
+    }
+    return {
+      editarUrl: `${SITE_URL}/dueno/editar/${token}`,
+      statsUrl:  `${SITE_URL}/dueno/estadisticas/${token}`,
+    };
+  } catch (err) {
+    console.error("[generarTokenDueno] excepcion:", err);
+    return null;
+  }
+}
 
 async function requireAdmin() {
   if (!(await isAdminAuthenticated())) {
@@ -61,18 +99,24 @@ async function fetchNegocioParaAprobar(id: string): Promise<NegocioParaAprobar |
 // de inactivo a activo (no en re-aprobaciones) y tiene email cargado.
 async function notificarSiCorresponde(
   antes: NegocioParaAprobar,
+  negocioId: string,
   verificado: boolean,
 ): Promise<void> {
   if (antes.activo) return; // Ya estaba publicado, no re-notificamos.
   if (!antes.email) return;
   if (!antes.categoria) return;
   try {
+    // Generamos un magic link para que el dueño pueda entrar a editar y ver stats
+    // directamente desde el email, sin tener que pedirlo aparte.
+    const links = await generarTokenDueno(negocioId, antes.email);
     await sendOwnerAprobacionNotification({
       nombre: antes.nombre,
       slug: antes.slug,
       email: antes.email,
       verificado,
       categoria: antes.categoria,
+      editarUrl: links?.editarUrl,
+      statsUrl:  links?.statsUrl,
     });
   } catch {
     // sendOwner ya atrapa errores, pero por las dudas.
@@ -87,7 +131,7 @@ export async function aprobarNegocio(formData: FormData): Promise<void> {
   await supabaseAdmin.from("negocios").update({ activo: true }).eq("id", id);
   revalidatePath("/admin");
   revalidatePath("/");
-  if (antes) await notificarSiCorresponde(antes, false);
+  if (antes) await notificarSiCorresponde(antes, id, false);
 }
 
 export async function verificarNegocio(formData: FormData): Promise<void> {
@@ -101,7 +145,7 @@ export async function verificarNegocio(formData: FormData): Promise<void> {
     .eq("id", id);
   revalidatePath("/admin");
   revalidatePath("/");
-  if (antes) await notificarSiCorresponde(antes, true);
+  if (antes) await notificarSiCorresponde(antes, id, true);
 }
 
 export async function desactivarNegocio(formData: FormData): Promise<void> {
