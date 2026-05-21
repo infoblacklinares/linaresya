@@ -1108,6 +1108,249 @@ export const posts: BlogPost[] = [
 <p>Encontrá salones de eventos en Linares en <a href="/eventos">LinaresYa — Eventos</a>. ¿Tenés un salón de eventos en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
 `,
   },
+
+  // ── Artículos batch 6 ──────────────────────────────────────────────────
+  {
+    slug: "pintor-linares",
+    titulo: "Pintor en Linares: interiores, exteriores y presupuesto gratis",
+    descripcion:
+      "Encuentra pintores de casas en Linares, Chile. Pintura interior, exterior, cielos, fachadas y más. Precios orientativos y consejos para elegir bien.",
+    fecha: "2025-05-21",
+    categoria: "Servicios del hogar",
+    emoji: "🎨",
+    keywords: [
+      "pintor linares",
+      "pintura casas linares",
+      "pintor de casas linares",
+      "pintura exterior linares",
+      "presupuesto pintura linares",
+    ],
+    contenido: `
+<p>Renovar la pintura de la casa transforma el ambiente y protege las superficies. En Linares hay <strong>pintores de confianza</strong> para trabajos de interior, exterior, cielos, rejas y fachadas completas.</p>
+
+<h2>¿Qué trabajos hace un pintor en Linares?</h2>
+<ul>
+  <li><strong>Pintura interior:</strong> habitaciones, living, cocina, baños. Incluye preparación de muros (masilla, lija).</li>
+  <li><strong>Pintura exterior:</strong> fachadas, muros de cierre, zócalos. Requiere pinturas especiales para la intemperie.</li>
+  <li><strong>Cielos:</strong> pintura con rodillo, látex o spray para cielos de drywall o cemento.</li>
+  <li><strong>Rejas y metales:</strong> anticorrosivo + esmalte para puertas, rejas y portones.</li>
+  <li><strong>Estuco y empaste:</strong> preparación de superficies antes de pintar.</li>
+  <li><strong>Pintura decorativa:</strong> texturas, efecto madera, degradados.</li>
+</ul>
+
+<h2>¿Cuánto cobra un pintor en Linares?</h2>
+<p>Los precios dependen de si cobran por m² o por pieza/ambiente:</p>
+<ul>
+  <li>Por m² de muro (sin material): $2.000 – $4.500</li>
+  <li>Pieza completa (muro + cielo, sin material): $30.000 – $70.000</li>
+  <li>Fachada exterior (50 m²): $100.000 – $250.000</li>
+  <li>Casa completa (interiores + mano de obra): desde $300.000</li>
+</ul>
+<p>El costo de los materiales (pintura, rodillos, masilla) se suma aparte o lo aporta el pintor con un precio global.</p>
+
+<h2>Tips para contratar un pintor en Linares</h2>
+<ul>
+  <li>Pedí presupuesto con y sin materiales incluidos</li>
+  <li>Consultá cuántas manos de pintura incluye el precio</li>
+  <li>Asegurate de que preparen bien el muro antes de pintar (si no, la pintura no dura)</li>
+  <li>Revisá reseñas de trabajos anteriores en LinaresYa</li>
+</ul>
+
+<p>Encontrá pintores en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos pintor en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "nutricionista-linares",
+    titulo: "Nutricionista en Linares: alimentación, dietas y salud",
+    descripcion:
+      "Encuentra nutricionistas en Linares, Chile. Consultas de nutrición, planes de alimentación, pérdida de peso, nutrición deportiva y enfermedades crónicas.",
+    fecha: "2025-05-21",
+    categoria: "Salud",
+    emoji: "🥗",
+    keywords: [
+      "nutricionista linares",
+      "nutricionista linares chile",
+      "dietista linares",
+      "plan de alimentacion linares",
+      "bajar de peso linares",
+    ],
+    contenido: `
+<p>Una buena alimentación es la base de la salud. En Linares hay <strong>nutricionistas</strong> que te pueden ayudar a mejorar tu dieta, perder o ganar peso de forma saludable, manejar enfermedades crónicas o rendir mejor en el deporte.</p>
+
+<h2>¿Cuándo ir al nutricionista en Linares?</h2>
+<ul>
+  <li><strong>Pérdida o ganancia de peso:</strong> un plan personalizado es mucho más efectivo que dietas genéricas de internet.</li>
+  <li><strong>Enfermedades crónicas:</strong> diabetes, hipertensión, colesterol alto, hígado graso.</li>
+  <li><strong>Nutrición deportiva:</strong> mejorar el rendimiento y la recuperación en el deporte.</li>
+  <li><strong>Embarazo y lactancia:</strong> asegurar la nutrición correcta en etapas críticas.</li>
+  <li><strong>Niños y adolescentes:</strong> hábitos alimentarios saludables desde temprano.</li>
+  <li><strong>Trastornos alimentarios:</strong> apoyo profesional para anorexia, bulimia, atracones.</li>
+</ul>
+
+<h2>¿Qué pasa en la primera consulta?</h2>
+<p>El nutricionista hace una evaluación completa: peso, talla, medidas corporales, hábitos alimentarios, actividad física y antecedentes de salud. Con eso diseña un plan de alimentación personalizado y te da un seguimiento periódico.</p>
+
+<h2>¿Cuánto cuesta el nutricionista en Linares?</h2>
+<ul>
+  <li>Primera consulta: $20.000 – $45.000</li>
+  <li>Control mensual: $15.000 – $35.000</li>
+  <li>Consulta online: generalmente 10-20% más económica</li>
+  <li>FONASA cubre nutricionistas en el sistema público (CESFAM de Linares)</li>
+</ul>
+
+<h2>¿FONASA cubre al nutricionista?</h2>
+<p>Sí. Si tenés FONASA y una derivación médica, podés acceder a atención nutricional en el CESFAM u Hospital de Linares sin costo o con copago mínimo. También hay nutricionistas en clínicas privadas con FONASA libre elección.</p>
+
+<p>Encontrá nutricionistas en Linares en <a href="/salud">LinaresYa — Salud</a>. ¿Sos nutricionista en Linares? <a href="/publicar">Publicá tu consulta gratis</a>.</p>
+`,
+  },
+  {
+    slug: "taxi-traslados-linares",
+    titulo: "Taxi en Linares: traslados, aeropuerto y servicios nocturnos",
+    descripcion:
+      "Encuentra taxis y servicios de traslado en Linares, Chile. Taxi al aeropuerto, traslados a Talca, servicios nocturnos y transporte escolar en la ciudad.",
+    fecha: "2025-05-21",
+    categoria: "Transporte",
+    emoji: "🚕",
+    keywords: [
+      "taxi linares",
+      "taxi linares chile",
+      "traslado aeropuerto linares",
+      "taxi nocturno linares",
+      "transporte escolar linares",
+    ],
+    contenido: `
+<p>Moverse por Linares o hacia otras ciudades del Maule es más fácil con un buen servicio de taxi o traslado. Hay opciones para viajes dentro de la ciudad, traslados al aeropuerto de Santiago, servicios nocturnos y transporte escolar.</p>
+
+<h2>Tipos de servicio de taxi en Linares</h2>
+<ul>
+  <li><strong>Taxi urbano:</strong> viajes dentro de Linares, zonas residenciales, hospital, estación.</li>
+  <li><strong>Traslados interurbanos:</strong> Linares–Talca, Linares–Curicó, Linares–Chillán.</li>
+  <li><strong>Traslado a aeropuerto:</strong> al Aeropuerto Arturo Merino Benítez (SCL) en Santiago.</li>
+  <li><strong>Servicio nocturno:</strong> disponible pasada la medianoche para quienes necesitan moverse fuera del horario regular.</li>
+  <li><strong>Transporte escolar:</strong> ruta fija con niños, en vehículos habilitados.</li>
+  <li><strong>Minibús y van:</strong> para grupos, excursiones o traslados de empresa.</li>
+</ul>
+
+<h2>¿Cuánto cuesta un taxi en Linares?</h2>
+<ul>
+  <li>Viaje urbano (dentro de Linares): $2.500 – $6.000</li>
+  <li>Linares → Talca (ida): $20.000 – $35.000</li>
+  <li>Linares → Aeropuerto Santiago: $80.000 – $140.000</li>
+  <li>Servicio nocturno: 20-30% más que tarifa diurna</li>
+</ul>
+<p>Los precios pueden variar según la hora, número de pasajeros y equipaje. Siempre conviene acordar el precio antes del viaje.</p>
+
+<h2>Consejos para usar taxi en Linares</h2>
+<ul>
+  <li>Para traslados largos (aeropuerto, Santiago), reservá con anticipación</li>
+  <li>Preguntá si el precio incluye peajes en ruta a Santiago</li>
+  <li>Para transporte escolar, verificá que el conductor tenga licencia y el vehículo la revisión técnica al día</li>
+  <li>Revisá reseñas del servicio en LinaresYa antes de contratar</li>
+</ul>
+
+<p>Encontrá servicios de taxi y traslado en Linares en <a href="/transporte">LinaresYa — Transporte</a>. ¿Tenés taxi o van en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+`,
+  },
+  {
+    slug: "cerrajero-linares",
+    titulo: "Cerrajero en Linares: apertura de puertas y cambio de cerradura",
+    descripcion:
+      "Encuentra cerrajeros en Linares, Chile. Apertura de puertas sin llave, cambio de cerradura, duplicado de llaves y urgencias las 24 horas.",
+    fecha: "2025-05-21",
+    categoria: "Servicios del hogar",
+    emoji: "🔑",
+    keywords: [
+      "cerrajero linares",
+      "cerrajero linares chile",
+      "apertura de puertas linares",
+      "cambio cerradura linares",
+      "cerrajero urgencia linares",
+    ],
+    contenido: `
+<p>Quedarse sin llave, tener una cerradura forzada o simplemente querer mejorar la seguridad de la casa son situaciones donde necesitás a un <strong>cerrajero en Linares</strong>. Hay servicios disponibles para urgencias y trabajos programados.</p>
+
+<h2>¿Qué hace un cerrajero en Linares?</h2>
+<ul>
+  <li><strong>Apertura de puertas:</strong> si te quedaste sin llave o la cerradura está bloqueada.</li>
+  <li><strong>Cambio de cerradura:</strong> después de un robo, pérdida de llaves o por mejorar la seguridad.</li>
+  <li><strong>Instalación de cerraduras:</strong> cerraduras de seguridad, bombines de alta protección, cerraduras con llave.</li>
+  <li><strong>Duplicado de llaves:</strong> copia de llaves simples o con chip.</li>
+  <li><strong>Apertura de cajas fuertes:</strong> cuando se olvida la combinación.</li>
+  <li><strong>Puertas de autos:</strong> algunos cerrajeros también abren vehículos sin dañar la cerradura.</li>
+</ul>
+
+<h2>¿Cuánto cobra un cerrajero en Linares?</h2>
+<ul>
+  <li>Apertura de puerta (horario normal): $25.000 – $60.000</li>
+  <li>Apertura de puerta (urgencia nocturna): $50.000 – $100.000</li>
+  <li>Cambio de cerradura (más material): $30.000 – $80.000</li>
+  <li>Duplicado de llave simple: $3.000 – $8.000</li>
+</ul>
+<p>El precio sube considerablemente en urgencias nocturnas o fines de semana. Acordá el valor antes de que empiece el trabajo.</p>
+
+<h2>¿Cómo evitar estafas con cerrajeros?</h2>
+<ul>
+  <li>Pedí el precio total antes de autorizar el trabajo</li>
+  <li>Desconfiá si el costo sube abruptamente al llegar al lugar</li>
+  <li>Preferí cerrajeros con reseñas verificadas en LinaresYa</li>
+  <li>Pedí boleta o comprobante del servicio</li>
+</ul>
+
+<p>Encontrá cerrajeros en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos cerrajero en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "tecnico-electrodomesticos-linares",
+    titulo: "Técnico de electrodomésticos en Linares: lavadora, heladera y más",
+    descripcion:
+      "Encuentra técnicos de electrodomésticos en Linares, Chile. Reparación de lavadoras, heladeras, microondas, lavavajillas y televisores. Servicio a domicilio.",
+    fecha: "2025-05-21",
+    categoria: "Servicios del hogar",
+    emoji: "🔌",
+    keywords: [
+      "tecnico electrodomesticos linares",
+      "reparacion lavadora linares",
+      "reparacion heladera linares",
+      "servicio tecnico linares",
+      "tecnico a domicilio linares",
+    ],
+    contenido: `
+<p>Cuando la lavadora no centrifuga, la heladera no enfría o el microondas se apagó, un <strong>técnico de electrodomésticos en Linares</strong> puede ahorrarte el costo de comprar uno nuevo. Muchos ofrecen servicio a domicilio con diagnóstico en el mismo día.</p>
+
+<h2>Electrodomésticos que reparan en Linares</h2>
+<ul>
+  <li><strong>Lavadoras:</strong> no centrifuga, no lava, pierde agua, hace ruido, no enciende.</li>
+  <li><strong>Secadoras:</strong> no calienta, no gira el tambor, corta el suministro.</li>
+  <li><strong>Heladeras y freezers:</strong> no enfría, hace ruido, pierde gas, acumula escarcha.</li>
+  <li><strong>Microondas:</strong> no calienta, no enciende, chispea, plato no gira.</li>
+  <li><strong>Lavavajillas:</strong> no lava bien, pierde agua, no drena.</li>
+  <li><strong>Televisores:</strong> pantalla sin imagen, sin sonido, backlight quemado.</li>
+  <li><strong>Cocinas y hornos:</strong> quemadores que no encienden, termostato fallado.</li>
+</ul>
+
+<h2>¿Cuánto cuesta reparar un electrodoméstico en Linares?</h2>
+<ul>
+  <li>Diagnóstico a domicilio: $10.000 – $20.000 (descontable del trabajo)</li>
+  <li>Reparación lavadora (falla común): $25.000 – $80.000</li>
+  <li>Recarga de gas heladera: $30.000 – $60.000</li>
+  <li>Reparación microondas: $20.000 – $50.000</li>
+</ul>
+<p>El costo de los repuestos se suma aparte. Un buen técnico te dice si conviene reparar o cambiar el equipo según su antigüedad y el costo de la reparación.</p>
+
+<h2>¿Conviene reparar o comprar nuevo?</h2>
+<p>Como regla general: si la reparación cuesta más del 50% del valor de un equipo nuevo equivalente, conviene reemplazarlo. Para electrodomésticos de menos de 5 años, casi siempre vale la pena reparar. Un técnico honesto te lo dice sin rodeos.</p>
+
+<h2>Consejos para elegir un buen técnico</h2>
+<ul>
+  <li>Pedí presupuesto con diagnóstico antes de autorizar la reparación</li>
+  <li>Preguntá si hay garantía en la reparación y los repuestos</li>
+  <li>Verificá reseñas en LinaresYa antes de llamar</li>
+</ul>
+
+<p>Encontrá técnicos de electrodomésticos en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos técnico en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
 ];
 
 // Helpers
