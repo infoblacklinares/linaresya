@@ -188,6 +188,9 @@ export default async function CategoriaPage({
           <Link href={`/buscar?categoria=${cat.slug}&verificado=1`} className="ue-pill whitespace-nowrap">
             Verificados
           </Link>
+          <Link href={`/buscar?categoria=${cat.slug}&orden=rating`} className="ue-pill whitespace-nowrap">
+            ★ Mejor valorados
+          </Link>
         </div>
       </header>
 

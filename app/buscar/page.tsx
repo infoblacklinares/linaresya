@@ -39,6 +39,7 @@ export default async function BuscarPage({
   const verificado = sp.verificado === "1";
   const abierto = sp.abierto === "1";
   const domicilio = sp.domicilio === "1";
+  const orden = sp.orden === "rating" ? "rating" : "relevancia";
 
   const { data: catsData } = await supabase
     .from("categorias")
@@ -122,6 +123,22 @@ export default async function BuscarPage({
     }
   }
 
+  // Ordenar por rating si se pidió (sort JS sobre los hasta 100 resultados)
+  let itemsOrdenados = [...items];
+  if (orden === "rating") {
+    itemsOrdenados.sort((a, b) => {
+      const ra = ratingsMap.get(a.id);
+      const rb = ratingsMap.get(b.id);
+      const avgA = ra && ra.count > 0 ? ra.sum / ra.count : 0;
+      const avgB = rb && rb.count > 0 ? rb.sum / rb.count : 0;
+      if (avgB !== avgA) return avgB - avgA;
+      // desempate: plan premium > verificado > nombre
+      if ((b.plan === "premium" ? 1 : 0) !== (a.plan === "premium" ? 1 : 0))
+        return (b.plan === "premium" ? 1 : 0) - (a.plan === "premium" ? 1 : 0);
+      return a.nombre.localeCompare(b.nombre, "es");
+    });
+  }
+
   // Calcular cuáles están abiertos ahora (cuando no se filtró por abierto,
   // igual mostramos el badge para que el usuario sepa el estado de cada uno)
   const allIds = items.map((n) => n.id);
@@ -149,6 +166,7 @@ export default async function BuscarPage({
     if (verificado) params.set("verificado", "1");
     if (abierto) params.set("abierto", "1");
     if (domicilio) params.set("domicilio", "1");
+    if (orden !== "relevancia") params.set("orden", orden);
     for (const [k, v] of Object.entries(changes)) {
       if (v === null) params.delete(k);
       else params.set(k, v);
@@ -248,13 +266,27 @@ export default async function BuscarPage({
       )}
 
       <section className="pt-4 pb-10">
-        <div className="px-4 mb-3 flex items-end justify-between">
+        <div className="px-4 mb-3 flex items-center justify-between gap-2">
           <p className="text-xs font-semibold text-muted-foreground">
-            {items.length} resultado{items.length === 1 ? "" : "s"}
+            {itemsOrdenados.length} resultado{itemsOrdenados.length === 1 ? "" : "s"}
           </p>
+          <div className="flex gap-1.5 shrink-0">
+            <Link
+              href={urlWith({ orden: null })}
+              className={`rounded-full text-[11px] font-semibold px-3 py-1 transition ${orden === "relevancia" ? "bg-foreground text-background" : "bg-secondary text-foreground hover:bg-muted"}`}
+            >
+              Relevancia
+            </Link>
+            <Link
+              href={urlWith({ orden: "rating" })}
+              className={`rounded-full text-[11px] font-semibold px-3 py-1 transition ${orden === "rating" ? "bg-foreground text-background" : "bg-secondary text-foreground hover:bg-muted"}`}
+            >
+              ★ Mejor valorados
+            </Link>
+          </div>
         </div>
 
-        {items.length === 0 ? (
+        {itemsOrdenados.length === 0 ? (
           <div className="mx-4 rounded-3xl border border-dashed border-border p-8 sm:p-10 text-center">
             <div className="text-5xl mb-3">{"\u{1F50D}"}</div>
             <h2 className="text-lg font-bold">
@@ -303,7 +335,7 @@ export default async function BuscarPage({
           </div>
         ) : (
           <ul className="px-4 space-y-3">
-            {items.map((n) => {
+            {itemsOrdenados.map((n) => {
               const rData = ratingsMap.get(n.id);
               const rating = rData && rData.count > 0
                 ? { avg: rData.sum / rData.count, count: rData.count }
