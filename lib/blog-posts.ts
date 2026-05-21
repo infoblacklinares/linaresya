@@ -396,6 +396,240 @@ export const posts: BlogPost[] = [
 <p>¿Tenés una ferretería o distribuidora de materiales en Linares? <a href="/publicar">Aparecé gratis en LinaresYa</a>.</p>
 `,
   },
+  // ── Artículos batch 3 ──────────────────────────────────────────────────
+  {
+    slug: "taller-mecanico-linares",
+    titulo: "Taller mecánico en Linares: dónde arreglar tu auto",
+    descripcion:
+      "Guía de talleres mecánicos en Linares, Chile. Mantenciones, frenos, suspensión, revisión técnica y mecánica general. Precios y cómo elegir bien.",
+    fecha: "2025-05-21",
+    categoria: "Automotriz",
+    emoji: "🔧",
+    keywords: [
+      "taller mecanico linares",
+      "mecanico linares",
+      "revision tecnica linares",
+      "arreglar auto linares",
+      "mantención vehiculo linares",
+    ],
+    contenido: `
+<p>Cuando el auto falla, lo último que querés es perder tiempo buscando. En Linares hay varios <strong>talleres mecánicos</strong> para mantenciones de rutina, reparaciones urgentes y revisión técnica. Acá te explicamos cómo elegir bien.</p>
+
+<h2>Tipos de talleres mecánicos en Linares</h2>
+<ul>
+  <li><strong>Talleres generales:</strong> atienden todo tipo de vehículos y marcas. Ideal para reparaciones comunes.</li>
+  <li><strong>Talleres especializados por marca:</strong> mecánicos con certificación o experiencia en marcas específicas (Toyota, Chevrolet, Kia, etc.).</li>
+  <li><strong>Vulcanizaciones:</strong> arreglo de neumáticos, pinchazos y balanceo.</li>
+  <li><strong>Talleres de hojalatería y pintura:</strong> para abolladuras, rayones y repintado.</li>
+</ul>
+
+<h2>¿Qué servicios ofrecen los talleres en Linares?</h2>
+<ul>
+  <li>Cambio de aceite y filtros (mantención básica)</li>
+  <li>Frenos: pastillas, discos y líquido de frenos</li>
+  <li>Suspensión, amortiguadores y dirección</li>
+  <li>Revisión de motor y diagnóstico computarizado</li>
+  <li>Embrague, caja de cambios y transmisión</li>
+  <li>Electricidad del vehículo: batería, alternador, arranque</li>
+  <li>Preparación para Revisión Técnica (CITV)</li>
+</ul>
+
+<h2>¿Cuánto cuesta una mantención en Linares?</h2>
+<p>Un cambio de aceite con filtro parte desde $15.000 pesos dependiendo del tipo de aceite y el vehículo. La revisión técnica (CITV) en Linares cuesta alrededor de $15.000 a $20.000. Para reparaciones mayores como cambio de embrague o frenos completos, los precios varían según el modelo del auto y los repuestos.</p>
+
+<h2>Consejos antes de llevar el auto al taller</h2>
+<ul>
+  <li>Pedí presupuesto antes de aprobar cualquier trabajo</li>
+  <li>Consultá si incluye mano de obra y repuestos o es por separado</li>
+  <li>Pedí que te muestren las piezas cambiadas cuando terminen</li>
+  <li>Si es urgencia, llamá antes para ver disponibilidad del día</li>
+</ul>
+
+<p>Encontrá talleres mecánicos en Linares con horarios actualizados en <a href="/automotriz">LinaresYa — Automotriz</a>. ¿Tenés un taller? <a href="/publicar">Publicalo gratis</a>.</p>
+`,
+  },
+  {
+    slug: "cerrajero-linares",
+    titulo: "Cerrajero en Linares: urgencias y cambio de cerraduras",
+    descripcion:
+      "¿Necesitás un cerrajero en Linares? Guía para emergencias (llave perdida, puerta trabada), cambio de cerraduras y duplicado de llaves. Precios y tips.",
+    fecha: "2025-05-21",
+    categoria: "Servicios",
+    emoji: "🔑",
+    keywords: [
+      "cerrajero linares",
+      "cerrajeria linares",
+      "llave perdida linares",
+      "cambio cerradura linares",
+      "duplicado llave linares",
+    ],
+    contenido: `
+<p>Quedarte sin llaves o con una puerta trabada es una de las situaciones más estresantes del día. Tener el número de un <strong>cerrajero de confianza en Linares</strong> puede ahorrarte horas de espera y problemas innecesarios.</p>
+
+<h2>¿Qué hace un cerrajero en Linares?</h2>
+<ul>
+  <li><strong>Apertura de emergencia:</strong> puerta trabada, llave perdida, cerradura rota</li>
+  <li><strong>Cambio de cerraduras:</strong> instalación de cerraduras nuevas o de mayor seguridad</li>
+  <li><strong>Duplicado de llaves:</strong> copias de llaves simples, de seguridad y de auto</li>
+  <li><strong>Instalación de cerrojo y pasadores</strong></li>
+  <li><strong>Cajas fuertes:</strong> apertura y cambio de combinación</li>
+  <li><strong>Cerraduras eléctricas y portones automáticos</strong></li>
+</ul>
+
+<h2>¿Hay cerrajeros de urgencia en Linares?</h2>
+<p>Sí. Algunos cerrajeros en Linares atienden urgencias fuera de horario. Si te quedaste afuera de tu casa o auto de noche, contactá directamente por WhatsApp o teléfono para ver disponibilidad inmediata. En <a href="/servicios-y-oficios">LinaresYa — Servicios</a> podés ver quién tiene atención de urgencia.</p>
+
+<h2>¿Cuánto cobra un cerrajero en Linares?</h2>
+<p>Una apertura de emergencia en horario normal parte desde los $20.000 a $40.000 pesos dependiendo del tipo de cerradura. Fuera de horario o fines de semana puede tener un recargo. El duplicado de una llave simple cuesta entre $2.000 y $5.000. Para llaves de auto con chip, el costo es mayor.</p>
+
+<h2>Cómo evitar llamar al cerrajero de urgencia</h2>
+<ul>
+  <li>Guardá siempre una copia de la llave en casa de un familiar de confianza</li>
+  <li>Revisa que la cerradura funcione bien antes de salir</li>
+  <li>Ten el número de un cerrajero guardado antes de necesitarlo</li>
+</ul>
+
+<p>¿Sos cerrajero en Linares? <a href="/publicar">Publicá tu servicio gratis en LinaresYa</a> y llegá a los vecinos que te necesitan.</p>
+`,
+  },
+  {
+    slug: "clases-particulares-linares",
+    titulo: "Clases particulares en Linares: refuerzo escolar y más",
+    descripcion:
+      "Guía de profesores y clases particulares en Linares, Chile. Refuerzo escolar, matemáticas, inglés, PSU/PAES y clases para adultos. Cómo encontrar al profe ideal.",
+    fecha: "2025-05-21",
+    categoria: "Educación",
+    emoji: "📚",
+    keywords: [
+      "clases particulares linares",
+      "profesor particular linares",
+      "refuerzo escolar linares",
+      "clases matematicas linares",
+      "clases ingles linares",
+    ],
+    contenido: `
+<p>Ya sea para reforzar matemáticas, prepararse para la PAES o aprender inglés desde cero, Linares tiene profesores y centros de <strong>clases particulares</strong> para todas las edades y necesidades.</p>
+
+<h2>¿Qué tipos de clases particulares hay en Linares?</h2>
+<ul>
+  <li><strong>Refuerzo escolar básico y medio:</strong> matemáticas, lenguaje, ciencias e historia</li>
+  <li><strong>Preparación PAES:</strong> clases focalizadas para rendir bien en la prueba de admisión universitaria</li>
+  <li><strong>Inglés:</strong> desde nivel básico hasta conversacional y business English</li>
+  <li><strong>Clases para adultos:</strong> nivelación, computación básica, office</li>
+  <li><strong>Música:</strong> guitarra, piano, canto</li>
+  <li><strong>Artes y manualidades</strong></li>
+</ul>
+
+<h2>¿Clases presenciales o online en Linares?</h2>
+<p>Muchos profesores en Linares ofrecen ambas modalidades. Las clases presenciales en el domicilio del alumno o del profesor son muy comunes. Las clases online por Zoom o Meet son útiles cuando hay poca disponibilidad de horario.</p>
+
+<h2>¿Cuánto cuestan las clases particulares en Linares?</h2>
+<p>Una hora de clases particulares en Linares varía entre $8.000 y $20.000 pesos dependiendo del nivel, la materia y la experiencia del profesor. Las clases de PAES y preparación universitaria suelen ser más caras por la especialización requerida.</p>
+
+<h2>¿Cómo elegir un buen profesor particular?</h2>
+<ul>
+  <li>Pedí referencias o reseñas de otros alumnos</li>
+  <li>Hacé una clase de prueba antes de comprometerte</li>
+  <li>Preguntá por la metodología de enseñanza</li>
+  <li>Confirmá que el horario sea compatible con las actividades del alumno</li>
+</ul>
+
+<p>Encontrá profesores y centros de clases particulares en <a href="/educacion">LinaresYa — Educación</a>. ¿Dás clases particulares en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "maestro-constructor-linares",
+    titulo: "Maestro constructor en Linares: ampliaciones y remodelaciones",
+    descripcion:
+      "¿Buscás un maestro constructor en Linares? Guía para contratar albañiles, maestros y empresas constructoras para ampliaciones, remodelaciones y obra nueva.",
+    fecha: "2025-05-21",
+    categoria: "Construcción",
+    emoji: "🏗️",
+    keywords: [
+      "maestro constructor linares",
+      "albanil linares",
+      "remodelacion linares",
+      "ampliacion casa linares",
+      "construccion linares",
+    ],
+    contenido: `
+<p>Ampliar la casa, remodelar el baño o construir desde cero: en Linares hay <strong>maestros constructores y albañiles</strong> con experiencia en todo tipo de obras. Acá te explicamos cómo encontrar al profesional correcto y qué preguntar antes de contratar.</p>
+
+<h2>¿Qué tipo de obras hacen los maestros constructores en Linares?</h2>
+<ul>
+  <li><strong>Ampliaciones:</strong> habitaciones extra, segunda planta, garage</li>
+  <li><strong>Remodelaciones:</strong> cocinas, baños, pisos, cielos y tabiques</li>
+  <li><strong>Construcción de obra nueva:</strong> casas, bodegas, galpones</li>
+  <li><strong>Terminaciones:</strong> estuco, pintura, cerámicas y revestimientos</li>
+  <li><strong>Reparaciones:</strong> filtraciones, grietas, techos y canaletas</li>
+  <li><strong>Construcción en seco:</strong> Superboard, Volcanita, estructuras metálicas</li>
+</ul>
+
+<h2>¿Cuánto cuesta una ampliación en Linares?</h2>
+<p>El costo de construcción en Linares parte aproximadamente desde $350.000 a $600.000 pesos por metro cuadrado, dependiendo de los materiales, el tipo de construcción y los terminados. Para remodelaciones de baño o cocina, los precios varían mucho según el alcance del trabajo y los materiales elegidos.</p>
+
+<h2>¿Qué preguntar antes de contratar un maestro?</h2>
+<ul>
+  <li>¿Tiene experiencia en el tipo de obra que necesitás?</li>
+  <li>¿Puede mostrar trabajos anteriores o referencias?</li>
+  <li>¿El presupuesto incluye materiales o solo mano de obra?</li>
+  <li>¿Cuánto tiempo tarda la obra? ¿Trabaja solo o con equipo?</li>
+  <li>¿Emite boleta o factura?</li>
+</ul>
+
+<h2>¿Necesito permiso de construcción en Linares?</h2>
+<p>Para ampliaciones mayores de 25 m² y obra nueva generalmente se requiere permiso de edificación en la Municipalidad de Linares. Consultá con el maestro si tiene experiencia gestionando permisos o si necesitás un arquitecto.</p>
+
+<p>Encontrá maestros constructores en <a href="/construccion-y-materiales">LinaresYa — Construcción</a>. ¿Sos maestro constructor en Linares? <a href="/publicar">Registrate gratis</a>.</p>
+`,
+  },
+  {
+    slug: "psicologo-linares",
+    titulo: "Psicólogo en Linares: salud mental y bienestar",
+    descripcion:
+      "Guía de psicólogos y centros de salud mental en Linares, Chile. Atención individual, de pareja y familiar. Precios, modalidades y cómo sacar hora.",
+    fecha: "2025-05-21",
+    categoria: "Salud",
+    emoji: "🧠",
+    keywords: [
+      "psicologo linares",
+      "salud mental linares",
+      "terapeuta linares",
+      "ansiedad depresion linares",
+      "consulta psicologica linares",
+    ],
+    contenido: `
+<p>Cuidar la salud mental es tan importante como cuidar el cuerpo. En Linares hay <strong>psicólogos y profesionales de salud mental</strong> que atienden de forma presencial y online, para personas de todas las edades.</p>
+
+<h2>¿Qué tipo de atención ofrecen los psicólogos en Linares?</h2>
+<ul>
+  <li><strong>Psicoterapia individual:</strong> ansiedad, depresión, autoestima, duelo, estrés y más</li>
+  <li><strong>Terapia de pareja:</strong> comunicación, conflictos y crisis de relación</li>
+  <li><strong>Psicología infantil y adolescente:</strong> conducta, aprendizaje y emociones</li>
+  <li><strong>Terapia familiar:</strong> dinámica familiar, límites y crisis</li>
+  <li><strong>Orientación vocacional:</strong> para jóvenes en etapa de elección de carrera</li>
+  <li><strong>Atención online:</strong> sesiones por videollamada, muy útil si tenés poco tiempo</li>
+</ul>
+
+<h2>¿Cuánto cuesta una consulta psicológica en Linares?</h2>
+<p>Una sesión de psicoterapia en Linares oscila entre $20.000 y $50.000 pesos dependiendo del profesional y la modalidad. Algunos psicólogos trabajan con Fonasa libre elección, lo que permite recuperar parte del costo. Preguntá directamente al profesional si trabaja con tu previsión.</p>
+
+<h2>¿Hay psicólogos que atienden online en Linares?</h2>
+<p>Sí. La atención online se consolidó mucho y muchos psicólogos de Linares ofrecen sesiones por Zoom, Meet o videollamada de WhatsApp. Es una opción cómoda especialmente si trabajás de día o si preferís la privacidad de tu hogar.</p>
+
+<h2>¿Cuándo buscar ayuda psicológica?</h2>
+<p>No es necesario estar en crisis para ir al psicólogo. Algunas razones comunes para buscar apoyo:</p>
+<ul>
+  <li>Tristeza, ansiedad o preocupación persistente</li>
+  <li>Dificultades en las relaciones personales o de pareja</li>
+  <li>Problemas de sueño, concentración o motivación</li>
+  <li>Duelo por pérdida de un ser querido</li>
+  <li>Situaciones de estrés laboral o familiar sostenido</li>
+</ul>
+
+<p>Encontrá psicólogos en Linares en <a href="/salud">LinaresYa — Salud</a>. ¿Sos psicólogo o terapeuta en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
 ];
 
 // Helpers
