@@ -720,6 +720,14 @@ export default async function NegocioDetalle({
           </Link>
         </p>
         <p>
+          <Link
+            href={`/qr/${categoria.slug}/${n.slug}`}
+            className="underline hover:text-foreground transition"
+          >
+            🖨️ Obtener código QR imprimible
+          </Link>
+        </p>
+        <p>
           <ReportarButton negocioId={n.id} />
         </p>
         {!n.sitio_web && (
