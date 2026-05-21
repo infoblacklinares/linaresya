@@ -106,6 +106,22 @@ export default async function BuscarPage({
 
   const items = (rows ?? []) as unknown as NegocioRow[];
 
+  // Ratings: traemos estrellas aprobadas para los resultados y agregamos en JS.
+  type ResenaRating = { negocio_id: string; estrellas: number };
+  const ratingsMap = new Map<string, { sum: number; count: number }>();
+  if (items.length > 0) {
+    const ids = items.map((n) => n.id);
+    const { data: resenasData } = await supabase
+      .from("resenas")
+      .select("negocio_id, estrellas")
+      .in("negocio_id", ids)
+      .eq("aprobada", true);
+    for (const r of ((resenasData ?? []) as ResenaRating[])) {
+      const prev = ratingsMap.get(r.negocio_id) ?? { sum: 0, count: 0 };
+      ratingsMap.set(r.negocio_id, { sum: prev.sum + r.estrellas, count: prev.count + 1 });
+    }
+  }
+
   // Calcular cuáles están abiertos ahora (cuando no se filtró por abierto,
   // igual mostramos el badge para que el usuario sepa el estado de cada uno)
   const allIds = items.map((n) => n.id);
@@ -287,11 +303,17 @@ export default async function BuscarPage({
           </div>
         ) : (
           <ul className="px-4 space-y-3">
-            {items.map((n) => (
-              <li key={n.id}>
-                <NegocioCard n={n} isOpen={resultOpenIds.includes(n.id)} />
-              </li>
-            ))}
+            {items.map((n) => {
+              const rData = ratingsMap.get(n.id);
+              const rating = rData && rData.count > 0
+                ? { avg: rData.sum / rData.count, count: rData.count }
+                : null;
+              return (
+                <li key={n.id}>
+                  <NegocioCard n={n} isOpen={resultOpenIds.includes(n.id)} rating={rating} />
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>
@@ -332,7 +354,7 @@ function ChipQuitar({ label, href }: { label: string; href: string }) {
   );
 }
 
-function NegocioCard({ n, isOpen }: { n: NegocioRow; isOpen?: boolean }) {
+function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; rating?: { avg: number; count: number } | null }) {
   const esPremium = n.plan === "premium";
   const badge = badgeAbierto(isOpen ?? false);
   const waNumber = n.whatsapp?.replace(/\D/g, "");
@@ -386,6 +408,12 @@ function NegocioCard({ n, isOpen }: { n: NegocioRow; isOpen?: boolean }) {
           <span className={`px-2 py-0.5 rounded-full font-semibold ${badge.clases}`}>
             {badge.texto}
           </span>
+          {rating && (
+            <span className="inline-flex items-center gap-0.5 font-semibold text-amber-600">
+              ★ {rating.avg.toFixed(1)}
+              <span className="text-muted-foreground font-normal">({rating.count})</span>
+            </span>
+          )}
         </div>
       </div>
 

@@ -114,6 +114,23 @@ export default async function CategoriaPage({
 
   const items = (negocios ?? []) as Negocio[];
 
+  // Ratings: traemos estrellas de reseñas aprobadas para calcular promedio en JS.
+  // Supabase JS SDK no soporta GROUP BY, así que traemos las filas y agregamos.
+  type ResenaRating = { negocio_id: string; estrellas: number };
+  let ratingsMap = new Map<string, { sum: number; count: number }>();
+  if (items.length > 0) {
+    const ids = items.map((n) => n.id);
+    const { data: resenasData } = await supabase
+      .from("resenas")
+      .select("negocio_id, estrellas")
+      .in("negocio_id", ids)
+      .eq("aprobada", true);
+    for (const r of ((resenasData ?? []) as ResenaRating[])) {
+      const prev = ratingsMap.get(r.negocio_id) ?? { sum: 0, count: 0 };
+      ratingsMap.set(r.negocio_id, { sum: prev.sum + r.estrellas, count: prev.count + 1 });
+    }
+  }
+
   // Abierto Ahora: consultamos horarios para todos los negocios de la categoría.
   const openIds = await getOpenIds(items.map((n) => n.id));
 
@@ -185,11 +202,17 @@ export default async function CategoriaPage({
           <EmptyState emoji={cat.emoji} nombre={cat.nombre} />
         ) : (
           <ul className="px-4 space-y-3">
-            {items.map((n) => (
-              <li key={n.id}>
-                <NegocioCard n={n} categoriaSlug={cat.slug} isOpen={estaAbierto(n.id, openIds)} />
-              </li>
-            ))}
+            {items.map((n) => {
+              const rData = ratingsMap.get(n.id);
+              const rating = rData && rData.count > 0
+                ? { avg: rData.sum / rData.count, count: rData.count }
+                : null;
+              return (
+                <li key={n.id}>
+                  <NegocioCard n={n} categoriaSlug={cat.slug} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>
@@ -201,10 +224,12 @@ function NegocioCard({
   n,
   categoriaSlug,
   isOpen,
+  rating,
 }: {
   n: Negocio;
   categoriaSlug: string;
   isOpen: boolean;
+  rating?: { avg: number; count: number } | null;
 }) {
   const esPremium = n.plan === "premium";
   const waNumber = n.whatsapp?.replace(/\D/g, "");
@@ -255,6 +280,12 @@ function NegocioCard({
           {n.a_domicilio && (
             <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
               A domicilio
+            </span>
+          )}
+          {rating && (
+            <span className="inline-flex items-center gap-0.5 font-semibold text-amber-600">
+              ★ {rating.avg.toFixed(1)}
+              <span className="text-muted-foreground font-normal">({rating.count})</span>
             </span>
           )}
           {n.direccion && (
