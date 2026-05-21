@@ -50,43 +50,6 @@ export const posts: BlogPost[] = [
 `,
   },
   {
-    slug: "gasfiter-linares",
-    titulo: "Gasfíter en Linares: cómo encontrar uno de confianza",
-    descripcion:
-      "¿Necesitás un gasfíter en Linares? Te explicamos cómo encontrar un profesional de confianza, qué preguntar y cuánto cobran en la zona.",
-    fecha: "2025-05-10",
-    categoria: "Servicios",
-    emoji: "🔧",
-    keywords: ["gasfiter linares", "gasfíter linares", "plomero linares", "arreglo cañerías linares"],
-    contenido: `
-<p>Una cañería rota, una llave que gotea o una instalación de calefón: cuando necesitás un <strong>gasfíter en Linares</strong>, la urgencia no da tiempo para andar buscando. Acá te contamos cómo encontrar uno rápido y de confianza.</p>
-
-<h2>¿Cómo encontrar un gasfíter de confianza en Linares?</h2>
-<p>Lo más importante es confirmar que el profesional tenga experiencia en el tipo de trabajo que necesitás. Hay gasfíteres especializados en:</p>
-<ul>
-  <li>Instalación y reparación de calefones y termos</li>
-  <li>Arreglo de cañerías y desatascado de cañerías</li>
-  <li>Instalación de riego y sistemas de agua</li>
-  <li>Gas natural y gas licuado (instalaciones y reparaciones)</li>
-</ul>
-
-<h2>¿Cuánto cobra un gasfíter en Linares?</h2>
-<p>Los precios varían según el tipo de trabajo. Una visita básica para diagnosticar y arreglar una llave puede estar entre $15.000 y $30.000 pesos. Trabajos mayores como cambio de cañerías o instalación de calefón se cotizan aparte, generalmente entre $40.000 y $100.000 dependiendo del material y las horas.</p>
-
-<h2>¿Hay gasfíteres de urgencia en Linares?</h2>
-<p>Sí. Algunos gasfíteres en Linares atienden urgencias fuera de horario normal. En <a href="/servicios-y-oficios">LinaresYa — Servicios y Oficios</a> podés ver el horario de cada profesional y contactarlos directamente por WhatsApp o teléfono.</p>
-
-<h2>Consejos antes de contratar</h2>
-<ul>
-  <li>Pedí un presupuesto antes de que empiece el trabajo</li>
-  <li>Consultá si el precio incluye materiales o solo mano de obra</li>
-  <li>Confirmá disponibilidad de horario para la urgencia</li>
-</ul>
-
-<p>¿Sos gasfíter en Linares y querés que los vecinos te encuentren? <a href="/publicar">Aparecé gratis en LinaresYa</a>.</p>
-`,
-  },
-  {
     slug: "veterinarias-linares",
     titulo: "Veterinarias en Linares: atención para tu mascota",
     descripcion:
@@ -157,42 +120,6 @@ export const posts: BlogPost[] = [
 <p>¿Tenés un almacén o minimarket? <a href="/publicar">Publicá gratis en LinaresYa</a> para que tus vecinos te encuentren.</p>
 `,
   },
-  {
-    slug: "electricista-linares",
-    titulo: "Electricista en Linares: instalaciones y urgencias",
-    descripcion:
-      "¿Necesitás un electricista en Linares? Guía para encontrar un profesional certificado para instalaciones, reparaciones y urgencias eléctricas.",
-    fecha: "2025-04-20",
-    categoria: "Servicios",
-    emoji: "⚡",
-    keywords: ["electricista linares", "electricista certificado linares", "instalacion electrica linares", "corte de luz linares"],
-    contenido: `
-<p>Desde una instalación nueva hasta un cortocircuito de urgencia, tener un <strong>electricista de confianza en Linares</strong> es esencial. Acá te explicamos cómo encontrar al profesional correcto.</p>
-
-<h2>¿Qué hace un electricista en Linares?</h2>
-<p>Los electricistas en Linares pueden ayudarte con:</p>
-<ul>
-  <li>Instalaciones eléctricas nuevas (casas, locales, oficinas)</li>
-  <li>Ampliación de tableros eléctricos</li>
-  <li>Reparación de enchufes, interruptores y luminarias</li>
-  <li>Instalación de calefacción eléctrica</li>
-  <li>Certificaciones eléctricas para arriendo o venta de propiedades</li>
-  <li>Urgencias: cortocircuitos, cables pelados, sobrecargas</li>
-</ul>
-
-<h2>¿El electricista tiene que ser certificado?</h2>
-<p>Para instalaciones que quedan registradas (como empalmes o instalaciones nuevas), la ley chilena exige que el electricista sea <strong>instalador autorizado por la SEC</strong>. Para trabajos menores de mantenimiento no siempre es obligatorio, pero se recomienda igual.</p>
-
-<h2>¿Cuánto cobra un electricista en Linares?</h2>
-<p>Una visita básica parte desde los $15.000 pesos más materiales. Instalaciones más complejas como nuevos tableros o ampliaciones se cotizan según el trabajo específico. Siempre pedí presupuesto antes.</p>
-
-<h2>¿Hay electricistas de urgencia en Linares?</h2>
-<p>Sí. Algunos electricistas en Linares atienden urgencias fuera de horario. En <a href="/servicios-y-oficios">LinaresYa — Servicios y Oficios</a> podés ver quién tiene disponibilidad y contactarlos directamente por WhatsApp.</p>
-
-<p>¿Sos electricista en Linares? <a href="/publicar">Aparecé gratis en LinaresYa</a> y llegá a más clientes en tu zona.</p>
-`,
-  },
-  // ── Artículos adicionales ──────────────────────────────────────────────
   {
     slug: "peluquerias-barberias-linares",
     titulo: "Peluquerías y barberías en Linares: dónde cortarte el pelo",
@@ -446,50 +373,6 @@ export const posts: BlogPost[] = [
 </ul>
 
 <p>Encontrá talleres mecánicos en Linares con horarios actualizados en <a href="/automotriz">LinaresYa — Automotriz</a>. ¿Tenés un taller? <a href="/publicar">Publicalo gratis</a>.</p>
-`,
-  },
-  {
-    slug: "cerrajero-linares",
-    titulo: "Cerrajero en Linares: urgencias y cambio de cerraduras",
-    descripcion:
-      "¿Necesitás un cerrajero en Linares? Guía para emergencias (llave perdida, puerta trabada), cambio de cerraduras y duplicado de llaves. Precios y tips.",
-    fecha: "2025-05-21",
-    categoria: "Servicios",
-    emoji: "🔑",
-    keywords: [
-      "cerrajero linares",
-      "cerrajeria linares",
-      "llave perdida linares",
-      "cambio cerradura linares",
-      "duplicado llave linares",
-    ],
-    contenido: `
-<p>Quedarte sin llaves o con una puerta trabada es una de las situaciones más estresantes del día. Tener el número de un <strong>cerrajero de confianza en Linares</strong> puede ahorrarte horas de espera y problemas innecesarios.</p>
-
-<h2>¿Qué hace un cerrajero en Linares?</h2>
-<ul>
-  <li><strong>Apertura de emergencia:</strong> puerta trabada, llave perdida, cerradura rota</li>
-  <li><strong>Cambio de cerraduras:</strong> instalación de cerraduras nuevas o de mayor seguridad</li>
-  <li><strong>Duplicado de llaves:</strong> copias de llaves simples, de seguridad y de auto</li>
-  <li><strong>Instalación de cerrojo y pasadores</strong></li>
-  <li><strong>Cajas fuertes:</strong> apertura y cambio de combinación</li>
-  <li><strong>Cerraduras eléctricas y portones automáticos</strong></li>
-</ul>
-
-<h2>¿Hay cerrajeros de urgencia en Linares?</h2>
-<p>Sí. Algunos cerrajeros en Linares atienden urgencias fuera de horario. Si te quedaste afuera de tu casa o auto de noche, contactá directamente por WhatsApp o teléfono para ver disponibilidad inmediata. En <a href="/servicios-y-oficios">LinaresYa — Servicios</a> podés ver quién tiene atención de urgencia.</p>
-
-<h2>¿Cuánto cobra un cerrajero en Linares?</h2>
-<p>Una apertura de emergencia en horario normal parte desde los $20.000 a $40.000 pesos dependiendo del tipo de cerradura. Fuera de horario o fines de semana puede tener un recargo. El duplicado de una llave simple cuesta entre $2.000 y $5.000. Para llaves de auto con chip, el costo es mayor.</p>
-
-<h2>Cómo evitar llamar al cerrajero de urgencia</h2>
-<ul>
-  <li>Guardá siempre una copia de la llave en casa de un familiar de confianza</li>
-  <li>Revisa que la cerradura funcione bien antes de salir</li>
-  <li>Ten el número de un cerrajero guardado antes de necesitarlo</li>
-</ul>
-
-<p>¿Sos cerrajero en Linares? <a href="/publicar">Publicá tu servicio gratis en LinaresYa</a> y llegá a los vecinos que te necesitan.</p>
 `,
   },
   {
@@ -1349,6 +1232,489 @@ export const posts: BlogPost[] = [
 </ul>
 
 <p>Encontrá técnicos de electrodomésticos en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos técnico en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
+
+  // ── Artículos batch 7 ──────────────────────────────────────────────────
+  {
+    slug: "farmacia-linares",
+    titulo: "Farmacias en Linares: horarios, turno y delivery de medicamentos",
+    descripcion:
+      "Guía de farmacias en Linares, Chile. Horarios, farmacia de turno, delivery a domicilio y dónde encontrar medicamentos de difícil acceso en la ciudad.",
+    fecha: "2025-05-21",
+    categoria: "Salud",
+    emoji: "💊",
+    keywords: [
+      "farmacia linares",
+      "farmacia de turno linares",
+      "farmacia linares chile",
+      "delivery medicamentos linares",
+      "farmacia abierta linares",
+    ],
+    contenido: `
+<p>En Linares hay farmacias de las cadenas más conocidas y locales independientes. Saber cuál está de turno, qué horario tiene y si hace delivery puede ahorrate tiempo y estrés, especialmente en urgencias nocturnas.</p>
+
+<h2>Cadenas de farmacia presentes en Linares</h2>
+<ul>
+  <li><strong>Cruz Verde:</strong> con varias sucursales en el centro y barrios.</li>
+  <li><strong>Salcobrand:</strong> presente en la ciudad con atención extendida.</li>
+  <li><strong>Ahumada:</strong> otra cadena con presencia en Linares.</li>
+  <li><strong>Farmacias independientes:</strong> farmacias de barrio con atención personalizada y precios competitivos.</li>
+</ul>
+
+<h2>¿Cómo saber qué farmacia está de turno en Linares?</h2>
+<ul>
+  <li>Revisá la web del <strong>Seremi de Salud del Maule</strong> donde publican el turno semanal.</li>
+  <li>Llamá al número de información del municipio de Linares.</li>
+  <li>Las farmacias de turno deben atender las 24 horas aunque tengan horario normal reducido.</li>
+</ul>
+
+<h2>Delivery de medicamentos en Linares</h2>
+<p>Varias farmacias en Linares ofrecen despacho a domicilio, especialmente para adultos mayores o personas con movilidad reducida. Algunas cadenas tienen app propia o despachan a través de plataformas de delivery locales. Consultá directamente con la farmacia de tu preferencia.</p>
+
+<h2>Medicamentos de difícil acceso</h2>
+<p>Para medicamentos de alto costo o de baja venta, el Hospital de Linares y el CESFAM distribuyen ciertos medicamentos con receta médica a través del sistema FONASA. También existen farmacias magistrales que preparan medicamentos a medida.</p>
+
+<p>Encontrá farmacias en Linares en <a href="/farmacias">LinaresYa — Farmacias</a>. ¿Tenés farmacia en Linares? <a href="/publicar">Aparecé en el directorio gratis</a>.</p>
+`,
+  },
+  {
+    slug: "gimnasio-fitness-linares",
+    titulo: "Gimnasios en Linares: fitness, musculación y clases grupales",
+    descripcion:
+      "Encuentra gimnasios en Linares, Chile. Musculación, clases de aeróbica, yoga, spinning, crossfit y entrenamiento personal. Precios y horarios.",
+    fecha: "2025-05-21",
+    categoria: "Deportes y Fitness",
+    emoji: "🏋️",
+    keywords: [
+      "gimnasio linares",
+      "gimnasio linares chile",
+      "fitness linares",
+      "crossfit linares",
+      "entrenamiento personal linares",
+    ],
+    contenido: `
+<p>Mantener una rutina de ejercicios es más fácil con un buen gimnasio cerca. En Linares hay <strong>gimnasios</strong> para todos los niveles: desde principiantes hasta deportistas avanzados, con máquinas, pesas libres y clases grupales.</p>
+
+<h2>¿Qué servicios ofrecen los gimnasios en Linares?</h2>
+<ul>
+  <li><strong>Sala de musculación:</strong> máquinas cardiovasculares, pesas libres, multiestaciones.</li>
+  <li><strong>Clases grupales:</strong> aeróbica, step, zumba, yoga, pilates, spinning.</li>
+  <li><strong>CrossFit y funcional:</strong> entrenamiento de alta intensidad con coaching.</li>
+  <li><strong>Entrenamiento personal:</strong> rutinas individualizadas con un trainer dedicado.</li>
+  <li><strong>Box de boxeo y artes marciales:</strong> algunos gimnasios incluyen estas disciplinas.</li>
+</ul>
+
+<h2>¿Cuánto cuesta el gimnasio en Linares?</h2>
+<ul>
+  <li>Mensualidad básica (sala): $20.000 – $40.000/mes</li>
+  <li>Con clases grupales incluidas: $25.000 – $55.000/mes</li>
+  <li>Entrenamiento personal (por sesión): $15.000 – $30.000</li>
+  <li>Inscripción o matrícula: $5.000 – $15.000 (algunos la cobran, otros no)</li>
+</ul>
+
+<h2>Tips para elegir tu gimnasio en Linares</h2>
+<ul>
+  <li>Pedí una clase de prueba gratis antes de matricularte</li>
+  <li>Verificá el horario: que se adapte a tu trabajo o estudio</li>
+  <li>Fijate si está limpio y tiene buena ventilación</li>
+  <li>Preguntá si hay descuentos por pago trimestral o anual</li>
+  <li>Para principiantes, un gimnasio con orientación inicial gratuita hace la diferencia</li>
+</ul>
+
+<h2>Mejor época para empezar en el gimnasio</h2>
+<p>Cualquier momento es bueno, pero marzo (vuelta a la rutina) y agosto-septiembre (primavera) son los momentos más populares. En enero y julio suelen haber promociones especiales en muchos gimnasios de Linares.</p>
+
+<p>Encontrá gimnasios en Linares en <a href="/deportes-y-fitness">LinaresYa — Deportes y Fitness</a>. ¿Tenés gimnasio en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "cafeteria-linares",
+    titulo: "Cafeterías en Linares: café de especialidad, desayunos y brunches",
+    descripcion:
+      "Descubre las mejores cafeterías en Linares, Chile. Café de especialidad, desayunos, brunches, pasteles y ambientes acogedores para trabajar o reunirse.",
+    fecha: "2025-05-21",
+    categoria: "Restaurantes y Cafeterías",
+    emoji: "☕",
+    keywords: [
+      "cafeteria linares",
+      "cafe linares",
+      "cafe de especialidad linares",
+      "desayuno linares",
+      "brunch linares",
+    ],
+    contenido: `
+<p>Linares tiene una escena cafetera creciente: desde las tradicionales fuentes de soda hasta cafeterías modernas con café de especialidad, desayunos elaborados y espacios para trabajar con buena conexión wifi.</p>
+
+<h2>¿Qué encontrás en las cafeterías de Linares?</h2>
+<ul>
+  <li><strong>Café de especialidad:</strong> espresso, americano, cortado, cappuccino con granos de origen seleccionado.</li>
+  <li><strong>Desayunos completos:</strong> tostadas, huevos revueltos, jugo natural, fruta.</li>
+  <li><strong>Brunch de fin de semana:</strong> en algunos locales con menú especial de sábado y domingo.</li>
+  <li><strong>Pasteles y tortas:</strong> muchas cafeterías tienen producción propia artesanal.</li>
+  <li><strong>Bebidas frías:</strong> cold brew, frappé, smoothies para el verano linarense.</li>
+</ul>
+
+<h2>Ambiente de trabajo en cafeterías de Linares</h2>
+<p>Si trabajás de forma remota o estudiás, buscá cafeterías con wifi estable, tomas de corriente y mesas amplias. Cada vez más locales en Linares están adaptados para el trabajo nómade y las reuniones informales.</p>
+
+<h2>¿Cuánto cuesta un café en Linares?</h2>
+<ul>
+  <li>Café en grano / espresso: $1.500 – $3.500</li>
+  <li>Cappuccino o latte: $2.000 – $4.500</li>
+  <li>Desayuno completo: $5.000 – $12.000</li>
+  <li>Trozo de torta + café: $4.000 – $8.000</li>
+</ul>
+
+<h2>Cafeterías para llevar (take away)</h2>
+<p>Varios locales en el centro de Linares ofrecen café para llevar, ideal para los que van camino al trabajo. Pedí tu café con anticipación por WhatsApp o aparecé directamente — el servicio suele ser rápido.</p>
+
+<p>Encontrá cafeterías en Linares en <a href="/restaurantes-y-cafeterias">LinaresYa — Restaurantes y Cafeterías</a>. ¿Tenés una cafetería en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "panaderia-pasteleria-linares",
+    titulo: "Panaderías y pastelerías en Linares: pan fresco y tortas artesanales",
+    descripcion:
+      "Encuentra panaderías y pastelerías en Linares, Chile. Pan fresco, tortas para cumpleaños, pasteles artesanales, marraquetas y especialidades locales.",
+    fecha: "2025-05-21",
+    categoria: "Gastronomía",
+    emoji: "🥐",
+    keywords: [
+      "panaderia linares",
+      "pasteleria linares",
+      "tortas linares",
+      "pan fresco linares",
+      "torta de cumpleanos linares",
+    ],
+    contenido: `
+<p>El pan recién horneado y una buena torta artesanal son parte del alma de Linares. La ciudad tiene panaderías tradicionales y pastelerías modernas que elaboran desde marraquetas y hallullas hasta tortas de diseño y alfajores caseros.</p>
+
+<h2>¿Qué encontrás en las panaderías de Linares?</h2>
+<ul>
+  <li><strong>Pan de diario:</strong> marraqueta, hallulla, pan de molde, pan integral, baguette.</li>
+  <li><strong>Empanadas:</strong> de pino, queso, camarones, palta. Las de horno son las reinas del fin de semana.</li>
+  <li><strong>Facturas y masas dulces:</strong> berlín, media luna, sopaipillas, churros.</li>
+  <li><strong>Pan de calidad artesanal:</strong> con levadura madre, centeno, multicereal.</li>
+</ul>
+
+<h2>Pastelerías en Linares: tortas y encargos</h2>
+<ul>
+  <li><strong>Tortas de cumpleaños:</strong> con decoración personalizada, diseño temático, cubierta de fondant o buttercream.</li>
+  <li><strong>Tortas de matrimonio:</strong> de varios pisos, con flores naturales o de azúcar.</li>
+  <li><strong>Postres individuales:</strong> éclairs, tartaletas, cheesecake, pie de limón.</li>
+  <li><strong>Cajas de pasteles:</strong> para reuniones, cumpleaños de empresa o regalos.</li>
+</ul>
+
+<h2>¿Cuánto cuesta una torta en Linares?</h2>
+<ul>
+  <li>Torta simple (20-25 porciones): $25.000 – $60.000</li>
+  <li>Torta decorada con fondant: $60.000 – $150.000</li>
+  <li>Torta de matrimonio (por piso): $40.000 – $100.000 por nivel</li>
+  <li>Docena de pasteles variados: $15.000 – $35.000</li>
+</ul>
+
+<h2>¿Cómo pedir una torta a medida en Linares?</h2>
+<p>Contactá a la pastelería con al menos una semana de anticipación (dos para fechas especiales como matrimonios o 15 años). Llevá una foto de referencia del diseño, confirmá el sabor y el número de porciones, y dejá un adelanto para reservar la fecha.</p>
+
+<p>Encontrá panaderías y pastelerías en Linares en <a href="/gastronomia">LinaresYa — Gastronomía</a>. ¿Tenés panadería o pastelería en Linares? <a href="/publicar">Publicala gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "limpieza-del-hogar-linares",
+    titulo: "Servicio de limpieza del hogar en Linares: domésticas y empresas",
+    descripcion:
+      "Encuentra servicios de limpieza del hogar en Linares, Chile. Aseo doméstico, limpieza profunda, empresas de aseo y damas de compañía. Precios y consejos.",
+    fecha: "2025-05-21",
+    categoria: "Servicios del hogar",
+    emoji: "🧹",
+    keywords: [
+      "limpieza del hogar linares",
+      "servicio de aseo linares",
+      "empresa de limpieza linares",
+      "asesora del hogar linares",
+      "limpieza profunda linares",
+    ],
+    contenido: `
+<p>Mantener la casa limpia cuando el tiempo no alcanza es posible con un buen servicio de limpieza en Linares. Hay opciones para aseo regular, limpieza profunda por única vez, y empresas de aseo para oficinas y locales comerciales.</p>
+
+<h2>¿Qué tipo de servicio de limpieza hay en Linares?</h2>
+<ul>
+  <li><strong>Aseo doméstico regular:</strong> limpieza semanal o quincenal de la casa, baños, cocina, pisos.</li>
+  <li><strong>Limpieza profunda:</strong> para casas que llevan tiempo sin limpiar a fondo, post-obra o cambio de arrendatario.</li>
+  <li><strong>Aseo de oficinas y locales:</strong> empresas especializadas con horario fuera del trabajo.</li>
+  <li><strong>Limpieza de fin de arrendamiento:</strong> para dejar la propiedad en condiciones para el próximo inquilino.</li>
+  <li><strong>Asistente del hogar (puertas afuera):</strong> apoyo en días puntuales sin relación laboral fija.</li>
+</ul>
+
+<h2>¿Cuánto cobran los servicios de limpieza en Linares?</h2>
+<ul>
+  <li>Aseo regular (casa 3 dormitorios, 4 horas): $20.000 – $40.000</li>
+  <li>Limpieza profunda (casa completa): $60.000 – $120.000</li>
+  <li>Aseo de oficina (mensual): desde $50.000/mes según superficie</li>
+  <li>Lavado de ventanas: $15.000 – $50.000 según cantidad</li>
+</ul>
+
+<h2>¿Puertas adentro o puertas afuera?</h2>
+<p>Contratar a alguien puertas adentro implica una relación laboral formal con contrato, cotizaciones previsionales y todos los derechos laborales. Para aseos puntuales o semanales, el servicio puertas afuera (boleta de honorarios) es la modalidad más común en Linares.</p>
+
+<h2>Consejos de seguridad</h2>
+<ul>
+  <li>Pedí referencias o revisá reseñas antes de contratar</li>
+  <li>Si es la primera vez, quedá en la casa durante el servicio</li>
+  <li>Guardá objetos de valor durante el aseo</li>
+  <li>Definí claramente qué incluye el servicio para evitar malentendidos</li>
+</ul>
+
+<p>Encontrá servicios de limpieza del hogar en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Ofrecés limpieza en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+`,
+  },
+  {
+    slug: "reparacion-celulares-linares",
+    titulo: "Reparación de celulares en Linares: pantalla, batería y más",
+    descripcion:
+      "Encuentra técnicos en reparación de celulares en Linares, Chile. Cambio de pantalla, batería, cámara, conector y recuperación de datos. Todos los modelos.",
+    fecha: "2025-05-21",
+    categoria: "Tecnología",
+    emoji: "📱",
+    keywords: [
+      "reparacion celulares linares",
+      "cambio pantalla celular linares",
+      "tecnico celulares linares",
+      "reparacion iphone linares",
+      "reparacion samsung linares",
+    ],
+    contenido: `
+<p>Una pantalla rota o una batería que no dura son las fallas más comunes en celulares. En Linares hay <strong>técnicos especializados en reparación de smartphones</strong> que pueden dejarte el equipo como nuevo en pocas horas.</p>
+
+<h2>¿Qué reparan los técnicos de celulares en Linares?</h2>
+<ul>
+  <li><strong>Cambio de pantalla:</strong> la reparación más solicitada. Compatible con iPhone, Samsung, Motorola, Xiaomi y más.</li>
+  <li><strong>Cambio de batería:</strong> cuando el celular dura poco o se apaga solo.</li>
+  <li><strong>Conector de carga:</strong> USB-C, micro-USB o Lightning dañados.</li>
+  <li><strong>Cámara:</strong> cambio de módulo de cámara trasera o frontal.</li>
+  <li><strong>Botones y altavoz:</strong> reparación de componentes físicos.</li>
+  <li><strong>Recuperación de datos:</strong> para equipos con pantalla rota o que no encienden.</li>
+  <li><strong>Celulares mojados:</strong> limpieza con ultrasonido y reparación de daño por líquidos.</li>
+</ul>
+
+<h2>¿Cuánto cuesta reparar un celular en Linares?</html>
+<ul>
+  <li>Cambio de pantalla (Android gama media): $30.000 – $70.000</li>
+  <li>Cambio de pantalla iPhone (según modelo): $60.000 – $200.000</li>
+  <li>Cambio de batería: $15.000 – $40.000</li>
+  <li>Reparación de conector de carga: $15.000 – $35.000</li>
+</ul>
+<p>Los precios varían mucho según el modelo y si el repuesto es original o compatible.</p>
+
+<h2>¿Original o compatible?</h2>
+<p>Los repuestos originales (OEM) tienen mejor calidad pero cuestan más. Los compatibles son funcionales y significativamente más baratos. Pedile al técnico que te explique la diferencia y decidí según tu presupuesto y cuánto tiempo pensás usar el equipo.</p>
+
+<h2>Consejos antes de llevar tu celular a reparar</h2>
+<ul>
+  <li>Hacé un backup de la información antes de entregarlo</li>
+  <li>Pedí presupuesto por escrito con detalle del repuesto que se va a usar</li>
+  <li>Preguntá cuánto tiempo demora la reparación</li>
+  <li>Verificá si dan garantía (lo estándar es 30-90 días)</li>
+</ul>
+
+<p>Encontrá técnicos de celulares en Linares en <a href="/tecnologia">LinaresYa — Tecnología</a>. ¿Reparás celulares en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "hotel-hospedaje-linares",
+    titulo: "Hoteles y hospedajes en Linares: dónde alojarse en la ciudad",
+    descripcion:
+      "Guía de hoteles, hostales y hospedajes en Linares, Chile. Opciones para visitantes, viajeros de negocios y turistas que recorren el Maule.",
+    fecha: "2025-05-21",
+    categoria: "Alojamiento",
+    emoji: "🏨",
+    keywords: [
+      "hotel linares",
+      "hospedaje linares",
+      "hostal linares",
+      "alojamiento linares chile",
+      "hotel linares maule",
+    ],
+    contenido: `
+<p>Linares recibe visitantes por negocios, turismo regional y trámites. La ciudad cuenta con una oferta de <strong>hoteles, hostales y hospedajes</strong> que cubre desde opciones económicas hasta alojamientos más cómodos para estadías prolongadas.</p>
+
+<h2>Tipos de alojamiento en Linares</h2>
+<ul>
+  <li><strong>Hoteles:</strong> con servicio completo, recepción, desayuno incluido y habitaciones con baño privado.</li>
+  <li><strong>Hostales y residenciales:</strong> opción más económica, ideal para viajeros individuales o de paso.</li>
+  <li><strong>Departamentos amoblados:</strong> para estadías semanales o mensuales, populares entre personas que vienen por trabajo.</li>
+  <li><strong>Cabañas rurales:</strong> en las afueras de Linares, para quienes buscan tranquilidad y contacto con la naturaleza del Maule.</li>
+</ul>
+
+<h2>¿Cuánto cuesta alojarse en Linares?</h2>
+<ul>
+  <li>Hostal o residencial (habitación simple): $15.000 – $35.000/noche</li>
+  <li>Hotel (habitación doble): $40.000 – $80.000/noche</li>
+  <li>Departamento amoblado (mensual): $350.000 – $600.000/mes</li>
+  <li>Cabaña rural: $50.000 – $120.000/noche</li>
+</ul>
+
+<h2>¿Qué hacer mientras estás en Linares?</h2>
+<p>Aprovechá la estadía para conocer la Plaza de Armas, el Mercado Municipal, y explorar los alrededores: el río Achibueno, los viñedos del Valle del Maule, las termas de Panimávida y la ciudad de Talca (a 50 km).</p>
+
+<h2>Consejos para reservar alojamiento en Linares</h2>
+<ul>
+  <li>En ferias y eventos locales (Fiesta del Campesino, vendimia) el alojamiento se llena rápido — reservá con anticipación</li>
+  <li>Para estadías largas, consultá directamente al hospedaje por tarifas mensuales con descuento</li>
+  <li>Verificá si incluye estacionamiento, wifi y desayuno antes de reservar</li>
+</ul>
+
+<p>Encontrá hoteles y hospedajes en Linares en <a href="/alojamiento">LinaresYa — Alojamiento</a>. ¿Tenés hotel o hospedaje en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "guarderia-jardin-infantil-linares",
+    titulo: "Guarderías y jardines infantiles en Linares: opciones para tu hijo",
+    descripcion:
+      "Encuentra guarderías, jardines infantiles y salas cuna en Linares, Chile. JUNJI, INTEGRA, privados y nanas a domicilio para el cuidado de niños.",
+    fecha: "2025-05-21",
+    categoria: "Educación",
+    emoji: "👶",
+    keywords: [
+      "guarderia linares",
+      "jardin infantil linares",
+      "sala cuna linares",
+      "cuidado de niños linares",
+      "nana linares",
+    ],
+    contenido: `
+<p>Encontrar un lugar seguro y estimulante para los más pequeños de la casa es una prioridad para las familias de Linares. La ciudad cuenta con jardines infantiles de red pública y privados, además de opciones a domicilio para bebés y niños pequeños.</p>
+
+<h2>Tipos de cuidado infantil en Linares</h2>
+<ul>
+  <li><strong>Jardines JUNJI:</strong> red pública gratuita con salas cuna y jardines infantiles. Se postula según vacantes y prioridad social.</li>
+  <li><strong>Jardines INTEGRA:</strong> otra red pública, con una propuesta pedagógica reconocida. También gratuitos y por postulación.</li>
+  <li><strong>Jardines privados:</strong> con cupos más accesibles, horarios extendidos y proyectos educativos propios. Con y sin financiamiento estatal.</li>
+  <li><strong>Nanas o cuidadoras a domicilio:</strong> para niños muy pequeños o cuando los jardines no tienen cupo.</li>
+</ul>
+
+<h2>¿Cuánto cuesta un jardín infantil privado en Linares?</h2>
+<ul>
+  <li>Mensualidad jardín privado (jornada completa): $80.000 – $180.000</li>
+  <li>Matrícula anual: $30.000 – $80.000</li>
+  <li>Nana a domicilio (jornada parcial): $200.000 – $350.000/mes</li>
+  <li>JUNJI e INTEGRA: gratuitos (con priorización según situación familiar)</li>
+</ul>
+
+<h2>¿Cómo postular a JUNJI en Linares?</h2>
+<p>La postulación a jardines JUNJI e INTEGRA se hace a través del sitio web oficial de cada institución o directamente en la dirección regional de Linares. La priorización considera el nivel socioeconómico de la familia, hijos de madres o padres que trabajan, y situaciones de vulnerabilidad.</p>
+
+<h2>¿Qué mirar al visitar un jardín infantil?</h2>
+<ul>
+  <li>Seguridad del espacio físico (rejas, salidas de emergencia)</li>
+  <li>Ratio niños por educadora (menos niños por adulto = mejor atención)</li>
+  <li>Proyecto pedagógico y actividades que ofrecen</li>
+  <li>Comunicación con los padres (fotos, informes, reuniones)</li>
+  <li>Reseñas de otras familias en LinaresYa</li>
+</ul>
+
+<p>Encontrá jardines infantiles y guarderías en Linares en <a href="/educacion">LinaresYa — Educación</a>. ¿Tenés jardín infantil en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "peluqueria-canina-linares",
+    titulo: "Peluquería canina en Linares: baño, corte y cuidado de mascotas",
+    descripcion:
+      "Encuentra peluquerías caninas en Linares, Chile. Baño, corte de pelo, corte de uñas y tratamientos para perros y gatos. Servicio a domicilio disponible.",
+    fecha: "2025-05-21",
+    categoria: "Mascotas",
+    emoji: "🐶",
+    keywords: [
+      "peluqueria canina linares",
+      "baño mascotas linares",
+      "corte pelo perro linares",
+      "grooming linares",
+      "peluqueria perros linares",
+    ],
+    contenido: `
+<p>El cuidado estético de los perros y gatos va más allá de la apariencia: el baño regular, el corte de uñas y el cepillado son parte de la salud de la mascota. En Linares hay <strong>peluquerías caninas</strong> y servicios de grooming para todo tipo de razas.</p>
+
+<h2>¿Qué servicios incluye una peluquería canina en Linares?</h2>
+<ul>
+  <li><strong>Baño y secado:</strong> con champú especial según tipo de pelo. Incluye desodorización.</li>
+  <li><strong>Corte de pelo:</strong> corte de raza o a gusto del dueño.</li>
+  <li><strong>Corte de uñas:</strong> fundamental para la postura y salud de las patas.</li>
+  <li><strong>Limpieza de oídos:</strong> previene infecciones.</li>
+  <li><strong>Cepillado anti-enredos:</strong> especialmente para razas de pelo largo.</li>
+  <li><strong>Tratamientos:</strong> antipulgas, hidratación del pelo, aplicación de productos especiales.</li>
+  <li><strong>Servicio a domicilio:</strong> algunos groomers en Linares van con su equipo a tu casa.</li>
+</ul>
+
+<h2>¿Cuánto cuesta la peluquería canina en Linares?</h2>
+<p>Los precios dependen del tamaño de la mascota y el servicio:</p>
+<ul>
+  <li>Baño + secado (perro pequeño): $15.000 – $25.000</li>
+  <li>Baño + corte (perro mediano): $25.000 – $45.000</li>
+  <li>Baño + corte (perro grande): $40.000 – $70.000</li>
+  <li>Corte de uñas solo: $5.000 – $10.000</li>
+  <li>Servicio a domicilio: precio base + $5.000 – $15.000 de traslado</li>
+</ul>
+
+<h2>¿Con qué frecuencia llevar a tu perro al peluquero?</h2>
+<ul>
+  <li><strong>Pelo corto (labrador, beagle, boxer):</strong> cada 6-8 semanas es suficiente.</li>
+  <li><strong>Pelo largo (caniche, shih tzu, maltés):</strong> cada 4-6 semanas para evitar enredos.</li>
+  <li><strong>Pelo duro (schnauzer, fox terrier):</strong> cada 6-8 semanas con stripping o tijera.</li>
+</ul>
+
+<p>Encontrá peluquerías caninas en Linares en <a href="/mascotas">LinaresYa — Mascotas</a>. ¿Tenés servicio de grooming en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "diseño-web-linares",
+    titulo: "Diseño web en Linares: páginas web para negocios y emprendedores",
+    descripcion:
+      "Encuentra diseñadores y desarrolladores web en Linares, Chile. Páginas web para negocios, tiendas online, landing pages y redes sociales. Precios y qué preguntar.",
+    fecha: "2025-05-21",
+    categoria: "Tecnología",
+    emoji: "💻",
+    keywords: [
+      "diseño web linares",
+      "pagina web linares",
+      "desarrollador web linares",
+      "tienda online linares",
+      "marketing digital linares",
+    ],
+    contenido: `
+<p>Tener presencia en internet ya no es opcional para los negocios de Linares. Una buena página web o tienda online puede atraer clientes nuevos las 24 horas. En la ciudad hay <strong>diseñadores y desarrolladores web</strong> que entienden las necesidades del mercado local.</p>
+
+<h2>¿Qué tipo de web podés pedir en Linares?</h2>
+<ul>
+  <li><strong>Página web institucional:</strong> quiénes somos, servicios, contacto. Ideal para negocios locales.</li>
+  <li><strong>Tienda online (e-commerce):</strong> catálogo de productos con carrito de compras y pago online.</li>
+  <li><strong>Landing page:</strong> página única para captar clientes de una campaña específica.</li>
+  <li><strong>Blog y contenido:</strong> para posicionarte en Google con artículos del rubro.</li>
+  <li><strong>Gestión de redes sociales:</strong> diseño de contenido para Instagram, Facebook, TikTok.</li>
+</ul>
+
+<h2>¿Cuánto cuesta una página web en Linares?</h2>
+<ul>
+  <li>Landing page básica: $150.000 – $350.000</li>
+  <li>Web institucional (5-10 páginas): $300.000 – $700.000</li>
+  <li>Tienda online: $500.000 – $1.500.000</li>
+  <li>Mantenimiento mensual: $30.000 – $80.000/mes</li>
+</ul>
+<p>Los precios varían según la complejidad, si incluye diseño personalizado o usa plantilla, y si el desarrollador es freelance o agencia.</p>
+
+<h2>¿Qué preguntar antes de contratar?</h2>
+<ul>
+  <li>¿El sitio es tuyo o depende del proveedor para cualquier cambio?</li>
+  <li>¿Incluye hosting y dominio, o son costos aparte?</li>
+  <li>¿El sitio es responsive (se ve bien en el celular)?</li>
+  <li>¿Hacen SEO básico para aparecer en Google?</li>
+  <li>¿Qué pasa si necesito cambios después de entregado?</li>
+</ul>
+
+<h2>Directorios como complemento</h2>
+<p>Mientras construís o esperás tu página web, publicar en LinaresYa te da presencia inmediata en las búsquedas locales, con tu teléfono, dirección y categoría visibles para quienes buscan en Linares.</p>
+
+<p>Encontrá diseñadores y desarrolladores web en Linares en <a href="/tecnologia">LinaresYa — Tecnología</a>. ¿Hacés páginas web en Linares? <a href="/publicar">Aparecé en el directorio gratis</a>.</p>
 `,
   },
 ];
