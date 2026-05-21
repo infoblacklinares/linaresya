@@ -630,6 +630,234 @@ export const posts: BlogPost[] = [
 <p>Encontrá psicólogos en Linares en <a href="/salud">LinaresYa — Salud</a>. ¿Sos psicólogo o terapeuta en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
 `,
   },
+  // ── Artículos batch 4 ──────────────────────────────────────────────────
+  {
+    slug: "electricista-linares",
+    titulo: "Electricista en Linares: instalaciones, fallas y emergencias",
+    descripcion:
+      "Guía para encontrar un electricista de confianza en Linares. Instalaciones eléctricas, cortes de luz, tableros y urgencias. Qué preguntar y cómo evitar estafas.",
+    fecha: "2025-05-21",
+    categoria: "Servicios del hogar",
+    emoji: "⚡",
+    keywords: [
+      "electricista linares",
+      "electricista linares chile",
+      "instalacion electrica linares",
+      "emergencia electrica linares",
+      "corte de luz linares",
+    ],
+    contenido: `
+<p>Cuando hay una falla eléctrica en casa o en el trabajo, encontrar un <strong>electricista de confianza en Linares</strong> rápido puede marcar la diferencia. Acá te contamos qué trabajos hacen, cuánto cobran y cómo elegir bien.</p>
+
+<h2>¿Qué trabajos hace un electricista en Linares?</h2>
+<ul>
+  <li><strong>Instalaciones eléctricas nuevas:</strong> enchufes, interruptores, puntos de luz, tableros.</li>
+  <li><strong>Reparaciones y fallas:</strong> cortos circuitos, cables quemados, disyuntores que saltan.</li>
+  <li><strong>Tableros eléctricos:</strong> cambio de caja de medidor, diferencial, termomagnéticos.</li>
+  <li><strong>Proyectos de ampliación:</strong> instalación para cocina eléctrica, calefont, climatizador.</li>
+  <li><strong>Urgencias:</strong> muchos atienden fines de semana y en horario nocturno.</li>
+</ul>
+
+<h2>¿Cuánto cobra un electricista en Linares?</h2>
+<ul>
+  <li>Visita diagnóstico: $10.000 – $20.000</li>
+  <li>Cambio de enchufe o interruptor: $15.000 – $30.000</li>
+  <li>Revisión de tablero: $20.000 – $50.000</li>
+  <li>Instalación completa (pieza): desde $60.000</li>
+</ul>
+
+<h2>¿Cómo elegir un buen electricista?</h2>
+<ul>
+  <li>Verificá que tenga experiencia con el tipo de trabajo que necesitás</li>
+  <li>Pedí un presupuesto escrito antes de empezar</li>
+  <li>Revisá reseñas de otros clientes en LinaresYa</li>
+  <li>Preguntá si tiene garantía en los materiales instalados</li>
+</ul>
+
+<h2>¿Cuándo llamar a un electricista de urgencia?</h2>
+<p>Si hay chispas, olor a quemado, humedad en el tablero o un corte que no podés restablecer, <strong>no intentes resolverlo solo</strong>. Contactá a un electricista de inmediato — un accidente eléctrico puede causar un incendio.</p>
+
+<p>Encontrá electricistas en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos electricista en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "abogado-linares",
+    titulo: "Abogado en Linares: dónde conseguir asesoría legal",
+    descripcion:
+      "Guía para encontrar abogado en Linares, Chile. Derecho laboral, familia, penal, civil, notaría y más. Diferencias entre abogado, notario y el CAJ.",
+    fecha: "2025-05-21",
+    categoria: "Servicios Legales",
+    emoji: "⚖️",
+    keywords: [
+      "abogado linares",
+      "abogado linares chile",
+      "asesoría legal linares",
+      "notaria linares",
+      "corporacion asistencia judicial linares",
+    ],
+    contenido: `
+<p>Hay momentos en la vida donde necesitás sí o sí un <strong>abogado en Linares</strong>: un despido injustificado, una separación, un problema con un arrendatario, o simplemente para revisar un contrato. Acá te explicamos qué tipo de abogado necesitás según tu caso.</p>
+
+<h2>Tipos de abogados en Linares</h2>
+<ul>
+  <li><strong>Derecho Laboral:</strong> despidos, liquidaciones, accidentes del trabajo, demandas al empleador.</li>
+  <li><strong>Derecho de Familia:</strong> divorcio, alimentos, tuición, visitas, adopción.</li>
+  <li><strong>Derecho Civil:</strong> contratos, arrendamiento, deudas, sucesiones y herencias.</li>
+  <li><strong>Derecho Penal:</strong> defensa en juicios, denuncias, causas penales.</li>
+  <li><strong>Derecho Inmobiliario:</strong> compraventa de propiedades, escrituras, títulos.</li>
+</ul>
+
+<h2>¿Hay asesoría legal gratuita en Linares?</h2>
+<p>Sí. La <strong>Corporación de Asistencia Judicial (CAJ) del Maule</strong> tiene una oficina en Linares que atiende a personas de escasos recursos sin cobrar honorarios.</p>
+
+<h2>¿En qué se diferencia un abogado de un notario?</h2>
+<p>El <strong>notario</strong> da fe pública de actos y contratos (firmas, declaraciones, escrituras). El <strong>abogado</strong> te representa, te asesora y litiga por vos. Para comprar una propiedad necesitás ambos.</p>
+
+<h2>Consejos al contratar un abogado en Linares</h2>
+<ul>
+  <li>Preguntá cuánto cobra: por hora, por el caso completo o mixto</li>
+  <li>Consultá su especialidad — no todos los abogados conocen igual todas las áreas</li>
+  <li>Pedí una primera consulta (muchos la dan gratis o a bajo costo)</li>
+  <li>Asegurate de firmar un contrato de honorarios antes de empezar</li>
+</ul>
+
+<p>Encontrá abogados y estudios jurídicos en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Sos abogado en Linares? <a href="/publicar">Registrá tu estudio gratis</a>.</p>
+`,
+  },
+  {
+    slug: "contador-tributario-linares",
+    titulo: "Contador y asesor tributario en Linares: quién te puede ayudar",
+    descripcion:
+      "¿Buscás un contador o asesor tributario en Linares? Guía sobre declaración de renta, inicio de actividades, IVA y contabilidad para pymes y trabajadores independientes.",
+    fecha: "2025-05-21",
+    categoria: "Servicios Profesionales",
+    emoji: "📊",
+    keywords: [
+      "contador linares",
+      "contador tributario linares",
+      "asesor tributario linares",
+      "declaracion renta linares",
+      "contabilidad pyme linares",
+    ],
+    contenido: `
+<p>Si sos trabajador independiente, emprendedor o dueño de una pyme en Linares, en algún momento vas a necesitar ayuda con el <strong>SII, el IVA o la declaración de renta</strong>. Un buen contador puede ahorrarte multas, tiempo y dolores de cabeza.</p>
+
+<h2>¿Cuándo necesitás un contador en Linares?</h2>
+<ul>
+  <li><strong>Inicio de actividades:</strong> cuando empezás a trabajar de forma independiente o abrís un negocio.</li>
+  <li><strong>Declaración de renta:</strong> si tenés ingresos de segunda categoría o boletas de honorarios.</li>
+  <li><strong>IVA mensual:</strong> si vendés productos o servicios afectos a IVA (F29).</li>
+  <li><strong>Contabilidad de empresa:</strong> balances, estados de resultado, cierre anual.</li>
+</ul>
+
+<h2>¿Cuánto cobra un contador en Linares?</h2>
+<ul>
+  <li>Declaración de renta persona natural: $20.000 – $60.000</li>
+  <li>F29 mensual para pyme pequeña: $30.000 – $80.000/mes</li>
+  <li>Contabilidad completa para empresa: desde $80.000/mes</li>
+  <li>Inicio de actividades: $20.000 – $40.000</li>
+</ul>
+
+<h2>Tips para elegir bien</h2>
+<ul>
+  <li>Buscá alguien con experiencia en tu rubro (gastronomía, construcción, comercio, etc.)</li>
+  <li>Confirmá que esté al día con los cambios de la ley tributaria</li>
+  <li>Las reseñas de otros clientes hablan mucho de la calidad del servicio</li>
+</ul>
+
+<p>Encontrá contadores en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Sos contador en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "fotografo-linares",
+    titulo: "Fotógrafo en Linares: bodas, 15 años, familia y eventos",
+    descripcion:
+      "Guía para encontrar fotógrafo en Linares, Chile. Fotografía de matrimonio, quinceañeros, bautizos, eventos corporativos y sesiones de retrato. Precios y consejos.",
+    fecha: "2025-05-21",
+    categoria: "Arte y Fotografía",
+    emoji: "📸",
+    keywords: [
+      "fotografo linares",
+      "fotografo matrimonio linares",
+      "fotografo 15 años linares",
+      "sesion de fotos linares",
+      "fotografia eventos linares",
+    ],
+    contenido: `
+<p>Para los momentos que merecen recordarse toda la vida, necesitás un buen <strong>fotógrafo en Linares</strong>. Bodas, quinceañeros, bautizos, cumpleaños especiales, sesiones de familia o eventos corporativos: hay talento local para todo.</p>
+
+<h2>¿Qué tipo de fotografía ofrecen en Linares?</h2>
+<ul>
+  <li><strong>Fotografía de matrimonio:</strong> cobertura completa del día, desde la preparación hasta el baile.</li>
+  <li><strong>Quinceañeros:</strong> sesión de estudio, locación exterior o combinada.</li>
+  <li><strong>Familia y retrato:</strong> sesiones en estudio o en lugares con historia para la familia.</li>
+  <li><strong>Eventos y corporativo:</strong> lanzamientos, cenas de empresa, conferencias, inauguraciones.</li>
+  <li><strong>Recién nacidos y bautizos:</strong> sesiones especializadas con props y ambientación.</li>
+</ul>
+
+<h2>¿Cuánto cobra un fotógrafo en Linares?</h2>
+<ul>
+  <li>Sesión familiar (1-2 horas): $50.000 – $120.000</li>
+  <li>Quinceañero completo: $150.000 – $350.000</li>
+  <li>Matrimonio (día completo): $400.000 – $800.000+</li>
+  <li>Evento corporativo (4 horas): $100.000 – $200.000</li>
+</ul>
+
+<h2>¿Qué preguntar antes de contratar?</h2>
+<ul>
+  <li>¿Cuántas fotos editadas entrega y en cuánto tiempo?</li>
+  <li>¿Incluye álbum impreso o solo entrega digital?</li>
+  <li>¿Cobra por traslado si el evento es fuera de Linares?</li>
+  <li>¿Cuál es la política de reserva y anticipo?</li>
+</ul>
+
+<h2>Tip: reservá con anticipación</h2>
+<p>Los buenos fotógrafos de Linares tienen agenda ocupada, especialmente en la temporada de matrimonios (octubre a marzo). Reservar con 3 a 6 meses de antelación es lo ideal.</p>
+
+<p>Encontrá fotógrafos en Linares en <a href="/arte-y-fotografia">LinaresYa — Arte y Fotografía</a>. ¿Sos fotógrafo en Linares? <a href="/publicar">Mostrá tu trabajo en el directorio gratis</a>.</p>
+`,
+  },
+  {
+    slug: "jardinero-linares",
+    titulo: "Jardinero en Linares: mantención, poda y diseño de jardines",
+    descripcion:
+      "Encuentra jardineros en Linares, Chile. Mantención de jardines, poda de árboles, corte de pasto, riego y diseño paisajístico para casas y condominios.",
+    fecha: "2025-05-21",
+    categoria: "Jardín y Paisajismo",
+    emoji: "🌿",
+    keywords: [
+      "jardinero linares",
+      "poda arboles linares",
+      "corte de pasto linares",
+      "mantención jardín linares",
+      "paisajismo linares",
+    ],
+    contenido: `
+<p>Un jardín bien cuidado mejora el aspecto de la casa y la calidad de vida. En Linares hay <strong>jardineros y paisajistas</strong> para todo tipo de necesidades, desde el corte de pasto semanal hasta el diseño completo de un jardín.</p>
+
+<h2>¿Qué servicios ofrece un jardinero en Linares?</h2>
+<ul>
+  <li><strong>Corte de pasto:</strong> el servicio más solicitado, ideal para mantener el césped prolijo.</li>
+  <li><strong>Poda de árboles y arbustos:</strong> poda de formación, sanitaria o de fructificación.</li>
+  <li><strong>Mantención periódica:</strong> visitas semanales, quincenales o mensuales.</li>
+  <li><strong>Diseño de jardines:</strong> proyecto completo con selección de plantas y sistemas de riego.</li>
+  <li><strong>Limpieza y desmalezado:</strong> especialmente útil después del invierno.</li>
+</ul>
+
+<h2>¿Cuánto cobra un jardinero en Linares?</h2>
+<ul>
+  <li>Corte de pasto (jardín pequeño): $15.000 – $30.000</li>
+  <li>Mantención mensual completa: $30.000 – $80.000</li>
+  <li>Poda de árbol mediano: $25.000 – $60.000</li>
+  <li>Diseño y habilitación de jardín nuevo: desde $200.000</li>
+</ul>
+
+<h2>¿Qué plantas se adaptan bien a Linares?</h2>
+<p>El clima de Linares (templado mediterráneo, con heladas en invierno) favorece plantas como lavanda, romero, agapantos, copihues, plátanos orientales y frutales como higueras y ciruelos. Un jardinero local conoce qué especies prosperan mejor en la zona.</p>
+
+<p>Encontrá jardineros en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos jardinero en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
 ];
 
 // Helpers
