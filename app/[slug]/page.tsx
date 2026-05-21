@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/jsonld";
+import { getOpenIds, estaAbierto } from "@/lib/horarios";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
@@ -113,6 +114,9 @@ export default async function CategoriaPage({
 
   const items = (negocios ?? []) as Negocio[];
 
+  // Abierto Ahora: consultamos horarios para todos los negocios de la categoría.
+  const openIds = await getOpenIds(items.map((n) => n.id));
+
   const breadcrumbData = breadcrumbJsonLd([
     { name: "Inicio", url: SITE_URL },
     { name: cat.nombre, url: `${SITE_URL}/${cat.slug}` },
@@ -183,7 +187,7 @@ export default async function CategoriaPage({
           <ul className="px-4 space-y-3">
             {items.map((n) => (
               <li key={n.id}>
-                <NegocioCard n={n} categoriaSlug={cat.slug} />
+                <NegocioCard n={n} categoriaSlug={cat.slug} isOpen={estaAbierto(n.id, openIds)} />
               </li>
             ))}
           </ul>
@@ -196,9 +200,11 @@ export default async function CategoriaPage({
 function NegocioCard({
   n,
   categoriaSlug,
+  isOpen,
 }: {
   n: Negocio;
   categoriaSlug: string;
+  isOpen: boolean;
 }) {
   const esPremium = n.plan === "premium";
   const waNumber = n.whatsapp?.replace(/\D/g, "");
@@ -238,6 +244,9 @@ function NegocioCard({
           {n.descripcion ?? "Sin descripcion"}
         </p>
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]">
+          <span className={`px-2 py-0.5 rounded-full font-bold ${isOpen ? "bg-[#3D5A45]/10 text-[#3D5A45]" : "bg-[#8E8279]/10 text-[#8E8279]"}`}>
+            {isOpen ? "● Abierto" : "● Cerrado"}
+          </span>
           {n.tipo === "independiente" && (
             <span className="bg-secondary px-2 py-0.5 rounded-full font-medium">
               Independiente
