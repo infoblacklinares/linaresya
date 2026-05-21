@@ -12,10 +12,8 @@ function getClient(): Resend | null {
   return client;
 }
 
-// Remitente por defecto: onboarding@resend.dev funciona sin dominio verificado.
-// Cuando verifiques linaresya.cl en Resend, cambia esto a algo como
-// "LinaresYa <avisos@linaresya.cl>".
-const FROM = process.env.RESEND_FROM ?? "LinaresYa <onboarding@resend.dev>";
+// Dominio linaresya.cl verificado en Resend → enviamos desde avisos@linaresya.cl.
+const FROM = process.env.RESEND_FROM ?? "LinaresYa <avisos@linaresya.cl>";
 
 function escapeHtml(s: string): string {
   return s
