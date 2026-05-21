@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
   },
   verification: {
-    google: "aVwByyabkiNUH3UAai9pY3TErwrR0c831Dh8KwsdByc",
+    google: "SLRHWwyWI4gfBAiuRPWf4dWIVzPMgKqIQOeHRq8k7No",
   },
 };
 
