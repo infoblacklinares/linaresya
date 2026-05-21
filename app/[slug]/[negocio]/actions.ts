@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { sendAdminReporteNotification } from "@/lib/email";
+import { sendAdminReporteNotification, sendAdminNuevaResenaNotification } from "@/lib/email";
 
 const SITE_URL_REPORTE =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
@@ -128,6 +128,28 @@ export async function dejarResena(
   if (categoriaSlug && negocioSlug) {
     revalidatePath(`/${categoriaSlug}/${negocioSlug}`);
   }
+
+  // Notificar al admin (fire-and-forget, nunca bloquea el render).
+  void (async () => {
+    try {
+      const { data: neg } = await supabaseAdmin
+        .from("negocios")
+        .select("id, nombre")
+        .eq("id", negocioId)
+        .maybeSingle();
+      if (neg) {
+        await sendAdminNuevaResenaNotification({
+          negocioNombre: (neg as { nombre: string }).nombre,
+          negocioId,
+          autorNombre: nombre,
+          estrellas,
+          comentario: comentario || null,
+        });
+      }
+    } catch {
+      // El tracking de email nunca debe romper la experiencia del usuario.
+    }
+  })();
 
   return { ok: true };
 }

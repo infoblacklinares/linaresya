@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { clearAdminCookie, isAdminAuthenticated } from "@/lib/admin-auth";
-import { sendOwnerAprobacionNotification } from "@/lib/email";
+import { sendOwnerAprobacionNotification, sendOwnerResenaAprobadaNotification } from "@/lib/email";
 import { deleteFotosFromStorage } from "@/lib/storage";
 
 async function requireAdmin() {
@@ -158,11 +158,11 @@ export async function aprobarResena(formData: FormData): Promise<void> {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
 
-  // Necesitamos el slug del negocio + categoria para revalidar la ficha publica.
+  // Traemos la reseña + datos del negocio (email, nombre, slug, categoría).
   const { data } = await supabaseAdmin
     .from("resenas")
     .select(
-      "negocio_id, negocios:negocio_id(slug, categorias:categoria_id(slug))",
+      "negocio_id, autor_nombre, estrellas, comentario, negocios:negocio_id(nombre, slug, email, categorias:categoria_id(slug))",
     )
     .eq("id", id)
     .single();
@@ -179,6 +179,8 @@ export async function aprobarResena(formData: FormData): Promise<void> {
     const neg = Array.isArray(negRaw) ? negRaw[0] : negRaw;
     if (neg && typeof neg === "object") {
       const slug = String((neg as { slug?: unknown }).slug ?? "");
+      const nombre = String((neg as { nombre?: unknown }).nombre ?? "");
+      const email = (neg as { email?: unknown }).email;
       const catRaw = (neg as { categorias?: unknown }).categorias;
       const cat = Array.isArray(catRaw) ? catRaw[0] : catRaw;
       const catSlug =
@@ -187,6 +189,23 @@ export async function aprobarResena(formData: FormData): Promise<void> {
           : "";
       if (slug && catSlug) {
         revalidatePath(`/${catSlug}/${slug}`);
+      }
+      // Notificar al dueño del negocio si tiene email registrado.
+      if (email && typeof email === "string" && slug && catSlug) {
+        const resenaData = data as {
+          autor_nombre: string;
+          estrellas: number;
+          comentario: string | null;
+        };
+        void sendOwnerResenaAprobadaNotification({
+          ownerEmail: email,
+          negocioNombre: nombre,
+          categoriaSlug: catSlug,
+          negocioSlug: slug,
+          autorNombre: resenaData.autor_nombre,
+          estrellas: resenaData.estrellas,
+          comentario: resenaData.comentario,
+        });
       }
     }
   }

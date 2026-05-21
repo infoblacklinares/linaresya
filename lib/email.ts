@@ -649,3 +649,124 @@ export async function sendDuenoMagicLink(opts: {
     return false;
   }
 }
+
+// ── Notificación admin: nueva reseña pendiente de aprobación ────────────────
+
+export async function sendAdminNuevaResenaNotification(opts: {
+  negocioNombre: string;
+  negocioId: string;
+  autorNombre: string;
+  estrellas: number;
+  comentario: string | null;
+}): Promise<void> {
+  try {
+    const c = getClient();
+    const to = process.env.ADMIN_EMAIL;
+    if (!c || !to) return;
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://linaresya.cl";
+    const adminUrl = `${siteUrl}/admin/resenas`;
+    const estrellasTxt = "⭐".repeat(Math.min(5, Math.max(1, opts.estrellas)));
+
+    const html = `<!doctype html>
+<html>
+<body style="margin:0;padding:24px;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+    <div style="padding:20px 24px;background:#0f172a;color:#fff;">
+      <p style="margin:0;font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:0.6;">LinaresYa · Moderación</p>
+      <h1 style="margin:6px 0 0;font-size:20px;font-weight:800;">Nueva reseña pendiente</h1>
+    </div>
+    <div style="padding:24px;">
+      <p style="margin:0 0 4px;font-size:13px;color:#64748b;">Negocio</p>
+      <p style="margin:0 0 16px;font-size:16px;font-weight:700;color:#0f172a;">${escapeHtml(opts.negocioNombre)}</p>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:20px;">
+        <p style="margin:0 0 6px;font-size:18px;">${estrellasTxt}</p>
+        <p style="margin:0 0 6px;font-size:14px;font-weight:600;color:#334155;">${escapeHtml(opts.autorNombre)}</p>
+        ${opts.comentario ? `<p style="margin:0;font-size:14px;color:#475569;line-height:1.5;">${escapeHtml(opts.comentario)}</p>` : `<p style="margin:0;font-size:13px;color:#94a3b8;font-style:italic;">Sin comentario</p>`}
+      </div>
+      <a href="${escapeHtml(adminUrl)}" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:600;">
+        Aprobar o rechazar →
+      </a>
+    </div>
+    <div style="padding:12px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+      <p style="margin:0;color:#94a3b8;font-size:11px;">LinaresYa · Panel de administración</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const text = `Nueva reseña pendiente en LinaresYa\n\nNegocio: ${opts.negocioNombre}\nAutor: ${opts.autorNombre}\nEstrellas: ${opts.estrellas}/5\nComentario: ${opts.comentario ?? "(sin comentario)"}\n\nAprobar o rechazar: ${adminUrl}`;
+
+    await c.emails.send({ from: FROM, to, subject: `Nueva reseña: ${opts.negocioNombre} (${opts.estrellas}⭐)`, html, text });
+  } catch (err) {
+    console.error("[email] sendAdminNuevaResenaNotification fallo:", err);
+  }
+}
+
+// ── Notificación dueño: su reseña fue aprobada ──────────────────────────────
+
+export async function sendOwnerResenaAprobadaNotification(opts: {
+  ownerEmail: string;
+  negocioNombre: string;
+  categoriaSlug: string;
+  negocioSlug: string;
+  autorNombre: string;
+  estrellas: number;
+  comentario: string | null;
+}): Promise<void> {
+  try {
+    const c = getClient();
+    if (!c) return;
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://linaresya.cl";
+    const fichaUrl = `${siteUrl}/${opts.categoriaSlug}/${opts.negocioSlug}`;
+    const premiumUrl = `${siteUrl}/premium`;
+    const estrellasTxt = "⭐".repeat(Math.min(5, Math.max(1, opts.estrellas)));
+    const esAlta = opts.estrellas >= 4;
+
+    const html = `<!doctype html>
+<html>
+<body style="margin:0;padding:24px;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+    <div style="padding:20px 24px;background:${esAlta ? "#064e3b" : "#1e293b"};color:#fff;">
+      <p style="margin:0;font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:0.6;">LinaresYa · Nueva reseña</p>
+      <h1 style="margin:6px 0 0;font-size:20px;font-weight:800;">${esAlta ? "¡Nueva reseña positiva! 🎉" : "Recibiste una reseña nueva"}</h1>
+    </div>
+    <div style="padding:24px;">
+      <p style="margin:0 0 16px;font-size:15px;color:#334155;line-height:1.5;">
+        Alguien dejó una reseña en <strong>${escapeHtml(opts.negocioNombre)}</strong> en LinaresYa.
+      </p>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:20px;">
+        <p style="margin:0 0 6px;font-size:20px;">${estrellasTxt}</p>
+        <p style="margin:0 0 6px;font-size:14px;font-weight:600;color:#334155;">${escapeHtml(opts.autorNombre)}</p>
+        ${opts.comentario ? `<p style="margin:0;font-size:14px;color:#475569;line-height:1.5;">"${escapeHtml(opts.comentario)}"</p>` : `<p style="margin:0;font-size:13px;color:#94a3b8;font-style:italic;">Sin comentario</p>`}
+      </div>
+      <a href="${escapeHtml(fichaUrl)}" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:600;margin-right:8px;">
+        Ver mi ficha →
+      </a>
+      <div style="margin-top:20px;padding:16px;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;">
+        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#92400e;">¿Querés aparecer primero en búsquedas?</p>
+        <p style="margin:0 0 10px;font-size:13px;color:#78350f;">Con Plan Premium activás WhatsApp directo, subís fotos y aparecés destacado. Desde $5.990/mes.</p>
+        <a href="${escapeHtml(premiumUrl)}" style="font-size:13px;font-weight:600;color:#b45309;text-decoration:underline;">Ver Plan Premium →</a>
+      </div>
+    </div>
+    <div style="padding:12px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+      <p style="margin:0;color:#94a3b8;font-size:11px;">Recibiste este email porque tenés un negocio publicado en LinaresYa.cl</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const text = `${opts.negocioNombre} recibió una reseña nueva en LinaresYa\n\n${opts.autorNombre}: ${opts.estrellas}/5 estrellas\n${opts.comentario ?? "(sin comentario)"}\n\nVer tu ficha: ${fichaUrl}`;
+
+    await c.emails.send({
+      from: FROM,
+      to: opts.ownerEmail,
+      subject: `${estrellasTxt} Nueva reseña en ${opts.negocioNombre}`,
+      html,
+      text,
+    });
+  } catch (err) {
+    console.error("[email] sendOwnerResenaAprobadaNotification fallo:", err);
+  }
+}
