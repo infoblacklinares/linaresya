@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   },
 };
 
-const WA_NUMERO = "56912345678"; // ← reemplazar con tu WhatsApp de ventas
+const WA_NUMERO = "56984272557";
 const WA_MSG = encodeURIComponent(
   "Hola! Me interesa el Plan Premium de LinaresYa para mi negocio. ¿Me podés dar más info?"
 );
