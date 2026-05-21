@@ -32,6 +32,18 @@ type NegocioCard = {
   categorias: { nombre: string; slug: string; emoji: string } | null;
 };
 
+type ResenaHome = {
+  id: number;
+  autor_nombre: string;
+  estrellas: number;
+  comentario: string | null;
+  negocio_id: string;
+  negocioNombre: string;
+  negocioSlug: string;
+  categoriaSlug: string;
+  categoriaEmoji: string;
+};
+
 type OfertaHome = {
   id: number;
   titulo: string;
@@ -106,6 +118,7 @@ export default async function Home() {
     { data: recientesData },
     { data: ofertasData },
     { count: totalCount },
+    { data: resenasRecientesData },
   ] = await Promise.all([
     supabase.from("categorias").select("*").order("orden"),
 
@@ -135,6 +148,15 @@ export default async function Home() {
       .limit(10),
 
     supabase.from("negocios").select("id", { count: "exact", head: true }).eq("activo", true),
+
+    // Últimas reseñas aprobadas con comentario para la sección de prueba social
+    supabase
+      .from("resenas")
+      .select("id, autor_nombre, estrellas, comentario, negocio_id, negocios:negocio_id(nombre, slug, categorias:categoria_id(slug, emoji))")
+      .eq("aprobada", true)
+      .not("comentario", "is", null)
+      .order("creado_en", { ascending: false })
+      .limit(6),
   ]);
 
   if (error) {
@@ -182,6 +204,45 @@ export default async function Home() {
       } : null,
     };
   });
+
+  // Parsear reseñas recientes para la sección de prueba social
+  const resenasRecientes: ResenaHome[] = ((resenasRecientesData ?? []) as unknown[]).flatMap(r => {
+    const x = r as Record<string, unknown>;
+    const neg = Array.isArray(x.negocios) ? (x.negocios as unknown[])[0] : x.negocios;
+    if (!neg || typeof neg !== "object") return [];
+    const negObj = neg as Record<string, unknown>;
+    const catRaw = Array.isArray(negObj.categorias) ? (negObj.categorias as unknown[])[0] : negObj.categorias;
+    const cat = catRaw && typeof catRaw === "object" ? catRaw as Record<string, unknown> : null;
+    const comentario = (x.comentario as string | null) ?? null;
+    if (!comentario || comentario.length < 10) return []; // omitir sin contenido
+    return [{
+      id: Number(x.id),
+      autor_nombre: String(x.autor_nombre ?? ""),
+      estrellas: Number(x.estrellas ?? 5),
+      comentario,
+      negocio_id: String(x.negocio_id ?? ""),
+      negocioNombre: String(negObj.nombre ?? ""),
+      negocioSlug: String(negObj.slug ?? ""),
+      categoriaSlug: cat ? String(cat.slug ?? "") : "",
+      categoriaEmoji: cat ? String(cat.emoji ?? "🏪") : "🏪",
+    }];
+  }).slice(0, 3);
+
+  // Ratings para negocios en Destacados (batch query + agrega en JS)
+  type ResenaRating = { negocio_id: string; estrellas: number };
+  const ratingsMap = new Map<string, { sum: number; count: number }>();
+  const allDisplayIds = [...destacados, ...recientes].map(n => n.id);
+  if (allDisplayIds.length > 0) {
+    const { data: ratingsData } = await supabase
+      .from("resenas")
+      .select("negocio_id, estrellas")
+      .in("negocio_id", allDisplayIds)
+      .eq("aprobada", true);
+    for (const row of ((ratingsData ?? []) as ResenaRating[])) {
+      const prev = ratingsMap.get(row.negocio_id) ?? { sum: 0, count: 0 };
+      ratingsMap.set(row.negocio_id, { sum: prev.sum + row.estrellas, count: prev.count + 1 });
+    }
+  }
 
   const primerPremium = destacados.find(d => d.plan === "premium");
   const bannerNegocio = primerPremium ? {
@@ -337,9 +398,21 @@ export default async function Home() {
                         {(() => { const b = badgeAbierto(estaAbierto(d.id, openIds)); return <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-bold ${b.clases}`}>{b.texto}</span>; })()}
                       </div>
                       {d.descripcion && <p className="mt-0.5 truncate text-xs text-[#8E8279]">{d.descripcion}</p>}
-                      <p className="mt-0.5 truncate text-[11px] text-[#8E8279]">
-                        {d.categorias?.emoji} {d.categorias?.nombre}{d.a_domicilio && " · A domicilio"}
-                      </p>
+                      <div className="mt-0.5 flex items-center gap-2">
+                        <p className="truncate text-[11px] text-[#8E8279]">
+                          {d.categorias?.emoji} {d.categorias?.nombre}{d.a_domicilio && " · A domicilio"}
+                        </p>
+                        {(() => {
+                          const r = ratingsMap.get(d.id);
+                          if (!r || r.count === 0) return null;
+                          return (
+                            <span className="shrink-0 text-[11px] font-semibold text-amber-600">
+                              ★ {(r.sum / r.count).toFixed(1)}
+                              <span className="text-[#8E8279] font-normal"> ({r.count})</span>
+                            </span>
+                          );
+                        })()}
+                      </div>
                     </div>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8E8279" strokeWidth="2" className="shrink-0"><path d="m9 18 6-6-6-6" /></svg>
                   </Link>
@@ -382,6 +455,46 @@ export default async function Home() {
               );
             })}
           </div>
+        </section>
+      )}
+
+      {/* Reseñas recientes — prueba social */}
+      {resenasRecientes.length > 0 && (
+        <section className="pt-8 px-4">
+          <div className="mb-3">
+            <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Lo que dicen los vecinos</h2>
+            <p className="text-xs text-[#8E8279]">Reseñas reales de clientes de Linares</p>
+          </div>
+          <div className="space-y-3">
+            {resenasRecientes.map(r => {
+              const fichaUrl = r.categoriaSlug && r.negocioSlug ? `/${r.categoriaSlug}/${r.negocioSlug}` : null;
+              return (
+                <div key={r.id} className="rounded-2xl bg-white shadow-linares-sm p-4">
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-[#1A1410] truncate">{r.autor_nombre}</p>
+                      {fichaUrl ? (
+                        <Link href={fichaUrl} className="text-[11px] text-[#2B6E80] font-medium hover:underline truncate block">
+                          {r.categoriaEmoji} {r.negocioNombre}
+                        </Link>
+                      ) : (
+                        <p className="text-[11px] text-[#8E8279] truncate">{r.categoriaEmoji} {r.negocioNombre}</p>
+                      )}
+                    </div>
+                    <span className="shrink-0 text-amber-500 font-bold text-sm tracking-tight">
+                      {"★".repeat(Math.min(5, r.estrellas))}<span className="text-[#E8E4DE]">{"★".repeat(5 - Math.min(5, r.estrellas))}</span>
+                    </span>
+                  </div>
+                  <p className="text-[13px] text-[#475569] leading-relaxed line-clamp-3 italic">
+                    &ldquo;{r.comentario}&rdquo;
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+          <Link href="/buscar" className="mt-3 block text-center text-xs font-semibold text-[#2B6E80]">
+            Ver todos los negocios →
+          </Link>
         </section>
       )}
 
