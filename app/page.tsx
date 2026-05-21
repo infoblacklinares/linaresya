@@ -4,6 +4,7 @@ import JsonLd from "@/components/JsonLd";
 import FavoritoButton from "@/components/FavoritoButton";
 import Hero from "@/components/Hero";
 import AdvertisementBanner from "@/components/AdvertisementBanner";
+import NewsletterForm from "@/components/NewsletterForm";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
 
@@ -497,6 +498,22 @@ export default async function Home() {
           </Link>
         </section>
       )}
+
+      {/* Newsletter */}
+      <section className="px-4 pt-8">
+        <div className="rounded-3xl bg-gradient-to-br from-[#1f5268] to-[#2B6E80] p-5">
+          <div className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-white/90">
+            📬 Novedades de Linares
+          </div>
+          <h2 className="mt-2 text-lg font-extrabold text-white leading-tight">
+            Enterate primero de<br />ofertas y negocios nuevos
+          </h2>
+          <p className="mt-1 mb-4 text-sm text-white/70">
+            Un resumen semanal de lo mejor en Linares, directo a tu email.
+          </p>
+          <NewsletterForm />
+        </div>
+      </section>
 
       {/* Grid completo de categorías */}
       <section className="pb-24 pt-10">

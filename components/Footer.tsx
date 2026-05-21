@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NewsletterForm from "./NewsletterForm";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -6,6 +7,13 @@ export default function Footer() {
   return (
     <footer className="mt-12 border-t border-border bg-secondary/30">
       <div className="mx-auto w-full max-w-3xl px-4 py-8 space-y-6">
+        {/* Newsletter en el footer */}
+        <div className="rounded-2xl bg-secondary/60 p-4">
+          <p className="text-sm font-bold mb-1">📬 Novedades de Linares</p>
+          <p className="text-xs text-muted-foreground mb-3">Ofertas y negocios nuevos cada semana.</p>
+          <NewsletterForm />
+        </div>
+
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
           <div>
             <h3 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-2">
