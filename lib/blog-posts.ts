@@ -192,6 +192,210 @@ export const posts: BlogPost[] = [
 <p>¿Sos electricista en Linares? <a href="/publicar">Aparecé gratis en LinaresYa</a> y llegá a más clientes en tu zona.</p>
 `,
   },
+  // ── Artículos adicionales ──────────────────────────────────────────────
+  {
+    slug: "peluquerias-barberias-linares",
+    titulo: "Peluquerías y barberías en Linares: dónde cortarte el pelo",
+    descripcion:
+      "Guía de las mejores peluquerías y barberías en Linares, Chile. Cortes, tinturas, barba y servicios de belleza para hombres y mujeres.",
+    fecha: "2025-05-18",
+    categoria: "Belleza",
+    emoji: "✂️",
+    keywords: [
+      "peluqueria linares",
+      "barberia linares",
+      "corte de pelo linares",
+      "tintura linares",
+      "barbero linares",
+    ],
+    contenido: `
+<p>Encontrar una buena <strong>peluquería o barbería en Linares</strong> ya no es cuestión de suerte. La ciudad tiene una oferta variada: desde salones de belleza completos hasta barberías especializadas en cortes masculinos y arreglo de barba.</p>
+
+<h2>¿Qué servicios ofrecen las peluquerías en Linares?</h2>
+<ul>
+  <li><strong>Corte de pelo</strong> para hombres, mujeres y niños</li>
+  <li><strong>Tinturas y decoloración</strong> con productos de calidad</li>
+  <li><strong>Tratamientos capilares:</strong> keratina, botox capilar, hidratación</li>
+  <li><strong>Peinados y rizos</strong> para eventos y matrimonios</li>
+  <li><strong>Manicure y pedicure</strong> en salones de belleza</li>
+</ul>
+
+<h2>Barberías en Linares</h2>
+<p>Las barberías clásicas están en auge en Linares. Ofrecen corte con tijera o máquina, arreglo de barba con navaja, y una experiencia más personalizada. Muchos barberos atienden con y sin reserva previa.</p>
+
+<h2>¿Cuánto cuesta un corte de pelo en Linares?</h2>
+<p>Un corte básico para hombres parte desde los $4.000 hasta $10.000 pesos. Para mujeres, el corte suele ir entre $8.000 y $20.000 según el largo y el servicio. Las tinturas y tratamientos se cotizan según el largo del cabello.</p>
+
+<h2>¿Hay peluquerías con reserva online en Linares?</h2>
+<p>Algunos salones de Linares aceptan reservas por WhatsApp, lo que te ahorra esperar. En <a href="/belleza-y-estetica">LinaresYa — Belleza y Estética</a> podés ver los horarios y contactar directamente por WhatsApp a cada local.</p>
+
+<p>¿Tenés una peluquería o barbería en Linares? <a href="/publicar">Aparecé gratis en LinaresYa</a> y llegá a más clientes de tu barrio.</p>
+`,
+  },
+  {
+    slug: "medicos-clinicas-linares",
+    titulo: "Médicos y clínicas en Linares: atención de salud privada",
+    descripcion:
+      "Guía de médicos, clínicas y centros de salud privados en Linares, Chile. Especialidades, horarios, urgencias y cómo sacar hora.",
+    fecha: "2025-05-20",
+    categoria: "Salud",
+    emoji: "🏥",
+    keywords: [
+      "medico linares",
+      "clinica linares",
+      "urgencias linares",
+      "especialista linares",
+      "centro medico linares",
+    ],
+    contenido: `
+<p>Linares cuenta con una red de <strong>médicos y clínicas privadas</strong> que complementan la atención del Hospital de Linares. Conocer las opciones disponibles te ayuda a atenderte más rápido y con el especialista que necesitás.</p>
+
+<h2>Tipos de atención médica privada en Linares</h2>
+<ul>
+  <li><strong>Médicos de cabecera y medicina general</strong> para consultas de rutina y derivaciones</li>
+  <li><strong>Especialistas:</strong> traumatología, ginecología, pediatría, cardiología y más</li>
+  <li><strong>Centros de salud y policlínicos</strong> con atención de varios especialistas</li>
+  <li><strong>Laboratorios clínicos</strong> para exámenes de sangre y análisis</li>
+  <li><strong>Imagenología:</strong> ecografías, radiografías y escáner</li>
+</ul>
+
+<h2>¿Hay urgencias privadas en Linares?</h2>
+<p>Sí. Algunas clínicas y centros médicos de Linares ofrecen atención de urgencias con horario extendido, sin necesidad de hacer fila en el hospital público. Es una opción útil para consultas que no pueden esperar.</p>
+
+<h2>¿Cómo sacar hora médica en Linares?</h2>
+<p>La mayoría de los médicos y clínicas privadas de Linares reciben horas por teléfono o WhatsApp. Algunos centros también tienen agenda online. En <a href="/salud">LinaresYa — Salud</a> encontrás el contacto directo de cada centro médico.</p>
+
+<h2>¿Cuánto cuesta una consulta médica privada en Linares?</h2>
+<p>Una consulta de medicina general oscila entre $15.000 y $30.000 pesos. Los especialistas pueden ir desde $25.000 hasta $60.000 o más, dependiendo de la especialidad. La mayoría acepta Fonasa e Isapres para reembolso.</p>
+
+<p>¿Sos médico o tenés un centro de salud en Linares? <a href="/publicar">Aparecé gratis en LinaresYa</a>.</p>
+`,
+  },
+  {
+    slug: "dentistas-linares",
+    titulo: "Dentistas en Linares: clínicas dentales y precios",
+    descripcion:
+      "Guía de dentistas y clínicas dentales en Linares, Chile. Limpiezas, ortodoncia, implantes, urgencias dentales y precios aproximados.",
+    fecha: "2025-05-12",
+    categoria: "Salud",
+    emoji: "🦷",
+    keywords: [
+      "dentista linares",
+      "odontologo linares",
+      "clinica dental linares",
+      "ortodoncia linares",
+      "urgencia dental linares",
+    ],
+    contenido: `
+<p>Cuidar la salud bucal es fundamental, y Linares tiene varias opciones de <strong>dentistas y clínicas odontológicas</strong> para todas las edades. Desde una limpieza de rutina hasta implantes y ortodoncia.</p>
+
+<h2>Servicios odontológicos disponibles en Linares</h2>
+<ul>
+  <li><strong>Limpieza y profilaxis dental</strong> (destartaje)</li>
+  <li><strong>Ortodoncia:</strong> brackets metálicos, cerámicos y alineadores transparentes</li>
+  <li><strong>Implantes dentales</strong> y prótesis</li>
+  <li><strong>Blanqueamiento dental</strong> profesional</li>
+  <li><strong>Extracciones y cirugía oral</strong></li>
+  <li><strong>Endodoncia</strong> (tratamiento de conducto)</li>
+  <li><strong>Urgencias dentales:</strong> dolor, abscesos, fractura de diente</li>
+</ul>
+
+<h2>¿Cuánto cuesta ir al dentista en Linares?</h2>
+<p>Un destartaje (limpieza) parte desde los $15.000 pesos. Una extracción simple ronda los $20.000 a $35.000. La ortodoncia varía bastante según el tipo: los brackets metálicos pueden partir desde $400.000 el tratamiento completo. Los implantes van desde $350.000 por pieza.</p>
+
+<h2>¿Hay dentistas de urgencia en Linares?</h2>
+<p>Algunos odontólogos en Linares atienden urgencias fuera de horario o con turnos extra. Si tenés un dolor dental fuerte o una fractura, contactá directamente al dentista por WhatsApp para ver disponibilidad. En <a href="/salud">LinaresYa — Salud</a> encontrás dentistas con horario actualizado.</p>
+
+<h2>Fonasa en dentistas privados de Linares</h2>
+<p>Varios dentistas de Linares trabajan con Fonasa libre elección, lo que permite recuperar parte del costo de la consulta. Consultá directamente con el profesional si trabaja con tu previsión.</p>
+
+<p>¿Sos dentista u odontólogo en Linares? <a href="/publicar">Publicá tu consulta gratis en LinaresYa</a>.</p>
+`,
+  },
+  {
+    slug: "taxi-flete-transporte-linares",
+    titulo: "Taxi, fletes y transporte en Linares: cómo movilizarte",
+    descripcion:
+      "Guía de servicios de taxi, fletes, movilización y transporte en Linares, Chile. Precios, radiotaxis, buses y cómo contactarlos.",
+    fecha: "2025-04-15",
+    categoria: "Transporte",
+    emoji: "🚕",
+    keywords: [
+      "taxi linares",
+      "flete linares",
+      "radiotaxi linares",
+      "transporte linares",
+      "movilizacion linares",
+    ],
+    contenido: `
+<p>Movilizarse dentro de Linares y hacia otras ciudades es fácil si sabés qué opciones hay disponibles. Desde <strong>radiotaxis</strong> hasta <strong>fletes para mudanzas</strong>, acá te explicamos todo.</p>
+
+<h2>Opciones de transporte en Linares</h2>
+<ul>
+  <li><strong>Radiotaxis:</strong> la opción más rápida para desplazarte dentro de la ciudad. Muchos tienen WhatsApp para pedir el servicio.</li>
+  <li><strong>Taxis convencionales:</strong> disponibles en la ciudad y en la Terminal de Buses.</li>
+  <li><strong>Buses interurbanos:</strong> desde el Terminal de Buses de Linares a Talca, Santiago, Chillán y otras ciudades.</li>
+  <li><strong>Fletes y mudanzas:</strong> para mover muebles, electrodomésticos o carga en general dentro o fuera de Linares.</li>
+  <li><strong>Servicio de movilización escolar:</strong> transporte de niños en furgones autorizados.</li>
+</ul>
+
+<h2>¿Cuánto cobra un taxi en Linares?</h2>
+<p>Las carreras dentro de Linares suelen estar entre $2.500 y $5.000 pesos dependiendo de la distancia. Los radiotaxis pueden tener tarifa fija por sectores. Para viajes fuera de la ciudad se acuerda precio antes de subir.</p>
+
+<h2>¿Cómo pedir un flete en Linares?</h2>
+<p>La mayoría de los fleteros en Linares trabajan por WhatsApp o teléfono. Descripción del trabajo, tamaño de lo que se mueve y distancia son los datos que necesitan para cotizar. En <a href="/servicios-y-oficios">LinaresYa — Servicios y Oficios</a> podés encontrar fleteros disponibles en tu sector.</p>
+
+<h2>¿Hay app de taxi en Linares?</h2>
+<p>Por el momento Linares no tiene cobertura consolidada de apps como Uber o Cabify. El sistema de radiotaxis por WhatsApp sigue siendo la opción más usada y confiable en la ciudad.</p>
+
+<p>¿Tenés un servicio de taxi o flete en Linares? <a href="/publicar">Registrate gratis en LinaresYa</a>.</p>
+`,
+  },
+  {
+    slug: "ferreterias-materiales-construccion-linares",
+    titulo: "Ferreterías y materiales de construcción en Linares",
+    descripcion:
+      "Guía de ferreterías y proveedores de materiales de construcción en Linares, Chile. Precios, horarios y qué encontrás en cada una.",
+    fecha: "2025-04-10",
+    categoria: "Construcción",
+    emoji: "🔨",
+    keywords: [
+      "ferreteria linares",
+      "materiales construccion linares",
+      "pintura linares",
+      "herramientas linares",
+      "cemento linares",
+    ],
+    contenido: `
+<p>Ya sea para un arreglo pequeño en casa o una construcción mayor, Linares tiene <strong>ferreterías y distribuidores de materiales</strong> que cubren desde el tornillo hasta el cemento a granel.</p>
+
+<h2>¿Qué encontrás en las ferreterías de Linares?</h2>
+<ul>
+  <li><strong>Herramientas</strong> manuales y eléctricas (taladros, sierras, llaves)</li>
+  <li><strong>Materiales de construcción:</strong> cemento, áridos, bloques, ladrillos</li>
+  <li><strong>Pinturas y barnices</strong> para interior y exterior</li>
+  <li><strong>Plomería:</strong> cañerías PVC, fitting, llaves de paso</li>
+  <li><strong>Electricidad:</strong> cables, enchufes, tableros, luminarias</li>
+  <li><strong>Maderas y terciados</strong> para estructuras y terminaciones</li>
+  <li><strong>Artículos de ferretería:</strong> tornillos, pernos, bisagras, cerraduras</li>
+</ul>
+
+<h2>¿Hacen delivery de materiales en Linares?</h2>
+<p>Varias ferreterías y distribuidoras de materiales en Linares ofrecen reparto a domicilio, especialmente para compras de mayor volumen como sacos de cemento, áridos y maderas. Consultá directamente con el local.</p>
+
+<h2>Horarios de ferreterías en Linares</h2>
+<p>La mayoría de las ferreterías de Linares atienden de lunes a viernes de 09:00 a 13:00 y de 15:00 a 19:00, y los sábados de 09:00 a 13:00. Algunas tienen horario corrido. En <a href="/construccion-y-materiales">LinaresYa — Construcción</a> podés ver el horario actualizado de cada local.</p>
+
+<h2>Consejos para comprar en ferretería</h2>
+<ul>
+  <li>Llevá las medidas exactas de lo que necesitás antes de ir</li>
+  <li>Pedí factura si es para una obra o negocio (recuperás el IVA)</li>
+  <li>Preguntá si tienen servicio técnico o instalación para el producto</li>
+</ul>
+
+<p>¿Tenés una ferretería o distribuidora de materiales en Linares? <a href="/publicar">Aparecé gratis en LinaresYa</a>.</p>
+`,
+  },
 ];
 
 // Helpers

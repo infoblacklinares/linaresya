@@ -152,12 +152,18 @@ export function localBusinessJsonLd(
   if (negocio.sitio_web) sameAs.push(negocio.sitio_web);
   if (negocio.whatsapp) sameAs.push(`https://wa.me/${negocio.whatsapp}`);
 
-  // Telefono en formato E.164 si empieza con digitos.
-  const telephone = negocio.telefono
-    ? negocio.telefono.startsWith("+")
-      ? negocio.telefono
-      : `+${negocio.telefono.replace(/\D/g, "")}`
-    : undefined;
+  // Telefono en formato E.164 (requisito de Schema.org).
+  // Chile: +56 + 9 digitos (movil) o +56 + 8 digitos (fijo).
+  // Si el numero ya viene con + lo respetamos; si viene con 56 al inicio
+  // agregamos +; si es un numero local (empieza con 9 u otro digito) le
+  // prefijamos +56.
+  const telephone = (() => {
+    if (!negocio.telefono) return undefined;
+    const digits = negocio.telefono.replace(/\D/g, "");
+    if (negocio.telefono.startsWith("+")) return negocio.telefono.replace(/\s/g, "");
+    if (digits.startsWith("56") && digits.length >= 10) return `+${digits}`;
+    return `+56${digits}`;
+  })();
 
   return {
     "@context": "https://schema.org",
