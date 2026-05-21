@@ -29,6 +29,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/premium" className="hover:underline font-medium">
+                  Plan Premium
+                </Link>
+              </li>
+              <li>
                 <Link href="/buscar" className="hover:underline font-medium">
                   Buscar
                 </Link>

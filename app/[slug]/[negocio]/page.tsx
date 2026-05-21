@@ -472,7 +472,7 @@ export default async function NegocioDetalle({
             />
           ) : (
             <ActionButton
-              disabled
+              href="/premium"
               icon={<WhatsAppIcon />}
               label="Solo Premium"
             />
