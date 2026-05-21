@@ -5,6 +5,7 @@ import FavoritoButton from "@/components/FavoritoButton";
 import Hero from "@/components/Hero";
 import AdvertisementBanner from "@/components/AdvertisementBanner";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
+import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
 
 // ── Tipos ─────────────────────────────────────────────────────────────────────
 type Categoria = {
@@ -193,6 +194,10 @@ export default async function Home() {
 
   const totalNegocios = totalCount ?? destacados.length;
 
+  // ── Horarios: qué negocios están abiertos ahora ───────────────────────────
+  const todosIds = [...destacados, ...recientes].map(n => n.id);
+  const openIds  = await getOpenIds(todosIds);
+
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl bg-[#F9F8F6]">
       <JsonLd id="ld-organization" data={organizationJsonLd()} />
@@ -329,6 +334,7 @@ export default async function Home() {
                         {d.verificado && <span className="shrink-0 rounded-full bg-[#2B6E80]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#2B6E80]">✓ Verificado</span>}
                         {d.plan === "premium" && <span className="shrink-0 rounded-full bg-[#F4B860]/20 px-1.5 py-0.5 text-[9px] font-bold text-[#8B5E0A]">⭐ Premium</span>}
                         {esNuevo(d.creado_en) && <span className="shrink-0 rounded-full bg-[#3D5A45]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#3D5A45]">Nuevo</span>}
+                        {(() => { const b = badgeAbierto(estaAbierto(d.id, openIds)); return <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-bold ${b.clases}`}>{b.texto}</span>; })()}
                       </div>
                       {d.descripcion && <p className="mt-0.5 truncate text-xs text-[#8E8279]">{d.descripcion}</p>}
                       <p className="mt-0.5 truncate text-[11px] text-[#8E8279]">
@@ -367,7 +373,10 @@ export default async function Home() {
                   </div>
                   <div className="p-3">
                     <p className="truncate text-sm font-bold text-[#1A1410]">{d.nombre}</p>
-                    <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">{d.categorias?.emoji} {d.categorias?.nombre}</p>
+                    <div className="mt-0.5 flex items-center gap-1.5">
+                      <p className="truncate text-[10px] text-[#8E8279]">{d.categorias?.emoji} {d.categorias?.nombre}</p>
+                      {(() => { const b = badgeAbierto(estaAbierto(d.id, openIds)); return <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${b.clases}`}>{b.texto}</span>; })()}
+                    </div>
                   </div>
                 </Link>
               );

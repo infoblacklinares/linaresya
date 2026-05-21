@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import { diaHoySantiago, horaAhoraSantiago, badgeAbierto } from "@/lib/horarios";
 
 export const metadata = {
   title: "Buscar - LinaresYa",
@@ -24,29 +25,6 @@ type NegocioRow = {
 
 type Categoria = { id: number; nombre: string; slug: string; emoji: string };
 
-function diaHoySantiago(): "lunes" | "martes" | "miercoles" | "jueves" | "viernes" | "sabado" | "domingo" {
-  const fmt = new Intl.DateTimeFormat("es-CL", {
-    timeZone: "America/Santiago",
-    weekday: "long",
-  });
-  const raw = fmt.format(new Date()).toLowerCase();
-  const norm = raw.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  const dias: Array<"lunes" | "martes" | "miercoles" | "jueves" | "viernes" | "sabado" | "domingo"> = [
-    "lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo",
-  ];
-  return (dias.find((d) => d === norm) ?? "lunes");
-}
-
-function horaAhoraSantiago(): string {
-  const fmt = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "America/Santiago",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
-  return fmt.format(new Date());
-}
 
 export default async function BuscarPage({
   searchParams,
@@ -127,6 +105,24 @@ export default async function BuscarPage({
     .limit(100);
 
   const items = (rows ?? []) as unknown as NegocioRow[];
+
+  // Calcular cuáles están abiertos ahora (cuando no se filtró por abierto,
+  // igual mostramos el badge para que el usuario sepa el estado de cada uno)
+  const allIds = items.map((n) => n.id);
+  let resultOpenIds: string[] = openIds ?? [];
+  if (!abierto && allIds.length > 0) {
+    const dia = diaHoySantiago();
+    const ahora = horaAhoraSantiago();
+    const { data: h } = await supabase
+      .from("horarios")
+      .select("negocio_id")
+      .in("negocio_id", allIds)
+      .eq("dia", dia)
+      .eq("cerrado", false)
+      .lte("abre", ahora)
+      .gt("cierra", ahora);
+    resultOpenIds = ((h ?? []) as { negocio_id: string }[]).map((x) => x.negocio_id);
+  }
 
   function urlWith(changes: Record<string, string | null>): string {
     const params = new URLSearchParams();
@@ -293,7 +289,7 @@ export default async function BuscarPage({
           <ul className="px-4 space-y-3">
             {items.map((n) => (
               <li key={n.id}>
-                <NegocioCard n={n} />
+                <NegocioCard n={n} isOpen={resultOpenIds.includes(n.id)} />
               </li>
             ))}
           </ul>
@@ -336,8 +332,9 @@ function ChipQuitar({ label, href }: { label: string; href: string }) {
   );
 }
 
-function NegocioCard({ n }: { n: NegocioRow }) {
+function NegocioCard({ n, isOpen }: { n: NegocioRow; isOpen?: boolean }) {
   const esPremium = n.plan === "premium";
+  const badge = badgeAbierto(isOpen ?? false);
   const waNumber = n.whatsapp?.replace(/\D/g, "");
   const categoriaSlug = n.categorias?.slug ?? "sin-categoria";
   const href = `/${categoriaSlug}/${n.slug}`;
@@ -386,6 +383,9 @@ function NegocioCard({ n }: { n: NegocioRow }) {
               A domicilio
             </span>
           )}
+          <span className={`px-2 py-0.5 rounded-full font-semibold ${badge.clases}`}>
+            {badge.texto}
+          </span>
         </div>
       </div>
 
