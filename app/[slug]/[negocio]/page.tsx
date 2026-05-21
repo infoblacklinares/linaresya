@@ -716,7 +716,7 @@ export default async function NegocioDetalle({
             href="/dueno/solicitar"
             className="underline hover:text-foreground transition"
           >
-            ¿Sos el dueño? Editar este negocio
+            ¿Sos el dueño? Ver estadísticas y editar
           </Link>
         </p>
         <p>

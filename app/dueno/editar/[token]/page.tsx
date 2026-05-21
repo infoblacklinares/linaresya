@@ -145,6 +145,12 @@ export default async function DuenoEditarPage({
               {negocio.nombre}
             </h1>
           </div>
+          <Link
+            href={`/dueno/estadisticas/${token}`}
+            className="shrink-0 text-xs font-semibold text-[#2B6E80] hover:underline"
+          >
+            📊 Stats
+          </Link>
         </div>
       </header>
 
