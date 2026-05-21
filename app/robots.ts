@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,10 +8,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/admin/", "/api/"],
+        disallow: ["/admin/", "/api/", "/dueno/editar/"],
       },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
+    sitemap: `${siteUrl}/sitemap.xml`,
+    host: siteUrl,
   };
 }

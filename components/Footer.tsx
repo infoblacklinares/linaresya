@@ -38,6 +38,11 @@ export default function Footer() {
                   Categorias
                 </Link>
               </li>
+              <li>
+                <Link href="/blog" className="hover:underline font-medium">
+                  Blog
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="col-span-2 sm:col-span-1">

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { supabase } from "@/lib/supabase";
+import { posts as blogPosts } from "@/lib/blog-posts";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
@@ -49,7 +50,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.5,
     },
+    {
+      url: `${SITE_URL}/blog`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
+
+  // Blog posts estáticos
+  const urlsBlog: MetadataRoute.Sitemap = blogPosts.map((p) => ({
+    url: `${SITE_URL}/blog/${p.slug}`,
+    lastModified: new Date(p.fecha),
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
+  }));
 
   const urlsCategorias: MetadataRoute.Sitemap = cate.map((c) => ({
     url: `${SITE_URL}/${c.slug}`,
@@ -72,5 +87,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
     .filter((x): x is NonNullable<typeof x> => x !== null);
 
-  return [...urlsEstaticas, ...urlsCategorias, ...urlsNegocios];
+  return [...urlsEstaticas, ...urlsBlog, ...urlsCategorias, ...urlsNegocios];
 }
