@@ -858,6 +858,256 @@ export const posts: BlogPost[] = [
 <p>Encontrá jardineros en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos jardinero en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
 `,
   },
+
+  // ── Artículos batch 5 ──────────────────────────────────────────────────
+  {
+    slug: "gasfiter-linares",
+    titulo: "Gasfíter en Linares: cañerías, calefont y urgencias",
+    descripcion:
+      "Guía para encontrar gasfíter en Linares, Chile. Reparación de cañerías, instalación de calefont, desagotes, filtraciones y urgencias. Precios y consejos.",
+    fecha: "2025-05-21",
+    categoria: "Servicios del hogar",
+    emoji: "🔧",
+    keywords: [
+      "gasfiter linares",
+      "gasfiter linares chile",
+      "reparacion cañerias linares",
+      "calefont linares",
+      "urgencia gasfiteria linares",
+    ],
+    contenido: `
+<p>Una cañería rota, un calefont que no enciende o una filtración que moja el techo: los problemas de gasfitería aparecen sin aviso y necesitan solución rápida. En Linares hay <strong>gasfíteres de confianza</strong> para urgencias y trabajos programados.</p>
+
+<h2>¿Qué trabajos hace un gasfíter en Linares?</h2>
+<ul>
+  <li><strong>Reparación de cañerías:</strong> filtraciones, roturas, cambio de tuberías de agua fría y caliente.</li>
+  <li><strong>Calefont y termos:</strong> instalación, reparación y mantención de calefont a gas o eléctrico.</li>
+  <li><strong>Desagotes y destapes:</strong> WC, lavaderos y duchas tapados.</li>
+  <li><strong>Instalación de artefactos:</strong> lavamanos, WC, lavadoras, lavavajillas.</li>
+  <li><strong>Detección de pérdidas de agua:</strong> con o sin rotura de muro.</li>
+  <li><strong>Urgencias 24/7:</strong> muchos gasfíteres en Linares atienden emergencias fuera de horario.</li>
+</ul>
+
+<h2>¿Cuánto cobra un gasfíter en Linares?</h2>
+<ul>
+  <li>Visita diagnóstico: $15.000 – $25.000</li>
+  <li>Destape de WC o lavadero: $20.000 – $50.000</li>
+  <li>Cambio de grifo o llave de paso: $20.000 – $40.000</li>
+  <li>Instalación de calefont: $40.000 – $100.000 (más materiales)</li>
+  <li>Urgencia nocturna o fin de semana: 30-50% adicional</li>
+</ul>
+
+<h2>Señales de que necesitás un gasfíter urgente</h2>
+<ul>
+  <li>Humedad en paredes o cielo sin causa aparente</li>
+  <li>Pérdida notable de presión en las llaves</li>
+  <li>Olor a gas en la cocina o cerca del calefont</li>
+  <li>WC que no deja de correr</li>
+</ul>
+<p><strong>Ojo:</strong> si hay olor a gas, ventilá el ambiente antes de llamar y no enciendas llamas ni interruptores eléctricos.</p>
+
+<p>Encontrá gasfíteres en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos gasfíter en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "profesor-particular-linares",
+    titulo: "Profesor particular en Linares: reforzamiento y clases a domicilio",
+    descripcion:
+      "Encuentra profesores particulares en Linares para matemáticas, lenguaje, inglés, química y más. Reforzamiento escolar, preuniversitario y clases a domicilio.",
+    fecha: "2025-05-21",
+    categoria: "Educación",
+    emoji: "📚",
+    keywords: [
+      "profesor particular linares",
+      "clases particulares linares",
+      "reforzamiento escolar linares",
+      "preuniversitario linares",
+      "clases de matematicas linares",
+    ],
+    contenido: `
+<p>¿Tu hijo necesita apoyo en matemáticas? ¿Buscás reforzamiento para la PAES o mejorar tu nivel de inglés? En Linares hay <strong>profesores particulares</strong> para todas las edades y materias, con clases a domicilio o en línea.</p>
+
+<h2>Materias más solicitadas en Linares</h2>
+<ul>
+  <li><strong>Matemáticas:</strong> desde básica hasta cálculo universitario.</li>
+  <li><strong>Lenguaje y comunicación:</strong> comprensión lectora, redacción, literatura.</li>
+  <li><strong>Inglés:</strong> conversacional, gramática, preparación de exámenes (IELTS, TOEFL).</li>
+  <li><strong>Química y física:</strong> muy demandadas en enseñanza media y preuniversitario.</li>
+  <li><strong>Historia y ciencias sociales:</strong> apoyo para pruebas y PSU/PAES.</li>
+  <li><strong>Computación e informática:</strong> desde Office básico hasta programación.</li>
+</ul>
+
+<h2>¿Cuánto cobra un profesor particular en Linares?</h2>
+<ul>
+  <li>Clase de 1 hora (básica-media): $10.000 – $20.000</li>
+  <li>Clase de 1 hora (universitario o especializado): $15.000 – $30.000</li>
+  <li>Paquete mensual (4-8 clases): habitualmente con descuento</li>
+  <li>Clases en línea: generalmente 10-20% más económicas</li>
+</ul>
+
+<h2>Tips para elegir un buen profe particular</h2>
+<ul>
+  <li>Pedí una clase de prueba antes de comprometerte</li>
+  <li>Verificá su formación y experiencia con el nivel del estudiante</li>
+  <li>Buscá reseñas de otros alumnos en LinaresYa</li>
+  <li>Definí un horario fijo para generar hábito de estudio</li>
+</ul>
+
+<h2>Preuniversitario en Linares</h2>
+<p>Además de clases particulares, existen preuniversitarios locales en Linares para preparar la PAES. Los profesores particulares son una alternativa más personalizada y flexible para quienes necesitan refuerzo en materias específicas.</p>
+
+<p>Encontrá profesores particulares en Linares en <a href="/educacion">LinaresYa — Educación</a>. ¿Sos profesor en Linares? <a href="/publicar">Publicá tus clases gratis</a>.</p>
+`,
+  },
+  {
+    slug: "veterinario-linares",
+    titulo: "Veterinario en Linares: clínicas, vacunas y urgencias para mascotas",
+    descripcion:
+      "Encuentra veterinarios en Linares, Chile. Clínicas veterinarias, vacunas, castración, urgencias y peluquería canina. Todo lo que necesitás para tu mascota.",
+    fecha: "2025-05-21",
+    categoria: "Veterinaria",
+    emoji: "🐾",
+    keywords: [
+      "veterinario linares",
+      "clinica veterinaria linares",
+      "veterinaria linares chile",
+      "vacunas mascotas linares",
+      "peluqueria canina linares",
+    ],
+    contenido: `
+<p>Linares tiene varias <strong>clínicas veterinarias</strong> y profesionales independientes para cuidar la salud de perros, gatos y otras mascotas. Desde controles preventivos hasta urgencias, la atención veterinaria local está disponible para tu compañero.</p>
+
+<h2>Servicios veterinarios en Linares</h2>
+<ul>
+  <li><strong>Consultas y diagnóstico:</strong> revisión general, fiebre, heridas, vómitos, comportamiento.</li>
+  <li><strong>Vacunas y desparasitación:</strong> el calendario básico para perros y gatos en Chile.</li>
+  <li><strong>Castración y esterilización:</strong> cirugía programada con recuperación en clínica.</li>
+  <li><strong>Urgencias:</strong> atropellados, intoxicaciones, dificultad respiratoria.</li>
+  <li><strong>Peluquería canina:</strong> baño, corte y styling para perros.</li>
+  <li><strong>Radiografías y exámenes:</strong> algunas clínicas tienen equipamiento de diagnóstico in situ.</li>
+</ul>
+
+<h2>¿Cuánto cuesta ir al veterinario en Linares?</h2>
+<ul>
+  <li>Consulta general: $10.000 – $25.000</li>
+  <li>Vacuna antirrábica: $8.000 – $15.000</li>
+  <li>Castración de macho (perro pequeño): $40.000 – $80.000</li>
+  <li>Esterilización de hembra: $60.000 – $130.000</li>
+  <li>Baño y corte (peluquería): $15.000 – $40.000</li>
+</ul>
+
+<h2>Calendario de vacunas básico en Chile</h2>
+<ul>
+  <li><strong>Perros:</strong> séxtuple (moquillo, parvovirus, hepatitis, leptospirosis, parainfluenza, coronavirus) + antirrábica.</li>
+  <li><strong>Gatos:</strong> triple felina (rinotraqueítis, calicivirus, panleucopenia) + rabia.</li>
+  <li>Las primeras vacunas se dan a los 6-8 semanas de vida y tienen refuerzo anual.</li>
+</ul>
+
+<h2>¿Cuándo ir a urgencias veterinarias?</h2>
+<p>Dificultad para respirar, convulsiones, trauma por atropello, sangrado abundante, sospecha de envenenamiento o si tu mascota lleva más de 12 horas sin comer ni tomar agua son señales de urgencia.</p>
+
+<p>Encontrá veterinarios en Linares en <a href="/veterinarias">LinaresYa — Veterinaria</a>. ¿Tenés clínica veterinaria en Linares? <a href="/publicar">Registrala gratis</a>.</p>
+`,
+  },
+  {
+    slug: "flete-transporte-linares",
+    titulo: "Flete y transporte en Linares: mudanzas, cargas y envíos",
+    descripcion:
+      "Encuentra servicios de flete y transporte en Linares, Chile. Mudanzas, traslado de muebles, cargas, envíos dentro de Linares y hacia otras ciudades del Maule.",
+    fecha: "2025-05-21",
+    categoria: "Transporte",
+    emoji: "🚛",
+    keywords: [
+      "flete linares",
+      "transporte linares",
+      "mudanza linares",
+      "flete linares chile",
+      "traslado muebles linares",
+    ],
+    contenido: `
+<p>¿Te mudás, compraste un mueble grande o necesitás trasladar mercadería? En Linares hay <strong>servicios de flete y transporte</strong> para todo tipo de necesidades, desde un televisor hasta el contenido completo de una casa.</p>
+
+<h2>¿Qué servicios de transporte hay en Linares?</h2>
+<ul>
+  <li><strong>Mudanzas:</strong> traslado completo de muebles y enseres dentro de Linares o hacia otras ciudades.</li>
+  <li><strong>Flete de muebles y electrodomésticos:</strong> compras en tiendas que no tienen despacho propio.</li>
+  <li><strong>Carga y descarga:</strong> con o sin personal para el trabajo físico.</li>
+  <li><strong>Envíos a otras ciudades:</strong> Talca, Curicó, Santiago, Chillán y destinos del Maule.</li>
+  <li><strong>Transporte de materiales de construcción:</strong> arena, ripio, ladrillos, etc.</li>
+  <li><strong>Pick-up y camioneta:</strong> para cargas más pequeñas o urgentes.</li>
+</ul>
+
+<h2>¿Cuánto cobra un flete en Linares?</h2>
+<p>Los precios dependen del volumen, distancia y si incluye personal para carga/descarga:</p>
+<ul>
+  <li>Flete urbano (mueble o electrodoméstico): $15.000 – $40.000</li>
+  <li>Mudanza chica (departamento o pieza): $50.000 – $120.000</li>
+  <li>Mudanza completa (casa): $100.000 – $300.000+</li>
+  <li>Envío a otra ciudad: según distancia y peso</li>
+</ul>
+
+<h2>Tips para contratar un flete en Linares</h2>
+<ul>
+  <li>Pedí presupuesto con y sin mano de obra incluida</li>
+  <li>Preguntá si el servicio incluye embalaje para artículos frágiles</li>
+  <li>Confirmá el seguro o responsabilidad en caso de daños</li>
+  <li>Para mudanzas grandes, reservá con al menos una semana de anticipación</li>
+</ul>
+
+<p>Encontrá servicios de flete y transporte en Linares en <a href="/transporte">LinaresYa — Transporte</a>. ¿Tenés camión o camioneta y ofrecés fletes? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+`,
+  },
+  {
+    slug: "salon-de-eventos-linares",
+    titulo: "Salón de eventos en Linares: cumpleaños, matrimonios y celebraciones",
+    descripcion:
+      "Guía de salones de eventos en Linares, Chile. Arriendo de salones para cumpleaños, matrimonios, quinceañeros, reuniones de empresa y celebraciones familiares.",
+    fecha: "2025-05-21",
+    categoria: "Eventos",
+    emoji: "🎉",
+    keywords: [
+      "salon de eventos linares",
+      "arriendo salon linares",
+      "salon cumpleanos linares",
+      "salon matrimonio linares",
+      "quinceañero linares",
+    ],
+    contenido: `
+<p>Planificar una fiesta en Linares empieza por encontrar el espacio correcto. Desde pequeñas celebraciones familiares hasta matrimonios de cientos de invitados, la ciudad ofrece <strong>salones de eventos</strong> de distintos tamaños y estilos.</p>
+
+<h2>¿Qué tipos de eventos se realizan en salones de Linares?</h2>
+<ul>
+  <li><strong>Cumpleaños y quinceañeros:</strong> el uso más frecuente; muchos salones tienen paquetes especiales.</li>
+  <li><strong>Matrimonios y esponsales:</strong> salones con capacidad para recepciones grandes.</li>
+  <li><strong>Reuniones de empresa y lanzamientos:</strong> espacios que se pueden configurar como auditorios.</li>
+  <li><strong>Bautizos y comuniones:</strong> celebraciones familiares de tamaño mediano.</li>
+  <li><strong>Fiestas de fin de año y reuniones de curso:</strong> muy demandadas entre octubre y diciembre.</li>
+</ul>
+
+<h2>¿Cuánto cuesta arrendar un salón en Linares?</h2>
+<p>Los precios varían mucho según capacidad, día de la semana y servicios incluidos:</p>
+<ul>
+  <li>Salón pequeño (hasta 50 personas): $80.000 – $200.000</li>
+  <li>Salón mediano (50-150 personas): $150.000 – $400.000</li>
+  <li>Salón grande (150+ personas): $300.000 – $700.000+</li>
+  <li>Fin de semana suele costar 30-50% más que entre semana</li>
+</ul>
+
+<h2>¿Qué verificar antes de arrendar?</h2>
+<ul>
+  <li>Aforo máximo permitido y disposición de mesas</li>
+  <li>Si permite música en vivo o DJ (permisos de ruido)</li>
+  <li>Si incluye cocina, vajilla o si hay que contratar catering aparte</li>
+  <li>Estacionamiento disponible para los invitados</li>
+  <li>Horario de término y política de limpieza</li>
+</ul>
+
+<h2>Servicios complementarios en Linares</h2>
+<p>Muchos salones trabajan con proveedores locales recomendados: catering, pastelería, decoración, animación y fotografía. En LinaresYa podés encontrar todos estos servicios para armar tu evento completo.</p>
+
+<p>Encontrá salones de eventos en Linares en <a href="/eventos">LinaresYa — Eventos</a>. ¿Tenés un salón de eventos en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
+`,
+  },
 ];
 
 // Helpers
