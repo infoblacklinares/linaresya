@@ -9,15 +9,15 @@ const WA_NUMERO   = "56984272557";           // sin + ni espacios
 const EMAIL_PAGO  = "infoblack.linares@gmail.com";
 
 // Datos bancarios para transferencia
-const BANCO       = "Banco Estado";          // o BCI, Santander, etc.
-const TIPO_CUENTA = "Cuenta Corriente";      // Cuenta Vista, Cuenta RUT, etc.
-const NRO_CUENTA  = "000000000";             // ← reemplazá con tu número real
-const RUT_TITULAR = "12.345.678-9";          // ← reemplazá con tu RUT real
-const NOMBRE_TITULAR = "Infoblack SpA";      // ← nombre en la cuenta
+const BANCO       = "Banco Estado";
+const TIPO_CUENTA = "Cuenta RUT / Vista";
+const NRO_CUENTA  = "186537866";
+const RUT_TITULAR = "18.653.786-6";
+const NOMBRE_TITULAR = "Infoblack SpA";      // ← actualizá si el nombre difiere
 
 // Precio mensual y anual
-const PRECIO_MES  = 5990;
-const PRECIO_ANIO = 49990;                   // 2 meses gratis vs mensual
+const PRECIO_MES  = 9900;
+const PRECIO_ANIO = 99000;                   // 2 meses gratis vs mensual
 const PRECIO_MES_ANIO = Math.round(PRECIO_ANIO / 12); // ~4.166/mes
 
 const WA_MSG_PREMIUM = encodeURIComponent(
