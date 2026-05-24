@@ -2724,6 +2724,683 @@ export const posts: BlogPost[] = [
 <p>Encontrá funerarias en Linares en <a href="/servicios">LinaresYa — Servicios</a>. ¿Tenés una funeraria en Linares? <a href="/publicar">Publicala gratis</a>.</p>
 `,
   },
+
+  // ── Batch 10 ───────────────────────────────────────────────────────────────
+
+  {
+    slug: "urgencias-medicas-linares",
+    titulo: "Urgencias médicas en Linares: dónde ir y qué hacer",
+    descripcion:
+      "Guía de urgencias en Linares: Hospital de Linares, clínicas privadas, SAMU y SOS Médico. Qué hacer en cada tipo de emergencia y cuánto cuesta.",
+    fecha: "2026-05-20",
+    categoria: "Salud",
+    emoji: "🚑",
+    keywords: ["urgencias linares", "hospital linares urgencia", "samu linares", "emergencia medica linares"],
+    contenido: `
+<p>Saber a dónde ir en una emergencia puede hacer la diferencia. Acá te explicamos todas las opciones de <strong>urgencias médicas en Linares</strong>: desde el SAMU hasta clínicas privadas, con sus horarios y lo que necesitás saber.</p>
+
+<h2>SAMU — Número de emergencia</h2>
+<p>El primer número que tenés que tener grabado: <strong>131</strong>. El SAMU (Servicio de Atención Médica de Urgencia) cubre toda la Región del Maule. Llamá al 131 en caso de:</p>
+<ul>
+  <li>Pérdida de consciencia o desmayo.</li>
+  <li>Dificultad severa para respirar.</li>
+  <li>Dolor en el pecho (posible infarto).</li>
+  <li>Accidente de tránsito con heridos.</li>
+  <li>ACV (pérdida de habla, parálisis facial, debilidad en extremidades).</li>
+  <li>Emergencias pediátricas graves.</li>
+</ul>
+
+<h2>Hospital de Linares — Urgencias</h2>
+<p>El <strong>Hospital Base de Linares</strong> atiende urgencias las 24 horas, los 7 días de la semana. Es la principal opción para usuarios Fonasa.</p>
+<ul>
+  <li><strong>Dirección:</strong> Valentín Letelier 690, Linares</li>
+  <li><strong>Teléfono urgencia:</strong> (73) 2 209 000</li>
+  <li><strong>Cobertura:</strong> Fonasa nivel A, B, C y D con bono. Sin costo para nivel A.</li>
+</ul>
+<p>El tiempo de espera en urgencias depende del nivel de triaje (gravedad). Casos leves pueden esperar varias horas. Si es emergencia real, el triaje te da prioridad.</p>
+
+<h2>¿Qué es el triaje y cómo funciona?</h2>
+<p>Al llegar a urgencias te clasifican por colores según gravedad:</p>
+<ul>
+  <li>🔴 <strong>Rojo (Inmediato):</strong> riesgo de vida. Atención en segundos.</li>
+  <li>🟠 <strong>Naranja (Muy urgente):</strong> atención en menos de 15 minutos.</li>
+  <li>🟡 <strong>Amarillo (Urgente):</strong> atención en menos de 30 minutos.</li>
+  <li>🟢 <strong>Verde (Poco urgente):</li> puede esperar 1–2 horas.</li>
+  <li>⚪ <strong>Azul (No urgente):</strong> debería atenderse en consultorio. Larga espera.</li>
+</ul>
+
+<h2>Clínicas privadas con urgencias en Linares</h2>
+<p>Para quienes tienen Isapre o prefieren atención privada, hay clínicas en Linares con servicio de urgencias:</p>
+<ul>
+  <li>Cobertura con Isapre según tu plan. El copago varía.</li>
+  <li>Tiempo de espera generalmente menor que el hospital público.</li>
+  <li>Consulta de urgencia básica: $30.000–$60.000 particular.</li>
+</ul>
+
+<h2>Urgencias pediátricas</h2>
+<p>Para niños, el Hospital de Linares tiene sector pediátrico en urgencias. Si el niño tiene fiebre alta (más de 39°C que no baja con antitérmico), dificultad para respirar, convulsiones o pérdida de consciencia, ve directo a urgencias.</p>
+
+<h2>Urgencias dentales</h2>
+<p>Para urgencias dentales (dolor severo, diente roto, infección con hinchazón facial), el Hospital de Linares tiene atención odontológica de urgencia. También hay dentistas en Linares que atienden urgencias en horario de tarde. Busca en <a href="/salud-y-bienestar">LinaresYa — Salud</a>.</p>
+
+<h2>Números de emergencia en Linares</h2>
+<ul>
+  <li>🚑 SAMU: <strong>131</strong></li>
+  <li>🚒 Bomberos: <strong>132</strong></li>
+  <li>🚓 Carabineros: <strong>133</strong></li>
+  <li>👮 PDI: <strong>134</strong></li>
+  <li>☎️ Fono Salud: <strong>600 360 7777</strong></li>
+</ul>
+
+<p>Encontrá médicos y centros de salud en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Tenés una clínica o consulta médica? <a href="/publicar">Publicala gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "abogado-laboral-linares",
+    titulo: "Abogado laboral en Linares: derechos y cómo reclamar",
+    descripcion:
+      "Guía de abogados laborales en Linares. Despido injustificado, licencias médicas rechazadas, acoso laboral y cómo reclamar en la Inspección del Trabajo.",
+    fecha: "2026-05-21",
+    categoria: "Servicios Profesionales",
+    emoji: "⚖️",
+    keywords: ["abogado laboral linares", "despido injustificado linares", "inspeccion trabajo linares", "derechos trabajador linares"],
+    contenido: `
+<p>¿Problemas en el trabajo en Linares? Ya sea un despido injustificado, sueldo impago, acoso o una licencia rechazada, conocer tus derechos laborales y saber cómo actuar marca la diferencia. Acá te explicamos todo.</p>
+
+<h2>¿Cuándo necesitás un abogado laboral en Linares?</h2>
+<ul>
+  <li><strong>Despido injustificado o improcedente:</strong> si te despidieron sin causal válida o sin pagar la indemnización correcta.</li>
+  <li><strong>Sueldo impago:</strong> si la empresa te debe semanas o meses de remuneración.</li>
+  <li><strong>Acoso laboral (mobbing):</strong> conductas reiteradas de hostigamiento o maltrato en el trabajo.</li>
+  <li><strong>Acoso sexual:</strong> comportamiento de naturaleza sexual no deseado en el trabajo.</li>
+  <li><strong>Accidente del trabajo:</strong> si sufriste un accidente laboral y no recibes la atención o compensación correcta.</li>
+  <li><strong>Licencia médica rechazada:</strong> si la Compin rechazó tu licencia y querés apelar.</li>
+  <li><strong>No pago de cotizaciones:</strong> si tu empleador no te cotizó en AFP, Isapre o INP.</li>
+</ul>
+
+<h2>Inspección del Trabajo en Linares</h2>
+<p>Antes de contratar un abogado, podés ir gratis a la <strong>Inspección del Trabajo de Linares</strong>. Atienden denuncias sobre incumplimientos laborales, y muchos casos se resuelven con una mediación.</p>
+<ul>
+  <li><strong>Dirección:</strong> buscar en el sitio web de la Dirección del Trabajo (www.dt.gob.cl)</li>
+  <li><strong>Teléfono central:</strong> 600 450 4000</li>
+  <li><strong>Trámites online:</strong> muchas denuncias se pueden hacer en el portal DT Online</li>
+</ul>
+
+<h2>¿Cuánto cuesta un abogado laboral en Linares?</h2>
+<ul>
+  <li>Consulta inicial: $20.000–$40.000 (muchos ofrecen primera consulta gratuita)</li>
+  <li>Carta de despido / finiquito: $30.000–$60.000</li>
+  <li>Demanda laboral (honorarios): 15–25% de lo recuperado (éxito contingente)</li>
+  <li>Defensa en juicio oral del trabajo: desde $150.000</li>
+</ul>
+
+<h2>El Juicio Oral del Trabajo en Linares</h2>
+<p>Chile tiene <strong>Juzgados de Letras del Trabajo</strong> que resuelven conflictos laborales. El proceso es relativamente rápido (3–12 meses) comparado con otros juicios. Si el monto reclamado es bajo, podés representarte solo, pero se recomienda abogado para montos importantes.</p>
+
+<h2>Indemnización por despido: ¿cuánto corresponde?</h2>
+<p>Dependiendo de la causal y la antigüedad:</p>
+<ul>
+  <li><strong>1 mes de sueldo por año trabajado</strong> (mínimo 3 meses, máximo 11 meses) si el despido fue por necesidades de la empresa.</li>
+  <li><strong>+ 30% de recargo</strong> sobre la indemnización si el despido fue injustificado.</li>
+  <li>Siempre: aviso previo de 30 días o un mes de sueldo en compensación.</li>
+</ul>
+
+<h2>Corporación de Asistencia Judicial (CAJMAULE)</h2>
+<p>Si no podés pagar un abogado, la <strong>Corporación de Asistencia Judicial del Maule (CAJMAULE)</strong> ofrece asesoría legal gratuita para personas de escasos recursos en Linares. Consultá disponibilidad en el municipio o llamando al número nacional.</p>
+
+<p>Encontrá abogados en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Sos abogado en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "plomero-gasfiter-emergencia-linares",
+    titulo: "Gasfíter de emergencia en Linares: fugas, cañerías y urgencias",
+    descripcion:
+      "¿Fuga de agua o gas en Linares? Guía para emergencias de gasfitería: qué hacer primero, cómo cortar el suministro y cómo encontrar un gasfíter 24 horas.",
+    fecha: "2026-05-22",
+    categoria: "Servicios del Hogar",
+    emoji: "🚿",
+    keywords: ["gasfiter emergencia linares", "fuga agua linares", "gasfiter 24 horas linares", "urgencia gasfiteria linares"],
+    contenido: `
+<p>Una fuga de agua o gas es una emergencia que no puede esperar. Acá te explicamos qué hacer en los primeros minutos y cómo encontrar un <strong>gasfíter de emergencia en Linares</strong> disponible las 24 horas.</p>
+
+<h2>🚨 Fuga de gas: qué hacer primero</h2>
+<ol>
+  <li><strong>No enciendas nada eléctrico</strong> (ni luz, ni interruptores). Una chispa puede causar explosión.</li>
+  <li><strong>Cierra la llave de paso del gas</strong> — está en el medidor o en la entrada de la cañería.</li>
+  <li><strong>Abre puertas y ventanas</strong> para ventilar el espacio.</li>
+  <li><strong>Evacúa el inmueble</strong> si el olor es fuerte.</li>
+  <li><strong>Llama a Gasco o Abastible</strong> desde afuera del domicilio.</li>
+  <li><strong>Llama a Bomberos: 132</strong> si la fuga es grande o hay riesgo inmediato.</li>
+</ol>
+
+<h2>🚰 Fuga de agua: qué hacer primero</h2>
+<ol>
+  <li><strong>Cierra la llave de paso general</strong> — generalmente está en el medidor de agua en la fachada o en el patio.</li>
+  <li>Si no encontrás la llave de paso, llamá a la empresa sanitaria (Essbio en Linares): <strong>600 362 0000</strong>.</li>
+  <li>Si el agua ya inundó el piso, desconecta los artefactos eléctricos del área.</li>
+  <li>Llama a un gasfíter de emergencia.</li>
+</ol>
+
+<h2>¿Qué arregla un gasfíter de emergencia en Linares?</h2>
+<ul>
+  <li>Fugas en cañerías de agua fría y caliente.</li>
+  <li>Reparación de llaves de paso dañadas.</li>
+  <li>Desagüe tapado (lavamanos, tina, cocina).</li>
+  <li>Reparación o reemplazo de calefont o termos a gas.</li>
+  <li>Instalación o reemplazo de WC, lavamanos, duchas.</li>
+  <li>Detección de fugas en cañerías empotradas (dentro de paredes).</li>
+</ul>
+
+<h2>¿Cuánto cobra un gasfíter de emergencia en Linares?</h2>
+<ul>
+  <li>Visita de emergencia (fuera de horario): $25.000–$50.000 solo por el traslado/visita</li>
+  <li>Reparación simple (cambio de llave, ajuste de unión): $15.000–$40.000</li>
+  <li>Cambio de calefont: $30.000–$60.000 de mano de obra (más el equipo)</li>
+  <li>Destape de cañería: $20.000–$50.000 según dificultad</li>
+  <li>Precio nocturno (20:00–08:00): suele tener recargo del 30–50%</li>
+</ul>
+
+<h2>¿Cómo evitar emergencias de gasfitería?</h2>
+<ul>
+  <li>Revisa las uniones de las cañerías visibles cada 6 meses.</li>
+  <li>Haz mantenimiento del calefont anualmente.</li>
+  <li>No ignores pequeñas goteras — se agravan con el tiempo.</li>
+  <li>Ubica la llave de paso general ANTES de que ocurra una emergencia.</li>
+  <li>Guarda el número de un gasfíter de confianza antes de necesitarlo.</li>
+</ul>
+
+<p>Encontrá gasfíteres en Linares — incluyendo servicio de urgencia — en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos gasfíter en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "colegios-linares",
+    titulo: "Colegios en Linares: públicos, privados y subvencionados",
+    descripcion:
+      "Guía de colegios en Linares. Establecimientos municipales, particulares subvencionados y privados. Proceso de matrícula, JEC y alternativas educativas.",
+    fecha: "2026-05-23",
+    categoria: "Educación",
+    emoji: "🏫",
+    keywords: ["colegios linares", "matricula linares", "escuelas linares", "colegio particular linares"],
+    contenido: `
+<p>Elegir el colegio adecuado para tus hijos en Linares es una decisión importante. Acá te orientamos sobre los tipos de establecimientos, el proceso de matrícula y cómo funciona el sistema educacional en la ciudad.</p>
+
+<h2>Tipos de colegios en Linares</h2>
+
+<h3>Colegios Municipales</h3>
+<p>Administrados por la Municipalidad de Linares (o el Servicio Local de Educación del Maule). Son <strong>gratuitos</strong> y financiados principalmente por el Estado. Buena opción para familias de ingresos bajos y medios.</p>
+<ul>
+  <li>Matrícula y mensualidad: $0</li>
+  <li>Incluyen alimentación escolar (JUNAEB) para estudiantes vulnerables.</li>
+  <li>Algunos tienen Jornada Escolar Completa (JEC).</li>
+</ul>
+
+<h3>Colegios Particulares Subvencionados</h3>
+<p>Administración privada, pero con financiamiento estatal (subvención). Pueden cobrar un copago mensual (financiamiento compartido). Son la opción más común en Linares.</p>
+<ul>
+  <li>Copago mensual: $0–$80.000/mes (varía por establecimiento)</li>
+  <li>Generalmente tienen mejores infraestructuras que los municipales.</li>
+  <li>Muchos tienen orientación religiosa (católica, evangélica).</li>
+</ul>
+
+<h3>Colegios Particulares Pagados</h3>
+<p>Financiados totalmente por los apoderados. Sin subvención estatal.</p>
+<ul>
+  <li>Mensualidad: desde $80.000 a $200.000+</li>
+  <li>Generalmente menor número de alumnos por curso.</li>
+  <li>Proyectos educativos diferenciados (bilingüe, Montessori, etc.).</li>
+</ul>
+
+<h2>Proceso de matrícula en Linares</h2>
+<p>El proceso de matrícula en Chile opera mediante el <strong>Sistema de Admisión Escolar (SAE)</strong>, administrado por el Ministerio de Educación:</p>
+<ol>
+  <li><strong>Postulación online</strong> (generalmente entre mayo y julio): ingresás al portal del MINEDUC y postulás a los colegios de tu preferencia.</li>
+  <li><strong>Asignación</strong>: el sistema asigna cupos considerando hermanos en el establecimiento, cercanía y orden de preferencia.</li>
+  <li><strong>Matrícula</strong>: una vez asignado, vas al colegio a concretar la matrícula en los plazos establecidos.</li>
+</ol>
+<p>Para más información: <strong>www.sistemadeadmisionescolar.cl</strong></p>
+
+<h2>Niveles educativos</h2>
+<ul>
+  <li><strong>Pre-Kínder y Kínder:</strong> para niños de 4–6 años. Muchos colegios en Linares los incluyen.</li>
+  <li><strong>Educación Básica:</strong> 1° a 8° básico (6–14 años aprox.).</li>
+  <li><strong>Educación Media:</strong> 1° a 4° medio (14–18 años aprox.).</li>
+  <li><strong>Educación Técnico-Profesional:</strong> algunos liceos en Linares tienen modalidad TP con salida laboral.</li>
+</ul>
+
+<h2>Beneficios JUNAEB para estudiantes en Linares</h2>
+<p>El <strong>JUNAEB</strong> (Junta Nacional de Auxilio Escolar y Becas) entrega en Linares:</p>
+<ul>
+  <li>Alimentación escolar (desayuno y almuerzo en el colegio).</li>
+  <li>Útiles escolares gratuitos para alumnos vulnerables.</li>
+  <li>Lentes y atención dental a través del Programa de Salud Escolar.</li>
+  <li>Becas de financiamiento para educación media y superior.</li>
+</ul>
+
+<p>¿Ofrecés clases particulares o servicios educativos en Linares? Publicá en <a href="/educacion">LinaresYa — Educación</a>. ¿Tenés un colegio o jardín infantil? <a href="/publicar">Registralo gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "supermercado-delivery-linares",
+    titulo: "Supermercados y delivery de comestibles en Linares",
+    descripcion:
+      "Guía de supermercados en Linares: horarios, precios y quiénes hacen delivery a domicilio. Santa Isabel, Unimarc, Líder y almacenes del barrio.",
+    fecha: "2026-05-24",
+    categoria: "Compras",
+    emoji: "🛒",
+    keywords: ["supermercado linares", "delivery supermercado linares", "santa isabel linares", "unimarc linares"],
+    contenido: `
+<p>En Linares hay varias opciones para hacer las compras del hogar: desde grandes cadenas de supermercados hasta almacenes de barrio y aplicaciones de delivery. Acá te orientamos para comprar mejor.</p>
+
+<h2>Principales supermercados en Linares</h2>
+
+<h3>Santa Isabel</h3>
+<p>Una de las cadenas más presentes en ciudades medianas de Chile. En Linares generalmente cuentan con:</p>
+<ul>
+  <li>Sección carnicería, panadería y fiambrería.</li>
+  <li>Farmacia interna.</li>
+  <li>Servicio de delivery via su app o sitio web.</li>
+  <li>Horario típico: 8:00–22:00 (puede variar)</li>
+</ul>
+
+<h3>Unimarc</h3>
+<p>Supermercado de formato mediano, con buena variedad de productos frescos. Habitual en Linares con:</p>
+<ul>
+  <li>Panadería artesanal.</li>
+  <li>Sección de productos a granel.</li>
+  <li>Delivery disponible en algunas comunas.</li>
+</ul>
+
+<h3>Líder / Walmart</h3>
+<p>Cadena de gran formato (hipermercado). En algunas sucursales de la Región del Maule ofrecen:</p>
+<ul>
+  <li>Los mejores precios en volumen y marca propia.</li>
+  <li>Electrónica, ropa y línea del hogar además de alimentos.</li>
+  <li>Delivery con Lider.cl y app móvil.</li>
+</ul>
+
+<h2>Delivery de supermercado en Linares</h2>
+<p>Las opciones de compras online con delivery a Linares:</p>
+<ul>
+  <li><strong>Santa Isabel online:</strong> santaisabel.cl — generalmente disponible para Linares.</li>
+  <li><strong>Lider.cl:</strong> permite seleccionar tu dirección de entrega y ver disponibilidad.</li>
+  <li><strong>Cornershop / Uber Eats:</strong> servicio de compras por aplicación en algunas ciudades. Verificá si está disponible en Linares.</li>
+  <li><strong>Verduleros y carniceros a domicilio:</strong> muchos proveedores locales hacen delivery por WhatsApp — buscalos en LinaresYa.</li>
+</ul>
+
+<h2>Almacenes y minimarkets del barrio</h2>
+<p>Los almacenes de barrio en Linares siguen siendo importantes para:</p>
+<ul>
+  <li>Compras de urgencia fuera del horario del supermercado.</li>
+  <li>Productos básicos sin necesidad de salir lejos.</li>
+  <li>Delivery rápido a pocas cuadras (muchos lo hacen por WhatsApp).</li>
+  <li>Fiar hasta fin de mes en almacenes de confianza del barrio.</li>
+</ul>
+
+<h2>Tips para comprar más barato en Linares</h2>
+<ul>
+  <li>Compará precios entre supermercados usando la app <strong>Cuentas Claras</strong> del SERNAC.</li>
+  <li>Los martes y miércoles suelen tener mejores ofertas en carnicería.</li>
+  <li>Comprá frutas y verduras en las ferias libres de Linares — más frescas y baratas.</li>
+  <li>Usá la tarjeta del supermercado para acumular puntos y canjear descuentos.</li>
+  <li>Los productos de marca propia (Selección, Great Value, etc.) suelen costar 20–40% menos que las marcas líderes.</li>
+</ul>
+
+<h2>Ferias libres en Linares</h2>
+<p>Las ferias libres son una tradición en Linares. Ofrecen frutas, verduras, carnes y productos de temporada a precios más económicos que los supermercados. Generalmente funcionan los sábados por la mañana.</p>
+
+<p>Encontrá almacenes y tiendas de comestibles en Linares en <a href="/supermercados-y-almacenes">LinaresYa — Supermercados</a>. ¿Tenés un almacén o minimarket? <a href="/publicar">Publicalo gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "tramites-municipalidad-linares",
+    titulo: "Trámites en la Municipalidad de Linares: guía completa",
+    descripcion:
+      "Guía de trámites en la Municipalidad de Linares: patente comercial, permiso de obra, certificados, contribuciones y horarios de atención.",
+    fecha: "2026-05-25",
+    categoria: "Servicios",
+    emoji: "🏛️",
+    keywords: ["municipalidad linares", "tramites municipalidad linares", "patente comercial linares", "permiso construccion linares"],
+    contenido: `
+<p>La <strong>Municipalidad de Linares</strong> es el punto de partida para muchos trámites esenciales: desde pagar la patente de tu negocio hasta obtener un permiso de obra. Acá te explicamos los más importantes y cómo hacerlos.</p>
+
+<h2>Trámites más comunes en la Municipalidad de Linares</h2>
+
+<h3>Patente Comercial</h3>
+<p>Obligatoria para cualquier negocio que opere en Linares. Se renueva anualmente (enero–marzo).</p>
+<ul>
+  <li><strong>Documentos:</strong> formulario de solicitud, RUT, certificado de iniciación de actividades SII, informe sanitario (si aplica).</li>
+  <li><strong>Costo:</strong> varía según el tipo de actividad y el capital declarado (entre 1 y 5 UTM aproximadamente).</li>
+  <li><strong>Trámite online:</strong> muchos municipios permiten renovar la patente en el portal web.</li>
+</ul>
+
+<h3>Permiso de Edificación</h3>
+<p>Necesario antes de cualquier obra de construcción, ampliación o demolición.</p>
+<ul>
+  <li><strong>Documentos:</strong> planos arquitectónicos firmados por arquitecto, memoria de cálculo, formulario DOM.</li>
+  <li><strong>Plazo:</strong> 30–90 días hábiles según complejidad.</li>
+  <li><strong>Costo:</strong> depende del valor de la obra (% del presupuesto).</li>
+</ul>
+
+<h3>Certificado de Dominio Vigente</h3>
+<p>Acredita quién es el dueño actual de un inmueble. Se obtiene en el <strong>Conservador de Bienes Raíces de Linares</strong> (no en la municipalidad).</p>
+
+<h3>Certificado de Residencia</h3>
+<p>Acredita que vivís en un domicilio de Linares. Útil para trámites en bancos, AFP, Isapre, etc.</p>
+<ul>
+  <li>Se solicita en la DIDECO (Dirección de Desarrollo Comunitario) o en la junta de vecinos.</li>
+  <li>Generalmente gratuito.</li>
+</ul>
+
+<h3>Permiso de Circulación</h3>
+<p>El permiso de circulación de vehículos se renueva en la municipalidad del domicilio del propietario entre enero y marzo de cada año.</p>
+<ul>
+  <li><strong>Documentos:</strong> revisión técnica vigente, seguro obligatorio (SOAP) vigente, padrón del vehículo.</li>
+  <li><strong>Costo:</strong> depende del valor fiscal del vehículo (1,5% del valor).</li>
+  <li><strong>Online:</strong> disponible en el portal de la municipalidad o en www.municipalidadvirtual.cl</li>
+</ul>
+
+<h3>Contribuciones de Bienes Raíces</h3>
+<p>El pago de contribuciones se hace en cuatro cuotas al año (abril, junio, septiembre, noviembre). Se puede pagar en:</p>
+<ul>
+  <li>La Tesorería General de la República (TGR)</li>
+  <li>Municipalidad de Linares</li>
+  <li>Cajeros automáticos habilitados</li>
+  <li>Online en www.tesorería.cl</li>
+</ul>
+
+<h2>Horarios de atención de la Municipalidad de Linares</h2>
+<p>Generalmente de lunes a viernes, 8:30–14:00 horas. Algunos trámites requieren hora previa. Verificá en el sitio oficial de la municipalidad antes de ir.</p>
+
+<h2>¿Qué hace la DIDECO?</h2>
+<p>La Dirección de Desarrollo Comunitario atiende:</p>
+<ul>
+  <li>Subsidios y ayudas sociales.</li>
+  <li>Registro Social de Hogares (RSH).</li>
+  <li>Programas de apoyo al adulto mayor.</li>
+  <li>Certificados de residencia.</li>
+  <li>Apoyo a organizaciones comunitarias.</li>
+</ul>
+
+<p>¿Necesitás asesoría para trámites municipales en Linares? Encontrá abogados y gestores en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>.</p>
+`,
+  },
+
+  {
+    slug: "banco-cajero-linares",
+    titulo: "Bancos y cajeros automáticos en Linares: guía completa",
+    descripcion:
+      "Dónde hay cajeros automáticos en Linares, qué bancos tienen sucursal y alternativas sin banco: CajaVecina, ServiEstado y transferencias.",
+    fecha: "2026-05-26",
+    categoria: "Servicios",
+    emoji: "🏦",
+    keywords: ["banco linares", "cajero automatico linares", "serviestado linares", "cajavecina linares"],
+    contenido: `
+<p>En Linares hay varias opciones para realizar operaciones bancarias, retirar efectivo y hacer pagos. Acá te explicamos dónde están los bancos, cajeros y alternativas para quienes no tienen cuenta bancaria.</p>
+
+<h2>Bancos con sucursal en Linares</h2>
+<p>Los principales bancos con presencia en Linares incluyen:</p>
+<ul>
+  <li><strong>BancoEstado:</strong> el banco más presente en ciudades medianas. Sucursal en el centro de Linares.</li>
+  <li><strong>Banco de Chile:</strong> sucursal y cajeros en zona céntrica.</li>
+  <li><strong>Santander:</strong> con cajeros en el centro.</li>
+  <li><strong>BCI:</strong> cajeros automáticos disponibles.</li>
+  <li><strong>Scotiabank / Itaú:</strong> disponibilidad variable — verificá en sus apps.</li>
+</ul>
+
+<h2>Cajeros automáticos en Linares</h2>
+<p>Además de los cajeros de cada banco, encontrás cajeros Redcompra en:</p>
+<ul>
+  <li>Supermercados (Santa Isabel, Unimarc, Líder).</li>
+  <li>Farmacias (Cruz Verde, Salcobrand).</li>
+  <li>Estaciones de servicio.</li>
+  <li>Centro comercial y galería del centro.</li>
+</ul>
+<p>Para encontrar el cajero más cercano, usá la app de tu banco o el localizador de Redbanc en redbanc.cl.</p>
+
+<h2>CajaVecina — BancoEstado</h2>
+<p>Si vivís en un sector alejado del centro, la <strong>CajaVecina</strong> es tu mejor aliada. Son puntos de atención de BancoEstado en almacenes, farmacias y minimarkets de barrio que permiten:</p>
+<ul>
+  <li>Retirar efectivo de tu CuentaRUT.</li>
+  <li>Depositar dinero.</li>
+  <li>Pagar servicios básicos (luz, agua, gas, teléfono).</li>
+  <li>Pagar el TAG y otros servicios.</li>
+  <li>Recargar el Bip! y celulares.</li>
+</ul>
+<p>Buscá el punto CajaVecina más cercano en cajavecina.cl o en la app BancoEstado.</p>
+
+<h2>ServiEstado en Linares</h2>
+<p>Las oficinas <strong>ServiEstado</strong> permiten realizar trámites del Estado sin ir al banco:</p>
+<ul>
+  <li>Pagar contribuciones, permisos de circulación y multas.</li>
+  <li>Trámites del Registro Civil.</li>
+  <li>Pago de deudas con el SII.</li>
+</ul>
+
+<h2>Transferencias electrónicas en Chile</h2>
+<p>La transferencia electrónica entre cuentas es <strong>gratuita</strong> en Chile (por ley desde 2023). Para transferir necesitás:</p>
+<ul>
+  <li>RUT del destinatario.</li>
+  <li>Banco y tipo de cuenta.</li>
+  <li>Número de cuenta.</li>
+  <li>Email (para la notificación al destinatario).</li>
+</ul>
+
+<h2>Alternativas sin cuenta bancaria</h2>
+<p>Si no tenés cuenta bancaria en Linares, podés usar:</p>
+<ul>
+  <li><strong>CuentaRUT de BancoEstado:</strong> gratuita, sin requisitos de renta. Solo con cédula de identidad chilena o extranjería vigente.</li>
+  <li><strong>Mercado Pago / MACH / Tenpo:</strong> billeteras digitales que permiten pagar y recibir dinero sin cuenta bancaria tradicional.</li>
+  <li><strong>Pagos en efectivo:</strong> en ServiEstado, CajaVecina o directamente en el banco.</li>
+</ul>
+
+<p>¿Tenés un negocio de servicios financieros en Linares? Publicalo en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. <a href="/publicar">Registrá tu servicio gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "veterinaria-emergencia-linares",
+    titulo: "Veterinaria de urgencia en Linares: qué hacer en una emergencia",
+    descripcion:
+      "¿Tu mascota tiene una emergencia en Linares? Guía de veterinarias de urgencia, qué síntomas son señales de alerta y primeros auxilios para mascotas.",
+    fecha: "2026-05-27",
+    categoria: "Mascotas",
+    emoji: "🐾",
+    keywords: ["veterinaria urgencia linares", "veterinario emergencia linares", "clinica veterinaria linares 24 horas"],
+    contenido: `
+<p>Cuando tu mascota tiene una emergencia, cada minuto cuenta. Acá te explicamos qué síntomas requieren atención veterinaria urgente, primeros auxilios básicos y cómo encontrar una <strong>veterinaria de urgencia en Linares</strong>.</p>
+
+<h2>🚨 Síntomas que requieren atención veterinaria inmediata</h2>
+<ul>
+  <li><strong>Dificultad para respirar:</strong> jadeo excesivo, boca abierta en gatos, respiración laboriosa.</li>
+  <li><strong>Pérdida de consciencia o convulsiones.</strong></li>
+  <li><strong>Vómitos o diarrea con sangre.</strong></li>
+  <li><strong>Abdomen muy hinchado y duro</strong> (puede ser torsión gástrica — emergencia mortal en perros).</li>
+  <li><strong>Trauma o accidente de tránsito:</strong> incluso si no hay heridas visibles, hay daño interno posible.</li>
+  <li><strong>Incapacidad para orinar</strong> (especialmente en gatos machos — obstrucción urinaria).</li>
+  <li><strong>Intoxicación:</strong> ingesta de veneno, medicamentos, plantas tóxicas, chocolate.</li>
+  <li><strong>Heridas profundas o sangrado abundante.</strong></li>
+  <li><strong>Parto complicado:</strong> cachorro atascado más de 20 minutos.</li>
+</ul>
+
+<h2>Primeros auxilios para mascotas mientras llegás a la veterinaria</h2>
+
+<h3>Perro o gato con hemorragia</h3>
+<p>Presioná con una tela limpia sobre la herida de forma constante. No retires el apósito — añade más encima si se empapa. Mantené al animal tranquilo.</p>
+
+<h3>Animal atropellado</h3>
+<p>Mové al animal con cuidado sobre una superficie rígida (tabla, cartón grueso). No dobres la columna. Si está consciente, puede morder por dolor — improvisá un bozal con una tela suave.</p>
+
+<h3>Intoxicación</h3>
+<p><strong>No induzcas el vómito</strong> sin instrucción del veterinario. Llevá el envase del producto que ingirió. Llamá a la clínica veterinaria antes de ir para que se preparen.</p>
+
+<h3>Convulsión</h3>
+<p>Alejá objetos peligrosos. No pongas nada en la boca del animal. Cronometrá la duración. Cuando termine, mantenelo en lugar oscuro y tranquilo. Si dura más de 5 minutos, es emergencia.</p>
+
+<h2>¿Cuánto cuesta una urgencia veterinaria en Linares?</h2>
+<ul>
+  <li>Consulta de urgencia: $25.000–$50.000</li>
+  <li>Hospitalización nocturna: $30.000–$80.000/noche</li>
+  <li>Cirugía de urgencia: desde $150.000 (varía enormemente según el caso)</li>
+  <li>Suero intravenoso: $15.000–$30.000/día</li>
+</ul>
+
+<h2>¿Existen seguros para mascotas en Chile?</h2>
+<p>Sí. En Chile hay seguros para mascotas que cubren urgencias, hospitalizaciones y cirugías. Los principales son <strong>Royal Canin Seguro Mascotas, PetFamilyInsurance</strong> y planes de algunas isapres y mutuales. El costo mensual varía entre $5.000–$20.000 según cobertura y raza.</p>
+
+<h2>Zoonosis y control de mascotas en Linares</h2>
+<p>La Municipalidad de Linares ofrece campañas de vacunación antirrábica gratuita y esterilización subsidiada para perros y gatos. Consultá en la DIDECO municipal sobre el próximo operativo.</p>
+
+<p>Encontrá veterinarias en Linares en <a href="/mascotas-y-veterinaria">LinaresYa — Mascotas</a>. ¿Tenés clínica veterinaria con urgencias? <a href="/publicar">Publicala gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "arriendo-local-comercial-linares",
+    titulo: "Arriendo de locales comerciales en Linares: guía y precios",
+    descripcion:
+      "¿Buscás local comercial en arriendo en Linares? Precios por sector, qué exigen los arrendadores y cómo elegir la mejor ubicación para tu negocio.",
+    fecha: "2026-05-28",
+    categoria: "Inmuebles",
+    emoji: "🏪",
+    keywords: ["local comercial arriendo linares", "arriendo local linares", "bodega arriendo linares", "oficina arriendo linares"],
+    contenido: `
+<p>¿Vas a abrir un negocio en Linares y buscás local? La ubicación puede hacer o deshacer un emprendimiento. Acá te explicamos precios, sectores y qué evaluar antes de firmar.</p>
+
+<h2>Precios de arriendo de locales en Linares (2025)</h2>
+<ul>
+  <li><strong>Local pequeño en el centro (hasta 30 m²):</strong> $200.000–$400.000/mes</li>
+  <li><strong>Local mediano en el centro (30–80 m²):</strong> $350.000–$700.000/mes</li>
+  <li><strong>Local grande con bodega (80 m² +):</strong> $500.000–$1.200.000/mes</li>
+  <li><strong>Local en sector residencial (lejos del centro):</strong> $100.000–$250.000/mes</li>
+  <li><strong>Oficina en el centro:</strong> $150.000–$350.000/mes</li>
+  <li><strong>Bodega industrial:</strong> $200.000–$500.000/mes</li>
+</ul>
+
+<h2>Sectores comerciales en Linares</h2>
+
+<h3>Centro (Alta demanda, mayor costo)</h3>
+<p>El centro de Linares concentra el mayor flujo peatonal. Ideal para:</p>
+<ul>
+  <li>Comercio retail (ropa, calzado, accesorios).</li>
+  <li>Servicios de atención directa al público (peluquería, trámites, etc.).</li>
+  <li>Gastronómico y cafeterías.</li>
+</ul>
+
+<h3>Sectores residenciales</h3>
+<p>Menor costo, pero audiencia más local. Ideal para:</p>
+<ul>
+  <li>Almacenes y minimarkets.</li>
+  <li>Peluquerías y beauty centers de barrio.</li>
+  <li>Consultas médicas, kinesiología, psicología.</li>
+  <li>Academias y clases particulares.</li>
+</ul>
+
+<h3>Rutas comerciales (Ruta 5 y accesos)</h3>
+<p>Alta visibilidad vehicular, buenas para negocios que necesitan acceso de camiones o mucho estacionamiento. Ideal para talleres, distribuidoras, materiales de construcción.</p>
+
+<h2>Qué exigen los arrendadores de locales comerciales en Linares</h2>
+<ul>
+  <li>RUT de la empresa o persona natural.</li>
+  <li>Inicio de actividades en el SII (o compromiso de iniciarlo).</li>
+  <li>Garantía: 1–3 meses de arriendo.</li>
+  <li>Codeudor solidario (en muchos casos).</li>
+  <li>Declaración de IVA de los últimos 6 meses (si ya tenés negocio).</li>
+</ul>
+
+<h2>Aspectos legales del arriendo de local comercial</h2>
+<ul>
+  <li>El contrato debe especificar el <strong>uso permitido</strong> del local.</li>
+  <li>Verificá que el local tenga <strong>recepción de obra</strong> de la municipalidad (DOM).</li>
+  <li>Para algunos rubros (restorán, farmacia, clínica) necesitás <strong>informe sanitario</strong> del SEREMI de Salud.</li>
+  <li>Coordiná quién paga las reparaciones estructurales vs. las de uso normal.</li>
+</ul>
+
+<h2>¿Es mejor comprar o arrendar local en Linares?</h2>
+<p>Para emprendedores nuevos, el arriendo es más recomendable: menor inversión inicial, flexibilidad para cambiar de ubicación si el negocio crece y sin riesgo de endeudamiento por propiedad. Comprar es conveniente cuando el negocio está estable y el flujo de caja es predecible.</p>
+
+<p>Encontrá locales y asesores inmobiliarios en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tenés locales en arriendo? <a href="/publicar">Publicá gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "telefonia-internet-linares",
+    titulo: "Internet y telefonía en Linares: proveedores y precios 2025",
+    descripcion:
+      "Guía de proveedores de internet y telefonía en Linares. Fibra óptica, cable, banda ancha y planes móviles. Precios y cobertura actualizada.",
+    fecha: "2026-05-29",
+    categoria: "Servicios",
+    emoji: "📶",
+    keywords: ["internet linares", "fibra optica linares", "proveedor internet linares", "entel linares", "movistar linares"],
+    contenido: `
+<p>Elegir el mejor proveedor de <strong>internet en Linares</strong> depende de tu sector y necesidades. Acá te explicamos qué opciones hay, qué velocidades ofrecer y cómo no pagar de más.</p>
+
+<h2>Proveedores de internet en Linares</h2>
+
+<h3>Movistar (Telefónica)</h3>
+<p>Una de las mayores coberturas en Linares. Ofrecen:</p>
+<ul>
+  <li>Fibra óptica hasta el hogar (FTTH) en sectores del centro.</li>
+  <li>ADSL en zonas sin fibra.</li>
+  <li>Planes desde $15.000/mes (básico) hasta $35.000/mes (velocidades altas).</li>
+  <li>Combos con TV cable y teléfono fijo.</li>
+</ul>
+
+<h3>Entel</h3>
+<ul>
+  <li>Internet fibra óptica y cable.</li>
+  <li>Planes de $12.000–$30.000/mes.</li>
+  <li>Buena atención al cliente en Linares.</li>
+</ul>
+
+<h3>VTR</h3>
+<ul>
+  <li>Cobertura de cable en algunos sectores de Linares.</li>
+  <li>Velocidades más altas en las zonas que cubre.</li>
+  <li>Planes desde $18.000/mes.</li>
+</ul>
+
+<h3>GTD / Telsur</h3>
+<p>Opciones más locales con presencia en el Maule. Pueden tener mejores precios en algunos sectores.</p>
+
+<h3>Internet rural</h3>
+<p>Para sectores rurales de Linares, las opciones son:</p>
+<ul>
+  <li><strong>Internet satelital (Starlink):</strong> disponible en todo Chile, incluso zonas remotas. Desde ~$30.000/mes + equipo (~$150.000 en arriendo).</li>
+  <li><strong>Internet LTE/4G de operadoras móviles:</strong> con router y plan de datos. Movistar, Entel y Claro tienen opciones.</li>
+</ul>
+
+<h2>Telefonía móvil en Linares</h2>
+<p>Las cuatro operadoras principales tienen cobertura en Linares:</p>
+<ul>
+  <li><strong>Entel:</strong> mejor cobertura rural en el Maule según reportes de usuarios.</li>
+  <li><strong>Movistar:</strong> buena cobertura urbana.</li>
+  <li><strong>Claro:</strong> precio más competitivo en planes prepago.</li>
+  <li><strong>WOM:</strong> precios bajos, cobertura 4G en el centro de Linares.</li>
+</ul>
+
+<h2>¿Fibra óptica o cable en Linares?</h2>
+<ul>
+  <li><strong>Fibra óptica:</strong> más rápida, simétrica (misma velocidad de subida y bajada) y estable. Ideal si trabajás desde casa, hacés videollamadas o jugás online.</li>
+  <li><strong>Cable:</strong> velocidades asimétricas (descarga más rápida que subida). Suficiente para uso doméstico normal.</li>
+  <li><strong>ADSL:</strong> tecnología más antigua, velocidades menores. Solo recomendable donde no hay otra opción.</li>
+</ul>
+
+<h2>Tips para reclamar o mejorar tu servicio</h2>
+<ul>
+  <li>Medí tu velocidad real en <strong>fast.com o speedtest.net</strong> antes de reclamar.</li>
+  <li>Si tu velocidad real es menor al 40% de lo contratado, tenés derecho a reclamar ante la <strong>Subtel</strong> (www.subtel.gob.cl).</li>
+  <li>Renegociá tu plan cada 12 meses — los clientes nuevos siempre reciben mejores ofertas y podés exigir lo mismo.</li>
+  <li>El router del proveedor puede ser un cuello de botella — preguntá si podés usar el tuyo propio.</li>
+</ul>
+
+<p>¿Tenés un servicio de tecnología o soporte técnico en Linares? Publicalo en <a href="/tecnologia">LinaresYa</a>. <a href="/publicar">Registralo gratis</a>.</p>
+`,
+  },
 ];
 
 // Helpers
