@@ -9,6 +9,7 @@ import {
   eliminarNegocio,
   logoutAction,
 } from "./actions";
+import ConfirmDeleteButton from "./ConfirmDeleteButton";
 
 export const metadata = {
   title: "Admin - LinaresYa",
@@ -70,7 +71,7 @@ export default async function AdminPage() {
       )
       .eq("activo", true)
       .order("creado_en", { ascending: false })
-      .limit(50),
+      .limit(200),
     supabaseAdmin.from("categorias").select("id, nombre, emoji, slug"),
     supabaseAdmin
       .from("resenas")
@@ -287,7 +288,7 @@ export default async function AdminPage() {
 
       <section className="px-4 pt-10">
         <h2 className="text-xl font-extrabold tracking-tight mb-1">Activos</h2>
-        <p className="text-sm text-muted-foreground mb-4">Ultimos 50 negocios publicados.</p>
+        <p className="text-sm text-muted-foreground mb-4">Ultimos 200 negocios publicados.</p>
 
         <ul className="space-y-3">
           {act.map((n) => (
@@ -429,12 +430,13 @@ function NegocioCardAdmin({
                 Aprobar + Verificar
               </button>
             </form>
-            <form action={eliminarNegocio}>
-              <input type="hidden" name="id" value={negocio.id} />
-              <button type="submit" className="rounded-full bg-secondary text-foreground text-xs font-semibold px-4 py-2 hover:bg-rose-100 hover:text-rose-800">
-                Rechazar
-              </button>
-            </form>
+            <ConfirmDeleteButton
+              action={eliminarNegocio}
+              id={negocio.id}
+              label="Rechazar"
+              mensaje={`¿Rechazar y eliminar "${negocio.nombre}"? Esta acción es irreversible.`}
+              className="rounded-full bg-secondary text-foreground text-xs font-semibold px-4 py-2 hover:bg-rose-100 hover:text-rose-800"
+            />
             <Link
               href={`/admin/negocio/${negocio.id}/editar`}
               className="rounded-full bg-white border border-border text-foreground text-xs font-semibold px-4 py-2 hover:bg-secondary"
@@ -458,12 +460,12 @@ function NegocioCardAdmin({
                 Desactivar
               </button>
             </form>
-            <form action={eliminarNegocio}>
-              <input type="hidden" name="id" value={negocio.id} />
-              <button type="submit" className="rounded-full bg-rose-100 text-rose-800 text-xs font-semibold px-4 py-2">
-                Eliminar
-              </button>
-            </form>
+            <ConfirmDeleteButton
+              action={eliminarNegocio}
+              id={negocio.id}
+              label="Eliminar"
+              mensaje={`¿Eliminar "${negocio.nombre}" permanentemente? Se borrarán también sus fotos. Esta acción es irreversible.`}
+            />
             <Link
               href={`/admin/negocio/${negocio.id}/editar`}
               className="rounded-full bg-foreground text-background text-xs font-semibold px-4 py-2 hover:opacity-90"

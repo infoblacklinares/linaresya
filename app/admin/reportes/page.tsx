@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { resolverReporte, eliminarReporte } from "../actions";
+import ConfirmDeleteButton from "../ConfirmDeleteButton";
 
 export const metadata = {
   title: "Reportes - Admin",
@@ -250,15 +251,13 @@ function ReporteCard({ r, pendiente = false }: { r: ReporteRow; pendiente?: bool
                 Editar negocio
               </Link>
             )}
-            <form action={eliminarReporte}>
-              <input type="hidden" name="id" value={r.id} />
-              <button
-                type="submit"
-                className="rounded-full bg-rose-100 text-rose-800 text-xs font-semibold px-4 py-2"
-              >
-                Eliminar reporte
-              </button>
-            </form>
+            <ConfirmDeleteButton
+              action={eliminarReporte}
+              id={r.id}
+              label="Eliminar reporte"
+              mensaje="¿Eliminar este reporte? Esta acción es irreversible."
+              className="rounded-full bg-rose-100 text-rose-800 text-xs font-semibold px-4 py-2 hover:bg-rose-200"
+            />
           </>
         ) : (
           <>
@@ -272,15 +271,13 @@ function ReporteCard({ r, pendiente = false }: { r: ReporteRow; pendiente?: bool
                 Reabrir
               </button>
             </form>
-            <form action={eliminarReporte}>
-              <input type="hidden" name="id" value={r.id} />
-              <button
-                type="submit"
-                className="rounded-full bg-secondary text-foreground text-xs font-semibold px-4 py-2 hover:bg-rose-100 hover:text-rose-800"
-              >
-                Eliminar
-              </button>
-            </form>
+            <ConfirmDeleteButton
+              action={eliminarReporte}
+              id={r.id}
+              label="Eliminar"
+              mensaje="¿Eliminar este reporte permanentemente?"
+              className="rounded-full bg-secondary text-foreground text-xs font-semibold px-4 py-2 hover:bg-rose-100 hover:text-rose-800"
+            />
           </>
         )}
       </div>

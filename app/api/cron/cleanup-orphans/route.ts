@@ -114,12 +114,27 @@ export async function GET(req: NextRequest) {
       borrados = aBorrar.length;
     }
 
+    // 5. Limpiar dueno_tokens expirados (acumulan con el tiempo)
+    let tokensEliminados = 0;
+    try {
+      const ahora2 = new Date().toISOString();
+      const { data: tokensData } = await supabaseAdmin
+        .from("dueno_tokens")
+        .delete()
+        .lt("expira_en", ahora2)
+        .select("id");
+      tokensEliminados = (tokensData ?? []).length;
+    } catch {
+      // No rompemos si falla — no es crítico
+    }
+
     return NextResponse.json({
       ok: true,
       analizados,
       descartadosPorEdad,
       descartadosPorReferencia,
       borrados,
+      tokensEliminados,
       total_referencias: urlsReferenciadas.size,
     });
   } catch (err) {
