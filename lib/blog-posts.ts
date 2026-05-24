@@ -2206,6 +2206,524 @@ export const posts: BlogPost[] = [
 <p>Encontrá modistas y talleres de costura en Linares en <a href="/moda-y-ropa">LinaresYa — Moda y Ropa</a>. ¿Sos modista en Linares? <a href="/publicar">Publicá tu taller gratis</a>.</p>
 `,
   },
+
+  // ── Batch 9 ────────────────────────────────────────────────────────────────
+
+  {
+    slug: "kinesiologo-fisioterapeuta-linares",
+    titulo: "Kinesiólogo en Linares: rehabilitación y fisioterapia",
+    descripcion:
+      "¿Buscás kinesiólogo en Linares? Guía completa sobre rehabilitación física, fisioterapia, precios y cómo acceder a kinesiólogos con Fonasa.",
+    fecha: "2026-05-10",
+    categoria: "Salud",
+    emoji: "🦿",
+    keywords: ["kinesiologo linares", "fisioterapeuta linares", "rehabilitacion linares", "kinesiologia linares"],
+    contenido: `
+<p>La kinesiología es una de las especialidades de salud más demandadas en Linares. Ya sea por una lesión deportiva, una operación, dolor de espalda crónico o recuperación tras un ACV, los <strong>kinesiólogos en Linares</strong> juegan un rol clave en volver a la normalidad.</p>
+
+<h2>¿Para qué sirve el kinesiólogo?</h2>
+<ul>
+  <li><strong>Dolor lumbar y cervical:</strong> el más común. La kinesiología trata contracturas, hernias discales y cervicobraquialgia.</li>
+  <li><strong>Lesiones deportivas:</strong> esguinces, desgarros musculares, tendinitis, fisuras.</li>
+  <li><strong>Post-operatorio:</strong> después de cirugías de rodilla, hombro, cadera o columna.</li>
+  <li><strong>Neurológico:</strong> rehabilitación post ACV, Parkinson, esclerosis múltiple.</li>
+  <li><strong>Respiratorio:</strong> kinesioterapia respiratoria para EPOC, asma, bronquitis.</li>
+  <li><strong>Pediátrico:</strong> terapia para niños con retraso en el desarrollo motor.</li>
+</ul>
+
+<h2>¿Cuánto cobra un kinesiólogo en Linares?</h2>
+<p>El valor de una sesión de kinesiología en Linares varía según el tipo de tratamiento:</p>
+<ul>
+  <li>Consulta inicial: $15.000–$25.000</li>
+  <li>Sesión de rehabilitación (45–60 min): $12.000–$20.000</li>
+  <li>Kinesioterapia respiratoria: $10.000–$18.000</li>
+</ul>
+<p>Con <strong>Fonasa nivel B, C o D</strong>, podés atenderte en centros convenidos con bono de atención. El copago varía según el nivel.</p>
+
+<h2>Kinesiólogo a domicilio en Linares</h2>
+<p>Muchos kinesiólogos en Linares ofrecen servicio a domicilio, especialmente para adultos mayores o personas con movilidad reducida. El valor suele ser 20–30% más que la consulta en clínica, más el costo de traslado.</p>
+
+<h2>¿Cuántas sesiones necesito?</h2>
+<p>Depende del diagnóstico:</p>
+<ul>
+  <li>Dolor lumbar simple: 6–10 sesiones</li>
+  <li>Lesión deportiva moderada: 10–20 sesiones</li>
+  <li>Post-operatorio: 20–40 sesiones o más</li>
+  <li>Rehabilitación neurológica: indefinido (mantenimiento)</li>
+</ul>
+
+<h2>Técnicas más usadas en Linares</h2>
+<ul>
+  <li><strong>Electroterapia:</strong> TENS, ultrasonido, láser, corrientes galvánicas.</li>
+  <li><strong>Terapia manual:</strong> masoterapia, movilizaciones articulares.</li>
+  <li><strong>Pilates terapéutico:</strong> fortalecimiento de core y columna.</li>
+  <li><strong>Kinesio taping:</strong> vendaje funcional para soporte articular.</li>
+</ul>
+
+<p>Encontrá kinesiólogos en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Sos kinesiólogo? <a href="/publicar">Publicá tu consulta gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "optica-lentes-linares",
+    titulo: "Ópticas y lentes en Linares: examen de vista y precios",
+    descripcion:
+      "Guía de ópticas en Linares. Examen de vista, lentes de contacto, armazones y anteojos. Qué cubre Fonasa y precios actualizados 2025.",
+    fecha: "2026-05-11",
+    categoria: "Salud",
+    emoji: "👓",
+    keywords: ["optica linares", "lentes linares", "examen vista linares", "optometrista linares"],
+    contenido: `
+<p>¿Necesitás lentes en Linares? Ya sea para corregir miopía, astigmatismo o presbicia, las <strong>ópticas en Linares</strong> ofrecen examen de vista, armazones y lentes de contacto a precios accesibles.</p>
+
+<h2>¿Qué hacen las ópticas en Linares?</h2>
+<ul>
+  <li><strong>Examen de vista (optometría):</strong> evaluación de agudeza visual y prescripción de lentes.</li>
+  <li><strong>Fabricación de lentes:</strong> monofocales, bifocales, progresivos.</li>
+  <li><strong>Lentes de contacto:</strong> blandas, rígidas, esféricas, tóricas (astigmatismo).</li>
+  <li><strong>Reparación de armazones:</strong> cambio de patillas, tornillos, ajuste de montura.</li>
+</ul>
+
+<h2>¿Cuánto cuesta un examen de vista en Linares?</h2>
+<ul>
+  <li>Examen optométrico: gratis en muchas ópticas (incluido con compra de lentes)</li>
+  <li>Examen oftalmológico (médico): $25.000–$50.000 en clínica</li>
+  <li>Lentes monofocales básicos: $20.000–$60.000 (armazón + cristales)</li>
+  <li>Lentes progresivos: $80.000–$200.000</li>
+  <li>Lentes de contacto mensuales: $8.000–$20.000/mes</li>
+</ul>
+
+<h2>¿Cubre Fonasa los lentes?</h2>
+<p>Fonasa <strong>no cubre directamente</strong> la compra de lentes ópticos en adultos, pero sí el examen oftalmológico en centros convenidos con bono. Los niños menores de 18 años pueden acceder a lentes a través de programas de salud visual del Ministerio de Salud.</p>
+
+<h2>Tipos de lentes disponibles</h2>
+<ul>
+  <li><strong>Monofocales:</strong> para una sola corrección (visión lejana o cercana).</li>
+  <li><strong>Bifocales:</strong> dos zonas de corrección en un mismo cristal.</li>
+  <li><strong>Progresivos:</strong> transición suave entre visión lejana y cercana, sin línea visible.</li>
+  <li><strong>Antirreflejo:</strong> recomendados para uso de pantallas y conducción nocturna.</li>
+  <li><strong>Fotocromáticos:</strong> se oscurecen con la luz solar (tipo Transitions).</li>
+</ul>
+
+<h2>¿Cada cuánto cambiar los lentes?</h2>
+<p>Se recomienda un examen de vista anual. Si la graduación cambió más de 0.25 dioptrías, es conveniente actualizar los lentes. En niños se recomienda control cada 6 meses.</p>
+
+<p>Buscá ópticas en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Tenés una óptica en Linares? <a href="/publicar">Publicala gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "lavanderia-linares",
+    titulo: "Lavanderías en Linares: lavado y planchado a domicilio",
+    descripcion:
+      "¿Buscás lavandería en Linares? Guía de servicios de lavado, planchado y tintorería. Precios, qué incluye cada servicio y cómo pedir retiro a domicilio.",
+    fecha: "2026-05-12",
+    categoria: "Servicios del Hogar",
+    emoji: "🧺",
+    keywords: ["lavanderia linares", "lavado ropa linares", "tintoreria linares", "planchado linares"],
+    contenido: `
+<p>¿No tenés tiempo para lavar o necesitás limpiar prendas delicadas? Las <strong>lavanderías en Linares</strong> ofrecen servicios completos de lavado, secado, planchado y tintorería con retiro y entrega a domicilio.</p>
+
+<h2>Servicios que ofrecen las lavanderías en Linares</h2>
+<ul>
+  <li><strong>Lavado y secado por kilo:</strong> el más económico para ropa cotidiana.</li>
+  <li><strong>Planchado:</strong> por pieza o al peso. Ideal para camisas, pantalones y ropa de trabajo.</li>
+  <li><strong>Tintorería (lavado en seco):</strong> para ropa delicada: cuero, lana, seda, trajes, abrigos.</li>
+  <li><strong>Lavado de ropa de cama:</strong> edredones, frazadas, sábanas, acolchados.</li>
+  <li><strong>Lavado de uniformes escolares y de trabajo:</strong> servicio por semana o quincenal.</li>
+  <li><strong>Retiro y entrega a domicilio:</strong> muchas lavanderías en Linares lo ofrecen sin costo adicional.</li>
+</ul>
+
+<h2>¿Cuánto cuesta la lavandería en Linares?</h2>
+<ul>
+  <li>Lavado + secado por kilo: $800–$1.500/kg</li>
+  <li>Planchado por pieza: $500–$1.000 (camisa), $700–$1.200 (pantalón)</li>
+  <li>Tintorería (abrigo o terno): $8.000–$20.000</li>
+  <li>Edredón / frazada matrimonial: $4.000–$8.000</li>
+  <li>Servicio mensual (lavado semanal familiar): $20.000–$40.000/mes</li>
+</ul>
+
+<h2>¿Qué prendas van a tintorería?</h2>
+<p>La etiqueta de cada prenda indica si requiere lavado en seco (símbolo de círculo). Llevá siempre a tintorería: trajes, chaquetas de cuero, tapados de lana, ropa bordada o con apliques delicados.</p>
+
+<h2>Consejos para usar la lavandería</h2>
+<ul>
+  <li>Separá la ropa blanca de la de color antes de llevarla.</li>
+  <li>Avisá si hay manchas específicas para que las traten antes del lavado.</li>
+  <li>Para ropa oscura, pedí que usen agua fría para no desteñir.</li>
+  <li>Controlá los bolsillos antes de entregar (monedas y papeles dañan las máquinas).</li>
+</ul>
+
+<p>Buscá lavanderías en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Tenés una lavandería? <a href="/publicar">Publicala gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "aire-acondicionado-climatizacion-linares",
+    titulo: "Aire acondicionado y calefacción en Linares: instalación y mantención",
+    descripcion:
+      "Guía de técnicos en climatización en Linares. Instalación de aire acondicionado, mantención de calderas, calefont y estufas a gas. Precios 2025.",
+    fecha: "2026-05-13",
+    categoria: "Servicios del Hogar",
+    emoji: "❄️",
+    keywords: ["aire acondicionado linares", "climatizacion linares", "calefaccion linares", "instalacion aire acondicionado linares"],
+    contenido: `
+<p>Con veranos cada vez más calurosos en el Maule e inviernos fríos, contar con un buen sistema de <strong>climatización en Linares</strong> es esencial. Te explicamos todo sobre la instalación de aire acondicionado, mantención de calderas y opciones de calefacción.</p>
+
+<h2>Tipos de sistemas de climatización en Linares</h2>
+<ul>
+  <li><strong>Aire acondicionado split:</strong> el más popular. Enfría en verano y calienta en invierno (bomba de calor). Eficiente y silencioso.</li>
+  <li><strong>Aire acondicionado portátil:</strong> sin instalación, ideal para arrendar o espacios sin ventana exterior.</li>
+  <li><strong>Caldera de gas:</strong> sistema centralizado de calefacción por radiadores. Eficiente para casas grandes.</li>
+  <li><strong>Estufa a pellet:</strong> muy popular en Linares. Económica, ecológica y calienta bien.</li>
+  <li><strong>Calefont a gas:</strong> para agua caliente sanitaria. Requiere mantención anual.</li>
+</ul>
+
+<h2>¿Cuánto cuesta instalar aire acondicionado en Linares?</h2>
+<ul>
+  <li>Equipo split 12.000 BTU (habitación): $300.000–$500.000 (equipo + instalación)</li>
+  <li>Equipo split 18.000 BTU (sala-comedor): $400.000–$700.000</li>
+  <li>Instalación sola (si ya tenés el equipo): $60.000–$120.000</li>
+  <li>Mantención anual aire acondicionado: $20.000–$40.000</li>
+  <li>Instalación calefont a gas: $40.000–$80.000</li>
+</ul>
+
+<h2>Marcas disponibles en Linares</h2>
+<p>Las más vendidas en la zona son <strong>Midea, Daewoo, Mirage y Carrier</strong>. Para pellets, destacan <strong>Thermorossi y Supra</strong>. Pedile al técnico que te asesore según el tamaño del espacio (m² y altura).</p>
+
+<h2>Mantención: ¿cada cuánto?</h2>
+<ul>
+  <li><strong>Aire acondicionado:</strong> limpiar filtros cada 30 días, revisión técnica anual.</li>
+  <li><strong>Calefont a gas:</strong> revisión anual obligatoria por seguridad (riesgo de monóxido).</li>
+  <li><strong>Estufa a pellet:</strong> limpieza mensual de cenicero y revisión anual.</li>
+  <li><strong>Caldera:</strong> revisión anual antes de iniciar la temporada de frío.</li>
+</ul>
+
+<h2>¿Qué piden los técnicos para la instalación?</h2>
+<p>Para el aire acondicionado necesitarás: una pared exterior (o losa) para la unidad condensadora, toma de corriente exclusiva 220V, y espacio interior para la unidad evaporadora. El técnico evaluará la viabilidad en la visita.</p>
+
+<p>Buscá técnicos en climatización en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Ofrecés este servicio? <a href="/publicar">Publicá tu negocio gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "notaria-linares",
+    titulo: "Notaría en Linares: trámites, documentos y precios",
+    descripcion:
+      "Guía completa de la notaría en Linares. Qué trámites se hacen, cuánto cuestan las escrituras, poderes, declaraciones y cómo sacar hora.",
+    fecha: "2026-05-14",
+    categoria: "Servicios Profesionales",
+    emoji: "📋",
+    keywords: ["notaria linares", "notario linares", "escritura publica linares", "poder notarial linares", "tramites notaria linares"],
+    contenido: `
+<p>La <strong>notaría en Linares</strong> es indispensable para una amplia gama de trámites legales: compraventa de inmuebles, poderes notariales, contratos de arrendamiento, testamentos y mucho más. Acá te explicamos qué se puede hacer y cuánto cuesta.</p>
+
+<h2>Trámites más comunes en la notaría de Linares</h2>
+<ul>
+  <li><strong>Escritura de compraventa:</strong> para venta de propiedades, autos y bienes raíces.</li>
+  <li><strong>Poder notarial:</strong> autorizar a alguien para actuar en tu nombre (banco, trámites, etc.).</li>
+  <li><strong>Declaración jurada:</strong> documento legal que certifica un hecho bajo fe de notario.</li>
+  <li><strong>Contrato de arrendamiento:</strong> con firma ante notario para mayor validez legal.</li>
+  <li><strong>Protocolización de documentos:</strong> guardar un documento privado en el archivo notarial.</li>
+  <li><strong>Autorización de viaje de menores:</strong> para que un niño viaje solo o con un adulto que no sea su padre/madre.</li>
+  <li><strong>Testamento:</strong> redacción y protocolización del testamento.</li>
+  <li><strong>Legalizaciones y autorizaciones diversas:</strong> firma de actas, certificados, etc.</li>
+</ul>
+
+<h2>¿Cuánto cobran en la notaría de Linares?</h2>
+<p>Los aranceles notariales están regulados por ley y varían según el tipo de acto:</p>
+<ul>
+  <li>Poder notarial simple: $8.000–$15.000</li>
+  <li>Declaración jurada: $5.000–$10.000</li>
+  <li>Autorización de viaje de menores: $8.000–$12.000</li>
+  <li>Escritura de compraventa (inmueble): desde $80.000 (varía por valor del bien)</li>
+  <li>Contrato de arrendamiento: $20.000–$40.000</li>
+  <li>Protocolización: $10.000–$20.000</li>
+</ul>
+
+<h2>¿Qué documentos llevar a la notaría?</h2>
+<ul>
+  <li>Cédula de identidad vigente de todos los involucrados.</li>
+  <li>Documentos del bien o contrato (título de propiedad, certificado de dominio vigente, etc.).</li>
+  <li>En caso de empresas: RUT de la empresa y documentos que acrediten representación legal.</li>
+</ul>
+
+<h2>Horarios típicos de la notaría en Linares</h2>
+<p>Las notarías en Linares generalmente atienden de lunes a viernes de 9:00 a 14:00 horas. Algunos trámites pueden requerir hora previa. Te recomendamos llamar antes de ir para confirmar disponibilidad.</p>
+
+<h2>¿Necesito abogado para ir a la notaría?</h2>
+<p>Para trámites simples como poderes, declaraciones juradas o autorizaciones, <strong>no necesitás abogado</strong>. Para escrituras de compraventa de inmuebles o trámites complejos, se recomienda asesorarse con un abogado antes.</p>
+
+<p>¿Necesitás un abogado en Linares? Buscá en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Ofrecés servicios notariales? <a href="/publicar">Publicá gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "arriendo-departamento-casa-linares",
+    titulo: "Arriendo de casas y departamentos en Linares: guía y precios",
+    descripcion:
+      "¿Buscás arriendo en Linares? Precios actualizados de casas y departamentos, requisitos para arrendar, qué revisar antes de firmar y corredores de propiedades.",
+    fecha: "2026-05-15",
+    categoria: "Inmuebles",
+    emoji: "🏠",
+    keywords: ["arriendo linares", "departamento arriendo linares", "casa arriendo linares", "arriendos linares chile"],
+    contenido: `
+<p>El mercado de <strong>arriendos en Linares</strong> ofrece opciones para distintos presupuestos: desde piezas y departamentos en el centro hasta casas amplias en sectores residenciales. Acá te contamos qué esperar en precios y cómo arrendar sin problemas.</p>
+
+<h2>Precios de arriendo en Linares (2025)</h2>
+<ul>
+  <li><strong>Pieza amoblada (sector centro):</strong> $80.000–$150.000/mes</li>
+  <li><strong>Departamento 1 dormitorio:</strong> $180.000–$280.000/mes</li>
+  <li><strong>Departamento 2 dormitorios:</strong> $250.000–$380.000/mes</li>
+  <li><strong>Casa 3 dormitorios (sector residencial):</strong> $300.000–$500.000/mes</li>
+  <li><strong>Casa con jardín y garaje:</strong> $400.000–$700.000/mes</li>
+</ul>
+<p>Los precios varían según sector, antigüedad, equipamiento y si incluye gastos comunes.</p>
+
+<h2>Requisitos para arrendar en Linares</h2>
+<p>Cada propietario tiene sus propios requisitos, pero los más comunes son:</p>
+<ul>
+  <li>Liquidaciones de sueldo (últimas 3 meses) o boletas de honorarios.</li>
+  <li>Cotizaciones AFP vigentes.</li>
+  <li>Cédula de identidad.</li>
+  <li>Aval o codeudor solidario (en muchos casos).</li>
+  <li>Mes de garantía (equivalente a 1–2 meses de arriendo).</li>
+</ul>
+
+<h2>¿Qué revisar antes de firmar el contrato?</h2>
+<ul>
+  <li>Estado de las llaves de agua, eléctrico y gas (pedir que los prueben en tu presencia).</li>
+  <li>Humedad en muros y cielo (revisar rincones y bajo ventanas).</li>
+  <li>Estado de ventanas y cerraduras.</li>
+  <li>Qué gastos incluye el arriendo (agua, luz, gas, gastos comunes).</li>
+  <li>Condiciones de salida: aviso previo, estado del inmueble, plazo de devolución del depósito.</li>
+</ul>
+
+<h2>Contrato de arriendo en Chile</h2>
+<p>El contrato de arrendamiento puede ser privado (firmado por ambas partes) o notarial. Se recomienda <strong>notarizarlo</strong> para mayor protección ante conflictos. La ley chilena regula los arriendos (Ley 18.101) y protege tanto al arrendador como al arrendatario.</p>
+
+<h2>Corredores de propiedades en Linares</h2>
+<p>Los corredores de propiedades en Linares cobran generalmente <strong>1 mes de arriendo + IVA</strong> como comisión por encontrarte la propiedad. Si encontrás algo directamente con el dueño, ahorras esa comisión.</p>
+
+<h2>Sectores populares para arrendar en Linares</h2>
+<ul>
+  <li><strong>Centro:</strong> conveniente para comercio y servicios, precios más altos.</li>
+  <li><strong>Población Cerrillos / Villa Esperanza:</strong> casas más espaciosas, tranquilas.</li>
+  <li><strong>Sector norte (cerca de la ruta 5):</strong> buena conectividad, ideal para quienes viajan a Talca.</li>
+</ul>
+
+<p>Encontrá corredores de propiedades en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tenés una propiedad para arrendar? <a href="/publicar">Publicala gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "cuidado-adulto-mayor-linares",
+    titulo: "Cuidado del adulto mayor en Linares: cuidadores y hogares",
+    descripcion:
+      "Guía de servicios de cuidado del adulto mayor en Linares. Cuidadores a domicilio, hogares de ancianos, talleres y cómo acceder con Fonasa o SENAMA.",
+    fecha: "2026-05-16",
+    categoria: "Salud",
+    emoji: "👴",
+    keywords: ["cuidado adulto mayor linares", "cuidador domicilio linares", "hogar ancianos linares", "senama linares"],
+    contenido: `
+<p>El cuidado de los adultos mayores es una necesidad creciente en Linares. Ya sea que busques un <strong>cuidador a domicilio</strong>, un hogar de larga estadía o actividades para el adulto mayor, en LinaresYa te ayudamos a encontrar la opción adecuada.</p>
+
+<h2>Opciones de cuidado del adulto mayor en Linares</h2>
+<ul>
+  <li><strong>Cuidador/a a domicilio:</strong> persona que asiste en el hogar con higiene, alimentación, medicamentos y compañía. Ideal si el adulto mayor puede valerse parcialmente por sí mismo.</li>
+  <li><strong>Hogar de ancianos / residencia:</strong> para adultos mayores con dependencia moderada o severa que requieren atención las 24 horas.</li>
+  <li><strong>Centro diurno:</strong> el adulto mayor concurre durante el día y vuelve al hogar en la tarde.</li>
+  <li><strong>Visita de enfermería:</strong> profesional de salud que va al domicilio para administrar medicamentos, curaciones o controles.</li>
+</ul>
+
+<h2>¿Cuánto cuesta un cuidador en Linares?</h2>
+<ul>
+  <li>Cuidador por jornada completa (lunes a viernes): $400.000–$600.000/mes</li>
+  <li>Cuidador turno noche (8–9 horas): $250.000–$350.000/mes</li>
+  <li>Cuidador 24 horas con pernoctación: $500.000–$800.000/mes</li>
+  <li>Visita de enfermería (por hora): $15.000–$25.000</li>
+</ul>
+
+<h2>SENAMA en Linares: programas gratuitos</h2>
+<p>El <strong>Servicio Nacional del Adulto Mayor (SENAMA)</strong> ofrece en Linares:</p>
+<ul>
+  <li>Programa de Cuidados Domiciliarios: apoyo a familias que cuidan a adultos mayores dependientes.</li>
+  <li>Centros de Día: actividades recreativas, talleres y control de salud.</li>
+  <li>Residencias de larga estadía subsidiadas para adultos mayores sin red de apoyo familiar.</li>
+</ul>
+<p>Para acceder, comunícate con la Municipalidad de Linares o la oficina local de SENAMA.</p>
+
+<h2>¿Cómo encontrar un buen cuidador en Linares?</h2>
+<ul>
+  <li>Pedí referencias a vecinos, iglesias o centros de salud.</li>
+  <li>Verificá antecedentes penales (certificado de antecedentes del Registro Civil).</li>
+  <li>Establecé un contrato claro con horarios, tareas y remuneración.</li>
+  <li>Cotizad en previsión (como trabajador de casa particular si es permanente).</li>
+</ul>
+
+<h2>Municipalidad de Linares: ayudas disponibles</h2>
+<p>La Municipalidad de Linares a través de la Dirección de Desarrollo Comunitario (DIDECO) ofrece programas de apoyo a adultos mayores en situación de vulnerabilidad. Consulta en la municipalidad sobre subsidios, canastas de alimentos y apoyo en salud.</p>
+
+<p>Buscá cuidadores y servicios de salud para adultos mayores en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Ofrecés este servicio? <a href="/publicar">Publicalo gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "imprenta-diseño-grafico-linares",
+    titulo: "Imprenta y diseño gráfico en Linares: precios y servicios",
+    descripcion:
+      "¿Buscás imprenta en Linares? Guía de servicios de impresión, folletería, banners, tarjetas de visita y diseño gráfico. Precios actualizados 2025.",
+    fecha: "2026-05-17",
+    categoria: "Servicios Profesionales",
+    emoji: "🖨️",
+    keywords: ["imprenta linares", "diseño grafico linares", "impresion linares", "tarjetas visita linares", "banner linares"],
+    contenido: `
+<p>Para negocios, eventos, organizaciones y particulares: las <strong>imprentas y diseñadores gráficos en Linares</strong> ofrecen todo lo que necesitás para hacer visible tu mensaje, desde tarjetas de visita hasta gigantografías.</p>
+
+<h2>Servicios de impresión disponibles en Linares</h2>
+<ul>
+  <li><strong>Tarjetas de visita:</strong> presentación profesional de tu negocio.</li>
+  <li><strong>Folletos y flyers:</strong> marketing de tu local o evento.</li>
+  <li><strong>Banners y roll-ups:</strong> para stands, ferias y locales comerciales.</li>
+  <li><strong>Gigantografías:</strong> impresión en gran formato para fachadas y publicidad exterior.</li>
+  <li><strong>Afiches y pósters:</strong> para eventos, servicios y avisos.</li>
+  <li><strong>Impresión de documentos:</strong> fotocopias, impresión A4, anillados, plastificados.</li>
+  <li><strong>Lonas y telas:</strong> para toldos, carpas y señalización.</li>
+  <li><strong>Vinilo adhesivo:</strong> para vidrieras, autos y señalética.</li>
+</ul>
+
+<h2>¿Cuánto cuesta imprimir en Linares?</h2>
+<ul>
+  <li>Tarjetas de visita (100 unidades, doble cara): $8.000–$15.000</li>
+  <li>Flyers A5 (500 unidades): $15.000–$25.000</li>
+  <li>Banner 1×2 m (con diseño básico): $20.000–$40.000</li>
+  <li>Gigantografía por m²: $8.000–$20.000</li>
+  <li>Diseño gráfico (logo básico): $30.000–$80.000</li>
+  <li>Diseño de afiche o flyer: $10.000–$25.000</li>
+</ul>
+
+<h2>Diseño gráfico en Linares</h2>
+<p>Muchas imprentas en Linares también ofrecen servicios de diseño gráfico. Si ya tenés el diseño en PDF o formato listo para imprimir, el costo es solo de impresión. Si necesitás que te creen el diseño, suelen cobrar por separado o incluirlo según el volumen de la orden.</p>
+
+<h2>Tiempos de entrega típicos</h2>
+<ul>
+  <li>Tarjetas de visita y flyers: 24–48 horas (pedidos estándar)</li>
+  <li>Banners y gigantografías: 24–72 horas</li>
+  <li>Pedidos urgentes: mismo día con recargo del 20–30%</li>
+</ul>
+
+<h2>Formatos para entregar a la imprenta</h2>
+<p>Lo ideal es entregar archivos en <strong>PDF de alta resolución</strong> (300 DPI), con sangrado de 3–5 mm. También aceptan AI (Illustrator), CDR (CorelDraw) o PSD (Photoshop). Evitá imágenes en Word o capturas de pantalla — pierden calidad al imprimir.</p>
+
+<p>Encontrá imprentas y diseñadores gráficos en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tenés imprenta o hacés diseño? <a href="/publicar">Publicá gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "clases-musica-linares",
+    titulo: "Clases de música en Linares: guitarra, piano, canto y más",
+    descripcion:
+      "¿Buscás clases de música en Linares? Guía de academias, profesores particulares de guitarra, piano, batería y canto. Precios y cómo elegir el mejor profe.",
+    fecha: "2026-05-18",
+    categoria: "Educación",
+    emoji: "🎵",
+    keywords: ["clases musica linares", "profesor guitarra linares", "academia musica linares", "clases piano linares", "clases canto linares"],
+    contenido: `
+<p>Aprender música es uno de los mejores regalos que podés darle a un niño —o a vos mismo— en Linares. Ya sea guitarra, piano, canto, batería o ukelele, hay profes y academias locales que enseñan en tu barrio.</p>
+
+<h2>Instrumentos que se enseñan en Linares</h2>
+<ul>
+  <li>🎸 <strong>Guitarra:</strong> el instrumento más pedido. Se enseña desde los 7–8 años.</li>
+  <li>🎹 <strong>Piano y teclado:</strong> ideal para desarrollar base musical. Se puede empezar con teclado digital.</li>
+  <li>🥁 <strong>Batería y percusión:</strong> para mayores de 8–10 años, requiere práctica con auriculares o sala insonorizada.</li>
+  <li>🎤 <strong>Canto y técnica vocal:</strong> para niños y adultos, muy solicitado en Linares.</li>
+  <li>🪕 <strong>Ukelele:</strong> instrumento pequeño, fácil y económico, ideal para principiantes.</li>
+  <li>🎻 <strong>Violín:</strong> para quienes quieren música clásica. Requiere más disciplina inicial.</li>
+  <li>🪗 <strong>Acordeón:</strong> popular en la música tradicional chilena del Maule.</li>
+</ul>
+
+<h2>¿Cuánto cuestan las clases de música en Linares?</h2>
+<ul>
+  <li>Profesor particular (clase de 45 min semanal): $15.000–$25.000/mes</li>
+  <li>Academia (clases grupales, 1 vez por semana): $20.000–$35.000/mes</li>
+  <li>Academia (clases individuales, 1 vez por semana): $25.000–$45.000/mes</li>
+  <li>Clases online con profe de Linares: $12.000–$20.000/mes</li>
+</ul>
+
+<h2>¿A qué edad se puede empezar?</h2>
+<ul>
+  <li><strong>4–6 años:</strong> estimulación musical, rítmica, iniciación a percusión y canto.</li>
+  <li><strong>7–8 años:</strong> guitarra, piano, ukelele.</li>
+  <li><strong>10 años en adelante:</strong> batería, vientos, instrumentos de mayor complejidad.</li>
+  <li><strong>Adultos:</strong> ¡nunca es tarde! Muchos profesores en Linares trabajan con adultos principiantes.</li>
+</ul>
+
+<h2>¿Necesito tener el instrumento antes de empezar?</h2>
+<p>No necesariamente. Algunos profesores prestan instrumentos en las primeras clases. Para guitarra, una guitarra acústica básica en Linares cuesta entre $30.000–$60.000. Para piano/teclado, un teclado de 61 teclas cuesta desde $60.000.</p>
+
+<h2>¿Academia o profesor particular?</h2>
+<ul>
+  <li><strong>Academia:</strong> más estructura, horarios fijos, posibilidad de recitales y compañeros.</li>
+  <li><strong>Profesor particular:</strong> más flexible, personalizado, se adapta a tu ritmo y horario.</li>
+</ul>
+
+<p>Buscá profesores de música y academias en Linares en <a href="/educacion">LinaresYa — Educación</a>. ¿Dás clases de música en Linares? <a href="/publicar">Publicate gratis</a>.</p>
+`,
+  },
+
+  {
+    slug: "funeraria-linares",
+    titulo: "Funerarias en Linares: servicios, precios y trámites",
+    descripcion:
+      "Guía completa de funerarias en Linares. Servicios de velatorio, cremación, traslado, trámites legales y precios. Información para momentos difíciles.",
+    fecha: "2026-05-19",
+    categoria: "Servicios",
+    emoji: "🕊️",
+    keywords: ["funeraria linares", "servicio funebre linares", "cremacion linares", "traslado fallecido linares", "velatorio linares"],
+    contenido: `
+<p>En los momentos más difíciles, contar con una <strong>funeraria de confianza en Linares</strong> hace toda la diferencia. Acá encontrás información sobre servicios, precios y trámites para ayudarte a tomar decisiones informadas cuando más lo necesitás.</p>
+
+<h2>Servicios que ofrecen las funerarias en Linares</h2>
+<ul>
+  <li><strong>Retiro del fallecido:</strong> traslado desde el lugar del deceso a la funeraria (domicilio, hospital o clínica).</li>
+  <li><strong>Preparación del cuerpo:</strong> tanatopraxia, higiene y vestimenta.</li>
+  <li><strong>Velatorio:</strong> en la funeraria, en el domicilio o en la capilla ardiente.</li>
+  <li><strong>Inhumación:</strong> sepultación en el cementerio de Linares.</li>
+  <li><strong>Cremación:</strong> incineración del cuerpo y entrega de cenizas en urna.</li>
+  <li><strong>Traslado a otra ciudad:</strong> si el fallecimiento ocurrió fuera de Linares o viceversa.</li>
+  <li><strong>Gestión de trámites:</strong> certificado de defunción, inscripción en el Registro Civil.</li>
+</ul>
+
+<h2>¿Cuánto cuesta una funeraria en Linares?</h2>
+<p>Los precios varían según el servicio elegido:</p>
+<ul>
+  <li>Servicio básico (ataúd + velatorio + inhumación): desde $350.000–$600.000</li>
+  <li>Servicio intermedio (con flores, difusión, etc.): $600.000–$1.200.000</li>
+  <li>Cremación simple: $300.000–$500.000</li>
+  <li>Cremación con velatorio: $500.000–$900.000</li>
+  <li>Traslado desde otra ciudad: varía según distancia</li>
+</ul>
+
+<h2>Trámites necesarios en Chile tras un fallecimiento</h2>
+<ol>
+  <li><strong>Certificado de defunción médico:</strong> lo emite el médico que certifica la muerte.</li>
+  <li><strong>Inscripción en el Registro Civil:</strong> en Linares, hay que inscribir el fallecimiento en el Registro Civil local.</li>
+  <li><strong>Permiso de sepultación o cremación:</strong> lo tramita la funeraria.</li>
+  <li><strong>Notificación a la AFP, Isapre/Fonasa y empleador.</strong></li>
+</ol>
+<p>Las funerarias en Linares generalmente gestionan todos estos trámites por vos.</p>
+
+<h2>Seguros de vida y planes funerarios</h2>
+<p>Muchas personas en Linares tienen seguros de vida o planes funerarios que cubren total o parcialmente los gastos. Verificá antes de contratar la funeraria si el fallecido tenía:</p>
+<ul>
+  <li>Seguro de vida contratado con su AFP o Isapre.</li>
+  <li>Plan funerario prepagado con alguna funeraria local.</li>
+  <li>Seguro complementario del empleador.</li>
+</ul>
+
+<p>Encontrá funerarias en Linares en <a href="/servicios">LinaresYa — Servicios</a>. ¿Tenés una funeraria en Linares? <a href="/publicar">Publicala gratis</a>.</p>
+`,
+  },
 ];
 
 // Helpers
