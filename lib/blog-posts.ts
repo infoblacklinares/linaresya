@@ -1717,6 +1717,495 @@ export const posts: BlogPost[] = [
 <p>Encontrá diseñadores y desarrolladores web en Linares en <a href="/tecnologia">LinaresYa — Tecnología</a>. ¿Hacés páginas web en Linares? <a href="/publicar">Aparecé en el directorio gratis</a>.</p>
 `,
   },
+
+  // ── Artículos batch 8 ──────────────────────────────────────────────────
+
+  // --- Para dueños de negocio (tráfico hacia /publicar) ---
+  {
+    slug: "como-aparecer-en-google-linares",
+    titulo: "Cómo aparecer en Google si tenés un negocio en Linares",
+    descripcion:
+      "Guía práctica para que tu negocio en Linares aparezca en Google. Google Business, directorios locales, SEO básico y qué hacer primero para conseguir más clientes.",
+    fecha: "2025-05-21",
+    categoria: "Marketing Digital",
+    emoji: "📈",
+    keywords: [
+      "aparecer en google linares",
+      "google mi negocio linares",
+      "seo para negocios linares",
+      "publicitar negocio linares",
+      "como conseguir clientes linares",
+    ],
+    contenido: `
+<p>Uno de los cambios más grandes para un negocio local es el día que aparece en Google cuando alguien busca su rubro en la ciudad. Si tenés un negocio en Linares y todavía no aparecés en las búsquedas, este artículo es para vos.</p>
+
+<h2>¿Por qué es tan importante aparecer en Google?</h2>
+<p>Cuando alguien busca "electricista en Linares" o "pizzería cerca", Google muestra los primeros resultados y la mayoría de los usuarios hace clic en los tres primeros. Si no aparecés, esos clientes van a tu competencia — aunque vos seas mejor.</p>
+
+<h2>Paso 1: Google Business Profile (antes Google My Business)</h2>
+<p>La forma más rápida y gratuita de aparecer en Google Maps y en los resultados locales es crear o reclamar tu <strong>perfil de Google Business</strong>:</p>
+<ul>
+  <li>Entrá a <a href="https://business.google.com" target="_blank" rel="noopener">business.google.com</a></li>
+  <li>Buscá si tu negocio ya existe (alguien puede haberlo creado)</li>
+  <li>Completá nombre, categoría, dirección, teléfono y horarios</li>
+  <li>Verificá con el código que te manda Google por correo o teléfono</li>
+  <li>Subí fotos reales de tu local</li>
+</ul>
+<p>Un perfil completo y verificado aparece en el mapa de Google cuando alguien busca tu rubro en Linares. Es gratis y funciona.</p>
+
+<h2>Paso 2: Publicarte en directorios locales</h2>
+<p>Google también usa los <strong>directorios locales</strong> para confirmar que un negocio existe y es legítimo. Cuantos más lugares mencionen tu negocio con la misma información (nombre, dirección, teléfono), mejor posicionado queda.</p>
+<ul>
+  <li><strong>LinaresYa:</strong> directorio local de Linares, aparecés en las búsquedas de vecinos y en Google. <a href="/publicar">Publicá gratis</a>.</li>
+  <li><strong>Yelp y Foursquare:</strong> directorios internacionales que también ayudan al SEO.</li>
+  <li><strong>Páginas Amarillas:</strong> todavía tiene presencia en búsquedas de Chile.</li>
+</ul>
+
+<h2>Paso 3: Pedí reseñas a tus clientes</h2>
+<p>Las reseñas en Google son uno de los factores más importantes para aparecer primero. Un negocio con 20 reseñas positivas aparece antes que uno sin reseñas. Pedile a tus clientes satisfechos que te dejen una en Google — con un link directo es mucho más fácil.</p>
+
+<h2>Paso 4: Tener una página web (aunque sea simple)</h2>
+<p>Google da más confianza a negocios con sitio web propio. No necesitás algo complejo: una página con tu nombre, qué hacés, dónde estás y tu teléfono es suficiente para empezar. En LinaresYa podés encontrar <a href="/tecnologia">diseñadores web locales</a> que lo hacen a bajo costo.</p>
+
+<h2>¿Cuánto tiempo tarda en funcionar?</h2>
+<p>Google Business se activa en 1-2 semanas después de la verificación. Los directorios locales empiezan a dar resultados en 1-3 meses. El SEO es un proceso de mediano plazo, pero cada paso que tomás hoy tiene efecto acumulativo.</p>
+
+<p>¿Todavía no estás en LinaresYa? <a href="/publicar">Publicá tu negocio gratis</a> y aparecé frente a los vecinos de Linares que buscan lo que ofrecés.</p>
+`,
+  },
+  {
+    slug: "google-business-linares",
+    titulo: "Google Business en Linares: cómo crear y optimizar tu perfil",
+    descripcion:
+      "Guía paso a paso para crear y optimizar tu perfil de Google Business si tenés un negocio en Linares. Aparecé en Google Maps y conseguí más clientes locales.",
+    fecha: "2025-05-21",
+    categoria: "Marketing Digital",
+    emoji: "🗺️",
+    keywords: [
+      "google business linares",
+      "google my business linares",
+      "google maps negocio linares",
+      "perfil google negocio linares",
+      "como crear google business linares",
+    ],
+    contenido: `
+<p>Si tenés un negocio en Linares y no estás en Google Maps, estás perdiendo clientes todos los días. Crear tu perfil de <strong>Google Business</strong> es gratis, tarda menos de 30 minutos y puede cambiar completamente cuánta gente te encuentra.</p>
+
+<h2>¿Qué es Google Business Profile?</h2>
+<p>Es el panel gratuito de Google donde los negocios locales gestionan cómo aparecen en Google Maps y en los resultados de búsqueda. Cuando alguien busca "dentista en Linares" o "almacén cerca", los resultados con mapa y ficha son los negocios con Google Business activo.</p>
+
+<h2>Paso a paso: crear tu perfil</h2>
+<ol>
+  <li>Entrá a <strong>business.google.com</strong> con una cuenta de Gmail.</li>
+  <li>Hacé clic en "Agregar mi negocio".</li>
+  <li>Escribí el nombre exacto de tu negocio (el mismo que usás en todos lados).</li>
+  <li>Elegí la categoría que más se ajuste (podés agregar categorías secundarias).</li>
+  <li>Ingresá tu dirección. Si atendés a domicilio, podés ocultar la dirección y poner el área de cobertura.</li>
+  <li>Ingresá teléfono y sitio web (si tenés).</li>
+  <li>Verificá con el código que te manda Google.</li>
+</ol>
+
+<h2>Cómo optimizar el perfil para aparecer primero</h2>
+<ul>
+  <li><strong>Fotos reales:</strong> subí al menos 5 fotos del local, productos y equipo. Los perfiles con fotos reciben 42% más solicitudes de direcciones.</li>
+  <li><strong>Horarios completos:</strong> incluyendo feriados. Google penaliza los perfiles con horarios incorrectos.</li>
+  <li><strong>Descripción completa:</strong> usá palabras que tus clientes usan para buscarte.</li>
+  <li><strong>Publicaciones:</strong> Google Business permite publicar novedades, ofertas y eventos — úsalo al menos una vez por semana.</li>
+  <li><strong>Responder reseñas:</strong> tanto las positivas como las negativas. Muestra que el negocio está activo.</li>
+</ul>
+
+<h2>¿Cuánto tiempo tarda en aparecer?</h2>
+<p>Después de la verificación, el perfil puede tardar 1-3 semanas en aparecer prominentemente en búsquedas locales. Con el perfil optimizado y algunas reseñas, la mayoría de los negocios en Linares consiguen aparecer en el "Pack 3" de Google (el mapa con tres resultados destacados) dentro del primer mes.</p>
+
+<h2>Google Business + LinaresYa = doble visibilidad</h2>
+<p>La combinación más efectiva para un negocio local en Linares es tener tanto Google Business como una ficha en LinaresYa. Los directorios locales refuerzan la señal de Google y te dan presencia directa en las búsquedas de vecinos que usan el directorio. <a href="/publicar">Publicá en LinaresYa gratis</a>.</p>
+`,
+  },
+
+  // --- Categorías de servicio sin cubrir ---
+  {
+    slug: "terapia-masajes-linares",
+    titulo: "Masajes y terapias en Linares: relajación, kinesiología y bienestar",
+    descripcion:
+      "Encuentra masajistas y terapeutas en Linares, Chile. Masajes relajantes, terapéuticos, kinesiología, reflexología y tratamientos de bienestar.",
+    fecha: "2025-05-21",
+    categoria: "Salud y Bienestar",
+    emoji: "💆",
+    keywords: [
+      "masajes linares",
+      "masajista linares",
+      "kinesiologia linares",
+      "terapia linares",
+      "masaje relajante linares",
+    ],
+    contenido: `
+<p>El estrés del trabajo, las contracturas musculares y el agotamiento del día a día tienen solución. En Linares hay <strong>masajistas y terapeutas</strong> calificados para ayudarte a recuperar el bienestar físico y mental.</p>
+
+<h2>Tipos de masajes y terapias en Linares</h2>
+<ul>
+  <li><strong>Masaje relajante:</strong> técnica suave para liberar tensión y reducir el estrés. Ideal para quienes trabajan muchas horas o tienen trabajos físicos.</li>
+  <li><strong>Masaje terapéutico / descontracturante:</strong> para contracturas, dolores musculares específicos y zonas de tensión crónica.</li>
+  <li><strong>Kinesiología:</strong> tratamiento de lesiones, rehabilitación postoperatoria y problemas musculoesqueléticos.</li>
+  <li><strong>Reflexología:</strong> estimulación de puntos en pies y manos que corresponden a órganos del cuerpo.</li>
+  <li><strong>Masaje deportivo:</strong> para deportistas, antes o después de competencia, y para lesiones frecuentes en el deporte.</li>
+  <li><strong>Drenaje linfático:</strong> útil para reducir retención de líquidos e inflamación.</li>
+</ul>
+
+<h2>¿Cuánto cuesta un masaje en Linares?</h2>
+<ul>
+  <li>Masaje relajante (60 min): $20.000 – $40.000</li>
+  <li>Masaje descontracturante (45-60 min): $25.000 – $50.000</li>
+  <li>Sesión de kinesiología: $20.000 – $45.000</li>
+  <li>Reflexología (40 min): $15.000 – $30.000</li>
+</ul>
+
+<h2>¿Cómo elegir un buen terapeuta en Linares?</h2>
+<ul>
+  <li>Verificá que tenga formación certificada (técnico en masoterapia, kinesiólogo titulado, etc.)</li>
+  <li>Contá tu historial de salud antes de la sesión</li>
+  <li>Si tenés una lesión o condición médica, consultá con un médico antes</li>
+  <li>Revisá las reseñas de otros clientes en LinaresYa</li>
+</ul>
+
+<p>Encontrá masajistas y terapeutas en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Ofrecés masajes en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+`,
+  },
+  {
+    slug: "ropa-tiendas-linares",
+    titulo: "Tiendas de ropa en Linares: moda, calzado y accesorios",
+    descripcion:
+      "Descubre las mejores tiendas de ropa en Linares, Chile. Ropa de mujer, hombre, niños, calzado y accesorios en el centro y barrios de la ciudad.",
+    fecha: "2025-05-21",
+    categoria: "Moda y Ropa",
+    emoji: "👗",
+    keywords: [
+      "tiendas de ropa linares",
+      "ropa linares",
+      "moda linares",
+      "calzado linares",
+      "boutique linares",
+    ],
+    contenido: `
+<p>Linares tiene una oferta de moda local variada: desde boutiques de ropa femenina hasta tiendas de ropa casual, calzado y accesorios. Conocer las opciones locales ayuda a comprar cerca, apoyar a emprendedores linarenses y encontrar prendas únicas que no están en los grandes malls.</p>
+
+<h2>¿Qué tipo de tiendas de ropa hay en Linares?</h2>
+<ul>
+  <li><strong>Boutiques de ropa femenina:</strong> ropa de mujer moderna, casual y de ocasión, con atención personalizada.</li>
+  <li><strong>Tiendas de ropa masculina:</strong> desde lo casual hasta lo más formal para trabajo o eventos.</li>
+  <li><strong>Ropa infantil:</strong> con opciones para bebés, niños y adolescentes.</li>
+  <li><strong>Calzado:</strong> zapatillas, zapatos, botas y sandalias para toda la familia.</li>
+  <li><strong>Accesorios:</strong> carteras, cinturones, bisutería y más.</li>
+  <li><strong>Ropa deportiva:</strong> para gym, outdoor y uso diario.</li>
+  <li><strong>Ropa de segunda mano (usada):</strong> opciones sustentables y económicas en tiendas dedicadas.</li>
+</ul>
+
+<h2>Moda en Linares vs. comprar online</h2>
+<p>Comprar ropa localmente tiene ventajas concretas: podés probarte antes de comprar, evitás los costos de despacho y devolución, y apoyás a la economía local. Muchas tiendas en Linares además tienen Instagram actualizado con sus últimas llegadas — seguílas para estar al tanto.</p>
+
+<h2>¿Cuándo hay más ofertas en las tiendas de Linares?</h2>
+<ul>
+  <li><strong>Cambio de temporada (marzo y agosto):</strong> liquidaciones de colecciones anteriores con descuentos significativos.</li>
+  <li><strong>Cyber Monday y Cyber Lunes:</strong> muchas tiendas locales se suman con descuentos online o presenciales.</li>
+  <li><strong>Fiestas patrias y Navidad:</strong> temporada alta con colecciones especiales y promociones.</li>
+</ul>
+
+<p>Encontrá tiendas de ropa en Linares en <a href="/moda-y-ropa">LinaresYa — Moda y Ropa</a>. ¿Tenés una tienda de ropa en Linares? <a href="/publicar">Publicala gratis en el directorio</a>.</p>
+`,
+  },
+  {
+    slug: "contador-impuestos-persona-natural-linares",
+    titulo: "Declaración de renta en Linares: todo lo que necesitás saber",
+    descripcion:
+      "Guía sobre la declaración de renta para trabajadores independientes y personas naturales en Linares. Cuándo declarar, quién te ayuda y cuánto cuesta.",
+    fecha: "2025-05-21",
+    categoria: "Servicios Profesionales",
+    emoji: "🧾",
+    keywords: [
+      "declaracion de renta linares",
+      "declaracion impuestos linares",
+      "formulario 22 linares",
+      "renta persona natural linares",
+      "boletas honorarios linares",
+    ],
+    contenido: `
+<p>Cada año entre abril y mayo, miles de trabajadores independientes y personas naturales en Linares deben presentar su <strong>declaración de renta</strong> al SII. Si nunca lo hiciste o querés entender el proceso, esta guía te explica lo esencial.</p>
+
+<h2>¿Quiénes deben declarar renta en Chile?</h2>
+<ul>
+  <li><strong>Trabajadores con boletas de honorarios:</strong> si emitiste boletas electrónicas durante el año.</li>
+  <li><strong>Personas con más de un empleador:</strong> si tuviste dos trabajos en el mismo año.</li>
+  <li><strong>Dueños de empresa o socios:</strong> que recibieron retiros o dividendos.</li>
+  <li><strong>Propietarios con arriendos:</strong> los ingresos por arriendo deben declararse.</li>
+  <li><strong>Quienes tienen inversiones:</strong> acciones, fondos mutuos, etc.</li>
+</ul>
+
+<h2>¿Cuándo se declara la renta?</h2>
+<p>La campaña de renta es habitualmente en <strong>abril</strong> (a veces hasta mayo). El SII habilita el Formulario 22 online para que revises y envíes tu declaración. Si tenés retención del 10,75% en tus boletas de honorarios, en muchos casos el SII ya tiene la información y podés aprobar la propuesta directamente.</p>
+
+<h2>¿Qué pasa si no declarás?</h2>
+<p>El SII puede multarte con un porcentaje del impuesto adeudado más reajustes e intereses. Si no estás seguro de si debés declarar, consultá con un contador — evitar la multa siempre es más barato que pagarla.</p>
+
+<h2>¿Vale la pena contratar un contador en Linares para la renta?</h2>
+<p>Para casos simples (boletas de honorarios sin gastos complejos), el SII tiene propuestas automáticas que se pueden aprobar sin ayuda. Pero si tenés gastos deducibles, inversiones, arriendos o situaciones especiales, un <a href="/contador-tributario-linares">contador en Linares</a> puede ahorrarte impuestos legalmente.</p>
+
+<h2>¿Cuánto cobra un contador por la declaración de renta en Linares?</h2>
+<ul>
+  <li>Persona natural simple (solo honorarios): $20.000 – $45.000</li>
+  <li>Con gastos presuntos o efectivos: $35.000 – $70.000</li>
+  <li>Empresa o situación compleja: desde $80.000</li>
+</ul>
+
+<p>Encontrá contadores y asesores tributarios en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Sos contador en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+`,
+  },
+  {
+    slug: "delivery-comida-linares",
+    titulo: "Delivery de comida en Linares: pedidos a domicilio y apps",
+    descripcion:
+      "Guía de delivery de comida en Linares, Chile. Qué restaurantes hacen delivery, qué apps funcionan y cómo pedir comida a domicilio en la ciudad.",
+    fecha: "2025-05-21",
+    categoria: "Restaurantes y Cafeterías",
+    emoji: "🛵",
+    keywords: [
+      "delivery linares",
+      "delivery comida linares",
+      "pedidos a domicilio linares",
+      "rappi linares",
+      "comida a domicilio linares",
+    ],
+    contenido: `
+<p>Pedir comida a domicilio en Linares es cada vez más fácil. Varios restaurantes hacen su propio delivery y algunas plataformas de apps también operan en la ciudad. Acá te contamos cómo encontrar lo que buscás.</p>
+
+<h2>¿Hay apps de delivery en Linares?</h2>
+<p>Linares es una ciudad de tamaño mediano, y la cobertura de las grandes plataformas (Rappi, PedidosYa, Uber Eats) puede ser limitada o inexistente dependiendo de la zona y el período. Lo más confiable es:</p>
+<ul>
+  <li>Revisar directamente si el restaurante que te gusta tiene su propio delivery por WhatsApp o teléfono.</li>
+  <li>Buscar en redes sociales locales de Linares — muchos restaurantes anuncian su servicio de delivery en Instagram o Facebook.</li>
+  <li>Explorar LinaresYa donde podés contactar directamente a los restaurantes y consultar si hacen delivery.</li>
+</ul>
+
+<h2>¿Qué tipo de comida entregan a domicilio en Linares?</h2>
+<ul>
+  <li><strong>Comida rápida:</strong> hamburguesas, pizzas, hot dogs, empanadas.</li>
+  <li><strong>Cocina casera:</strong> menús del día, cazuelas, guisos. Muy populares a mediodía.</li>
+  <li><strong>Sushi y comida oriental:</strong> la oferta ha crecido en Linares en los últimos años.</li>
+  <li><strong>Postres y helados:</strong> tortas, pasteles y helados con despacho a domicilio.</li>
+</ul>
+
+<h2>Tips para pedir delivery en Linares</h2>
+<ul>
+  <li>Confirmá el tiempo de entrega antes de pedir — en horas pico puede demorar más.</li>
+  <li>Preguntá si el costo de despacho es fijo o varía por distancia.</li>
+  <li>Si pedís por WhatsApp, enviá tu dirección completa con referencias claras.</li>
+  <li>Muchos restaurantes tienen un mínimo de pedido para el despacho.</li>
+</ul>
+
+<h2>¿Querés montar un servicio de delivery?</h2>
+<p>Si tenés un restaurante o negocio de comida en Linares y querés publicitar tu servicio de delivery, <a href="/publicar">publicá gratis en LinaresYa</a> con tu número de WhatsApp habilitado para pedidos directos.</p>
+
+<p>Encontrá restaurantes con delivery en Linares en <a href="/restaurantes-y-cafeterias">LinaresYa — Restaurantes y Cafeterías</a>.</p>
+`,
+  },
+  {
+    slug: "dentista-niños-linares",
+    titulo: "Dentista para niños en Linares: odontopediatría y primera consulta",
+    descripcion:
+      "Guía para llevar a tu hijo al dentista en Linares. Odontopediatría, primera visita, cuidado de dientes de leche y urgencias dentales en niños.",
+    fecha: "2025-05-21",
+    categoria: "Salud",
+    emoji: "🦷",
+    keywords: [
+      "dentista niños linares",
+      "odontopediatra linares",
+      "dentista infantil linares",
+      "dientes de leche linares",
+      "primera visita dentista niños linares",
+    ],
+    contenido: `
+<p>La salud dental de los niños empieza desde el primer diente. En Linares hay dentistas especializados en odontopediatría y clínicas con atención infantil para que la primera visita sea una buena experiencia.</p>
+
+<h2>¿Cuándo llevar al niño al dentista por primera vez?</h2>
+<p>La recomendación de los especialistas es llevar al niño al dentista cuando le sale el primer diente (alrededor de los 6 meses) o antes del primer año de vida. Muchos papás esperan a que salgan todos los dientes de leche, pero la prevención temprana evita caries y problemas de mordida más adelante.</p>
+
+<h2>¿Qué hace un odontopediatra en Linares?</h2>
+<ul>
+  <li><strong>Control preventivo:</strong> revisión del desarrollo de los dientes y la mandíbula.</li>
+  <li><strong>Sellantes y flúor:</strong> tratamientos preventivos para proteger los dientes de leche y permanentes.</li>
+  <li><strong>Tratamiento de caries:</strong> obturaciones adaptadas para niños, con anestesia suave.</li>
+  <li><strong>Extracciones:</strong> de dientes de leche que no caen solos o están muy dañados.</li>
+  <li><strong>Ortodoncia temprana:</strong> detección de problemas de mordida que conviene corregir antes.</li>
+</ul>
+
+<h2>¿Los dientes de leche importan si se van a caer?</h2>
+<p>Sí, mucho. Los dientes de leche mantienen el espacio para los dientes permanentes, ayudan a hablar y masticar correctamente, y una caries no tratada puede infectarse y afectar el diente permanente que viene debajo.</p>
+
+<h2>¿Cuánto cuesta el dentista para niños en Linares?</h2>
+<ul>
+  <li>Consulta pediátrica preventiva: $15.000 – $35.000</li>
+  <li>Sellante (por diente): $8.000 – $15.000</li>
+  <li>Obturación (por diente): $20.000 – $50.000</li>
+  <li>FONASA cubre atención dental infantil en el sistema público</li>
+</ul>
+
+<h2>Consejos para la primera visita</h2>
+<ul>
+  <li>No uses palabras que asusten ("pinchar", "doler") antes de la visita.</li>
+  <li>Elegí una hora en que el niño esté descansado y de buen ánimo.</li>
+  <li>Presentalo como una visita de revisión, no de "tratamiento".</li>
+  <li>Muchos dentistas en Linares tienen juguetes y televisión para que los niños se distraigan.</li>
+</ul>
+
+<p>Encontrá dentistas en Linares en <a href="/dentistas">LinaresYa — Dentistas</a>. ¿Sos odontopediatra en Linares? <a href="/publicar">Publicá tu consulta gratis</a>.</p>
+`,
+  },
+  {
+    slug: "seguro-vehiculo-linares",
+    titulo: "Seguro de vehículo en Linares: SOAP, seguro obligatorio y más",
+    descripcion:
+      "Guía para contratar seguro de vehículo en Linares, Chile. SOAP obligatorio, seguros de daños propios, responsabilidad civil y dónde contratar en la ciudad.",
+    fecha: "2025-05-21",
+    categoria: "Servicios Profesionales",
+    emoji: "🚗",
+    keywords: [
+      "seguro vehiculo linares",
+      "soap linares",
+      "seguro auto linares",
+      "seguro obligatorio linares",
+      "corredora seguros linares",
+    ],
+    contenido: `
+<p>Si tenés auto, moto o camioneta en Linares, necesitás al menos el seguro obligatorio (SOAP). Pero entender qué cubre cada tipo de seguro te puede ahorrar mucho dinero y problemas en caso de accidente.</p>
+
+<h2>El SOAP: seguro obligatorio en Chile</h2>
+<p>El <strong>Seguro Obligatorio de Accidentes Personales (SOAP)</strong> es obligatorio para circular en Chile. Cubre lesiones a terceros (personas) en caso de accidente, pero NO cubre los daños materiales del vehículo.</p>
+<ul>
+  <li>Se renueva junto con el permiso de circulación (generalmente en marzo-abril).</li>
+  <li>Se compra en bancos, compañías de seguros, correos, farmacias y servicentros.</li>
+  <li>Cuesta entre $9.000 y $25.000 según el tipo de vehículo.</li>
+  <li>Circular sin SOAP vigente puede resultar en multa y retención del vehículo.</li>
+</ul>
+
+<h2>Seguro de daños propios: ¿te conviene?</h2>
+<p>El seguro de daños propios cubre el auto si tenés un choque, robo, incendio o fenómeno meteorológico. Hay varias modalidades:</p>
+<ul>
+  <li><strong>Todo riesgo:</strong> la cobertura más amplia. Incluye daños propios y responsabilidad civil ampliada.</li>
+  <li><strong>Seguro básico:</strong> cubre incendio, robo y responsabilidad civil. Más económico.</li>
+  <li><strong>Responsabilidad civil ampliada:</strong> complementa el SOAP cubriendo daños materiales a terceros.</li>
+</ul>
+
+<h2>¿Cuánto cuesta el seguro de auto en Linares?</h2>
+<ul>
+  <li>SOAP: desde $9.000/año según vehículo</li>
+  <li>Seguro básico (incendio y robo): $80.000 – $150.000/año</li>
+  <li>Todo riesgo: $200.000 – $600.000/año según valor del auto</li>
+</ul>
+<p>El precio varía según el año del vehículo, marca, modelo, zona de circulación y el historial de siniestros del conductor.</p>
+
+<h2>Corredoras de seguros en Linares</h2>
+<p>Las corredoras de seguros son intermediarias que comparan distintas aseguradoras y te recomiendan la mejor opción para tu caso. Muchas tienen oficina en Linares y pueden cotizar en el momento. No cobran comisión adicional — la paga la aseguradora.</p>
+
+<p>Encontrá corredoras de seguros y servicios financieros en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tenés corredora de seguros en Linares? <a href="/publicar">Publicala gratis</a>.</p>
+`,
+  },
+  {
+    slug: "emprendimiento-linares",
+    titulo: "Emprender en Linares: recursos, apoyo y cómo arrancar",
+    descripcion:
+      "Guía para emprendedores en Linares, Chile. SERCOTEC, Corfo, municipio, incubadoras y primeros pasos para abrir tu negocio en la ciudad.",
+    fecha: "2025-05-21",
+    categoria: "Negocios",
+    emoji: "🚀",
+    keywords: [
+      "emprender linares",
+      "emprendimiento linares",
+      "sercotec linares",
+      "abrir negocio linares",
+      "apoyo emprendedores linares",
+    ],
+    contenido: `
+<p>Linares tiene un ecosistema emprendedor en crecimiento. Si querés abrir tu negocio en la ciudad, hay recursos del Estado, del municipio y privados que pueden ayudarte a dar los primeros pasos sin tanto riesgo.</p>
+
+<h2>¿Por dónde empezar para abrir un negocio en Linares?</h2>
+<ol>
+  <li><strong>Validá la idea:</strong> ¿hay demanda real? Hablá con posibles clientes antes de invertir.</li>
+  <li><strong>Hacé inicio de actividades en el SII:</strong> necesitás un RUT de empresa o trabajar como persona natural con segunda categoría.</li>
+  <li><strong>Revisá la patente comercial:</strong> en la Municipalidad de Linares, según el rubro y la ubicación.</li>
+  <li><strong>Abrí una cuenta bancaria de negocio:</strong> Banco Estado tiene la Cuenta RUT gratuita para personas naturales.</li>
+  <li><strong>Publicitate:</strong> empezá con presencia en LinaresYa, redes sociales y Google Business.</li>
+</ol>
+
+<h2>SERCOTEC en el Maule: apoyo para pequeños negocios</h2>
+<p>El <strong>Servicio de Cooperación Técnica (SERCOTEC)</strong> tiene oficinas en el Maule y ofrece:</p>
+<ul>
+  <li>Capital semilla para emprendimientos nuevos (subsidios no reembolsables).</li>
+  <li>Capacitaciones en gestión, marketing y finanzas.</li>
+  <li>Asesoría personalizada para pequeños negocios.</li>
+</ul>
+<p>Ingresá a sercotec.cl o llamá a la oficina regional del Maule para consultar convocatorias vigentes.</p>
+
+<h2>Municipalidad de Linares y apoyo local</h2>
+<p>La OMIL (Oficina Municipal de Intermediación Laboral) y la Dirección de Desarrollo Económico del municipio tienen programas de apoyo a emprendedores locales. Vale la pena consultarles directamente sobre ferias municipales, capacitaciones y programas de subsidio.</p>
+
+<h2>Corfo y programas de financiamiento</h2>
+<p>La <strong>Corporación de Fomento de la Producción (Corfo)</strong> tiene líneas de financiamiento para emprendedores: Capital Abeja, Súmate, y líneas de crédito para pymes. Revisá corfo.cl para ver qué programas están activos.</p>
+
+<h2>Presencia digital desde el día uno</h2>
+<p>Uno de los errores más comunes de los nuevos negocios en Linares es esperar a tener "todo listo" para aparecer en internet. Lo ideal es publicarte en directorios locales desde el primer día para empezar a generar visibilidad mientras construís el negocio. <a href="/publicar">Publicá gratis en LinaresYa</a> sin esperar a tener sitio web ni nada más.</p>
+
+<p>¿Ya tenés tu negocio? <a href="/publicar">Aparecé en LinaresYa gratis</a> y conectate con miles de vecinos de Linares desde hoy.</p>
+`,
+  },
+  {
+    slug: "taller-costura-modista-linares",
+    titulo: "Modista y taller de costura en Linares: arreglos y confección",
+    descripcion:
+      "Encuentra modistas y talleres de costura en Linares, Chile. Arreglos de ropa, confección a medida, vestidos de novia, uniformes y reparaciones.",
+    fecha: "2025-05-21",
+    categoria: "Moda y Ropa",
+    emoji: "🧵",
+    keywords: [
+      "modista linares",
+      "costura linares",
+      "arreglos de ropa linares",
+      "confeccion a medida linares",
+      "taller costura linares",
+    ],
+    contenido: `
+<p>Una prenda bien ajustada puede cambiar completamente cómo te ves y sentís. En Linares hay <strong>modistas y talleres de costura</strong> para todo tipo de trabajo: desde arreglar un dobladillo hasta confeccionar un vestido de novia desde cero.</p>
+
+<h2>¿Qué trabajos hace una modista en Linares?</h2>
+<ul>
+  <li><strong>Arreglos de ropa:</strong> dobladillo, angostado de mangas y piernas, cambio de cierre, costura de botones.</li>
+  <li><strong>Confección a medida:</strong> prendas diseñadas y hechas específicamente para tu cuerpo.</li>
+  <li><strong>Vestidos de novia y 15 años:</strong> confección o modificación de vestidos especiales.</li>
+  <li><strong>Uniformes:</strong> escolares, de trabajo, deportivos. Muchas modistas hacen pedidos por mayor.</li>
+  <li><strong>Cortinas y ropa de hogar:</strong> cortinas a medida, fundas, manteles y más.</li>
+  <li><strong>Bordados y personalizaciones:</strong> logos, nombres, monogramas en tela.</li>
+</ul>
+
+<h2>¿Cuánto cobra una modista en Linares?</h2>
+<ul>
+  <li>Arreglo simple (dobladillo, botón): $3.000 – $10.000</li>
+  <li>Angostado de pantalón o manga: $8.000 – $20.000</li>
+  <li>Cambio de cierre: $8.000 – $25.000 según prenda</li>
+  <li>Confección a medida (blusa o falda): $30.000 – $80.000</li>
+  <li>Vestido de novia a medida: desde $200.000</li>
+</ul>
+
+<h2>¿Cuándo conviene ir a una modista?</h2>
+<ul>
+  <li>Compraste ropa en línea que no quedó exactamente a medida.</li>
+  <li>Tenés ropa favorita que se deterioró pero querés recuperar.</li>
+  <li>Necesitás un vestido o traje único para un evento especial.</li>
+  <li>Querés uniformes para tu negocio o equipo deportivo.</li>
+</ul>
+
+<h2>Tip: la ropa de segunda mano + modista</h2>
+<p>Una combinación muy popular en Linares es comprar ropa de segunda mano en buen estado y llevarla a ajustar con la modista. El resultado final es una prenda exclusiva a un costo mucho menor que la ropa nueva.</p>
+
+<p>Encontrá modistas y talleres de costura en Linares en <a href="/moda-y-ropa">LinaresYa — Moda y Ropa</a>. ¿Sos modista en Linares? <a href="/publicar">Publicá tu taller gratis</a>.</p>
+`,
+  },
 ];
 
 // Helpers
