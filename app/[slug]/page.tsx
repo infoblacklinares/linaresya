@@ -324,27 +324,55 @@ function NegocioCard({
   );
 }
 
+const WA_SUGERIR = "56984272557";
+
 function EmptyState({ emoji, nombre }: { emoji: string; nombre: string }) {
+  const msg = encodeURIComponent(
+    `Hola! Busqu\u00e9 ${nombre} en LinaresYa y no hay ninguno todav\u00eda. \u00bfPueden agregar alguno al directorio de Linares?`
+  );
+  const waLink = `https://wa.me/${WA_SUGERIR}?text=${msg}`;
+
   return (
     <div className="mx-4 rounded-3xl border border-dashed border-border p-8 sm:p-10 text-center">
       <div className="text-5xl mb-3">{emoji}</div>
-      <h2 className="text-lg font-bold">Aun no hay negocios en {nombre}</h2>
+      <h2 className="text-lg font-bold">A\u00fan no hay negocios en {nombre}</h2>
       <p className="mt-1.5 text-sm text-muted-foreground max-w-sm mx-auto">
-        Sos el primero? Sumate gratis y apareces aca apenas te aprobamos.
+        \u00bfSos el primero? Public\u00e1 gratis y aparec\u00e9s ac\u00e1 en pocas horas.
       </p>
       <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-2">
         <Link
           href="/publicar"
           className="inline-flex items-center gap-1.5 rounded-full bg-foreground text-background text-sm font-semibold px-5 py-2.5"
         >
-          Publicar mi negocio {"\u2192"}
+          Publicar mi negocio \u2192
         </Link>
         <Link
           href="/"
           className="inline-flex items-center gap-1.5 rounded-full bg-secondary text-foreground text-sm font-semibold px-5 py-2.5 hover:bg-secondary/80 transition"
         >
-          Ver otras categorias
+          Ver otras categor\u00edas
         </Link>
+      </div>
+
+      {/* Sugerir */}
+      <div className="mt-6 pt-5 border-t border-border">
+        <p className="text-sm text-muted-foreground mb-3">
+          \u00bfConoc\u00e9s un negocio de {nombre} en Linares?
+        </p>
+        <a
+          href={waLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white text-sm font-bold px-5 py-2.5 hover:bg-[#1ebe5d] transition"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.5 3.5A11 11 0 0 0 3 17l-1 5 5.2-1.4A11 11 0 1 0 20.5 3.5Zm-8.5 17a9 9 0 0 1-4.6-1.3l-.3-.2-3.1.8.8-3-.2-.3A9 9 0 1 1 12 20.5Z" />
+          </svg>
+          Suger\u00ed uno por WhatsApp
+        </a>
+        <p className="mt-2 text-[11px] text-muted-foreground">
+          Lo contactamos y lo invitamos a publicarse.
+        </p>
       </div>
     </div>
   );

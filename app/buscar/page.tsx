@@ -2,6 +2,14 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { diaHoySantiago, horaAhoraSantiago, badgeAbierto } from "@/lib/horarios";
 
+const WA_SUGERIR = "56984272557";
+function waLinkSugerir(termino: string) {
+  const msg = termino
+    ? `Hola! Busqué "${termino}" en LinaresYa y no encontré lo que necesitaba. ¿Pueden agregar ese negocio al directorio de Linares?`
+    : `Hola! Quiero sugerir un negocio para el directorio de LinaresYa.`;
+  return `https://wa.me/${WA_SUGERIR}?text=${encodeURIComponent(msg)}`;
+}
+
 export const metadata = {
   title: "Buscar - LinaresYa",
   description: "Busca negocios, oficios y servicios en Linares.",
@@ -294,8 +302,8 @@ export default async function BuscarPage({
             </h2>
             <p className="mt-1.5 text-sm text-muted-foreground max-w-sm mx-auto">
               {hayFiltros
-                ? "Prueba quitar algunos filtros o cambiar los terminos."
-                : "Escribe algo arriba o filtra por categoria."}
+                ? "Probá quitar algunos filtros o cambiar los términos."
+                : "Escribí algo arriba o filtrá por categoría."}
             </p>
             <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-2">
               {hayFiltros && (
@@ -313,10 +321,29 @@ export default async function BuscarPage({
                 {q ? `Publicar "${q}"` : "Publicar tu negocio"}
               </Link>
             </div>
+
+            {/* Sugerir negocio */}
+            <div className="mt-6 pt-6 border-t border-border">
+              <p className="text-sm text-muted-foreground mb-3">
+                ¿Conocés un negocio que debería estar acá?
+              </p>
+              <a
+                href={waLinkSugerir(q)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white text-sm font-bold px-5 py-2.5 hover:bg-[#1ebe5d] transition"
+              >
+                <WhatsAppIcon /> Sugerir un negocio
+              </a>
+              <p className="mt-2 text-[11px] text-muted-foreground">
+                Lo contactamos y lo invitamos a publicarse.
+              </p>
+            </div>
+
             {categorias.length > 0 && (
               <div className="mt-7">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                  Explora categorias
+                  Explorá categorías
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {categorias.slice(0, 6).map((c) => (
@@ -348,8 +375,33 @@ export default async function BuscarPage({
             })}
           </ul>
         )}
+
+        {/* Pie "¿No está lo que buscás?" — se muestra cuando hay resultados pero con búsqueda activa */}
+        {itemsOrdenados.length > 0 && hayFiltros && (
+          <div className="mx-4 mt-4 mb-2 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl bg-secondary/50 px-5 py-4">
+            <p className="text-sm text-muted-foreground">
+              ¿No está el negocio que buscabas?
+            </p>
+            <a
+              href={waLinkSugerir(q)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white text-xs font-bold px-4 py-2 hover:bg-[#1ebe5d] transition"
+            >
+              <WhatsAppIcon /> Sugerilo
+            </a>
+          </div>
+        )}
       </section>
     </main>
+  );
+}
+
+function WhatsAppIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20.5 3.5A11 11 0 0 0 3 17l-1 5 5.2-1.4A11 11 0 1 0 20.5 3.5Zm-8.5 17a9 9 0 0 1-4.6-1.3l-.3-.2-3.1.8.8-3-.2-.3A9 9 0 1 1 12 20.5Z" />
+    </svg>
   );
 }
 
