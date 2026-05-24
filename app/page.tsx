@@ -7,6 +7,7 @@ import AdvertisementBanner from "@/components/AdvertisementBanner";
 import NewsletterForm from "@/components/NewsletterForm";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
+import { getRecentPosts } from "@/lib/blog-posts";
 
 // ── Tipos ─────────────────────────────────────────────────────────────────────
 type Categoria = {
@@ -519,7 +520,7 @@ export default async function Home() {
       <section className="pb-24 pt-10">
         <div className="px-4 mb-3">
           <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Todas las categorías</h2>
-          <p className="text-xs text-[#8E8279]">12 categorías cubriendo todo Linares.</p>
+          <p className="text-xs text-[#8E8279]">{cats.length} categorías cubriendo todo Linares.</p>
         </div>
         <ul className="grid grid-cols-2 gap-3 px-4">
           {cats.map((cat, i) => (
@@ -536,33 +537,34 @@ export default async function Home() {
         </ul>
       </section>
 
-      {/* Blog — guías locales */}
-      <section className="px-4 pt-8 pb-4">
-        <div className="flex items-end justify-between mb-3">
-          <div>
-            <h2 className="text-base font-extrabold tracking-tight text-[#1A1410]">Guías de Linares</h2>
-            <p className="text-xs text-[#8E8279]">Artículos útiles para vecinos</p>
-          </div>
-          <Link href="/blog" className="text-xs font-semibold text-[#2B6E80]">Ver todo →</Link>
-        </div>
-        <div className="space-y-2">
-          {[
-            { emoji: "🍽️", titulo: "Mejores restaurantes en Linares", slug: "restaurantes-en-linares" },
-            { emoji: "🔧", titulo: "Cómo encontrar un gasfíter de confianza", slug: "gasfiter-linares" },
-            { emoji: "🐾", titulo: "Veterinarias en Linares: guía completa", slug: "veterinarias-linares" },
-          ].map((art) => (
-            <Link
-              key={art.slug}
-              href={`/blog/${art.slug}`}
-              className="flex items-center gap-3 rounded-xl bg-white px-4 py-3 shadow-linares-sm hover:shadow-linares transition-shadow"
-            >
-              <span className="text-xl">{art.emoji}</span>
-              <span className="text-sm font-semibold text-[#1A1410] line-clamp-1">{art.titulo}</span>
-              <span className="ml-auto text-[#8E8279] text-xs shrink-0">→</span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {/* Blog — guías locales (dinámico) */}
+      {(() => {
+        const recentBlog = getRecentPosts(3);
+        return (
+          <section className="px-4 pt-8 pb-4">
+            <div className="flex items-end justify-between mb-3">
+              <div>
+                <h2 className="text-base font-extrabold tracking-tight text-[#1A1410]">Guías de Linares</h2>
+                <p className="text-xs text-[#8E8279]">Artículos útiles para vecinos</p>
+              </div>
+              <Link href="/blog" className="text-xs font-semibold text-[#2B6E80]">Ver todo →</Link>
+            </div>
+            <div className="space-y-2">
+              {recentBlog.map((art) => (
+                <Link
+                  key={art.slug}
+                  href={`/blog/${art.slug}`}
+                  className="flex items-center gap-3 rounded-xl bg-white px-4 py-3 shadow-linares-sm hover:shadow-linares transition-shadow"
+                >
+                  <span className="text-xl">{art.emoji}</span>
+                  <span className="text-sm font-semibold text-[#1A1410] line-clamp-1">{art.titulo}</span>
+                  <span className="ml-auto text-[#8E8279] text-xs shrink-0">→</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* Bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-[#E8E4DE] bg-white/95 backdrop-blur">

@@ -1,20 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getRecentPosts } from "@/lib/blog-posts";
+import { posts } from "@/lib/blog-posts";
 
 export const metadata: Metadata = {
   title: "Blog — Guías y consejos para Linares",
   description:
     "Artículos, guías y consejos útiles sobre negocios, servicios y vida cotidiana en Linares, Chile. Dónde comer, gasfíteres, veterinarias y más.",
+  alternates: { canonical: "https://linaresya.cl/blog" },
   openGraph: {
     title: "Blog LinaresYa — Guías para Linares",
-    description: "Artículos útiles sobre servicios y negocios en Linares, Chile.",
+    description:
+      "Artículos útiles sobre servicios y negocios en Linares, Chile.",
+    url: "https://linaresya.cl/blog",
+    siteName: "LinaresYa",
+    locale: "es_CL",
+    type: "website",
   },
 };
 
-export default function BlogPage() {
-  const posts = getRecentPosts(20);
+// Posts ordenados del más nuevo al más antiguo
+const postsSorted = [...posts].sort((a, b) =>
+  b.fecha.localeCompare(a.fecha)
+);
 
+// Categorías únicas con conteo
+const categoriasMap = postsSorted.reduce<Record<string, number>>((acc, p) => {
+  acc[p.categoria] = (acc[p.categoria] ?? 0) + 1;
+  return acc;
+}, {});
+const categorias = Object.entries(categoriasMap).sort((a, b) =>
+  b[1] - a[1]
+);
+
+export default function BlogPage() {
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 bg-[#F9F8F6] pb-24">
       {/* Header */}
@@ -27,17 +45,34 @@ export default function BlogPage() {
           <span className="text-[#F4B860]">para Linares</span>
         </h1>
         <p className="mt-2 text-sm text-white/70">
-          Todo lo que necesitás saber sobre negocios, servicios y vida en Linares.
+          {postsSorted.length} artículos sobre negocios, servicios y vida en Linares.
         </p>
       </div>
 
+      {/* Categorías pill-scroll */}
+      <div className="px-4 pt-5">
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          <span className="shrink-0 rounded-full bg-[#2B6E80] px-3 py-1 text-[11px] font-semibold text-white">
+            Todos ({postsSorted.length})
+          </span>
+          {categorias.map(([cat, n]) => (
+            <span
+              key={cat}
+              className="shrink-0 rounded-full bg-white border border-[#2B6E80]/20 px-3 py-1 text-[11px] font-semibold text-[#2B6E80]"
+            >
+              {cat} ({n})
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* Posts */}
-      <div className="px-4 pt-6 space-y-4">
-        {posts.map((post) => (
+      <div className="px-4 pt-5 space-y-3">
+        {postsSorted.map((post) => (
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="flex gap-4 rounded-2xl bg-white p-4 shadow-linares-sm hover:shadow-linares transition-shadow"
+            className="flex gap-4 rounded-2xl bg-white p-4 shadow-sm hover:shadow-md transition-shadow"
           >
             {/* Emoji */}
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#2B6E80]/8 text-3xl">
@@ -58,12 +93,17 @@ export default function BlogPage() {
                 dateTime={post.fecha}
                 className="mt-1.5 block text-[11px] text-[#8E8279]"
               >
-                {new Date(post.fecha + "T00:00:00").toLocaleDateString("es-CL", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                {new Date(post.fecha + "T00:00:00").toLocaleDateString(
+                  "es-CL",
+                  { year: "numeric", month: "long", day: "numeric" }
+                )}
               </time>
+            </div>
+
+            <div className="shrink-0 self-center text-[#8E8279]">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
             </div>
           </Link>
         ))}
