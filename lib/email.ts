@@ -210,7 +210,7 @@ export async function sendOwnerAprobacionNotification(
         <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#0f172a;">Que hacer ahora</p>
         <ul style="margin:0;padding-left:20px;color:#475569;font-size:14px;line-height:1.7;">
           <li>Compartir el link por WhatsApp con tus clientes: llega con una tarjeta con tu nombre y categoria.</li>
-          <li>Actualiza horarios, descripcion y foto desde "Editar mi negocio" (el link caduca en 24 hs, podés pedir uno nuevo cuando quieras).</li>
+          <li>Actualiza horarios, descripcion y foto desde "Editar mi negocio" (el link caduca en 24 hs, puedes pedir uno nuevo cuando quieras).</li>
           <li>Mostrá el código QR en tu mostrador para que los clientes te dejen reseñas fácil.</li>
         </ul>
       </div>
@@ -476,7 +476,7 @@ export async function sendAdminReporteNotification(opts: {
     </div>
     <div style="padding:16px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
       <p style="margin:0;color:#94a3b8;font-size:12px;">
-        Tip: si el reporte es valido, podes desactivar el negocio temporalmente desde el admin hasta validar.
+        Tip: si el reporte es valido, puedes desactivar el negocio temporalmente desde el admin hasta validar.
       </p>
     </div>
   </div>
@@ -554,7 +554,7 @@ export async function sendAdminEdicionDuenoNotification(opts: {
     </div>
     <div style="padding:16px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
       <p style="margin:0;color:#94a3b8;font-size:12px;">
-        Si la edicion te parece sospechosa, podes desactivar el negocio o revertir cambios desde el admin.
+        Si la edicion te parece sospechosa, puedes desactivar el negocio o revertir cambios desde el admin.
       </p>
     </div>
   </div>
@@ -615,7 +615,7 @@ export async function sendDuenoMagicLink(opts: {
         Solicitaste editar tu negocio <strong>${nombreEsc}</strong> en LinaresYa.
       </p>
       <p style="margin:0 0 20px;font-size:15px;line-height:1.6;">
-        Hacé click en el botón de abajo para acceder al editor. El link es valido por ${opts.expiraHoras} horas.
+        Haz click en el botón de abajo para acceder al editor. El link es valido por ${opts.expiraHoras} horas.
       </p>
       <p style="margin:0 0 24px;text-align:center;">
         <a href="${linkEsc}" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px;font-weight:600;font-size:14px;">
@@ -631,7 +631,7 @@ export async function sendDuenoMagicLink(opts: {
     </div>
     <div style="padding:16px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
       <p style="margin:0;color:#94a3b8;font-size:12px;">
-        Si vos no pediste este link, podes ignorar este correo. Nadie podra editar tu negocio sin acceso a este email.
+        Si no pediste este link, puedes ignorar este correo. Nadie podra editar tu negocio sin acceso a este email.
       </p>
     </div>
   </div>
@@ -755,13 +755,13 @@ export async function sendOwnerResenaAprobadaNotification(opts: {
         Ver mi ficha →
       </a>
       <div style="margin-top:20px;padding:16px;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;">
-        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#92400e;">¿Querés aparecer primero en búsquedas?</p>
-        <p style="margin:0 0 10px;font-size:13px;color:#78350f;">Con Plan Premium activás WhatsApp directo, subís fotos y aparecés destacado. Desde $5.990/mes.</p>
+        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#92400e;">¿Quieres aparecer primero en búsquedas?</p>
+        <p style="margin:0 0 10px;font-size:13px;color:#78350f;">Con Plan Premium activas WhatsApp directo, subes fotos y apareces destacado. Desde $5.990/mes.</p>
         <a href="${escapeHtml(premiumUrl)}" style="font-size:13px;font-weight:600;color:#b45309;text-decoration:underline;">Ver Plan Premium →</a>
       </div>
     </div>
     <div style="padding:12px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
-      <p style="margin:0;color:#94a3b8;font-size:11px;">Recibiste este email porque tenés un negocio publicado en LinaresYa.cl</p>
+      <p style="margin:0;color:#94a3b8;font-size:11px;">Recibiste este email porque tienes un negocio publicado en LinaresYa.cl</p>
     </div>
   </div>
 </body>

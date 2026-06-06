@@ -46,7 +46,7 @@ export const posts: BlogPost[] = [
 <h2>Horarios habituales en Linares</h2>
 <p>La mayoría de los restaurantes en Linares abren desde las 12:00 hasta las 15:00 para el almuerzo, y retoman desde las 19:00 para la cena. Los fines de semana suelen extender su horario hasta las 22:00 o 23:00.</p>
 
-<p>¿Tenés un restaurante en Linares y querés aparecer gratis? <a href="/publicar">Registra tu negocio en LinaresYa</a> en menos de 5 minutos.</p>
+<p>¿Tienes un restaurante en Linares y quieres aparecer gratis? <a href="/publicar">Registra tu negocio en LinaresYa</a> en menos de 5 minutos.</p>
 `,
   },
   {
@@ -59,7 +59,7 @@ export const posts: BlogPost[] = [
     emoji: "🐾",
     keywords: ["veterinaria linares", "veterinario linares", "clinica veterinaria linares", "vacunas mascotas linares"],
     contenido: `
-<p>Tu mascota merece la mejor atención. Linares cuenta con varias <strong>veterinarias y clínicas veterinarias</strong> que atienden desde consultas de rutina hasta cirugías y urgencias. Acá te contamos todo lo que necesitás saber.</p>
+<p>Tu mascota merece la mejor atención. Linares cuenta con varias <strong>veterinarias y clínicas veterinarias</strong> que atienden desde consultas de rutina hasta cirugías y urgencias. Acá te contamos todo lo que necesitas saber.</p>
 
 <h2>¿Qué servicios ofrecen las veterinarias en Linares?</h2>
 <p>La mayoría de las veterinarias en Linares ofrecen:</p>
@@ -73,7 +73,7 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>¿Hay veterinarias de urgencia en Linares?</h2>
-<p>Algunos centros veterinarios en Linares tienen horario extendido o atención de urgencias. Te recomendamos tener el número guardado antes de que ocurra una emergencia. En <a href="/mascotas">LinaresYa — Mascotas</a> podés ver los horarios actualizados de cada veterinaria.</p>
+<p>Algunos centros veterinarios en Linares tienen horario extendido o atención de urgencias. Te recomendamos tener el número guardado antes de que ocurra una emergencia. En <a href="/mascotas">LinaresYa — Mascotas</a> puedes ver los horarios actualizados de cada veterinaria.</p>
 
 <h2>¿Cuánto cuesta una consulta veterinaria en Linares?</h2>
 <p>Una consulta básica ronda los $8.000 a $15.000 pesos. Las cirugías de esterilización pueden costar entre $40.000 y $80.000 dependiendo del peso del animal y el centro. Muchos lugares ofrecen paquetes de vacunación a precios especiales.</p>
@@ -85,23 +85,23 @@ export const posts: BlogPost[] = [
   <li>Preguntá si tienen ficha médica para hacer seguimiento de tu mascota</li>
 </ul>
 
-<p>¿Tenés una veterinaria en Linares? <a href="/publicar">Registrate gratis en LinaresYa</a> para que los dueños de mascotas te encuentren fácilmente.</p>
+<p>¿Tienes una veterinaria en Linares? <a href="/publicar">Regístrate gratis en LinaresYa</a> para que los dueños de mascotas te encuentren fácilmente.</p>
 `,
   },
   {
     slug: "supermercados-almacenes-linares",
     titulo: "Supermercados y almacenes en Linares: horarios y ubicaciones",
     descripcion:
-      "Guía de supermercados, minimarkets y almacenes en Linares, Chile. Horarios de atención, ubicaciones y qué encontrás en cada uno.",
+      "Guía de supermercados, minimarkets y almacenes en Linares, Chile. Horarios de atención, ubicaciones y qué encuentras en cada uno.",
     fecha: "2025-04-28",
     categoria: "Comercio",
     emoji: "🛒",
     keywords: ["supermercado linares", "almacen linares", "minimarket linares", "donde comprar linares"],
     contenido: `
-<p>Desde el supermercado grande hasta el almacén del barrio, Linares tiene opciones para todas las compras del día a día. Acá te contamos qué encontrás y en qué horarios atienden.</p>
+<p>Desde el supermercado grande hasta el almacén del barrio, Linares tiene opciones para todas las compras del día a día. Acá te contamos qué encuentras y en qué horarios atienden.</p>
 
 <h2>Opciones de compra en Linares</h2>
-<p>En Linares podés encontrar:</p>
+<p>En Linares puedes encontrar:</p>
 <ul>
   <li><strong>Supermercados grandes:</strong> con amplia variedad de productos, frutas, verduras, carnicería y productos de limpieza.</li>
   <li><strong>Minimarkets y botillerías:</strong> ideales para compras rápidas y productos de conveniencia.</li>
@@ -115,9 +115,9 @@ export const posts: BlogPost[] = [
 <h2>¿Hacen delivery de supermercado en Linares?</h2>
 <p>Algunos minimarkets y almacenes de Linares ofrecen delivery por WhatsApp para pedidos en el sector. Es una opción muy práctica para quienes no pueden salir o quieren ahorrar tiempo.</p>
 
-<p>Encontrá los horarios actualizados de cada comercio en <a href="/comercio-y-tiendas">LinaresYa — Comercio y Tiendas</a>.</p>
+<p>Encuentra los horarios actualizados de cada comercio en <a href="/comercio-y-tiendas">LinaresYa — Comercio y Tiendas</a>.</p>
 
-<p>¿Tenés un almacén o minimarket? <a href="/publicar">Publicá gratis en LinaresYa</a> para que tus vecinos te encuentren.</p>
+<p>¿Tienes un almacén o minimarket? <a href="/publicar">Publica gratis en LinaresYa</a> para que tus vecinos te encuentren.</p>
 `,
   },
   {
@@ -154,9 +154,9 @@ export const posts: BlogPost[] = [
 <p>Un corte básico para hombres parte desde los $4.000 hasta $10.000 pesos. Para mujeres, el corte suele ir entre $8.000 y $20.000 según el largo y el servicio. Las tinturas y tratamientos se cotizan según el largo del cabello.</p>
 
 <h2>¿Hay peluquerías con reserva online en Linares?</h2>
-<p>Algunos salones de Linares aceptan reservas por WhatsApp, lo que te ahorra esperar. En <a href="/belleza-y-estetica">LinaresYa — Belleza y Estética</a> podés ver los horarios y contactar directamente por WhatsApp a cada local.</p>
+<p>Algunos salones de Linares aceptan reservas por WhatsApp, lo que te ahorra esperar. En <a href="/belleza-y-estetica">LinaresYa — Belleza y Estética</a> puedes ver los horarios y contactar directamente por WhatsApp a cada local.</p>
 
-<p>¿Tenés una peluquería o barbería en Linares? <a href="/publicar">Aparecé gratis en LinaresYa</a> y llegá a más clientes de tu barrio.</p>
+<p>¿Tienes una peluquería o barbería en Linares? <a href="/publicar">Aparece gratis en LinaresYa</a> y llegá a más clientes de tu barrio.</p>
 `,
   },
   {
@@ -175,7 +175,7 @@ export const posts: BlogPost[] = [
       "centro medico linares",
     ],
     contenido: `
-<p>Linares cuenta con una red de <strong>médicos y clínicas privadas</strong> que complementan la atención del Hospital de Linares. Conocer las opciones disponibles te ayuda a atenderte más rápido y con el especialista que necesitás.</p>
+<p>Linares cuenta con una red de <strong>médicos y clínicas privadas</strong> que complementan la atención del Hospital de Linares. Conocer las opciones disponibles te ayuda a atenderte más rápido y con el especialista que necesitas.</p>
 
 <h2>Tipos de atención médica privada en Linares</h2>
 <ul>
@@ -190,12 +190,12 @@ export const posts: BlogPost[] = [
 <p>Sí. Algunas clínicas y centros médicos de Linares ofrecen atención de urgencias con horario extendido, sin necesidad de hacer fila en el hospital público. Es una opción útil para consultas que no pueden esperar.</p>
 
 <h2>¿Cómo sacar hora médica en Linares?</h2>
-<p>La mayoría de los médicos y clínicas privadas de Linares reciben horas por teléfono o WhatsApp. Algunos centros también tienen agenda online. En <a href="/salud">LinaresYa — Salud</a> encontrás el contacto directo de cada centro médico.</p>
+<p>La mayoría de los médicos y clínicas privadas de Linares reciben horas por teléfono o WhatsApp. Algunos centros también tienen agenda online. En <a href="/salud">LinaresYa — Salud</a> encuentras el contacto directo de cada centro médico.</p>
 
 <h2>¿Cuánto cuesta una consulta médica privada en Linares?</h2>
 <p>Una consulta de medicina general oscila entre $15.000 y $30.000 pesos. Los especialistas pueden ir desde $25.000 hasta $60.000 o más, dependiendo de la especialidad. La mayoría acepta Fonasa e Isapres para reembolso.</p>
 
-<p>¿Sos médico o tenés un centro de salud en Linares? <a href="/publicar">Aparecé gratis en LinaresYa</a>.</p>
+<p>¿Eres médico o tienes un centro de salud en Linares? <a href="/publicar">Aparece gratis en LinaresYa</a>.</p>
 `,
   },
   {
@@ -231,12 +231,12 @@ export const posts: BlogPost[] = [
 <p>Un destartaje (limpieza) parte desde los $15.000 pesos. Una extracción simple ronda los $20.000 a $35.000. La ortodoncia varía bastante según el tipo: los brackets metálicos pueden partir desde $400.000 el tratamiento completo. Los implantes van desde $350.000 por pieza.</p>
 
 <h2>¿Hay dentistas de urgencia en Linares?</h2>
-<p>Algunos odontólogos en Linares atienden urgencias fuera de horario o con turnos extra. Si tenés un dolor dental fuerte o una fractura, contactá directamente al dentista por WhatsApp para ver disponibilidad. En <a href="/salud">LinaresYa — Salud</a> encontrás dentistas con horario actualizado.</p>
+<p>Algunos odontólogos en Linares atienden urgencias fuera de horario o con turnos extra. Si tienes un dolor dental fuerte o una fractura, contacta directamente al dentista por WhatsApp para ver disponibilidad. En <a href="/salud">LinaresYa — Salud</a> encuentras dentistas con horario actualizado.</p>
 
 <h2>Fonasa en dentistas privados de Linares</h2>
 <p>Varios dentistas de Linares trabajan con Fonasa libre elección, lo que permite recuperar parte del costo de la consulta. Consultá directamente con el profesional si trabaja con tu previsión.</p>
 
-<p>¿Sos dentista u odontólogo en Linares? <a href="/publicar">Publicá tu consulta gratis en LinaresYa</a>.</p>
+<p>¿Eres dentista u odontólogo en Linares? <a href="/publicar">Publica tu consulta gratis en LinaresYa</a>.</p>
 `,
   },
   {
@@ -255,7 +255,7 @@ export const posts: BlogPost[] = [
       "movilizacion linares",
     ],
     contenido: `
-<p>Movilizarse dentro de Linares y hacia otras ciudades es fácil si sabés qué opciones hay disponibles. Desde <strong>radiotaxis</strong> hasta <strong>fletes para mudanzas</strong>, acá te explicamos todo.</p>
+<p>Movilizarse dentro de Linares y hacia otras ciudades es fácil si sabes qué opciones hay disponibles. Desde <strong>radiotaxis</strong> hasta <strong>fletes para mudanzas</strong>, acá te explicamos todo.</p>
 
 <h2>Opciones de transporte en Linares</h2>
 <ul>
@@ -270,19 +270,19 @@ export const posts: BlogPost[] = [
 <p>Las carreras dentro de Linares suelen estar entre $2.500 y $5.000 pesos dependiendo de la distancia. Los radiotaxis pueden tener tarifa fija por sectores. Para viajes fuera de la ciudad se acuerda precio antes de subir.</p>
 
 <h2>¿Cómo pedir un flete en Linares?</h2>
-<p>La mayoría de los fleteros en Linares trabajan por WhatsApp o teléfono. Descripción del trabajo, tamaño de lo que se mueve y distancia son los datos que necesitan para cotizar. En <a href="/servicios-y-oficios">LinaresYa — Servicios y Oficios</a> podés encontrar fleteros disponibles en tu sector.</p>
+<p>La mayoría de los fleteros en Linares trabajan por WhatsApp o teléfono. Descripción del trabajo, tamaño de lo que se mueve y distancia son los datos que necesitan para cotizar. En <a href="/servicios-y-oficios">LinaresYa — Servicios y Oficios</a> puedes encontrar fleteros disponibles en tu sector.</p>
 
 <h2>¿Hay app de taxi en Linares?</h2>
 <p>Por el momento Linares no tiene cobertura consolidada de apps como Uber o Cabify. El sistema de radiotaxis por WhatsApp sigue siendo la opción más usada y confiable en la ciudad.</p>
 
-<p>¿Tenés un servicio de taxi o flete en Linares? <a href="/publicar">Registrate gratis en LinaresYa</a>.</p>
+<p>¿Tienes un servicio de taxi o flete en Linares? <a href="/publicar">Regístrate gratis en LinaresYa</a>.</p>
 `,
   },
   {
     slug: "ferreterias-materiales-construccion-linares",
     titulo: "Ferreterías y materiales de construcción en Linares",
     descripcion:
-      "Guía de ferreterías y proveedores de materiales de construcción en Linares, Chile. Precios, horarios y qué encontrás en cada una.",
+      "Guía de ferreterías y proveedores de materiales de construcción en Linares, Chile. Precios, horarios y qué encuentras en cada una.",
     fecha: "2025-04-10",
     categoria: "Construcción",
     emoji: "🔨",
@@ -296,7 +296,7 @@ export const posts: BlogPost[] = [
     contenido: `
 <p>Ya sea para un arreglo pequeño en casa o una construcción mayor, Linares tiene <strong>ferreterías y distribuidores de materiales</strong> que cubren desde el tornillo hasta el cemento a granel.</p>
 
-<h2>¿Qué encontrás en las ferreterías de Linares?</h2>
+<h2>¿Qué encuentras en las ferreterías de Linares?</h2>
 <ul>
   <li><strong>Herramientas</strong> manuales y eléctricas (taladros, sierras, llaves)</li>
   <li><strong>Materiales de construcción:</strong> cemento, áridos, bloques, ladrillos</li>
@@ -311,16 +311,16 @@ export const posts: BlogPost[] = [
 <p>Varias ferreterías y distribuidoras de materiales en Linares ofrecen reparto a domicilio, especialmente para compras de mayor volumen como sacos de cemento, áridos y maderas. Consultá directamente con el local.</p>
 
 <h2>Horarios de ferreterías en Linares</h2>
-<p>La mayoría de las ferreterías de Linares atienden de lunes a viernes de 09:00 a 13:00 y de 15:00 a 19:00, y los sábados de 09:00 a 13:00. Algunas tienen horario corrido. En <a href="/construccion-y-materiales">LinaresYa — Construcción</a> podés ver el horario actualizado de cada local.</p>
+<p>La mayoría de las ferreterías de Linares atienden de lunes a viernes de 09:00 a 13:00 y de 15:00 a 19:00, y los sábados de 09:00 a 13:00. Algunas tienen horario corrido. En <a href="/construccion-y-materiales">LinaresYa — Construcción</a> puedes ver el horario actualizado de cada local.</p>
 
 <h2>Consejos para comprar en ferretería</h2>
 <ul>
-  <li>Llevá las medidas exactas de lo que necesitás antes de ir</li>
-  <li>Pedí factura si es para una obra o negocio (recuperás el IVA)</li>
+  <li>Lleva las medidas exactas de lo que necesitas antes de ir</li>
+  <li>Pide factura si es para una obra o negocio (recuperás el IVA)</li>
   <li>Preguntá si tienen servicio técnico o instalación para el producto</li>
 </ul>
 
-<p>¿Tenés una ferretería o distribuidora de materiales en Linares? <a href="/publicar">Aparecé gratis en LinaresYa</a>.</p>
+<p>¿Tienes una ferretería o distribuidora de materiales en Linares? <a href="/publicar">Aparece gratis en LinaresYa</a>.</p>
 `,
   },
   // ── Artículos batch 3 ──────────────────────────────────────────────────
@@ -340,7 +340,7 @@ export const posts: BlogPost[] = [
       "mantención vehiculo linares",
     ],
     contenido: `
-<p>Cuando el auto falla, lo último que querés es perder tiempo buscando. En Linares hay varios <strong>talleres mecánicos</strong> para mantenciones de rutina, reparaciones urgentes y revisión técnica. Acá te explicamos cómo elegir bien.</p>
+<p>Cuando el auto falla, lo último que quieres es perder tiempo buscando. En Linares hay varios <strong>talleres mecánicos</strong> para mantenciones de rutina, reparaciones urgentes y revisión técnica. Acá te explicamos cómo elegir bien.</p>
 
 <h2>Tipos de talleres mecánicos en Linares</h2>
 <ul>
@@ -366,13 +366,13 @@ export const posts: BlogPost[] = [
 
 <h2>Consejos antes de llevar el auto al taller</h2>
 <ul>
-  <li>Pedí presupuesto antes de aprobar cualquier trabajo</li>
+  <li>Pide presupuesto antes de aprobar cualquier trabajo</li>
   <li>Consultá si incluye mano de obra y repuestos o es por separado</li>
-  <li>Pedí que te muestren las piezas cambiadas cuando terminen</li>
+  <li>Pide que te muestren las piezas cambiadas cuando terminen</li>
   <li>Si es urgencia, llamá antes para ver disponibilidad del día</li>
 </ul>
 
-<p>Encontrá talleres mecánicos en Linares con horarios actualizados en <a href="/automotriz">LinaresYa — Automotriz</a>. ¿Tenés un taller? <a href="/publicar">Publicalo gratis</a>.</p>
+<p>Encuentra talleres mecánicos en Linares con horarios actualizados en <a href="/automotriz">LinaresYa — Automotriz</a>. ¿Tienes un taller? <a href="/publicar">Publícalo gratis</a>.</p>
 `,
   },
   {
@@ -411,20 +411,20 @@ export const posts: BlogPost[] = [
 
 <h2>¿Cómo elegir un buen profesor particular?</h2>
 <ul>
-  <li>Pedí referencias o reseñas de otros alumnos</li>
-  <li>Hacé una clase de prueba antes de comprometerte</li>
+  <li>Pide referencias o reseñas de otros alumnos</li>
+  <li>Haz una clase de prueba antes de comprometerte</li>
   <li>Preguntá por la metodología de enseñanza</li>
-  <li>Confirmá que el horario sea compatible con las actividades del alumno</li>
+  <li>Confirma que el horario sea compatible con las actividades del alumno</li>
 </ul>
 
-<p>Encontrá profesores y centros de clases particulares en <a href="/educacion">LinaresYa — Educación</a>. ¿Dás clases particulares en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra profesores y centros de clases particulares en <a href="/educacion">LinaresYa — Educación</a>. ¿Dás clases particulares en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
   {
     slug: "maestro-constructor-linares",
     titulo: "Maestro constructor en Linares: ampliaciones y remodelaciones",
     descripcion:
-      "¿Buscás un maestro constructor en Linares? Guía para contratar albañiles, maestros y empresas constructoras para ampliaciones, remodelaciones y obra nueva.",
+      "¿Buscas un maestro constructor en Linares? Guía para contratar albañiles, maestros y empresas constructoras para ampliaciones, remodelaciones y obra nueva.",
     fecha: "2025-05-21",
     categoria: "Construcción",
     emoji: "🏗️",
@@ -453,7 +453,7 @@ export const posts: BlogPost[] = [
 
 <h2>¿Qué preguntar antes de contratar un maestro?</h2>
 <ul>
-  <li>¿Tiene experiencia en el tipo de obra que necesitás?</li>
+  <li>¿Tiene experiencia en el tipo de obra que necesitas?</li>
   <li>¿Puede mostrar trabajos anteriores o referencias?</li>
   <li>¿El presupuesto incluye materiales o solo mano de obra?</li>
   <li>¿Cuánto tiempo tarda la obra? ¿Trabaja solo o con equipo?</li>
@@ -461,9 +461,9 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>¿Necesito permiso de construcción en Linares?</h2>
-<p>Para ampliaciones mayores de 25 m² y obra nueva generalmente se requiere permiso de edificación en la Municipalidad de Linares. Consultá con el maestro si tiene experiencia gestionando permisos o si necesitás un arquitecto.</p>
+<p>Para ampliaciones mayores de 25 m² y obra nueva generalmente se requiere permiso de edificación en la Municipalidad de Linares. Consultá con el maestro si tiene experiencia gestionando permisos o si necesitas un arquitecto.</p>
 
-<p>Encontrá maestros constructores en <a href="/construccion-y-materiales">LinaresYa — Construcción</a>. ¿Sos maestro constructor en Linares? <a href="/publicar">Registrate gratis</a>.</p>
+<p>Encuentra maestros constructores en <a href="/construccion-y-materiales">LinaresYa — Construcción</a>. ¿Eres maestro constructor en Linares? <a href="/publicar">Regístrate gratis</a>.</p>
 `,
   },
   {
@@ -491,14 +491,14 @@ export const posts: BlogPost[] = [
   <li><strong>Psicología infantil y adolescente:</strong> conducta, aprendizaje y emociones</li>
   <li><strong>Terapia familiar:</strong> dinámica familiar, límites y crisis</li>
   <li><strong>Orientación vocacional:</strong> para jóvenes en etapa de elección de carrera</li>
-  <li><strong>Atención online:</strong> sesiones por videollamada, muy útil si tenés poco tiempo</li>
+  <li><strong>Atención online:</strong> sesiones por videollamada, muy útil si tienes poco tiempo</li>
 </ul>
 
 <h2>¿Cuánto cuesta una consulta psicológica en Linares?</h2>
 <p>Una sesión de psicoterapia en Linares oscila entre $20.000 y $50.000 pesos dependiendo del profesional y la modalidad. Algunos psicólogos trabajan con Fonasa libre elección, lo que permite recuperar parte del costo. Preguntá directamente al profesional si trabaja con tu previsión.</p>
 
 <h2>¿Hay psicólogos que atienden online en Linares?</h2>
-<p>Sí. La atención online se consolidó mucho y muchos psicólogos de Linares ofrecen sesiones por Zoom, Meet o videollamada de WhatsApp. Es una opción cómoda especialmente si trabajás de día o si preferís la privacidad de tu hogar.</p>
+<p>Sí. La atención online se consolidó mucho y muchos psicólogos de Linares ofrecen sesiones por Zoom, Meet o videollamada de WhatsApp. Es una opción cómoda especialmente si trabajas de día o si preferís la privacidad de tu hogar.</p>
 
 <h2>¿Cuándo buscar ayuda psicológica?</h2>
 <p>No es necesario estar en crisis para ir al psicólogo. Algunas razones comunes para buscar apoyo:</p>
@@ -510,7 +510,7 @@ export const posts: BlogPost[] = [
   <li>Situaciones de estrés laboral o familiar sostenido</li>
 </ul>
 
-<p>Encontrá psicólogos en Linares en <a href="/salud">LinaresYa — Salud</a>. ¿Sos psicólogo o terapeuta en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra psicólogos en Linares en <a href="/salud">LinaresYa — Salud</a>. ¿Eres psicólogo o terapeuta en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
   // ── Artículos batch 4 ──────────────────────────────────────────────────
@@ -551,16 +551,16 @@ export const posts: BlogPost[] = [
 
 <h2>¿Cómo elegir un buen electricista?</h2>
 <ul>
-  <li>Verificá que tenga experiencia con el tipo de trabajo que necesitás</li>
-  <li>Pedí un presupuesto escrito antes de empezar</li>
-  <li>Revisá reseñas de otros clientes en LinaresYa</li>
+  <li>Verificá que tenga experiencia con el tipo de trabajo que necesitas</li>
+  <li>Pide un presupuesto escrito antes de empezar</li>
+  <li>Revisa reseñas de otros clientes en LinaresYa</li>
   <li>Preguntá si tiene garantía en los materiales instalados</li>
 </ul>
 
 <h2>¿Cuándo llamar a un electricista de urgencia?</h2>
-<p>Si hay chispas, olor a quemado, humedad en el tablero o un corte que no podés restablecer, <strong>no intentes resolverlo solo</strong>. Contactá a un electricista de inmediato — un accidente eléctrico puede causar un incendio.</p>
+<p>Si hay chispas, olor a quemado, humedad en el tablero o un corte que no puedes restablecer, <strong>no intentes resolverlo solo</strong>. Contacta a un electricista de inmediato — un accidente eléctrico puede causar un incendio.</p>
 
-<p>Encontrá electricistas en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos electricista en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra electricistas en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Eres electricista en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -579,7 +579,7 @@ export const posts: BlogPost[] = [
       "corporacion asistencia judicial linares",
     ],
     contenido: `
-<p>Hay momentos en la vida donde necesitás sí o sí un <strong>abogado en Linares</strong>: un despido injustificado, una separación, un problema con un arrendatario, o simplemente para revisar un contrato. Acá te explicamos qué tipo de abogado necesitás según tu caso.</p>
+<p>Hay momentos en la vida donde necesitas sí o sí un <strong>abogado en Linares</strong>: un despido injustificado, una separación, un problema con un arrendatario, o simplemente para revisar un contrato. Acá te explicamos qué tipo de abogado necesitas según tu caso.</p>
 
 <h2>Tipos de abogados en Linares</h2>
 <ul>
@@ -594,24 +594,24 @@ export const posts: BlogPost[] = [
 <p>Sí. La <strong>Corporación de Asistencia Judicial (CAJ) del Maule</strong> tiene una oficina en Linares que atiende a personas de escasos recursos sin cobrar honorarios.</p>
 
 <h2>¿En qué se diferencia un abogado de un notario?</h2>
-<p>El <strong>notario</strong> da fe pública de actos y contratos (firmas, declaraciones, escrituras). El <strong>abogado</strong> te representa, te asesora y litiga por vos. Para comprar una propiedad necesitás ambos.</p>
+<p>El <strong>notario</strong> da fe pública de actos y contratos (firmas, declaraciones, escrituras). El <strong>abogado</strong> te representa, te asesora y litiga por ti. Para comprar una propiedad necesitas ambos.</p>
 
 <h2>Consejos al contratar un abogado en Linares</h2>
 <ul>
   <li>Preguntá cuánto cobra: por hora, por el caso completo o mixto</li>
   <li>Consultá su especialidad — no todos los abogados conocen igual todas las áreas</li>
-  <li>Pedí una primera consulta (muchos la dan gratis o a bajo costo)</li>
+  <li>Pide una primera consulta (muchos la dan gratis o a bajo costo)</li>
   <li>Asegurate de firmar un contrato de honorarios antes de empezar</li>
 </ul>
 
-<p>Encontrá abogados y estudios jurídicos en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Sos abogado en Linares? <a href="/publicar">Registrá tu estudio gratis</a>.</p>
+<p>Encuentra abogados y estudios jurídicos en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Eres abogado en Linares? <a href="/publicar">Registra tu estudio gratis</a>.</p>
 `,
   },
   {
     slug: "contador-tributario-linares",
     titulo: "Contador y asesor tributario en Linares: quién te puede ayudar",
     descripcion:
-      "¿Buscás un contador o asesor tributario en Linares? Guía sobre declaración de renta, inicio de actividades, IVA y contabilidad para pymes y trabajadores independientes.",
+      "¿Buscas un contador o asesor tributario en Linares? Guía sobre declaración de renta, inicio de actividades, IVA y contabilidad para pymes y trabajadores independientes.",
     fecha: "2025-05-21",
     categoria: "Servicios Profesionales",
     emoji: "📊",
@@ -623,13 +623,13 @@ export const posts: BlogPost[] = [
       "contabilidad pyme linares",
     ],
     contenido: `
-<p>Si sos trabajador independiente, emprendedor o dueño de una pyme en Linares, en algún momento vas a necesitar ayuda con el <strong>SII, el IVA o la declaración de renta</strong>. Un buen contador puede ahorrarte multas, tiempo y dolores de cabeza.</p>
+<p>Si eres trabajador independiente, emprendedor o dueño de una pyme en Linares, en algún momento vas a necesitar ayuda con el <strong>SII, el IVA o la declaración de renta</strong>. Un buen contador puede ahorrarte multas, tiempo y dolores de cabeza.</p>
 
-<h2>¿Cuándo necesitás un contador en Linares?</h2>
+<h2>¿Cuándo necesitas un contador en Linares?</h2>
 <ul>
-  <li><strong>Inicio de actividades:</strong> cuando empezás a trabajar de forma independiente o abrís un negocio.</li>
-  <li><strong>Declaración de renta:</strong> si tenés ingresos de segunda categoría o boletas de honorarios.</li>
-  <li><strong>IVA mensual:</strong> si vendés productos o servicios afectos a IVA (F29).</li>
+  <li><strong>Inicio de actividades:</strong> cuando empezás a trabajar de forma independiente o abres un negocio.</li>
+  <li><strong>Declaración de renta:</strong> si tienes ingresos de segunda categoría o boletas de honorarios.</li>
+  <li><strong>IVA mensual:</strong> si vendes productos o servicios afectos a IVA (F29).</li>
   <li><strong>Contabilidad de empresa:</strong> balances, estados de resultado, cierre anual.</li>
 </ul>
 
@@ -643,12 +643,12 @@ export const posts: BlogPost[] = [
 
 <h2>Tips para elegir bien</h2>
 <ul>
-  <li>Buscá alguien con experiencia en tu rubro (gastronomía, construcción, comercio, etc.)</li>
-  <li>Confirmá que esté al día con los cambios de la ley tributaria</li>
+  <li>Busca alguien con experiencia en tu rubro (gastronomía, construcción, comercio, etc.)</li>
+  <li>Confirma que esté al día con los cambios de la ley tributaria</li>
   <li>Las reseñas de otros clientes hablan mucho de la calidad del servicio</li>
 </ul>
 
-<p>Encontrá contadores en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Sos contador en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra contadores en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Eres contador en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -667,7 +667,7 @@ export const posts: BlogPost[] = [
       "fotografia eventos linares",
     ],
     contenido: `
-<p>Para los momentos que merecen recordarse toda la vida, necesitás un buen <strong>fotógrafo en Linares</strong>. Bodas, quinceañeros, bautizos, cumpleaños especiales, sesiones de familia o eventos corporativos: hay talento local para todo.</p>
+<p>Para los momentos que merecen recordarse toda la vida, necesitas un buen <strong>fotógrafo en Linares</strong>. Bodas, quinceañeros, bautizos, cumpleaños especiales, sesiones de familia o eventos corporativos: hay talento local para todo.</p>
 
 <h2>¿Qué tipo de fotografía ofrecen en Linares?</h2>
 <ul>
@@ -697,7 +697,7 @@ export const posts: BlogPost[] = [
 <h2>Tip: reservá con anticipación</h2>
 <p>Los buenos fotógrafos de Linares tienen agenda ocupada, especialmente en la temporada de matrimonios (octubre a marzo). Reservar con 3 a 6 meses de antelación es lo ideal.</p>
 
-<p>Encontrá fotógrafos en Linares en <a href="/arte-y-fotografia">LinaresYa — Arte y Fotografía</a>. ¿Sos fotógrafo en Linares? <a href="/publicar">Mostrá tu trabajo en el directorio gratis</a>.</p>
+<p>Encuentra fotógrafos en Linares en <a href="/arte-y-fotografia">LinaresYa — Arte y Fotografía</a>. ¿Eres fotógrafo en Linares? <a href="/publicar">Mostrá tu trabajo en el directorio gratis</a>.</p>
 `,
   },
   {
@@ -738,7 +738,7 @@ export const posts: BlogPost[] = [
 <h2>¿Qué plantas se adaptan bien a Linares?</h2>
 <p>El clima de Linares (templado mediterráneo, con heladas en invierno) favorece plantas como lavanda, romero, agapantos, copihues, plátanos orientales y frutales como higueras y ciruelos. Un jardinero local conoce qué especies prosperan mejor en la zona.</p>
 
-<p>Encontrá jardineros en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos jardinero en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra jardineros en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Eres jardinero en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
 
@@ -780,7 +780,7 @@ export const posts: BlogPost[] = [
   <li>Urgencia nocturna o fin de semana: 30-50% adicional</li>
 </ul>
 
-<h2>Señales de que necesitás un gasfíter urgente</h2>
+<h2>Señales de que necesitas un gasfíter urgente</h2>
 <ul>
   <li>Humedad en paredes o cielo sin causa aparente</li>
   <li>Pérdida notable de presión en las llaves</li>
@@ -789,7 +789,7 @@ export const posts: BlogPost[] = [
 </ul>
 <p><strong>Ojo:</strong> si hay olor a gas, ventilá el ambiente antes de llamar y no enciendas llamas ni interruptores eléctricos.</p>
 
-<p>Encontrá gasfíteres en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos gasfíter en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra gasfíteres en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Eres gasfíter en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -808,7 +808,7 @@ export const posts: BlogPost[] = [
       "clases de matematicas linares",
     ],
     contenido: `
-<p>¿Tu hijo necesita apoyo en matemáticas? ¿Buscás reforzamiento para la PAES o mejorar tu nivel de inglés? En Linares hay <strong>profesores particulares</strong> para todas las edades y materias, con clases a domicilio o en línea.</p>
+<p>¿Tu hijo necesita apoyo en matemáticas? ¿Buscas reforzamiento para la PAES o mejorar tu nivel de inglés? En Linares hay <strong>profesores particulares</strong> para todas las edades y materias, con clases a domicilio o en línea.</p>
 
 <h2>Materias más solicitadas en Linares</h2>
 <ul>
@@ -830,23 +830,23 @@ export const posts: BlogPost[] = [
 
 <h2>Tips para elegir un buen profe particular</h2>
 <ul>
-  <li>Pedí una clase de prueba antes de comprometerte</li>
+  <li>Pide una clase de prueba antes de comprometerte</li>
   <li>Verificá su formación y experiencia con el nivel del estudiante</li>
-  <li>Buscá reseñas de otros alumnos en LinaresYa</li>
+  <li>Busca reseñas de otros alumnos en LinaresYa</li>
   <li>Definí un horario fijo para generar hábito de estudio</li>
 </ul>
 
 <h2>Preuniversitario en Linares</h2>
 <p>Además de clases particulares, existen preuniversitarios locales en Linares para preparar la PAES. Los profesores particulares son una alternativa más personalizada y flexible para quienes necesitan refuerzo en materias específicas.</p>
 
-<p>Encontrá profesores particulares en Linares en <a href="/educacion">LinaresYa — Educación</a>. ¿Sos profesor en Linares? <a href="/publicar">Publicá tus clases gratis</a>.</p>
+<p>Encuentra profesores particulares en Linares en <a href="/educacion">LinaresYa — Educación</a>. ¿Eres profesor en Linares? <a href="/publicar">Publica tus clases gratis</a>.</p>
 `,
   },
   {
     slug: "veterinario-linares",
     titulo: "Veterinario en Linares: clínicas, vacunas y urgencias para mascotas",
     descripcion:
-      "Encuentra veterinarios en Linares, Chile. Clínicas veterinarias, vacunas, castración, urgencias y peluquería canina. Todo lo que necesitás para tu mascota.",
+      "Encuentra veterinarios en Linares, Chile. Clínicas veterinarias, vacunas, castración, urgencias y peluquería canina. Todo lo que necesitas para tu mascota.",
     fecha: "2025-05-21",
     categoria: "Veterinaria",
     emoji: "🐾",
@@ -889,7 +889,7 @@ export const posts: BlogPost[] = [
 <h2>¿Cuándo ir a urgencias veterinarias?</h2>
 <p>Dificultad para respirar, convulsiones, trauma por atropello, sangrado abundante, sospecha de envenenamiento o si tu mascota lleva más de 12 horas sin comer ni tomar agua son señales de urgencia.</p>
 
-<p>Encontrá veterinarios en Linares en <a href="/veterinarias">LinaresYa — Veterinaria</a>. ¿Tenés clínica veterinaria en Linares? <a href="/publicar">Registrala gratis</a>.</p>
+<p>Encuentra veterinarios en Linares en <a href="/veterinarias">LinaresYa — Veterinaria</a>. ¿Tienes clínica veterinaria en Linares? <a href="/publicar">Registrala gratis</a>.</p>
 `,
   },
   {
@@ -908,7 +908,7 @@ export const posts: BlogPost[] = [
       "traslado muebles linares",
     ],
     contenido: `
-<p>¿Te mudás, compraste un mueble grande o necesitás trasladar mercadería? En Linares hay <strong>servicios de flete y transporte</strong> para todo tipo de necesidades, desde un televisor hasta el contenido completo de una casa.</p>
+<p>¿Te mudás, compraste un mueble grande o necesitas trasladar mercadería? En Linares hay <strong>servicios de flete y transporte</strong> para todo tipo de necesidades, desde un televisor hasta el contenido completo de una casa.</p>
 
 <h2>¿Qué servicios de transporte hay en Linares?</h2>
 <ul>
@@ -931,13 +931,13 @@ export const posts: BlogPost[] = [
 
 <h2>Tips para contratar un flete en Linares</h2>
 <ul>
-  <li>Pedí presupuesto con y sin mano de obra incluida</li>
+  <li>Pide presupuesto con y sin mano de obra incluida</li>
   <li>Preguntá si el servicio incluye embalaje para artículos frágiles</li>
-  <li>Confirmá el seguro o responsabilidad en caso de daños</li>
+  <li>Confirma el seguro o responsabilidad en caso de daños</li>
   <li>Para mudanzas grandes, reservá con al menos una semana de anticipación</li>
 </ul>
 
-<p>Encontrá servicios de flete y transporte en Linares en <a href="/transporte">LinaresYa — Transporte</a>. ¿Tenés camión o camioneta y ofrecés fletes? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+<p>Encuentra servicios de flete y transporte en Linares en <a href="/transporte">LinaresYa — Transporte</a>. ¿Tienes camión o camioneta y ofreces fletes? <a href="/publicar">Publica tu servicio gratis</a>.</p>
 `,
   },
   {
@@ -986,9 +986,9 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>Servicios complementarios en Linares</h2>
-<p>Muchos salones trabajan con proveedores locales recomendados: catering, pastelería, decoración, animación y fotografía. En LinaresYa podés encontrar todos estos servicios para armar tu evento completo.</p>
+<p>Muchos salones trabajan con proveedores locales recomendados: catering, pastelería, decoración, animación y fotografía. En LinaresYa puedes encontrar todos estos servicios para armar tu evento completo.</p>
 
-<p>Encontrá salones de eventos en Linares en <a href="/eventos">LinaresYa — Eventos</a>. ¿Tenés un salón de eventos en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
+<p>Encuentra salones de eventos en Linares en <a href="/eventos">LinaresYa — Eventos</a>. ¿Tienes un salón de eventos en Linares? <a href="/publicar">Publícalo gratis en el directorio</a>.</p>
 `,
   },
 
@@ -1033,13 +1033,13 @@ export const posts: BlogPost[] = [
 
 <h2>Tips para contratar un pintor en Linares</h2>
 <ul>
-  <li>Pedí presupuesto con y sin materiales incluidos</li>
+  <li>Pide presupuesto con y sin materiales incluidos</li>
   <li>Consultá cuántas manos de pintura incluye el precio</li>
   <li>Asegurate de que preparen bien el muro antes de pintar (si no, la pintura no dura)</li>
-  <li>Revisá reseñas de trabajos anteriores en LinaresYa</li>
+  <li>Revisa reseñas de trabajos anteriores en LinaresYa</li>
 </ul>
 
-<p>Encontrá pintores en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos pintor en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra pintores en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Eres pintor en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -1082,9 +1082,9 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>¿FONASA cubre al nutricionista?</h2>
-<p>Sí. Si tenés FONASA y una derivación médica, podés acceder a atención nutricional en el CESFAM u Hospital de Linares sin costo o con copago mínimo. También hay nutricionistas en clínicas privadas con FONASA libre elección.</p>
+<p>Sí. Si tienes FONASA y una derivación médica, puedes acceder a atención nutricional en el CESFAM u Hospital de Linares sin costo o con copago mínimo. También hay nutricionistas en clínicas privadas con FONASA libre elección.</p>
 
-<p>Encontrá nutricionistas en Linares en <a href="/salud">LinaresYa — Salud</a>. ¿Sos nutricionista en Linares? <a href="/publicar">Publicá tu consulta gratis</a>.</p>
+<p>Encuentra nutricionistas en Linares en <a href="/salud">LinaresYa — Salud</a>. ¿Eres nutricionista en Linares? <a href="/publicar">Publica tu consulta gratis</a>.</p>
 `,
   },
   {
@@ -1129,10 +1129,10 @@ export const posts: BlogPost[] = [
   <li>Para traslados largos (aeropuerto, Santiago), reservá con anticipación</li>
   <li>Preguntá si el precio incluye peajes en ruta a Santiago</li>
   <li>Para transporte escolar, verificá que el conductor tenga licencia y el vehículo la revisión técnica al día</li>
-  <li>Revisá reseñas del servicio en LinaresYa antes de contratar</li>
+  <li>Revisa reseñas del servicio en LinaresYa antes de contratar</li>
 </ul>
 
-<p>Encontrá servicios de taxi y traslado en Linares en <a href="/transporte">LinaresYa — Transporte</a>. ¿Tenés taxi o van en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+<p>Encuentra servicios de taxi y traslado en Linares en <a href="/transporte">LinaresYa — Transporte</a>. ¿Tienes taxi o van en Linares? <a href="/publicar">Publica tu servicio gratis</a>.</p>
 `,
   },
   {
@@ -1151,7 +1151,7 @@ export const posts: BlogPost[] = [
       "cerrajero urgencia linares",
     ],
     contenido: `
-<p>Quedarse sin llave, tener una cerradura forzada o simplemente querer mejorar la seguridad de la casa son situaciones donde necesitás a un <strong>cerrajero en Linares</strong>. Hay servicios disponibles para urgencias y trabajos programados.</p>
+<p>Quedarse sin llave, tener una cerradura forzada o simplemente querer mejorar la seguridad de la casa son situaciones donde necesitas a un <strong>cerrajero en Linares</strong>. Hay servicios disponibles para urgencias y trabajos programados.</p>
 
 <h2>¿Qué hace un cerrajero en Linares?</h2>
 <ul>
@@ -1174,13 +1174,13 @@ export const posts: BlogPost[] = [
 
 <h2>¿Cómo evitar estafas con cerrajeros?</h2>
 <ul>
-  <li>Pedí el precio total antes de autorizar el trabajo</li>
+  <li>Pide el precio total antes de autorizar el trabajo</li>
   <li>Desconfiá si el costo sube abruptamente al llegar al lugar</li>
   <li>Preferí cerrajeros con reseñas verificadas en LinaresYa</li>
-  <li>Pedí boleta o comprobante del servicio</li>
+  <li>Pide boleta o comprobante del servicio</li>
 </ul>
 
-<p>Encontrá cerrajeros en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos cerrajero en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra cerrajeros en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Eres cerrajero en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -1226,12 +1226,12 @@ export const posts: BlogPost[] = [
 
 <h2>Consejos para elegir un buen técnico</h2>
 <ul>
-  <li>Pedí presupuesto con diagnóstico antes de autorizar la reparación</li>
+  <li>Pide presupuesto con diagnóstico antes de autorizar la reparación</li>
   <li>Preguntá si hay garantía en la reparación y los repuestos</li>
   <li>Verificá reseñas en LinaresYa antes de llamar</li>
 </ul>
 
-<p>Encontrá técnicos de electrodomésticos en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos técnico en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra técnicos de electrodomésticos en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Eres técnico en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
 
@@ -1264,7 +1264,7 @@ export const posts: BlogPost[] = [
 
 <h2>¿Cómo saber qué farmacia está de turno en Linares?</h2>
 <ul>
-  <li>Revisá la web del <strong>Seremi de Salud del Maule</strong> donde publican el turno semanal.</li>
+  <li>Revisa la web del <strong>Seremi de Salud del Maule</strong> donde publican el turno semanal.</li>
   <li>Llamá al número de información del municipio de Linares.</li>
   <li>Las farmacias de turno deben atender las 24 horas aunque tengan horario normal reducido.</li>
 </ul>
@@ -1275,7 +1275,7 @@ export const posts: BlogPost[] = [
 <h2>Medicamentos de difícil acceso</h2>
 <p>Para medicamentos de alto costo o de baja venta, el Hospital de Linares y el CESFAM distribuyen ciertos medicamentos con receta médica a través del sistema FONASA. También existen farmacias magistrales que preparan medicamentos a medida.</p>
 
-<p>Encontrá farmacias en Linares en <a href="/farmacias">LinaresYa — Farmacias</a>. ¿Tenés farmacia en Linares? <a href="/publicar">Aparecé en el directorio gratis</a>.</p>
+<p>Encuentra farmacias en Linares en <a href="/farmacias">LinaresYa — Farmacias</a>. ¿Tienes farmacia en Linares? <a href="/publicar">Aparece en el directorio gratis</a>.</p>
 `,
   },
   {
@@ -1315,7 +1315,7 @@ export const posts: BlogPost[] = [
 
 <h2>Tips para elegir tu gimnasio en Linares</h2>
 <ul>
-  <li>Pedí una clase de prueba gratis antes de matricularte</li>
+  <li>Pide una clase de prueba gratis antes de matricularte</li>
   <li>Verificá el horario: que se adapte a tu trabajo o estudio</li>
   <li>Fijate si está limpio y tiene buena ventilación</li>
   <li>Preguntá si hay descuentos por pago trimestral o anual</li>
@@ -1325,7 +1325,7 @@ export const posts: BlogPost[] = [
 <h2>Mejor época para empezar en el gimnasio</h2>
 <p>Cualquier momento es bueno, pero marzo (vuelta a la rutina) y agosto-septiembre (primavera) son los momentos más populares. En enero y julio suelen haber promociones especiales en muchos gimnasios de Linares.</p>
 
-<p>Encontrá gimnasios en Linares en <a href="/deportes-y-fitness">LinaresYa — Deportes y Fitness</a>. ¿Tenés gimnasio en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
+<p>Encuentra gimnasios en Linares en <a href="/deportes-y-fitness">LinaresYa — Deportes y Fitness</a>. ¿Tienes gimnasio en Linares? <a href="/publicar">Publícalo gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -1346,7 +1346,7 @@ export const posts: BlogPost[] = [
     contenido: `
 <p>Linares tiene una escena cafetera creciente: desde las tradicionales fuentes de soda hasta cafeterías modernas con café de especialidad, desayunos elaborados y espacios para trabajar con buena conexión wifi.</p>
 
-<h2>¿Qué encontrás en las cafeterías de Linares?</h2>
+<h2>¿Qué encuentras en las cafeterías de Linares?</h2>
 <ul>
   <li><strong>Café de especialidad:</strong> espresso, americano, cortado, cappuccino con granos de origen seleccionado.</li>
   <li><strong>Desayunos completos:</strong> tostadas, huevos revueltos, jugo natural, fruta.</li>
@@ -1356,7 +1356,7 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>Ambiente de trabajo en cafeterías de Linares</h2>
-<p>Si trabajás de forma remota o estudiás, buscá cafeterías con wifi estable, tomas de corriente y mesas amplias. Cada vez más locales en Linares están adaptados para el trabajo nómade y las reuniones informales.</p>
+<p>Si trabajas de forma remota o estudiás, busca cafeterías con wifi estable, tomas de corriente y mesas amplias. Cada vez más locales en Linares están adaptados para el trabajo nómade y las reuniones informales.</p>
 
 <h2>¿Cuánto cuesta un café en Linares?</h2>
 <ul>
@@ -1367,9 +1367,9 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>Cafeterías para llevar (take away)</h2>
-<p>Varios locales en el centro de Linares ofrecen café para llevar, ideal para los que van camino al trabajo. Pedí tu café con anticipación por WhatsApp o aparecé directamente — el servicio suele ser rápido.</p>
+<p>Varios locales en el centro de Linares ofrecen café para llevar, ideal para los que van camino al trabajo. Pide tu café con anticipación por WhatsApp o aparece directamente — el servicio suele ser rápido.</p>
 
-<p>Encontrá cafeterías en Linares en <a href="/restaurantes-y-cafeterias">LinaresYa — Restaurantes y Cafeterías</a>. ¿Tenés una cafetería en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra cafeterías en Linares en <a href="/restaurantes-y-cafeterias">LinaresYa — Restaurantes y Cafeterías</a>. ¿Tienes una cafetería en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -1390,7 +1390,7 @@ export const posts: BlogPost[] = [
     contenido: `
 <p>El pan recién horneado y una buena torta artesanal son parte del alma de Linares. La ciudad tiene panaderías tradicionales y pastelerías modernas que elaboran desde marraquetas y hallullas hasta tortas de diseño y alfajores caseros.</p>
 
-<h2>¿Qué encontrás en las panaderías de Linares?</h2>
+<h2>¿Qué encuentras en las panaderías de Linares?</h2>
 <ul>
   <li><strong>Pan de diario:</strong> marraqueta, hallulla, pan de molde, pan integral, baguette.</li>
   <li><strong>Empanadas:</strong> de pino, queso, camarones, palta. Las de horno son las reinas del fin de semana.</li>
@@ -1415,9 +1415,9 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>¿Cómo pedir una torta a medida en Linares?</h2>
-<p>Contactá a la pastelería con al menos una semana de anticipación (dos para fechas especiales como matrimonios o 15 años). Llevá una foto de referencia del diseño, confirmá el sabor y el número de porciones, y dejá un adelanto para reservar la fecha.</p>
+<p>Contacta a la pastelería con al menos una semana de anticipación (dos para fechas especiales como matrimonios o 15 años). Lleva una foto de referencia del diseño, confirma el sabor y el número de porciones, y dejá un adelanto para reservar la fecha.</p>
 
-<p>Encontrá panaderías y pastelerías en Linares en <a href="/gastronomia">LinaresYa — Gastronomía</a>. ¿Tenés panadería o pastelería en Linares? <a href="/publicar">Publicala gratis en el directorio</a>.</p>
+<p>Encuentra panaderías y pastelerías en Linares en <a href="/gastronomia">LinaresYa — Gastronomía</a>. ¿Tienes panadería o pastelería en Linares? <a href="/publicar">Publícala gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -1460,13 +1460,13 @@ export const posts: BlogPost[] = [
 
 <h2>Consejos de seguridad</h2>
 <ul>
-  <li>Pedí referencias o revisá reseñas antes de contratar</li>
+  <li>Pide referencias o revisa reseñas antes de contratar</li>
   <li>Si es la primera vez, quedá en la casa durante el servicio</li>
-  <li>Guardá objetos de valor durante el aseo</li>
+  <li>Guarda objetos de valor durante el aseo</li>
   <li>Definí claramente qué incluye el servicio para evitar malentendidos</li>
 </ul>
 
-<p>Encontrá servicios de limpieza del hogar en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Ofrecés limpieza en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+<p>Encuentra servicios de limpieza del hogar en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Ofreces limpieza en Linares? <a href="/publicar">Publica tu servicio gratis</a>.</p>
 `,
   },
   {
@@ -1512,13 +1512,13 @@ export const posts: BlogPost[] = [
 
 <h2>Consejos antes de llevar tu celular a reparar</h2>
 <ul>
-  <li>Hacé un backup de la información antes de entregarlo</li>
-  <li>Pedí presupuesto por escrito con detalle del repuesto que se va a usar</li>
+  <li>Haz un backup de la información antes de entregarlo</li>
+  <li>Pide presupuesto por escrito con detalle del repuesto que se va a usar</li>
   <li>Preguntá cuánto tiempo demora la reparación</li>
   <li>Verificá si dan garantía (lo estándar es 30-90 días)</li>
 </ul>
 
-<p>Encontrá técnicos de celulares en Linares en <a href="/tecnologia">LinaresYa — Tecnología</a>. ¿Reparás celulares en Linares? <a href="/publicar">Aparecé gratis en el directorio</a>.</p>
+<p>Encuentra técnicos de celulares en Linares en <a href="/tecnologia">LinaresYa — Tecnología</a>. ¿Reparas celulares en Linares? <a href="/publicar">Aparece gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -1565,7 +1565,7 @@ export const posts: BlogPost[] = [
   <li>Verificá si incluye estacionamiento, wifi y desayuno antes de reservar</li>
 </ul>
 
-<p>Encontrá hoteles y hospedajes en Linares en <a href="/alojamiento">LinaresYa — Alojamiento</a>. ¿Tenés hotel o hospedaje en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
+<p>Encuentra hoteles y hospedajes en Linares en <a href="/alojamiento">LinaresYa — Alojamiento</a>. ¿Tienes hotel o hospedaje en Linares? <a href="/publicar">Publícalo gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -1614,7 +1614,7 @@ export const posts: BlogPost[] = [
   <li>Reseñas de otras familias en LinaresYa</li>
 </ul>
 
-<p>Encontrá jardines infantiles y guarderías en Linares en <a href="/educacion">LinaresYa — Educación</a>. ¿Tenés jardín infantil en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
+<p>Encuentra jardines infantiles y guarderías en Linares en <a href="/educacion">LinaresYa — Educación</a>. ¿Tienes jardín infantil en Linares? <a href="/publicar">Publícalo gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -1663,7 +1663,7 @@ export const posts: BlogPost[] = [
   <li><strong>Pelo duro (schnauzer, fox terrier):</strong> cada 6-8 semanas con stripping o tijera.</li>
 </ul>
 
-<p>Encontrá peluquerías caninas en Linares en <a href="/mascotas">LinaresYa — Mascotas</a>. ¿Tenés servicio de grooming en Linares? <a href="/publicar">Publicalo gratis en el directorio</a>.</p>
+<p>Encuentra peluquerías caninas en Linares en <a href="/mascotas">LinaresYa — Mascotas</a>. ¿Tienes servicio de grooming en Linares? <a href="/publicar">Publícalo gratis en el directorio</a>.</p>
 `,
   },
   {
@@ -1684,7 +1684,7 @@ export const posts: BlogPost[] = [
     contenido: `
 <p>Tener presencia en internet ya no es opcional para los negocios de Linares. Una buena página web o tienda online puede atraer clientes nuevos las 24 horas. En la ciudad hay <strong>diseñadores y desarrolladores web</strong> que entienden las necesidades del mercado local.</p>
 
-<h2>¿Qué tipo de web podés pedir en Linares?</h2>
+<h2>¿Qué tipo de web puedes pedir en Linares?</h2>
 <ul>
   <li><strong>Página web institucional:</strong> quiénes somos, servicios, contacto. Ideal para negocios locales.</li>
   <li><strong>Tienda online (e-commerce):</strong> catálogo de productos con carrito de compras y pago online.</li>
@@ -1714,7 +1714,7 @@ export const posts: BlogPost[] = [
 <h2>Directorios como complemento</h2>
 <p>Mientras construís o esperás tu página web, publicar en LinaresYa te da presencia inmediata en las búsquedas locales, con tu teléfono, dirección y categoría visibles para quienes buscan en Linares.</p>
 
-<p>Encontrá diseñadores y desarrolladores web en Linares en <a href="/tecnologia">LinaresYa — Tecnología</a>. ¿Hacés páginas web en Linares? <a href="/publicar">Aparecé en el directorio gratis</a>.</p>
+<p>Encuentra diseñadores y desarrolladores web en Linares en <a href="/tecnologia">LinaresYa — Tecnología</a>. ¿Haces páginas web en Linares? <a href="/publicar">Aparece en el directorio gratis</a>.</p>
 `,
   },
 
@@ -1723,7 +1723,7 @@ export const posts: BlogPost[] = [
   // --- Para dueños de negocio (tráfico hacia /publicar) ---
   {
     slug: "como-aparecer-en-google-linares",
-    titulo: "Cómo aparecer en Google si tenés un negocio en Linares",
+    titulo: "Cómo aparecer en Google si tienes un negocio en Linares",
     descripcion:
       "Guía práctica para que tu negocio en Linares aparezca en Google. Google Business, directorios locales, SEO básico y qué hacer primero para conseguir más clientes.",
     fecha: "2025-05-21",
@@ -1737,47 +1737,47 @@ export const posts: BlogPost[] = [
       "como conseguir clientes linares",
     ],
     contenido: `
-<p>Uno de los cambios más grandes para un negocio local es el día que aparece en Google cuando alguien busca su rubro en la ciudad. Si tenés un negocio en Linares y todavía no aparecés en las búsquedas, este artículo es para vos.</p>
+<p>Uno de los cambios más grandes para un negocio local es el día que aparece en Google cuando alguien busca su rubro en la ciudad. Si tienes un negocio en Linares y todavía no apareces en las búsquedas, este artículo es para ti.</p>
 
 <h2>¿Por qué es tan importante aparecer en Google?</h2>
-<p>Cuando alguien busca "electricista en Linares" o "pizzería cerca", Google muestra los primeros resultados y la mayoría de los usuarios hace clic en los tres primeros. Si no aparecés, esos clientes van a tu competencia — aunque vos seas mejor.</p>
+<p>Cuando alguien busca "electricista en Linares" o "pizzería cerca", Google muestra los primeros resultados y la mayoría de los usuarios hace clic en los tres primeros. Si no apareces, esos clientes van a tu competencia — aunque tú seas mejor.</p>
 
 <h2>Paso 1: Google Business Profile (antes Google My Business)</h2>
 <p>La forma más rápida y gratuita de aparecer en Google Maps y en los resultados locales es crear o reclamar tu <strong>perfil de Google Business</strong>:</p>
 <ul>
   <li>Entrá a <a href="https://business.google.com" target="_blank" rel="noopener">business.google.com</a></li>
-  <li>Buscá si tu negocio ya existe (alguien puede haberlo creado)</li>
-  <li>Completá nombre, categoría, dirección, teléfono y horarios</li>
+  <li>Busca si tu negocio ya existe (alguien puede haberlo creado)</li>
+  <li>Completa nombre, categoría, dirección, teléfono y horarios</li>
   <li>Verificá con el código que te manda Google por correo o teléfono</li>
-  <li>Subí fotos reales de tu local</li>
+  <li>Sube fotos reales de tu local</li>
 </ul>
 <p>Un perfil completo y verificado aparece en el mapa de Google cuando alguien busca tu rubro en Linares. Es gratis y funciona.</p>
 
 <h2>Paso 2: Publicarte en directorios locales</h2>
 <p>Google también usa los <strong>directorios locales</strong> para confirmar que un negocio existe y es legítimo. Cuantos más lugares mencionen tu negocio con la misma información (nombre, dirección, teléfono), mejor posicionado queda.</p>
 <ul>
-  <li><strong>LinaresYa:</strong> directorio local de Linares, aparecés en las búsquedas de vecinos y en Google. <a href="/publicar">Publicá gratis</a>.</li>
+  <li><strong>LinaresYa:</strong> directorio local de Linares, apareces en las búsquedas de vecinos y en Google. <a href="/publicar">Publica gratis</a>.</li>
   <li><strong>Yelp y Foursquare:</strong> directorios internacionales que también ayudan al SEO.</li>
   <li><strong>Páginas Amarillas:</strong> todavía tiene presencia en búsquedas de Chile.</li>
 </ul>
 
-<h2>Paso 3: Pedí reseñas a tus clientes</h2>
+<h2>Paso 3: Pide reseñas a tus clientes</h2>
 <p>Las reseñas en Google son uno de los factores más importantes para aparecer primero. Un negocio con 20 reseñas positivas aparece antes que uno sin reseñas. Pedile a tus clientes satisfechos que te dejen una en Google — con un link directo es mucho más fácil.</p>
 
 <h2>Paso 4: Tener una página web (aunque sea simple)</h2>
-<p>Google da más confianza a negocios con sitio web propio. No necesitás algo complejo: una página con tu nombre, qué hacés, dónde estás y tu teléfono es suficiente para empezar. En LinaresYa podés encontrar <a href="/tecnologia">diseñadores web locales</a> que lo hacen a bajo costo.</p>
+<p>Google da más confianza a negocios con sitio web propio. No necesitas algo complejo: una página con tu nombre, qué haces, dónde estás y tu teléfono es suficiente para empezar. En LinaresYa puedes encontrar <a href="/tecnologia">diseñadores web locales</a> que lo hacen a bajo costo.</p>
 
 <h2>¿Cuánto tiempo tarda en funcionar?</h2>
 <p>Google Business se activa en 1-2 semanas después de la verificación. Los directorios locales empiezan a dar resultados en 1-3 meses. El SEO es un proceso de mediano plazo, pero cada paso que tomás hoy tiene efecto acumulativo.</p>
 
-<p>¿Todavía no estás en LinaresYa? <a href="/publicar">Publicá tu negocio gratis</a> y aparecé frente a los vecinos de Linares que buscan lo que ofrecés.</p>
+<p>¿Todavía no estás en LinaresYa? <a href="/publicar">Publica tu negocio gratis</a> y aparece frente a los vecinos de Linares que buscan lo que ofreces.</p>
 `,
   },
   {
     slug: "google-business-linares",
     titulo: "Google Business en Linares: cómo crear y optimizar tu perfil",
     descripcion:
-      "Guía paso a paso para crear y optimizar tu perfil de Google Business si tenés un negocio en Linares. Aparecé en Google Maps y conseguí más clientes locales.",
+      "Guía paso a paso para crear y optimizar tu perfil de Google Business si tienes un negocio en Linares. Aparece en Google Maps y conseguí más clientes locales.",
     fecha: "2025-05-21",
     categoria: "Marketing Digital",
     emoji: "🗺️",
@@ -1789,7 +1789,7 @@ export const posts: BlogPost[] = [
       "como crear google business linares",
     ],
     contenido: `
-<p>Si tenés un negocio en Linares y no estás en Google Maps, estás perdiendo clientes todos los días. Crear tu perfil de <strong>Google Business</strong> es gratis, tarda menos de 30 minutos y puede cambiar completamente cuánta gente te encuentra.</p>
+<p>Si tienes un negocio en Linares y no estás en Google Maps, estás perdiendo clientes todos los días. Crear tu perfil de <strong>Google Business</strong> es gratis, tarda menos de 30 minutos y puede cambiar completamente cuánta gente te encuentra.</p>
 
 <h2>¿Qué es Google Business Profile?</h2>
 <p>Es el panel gratuito de Google donde los negocios locales gestionan cómo aparecen en Google Maps y en los resultados de búsqueda. Cuando alguien busca "dentista en Linares" o "almacén cerca", los resultados con mapa y ficha son los negocios con Google Business activo.</p>
@@ -1797,17 +1797,17 @@ export const posts: BlogPost[] = [
 <h2>Paso a paso: crear tu perfil</h2>
 <ol>
   <li>Entrá a <strong>business.google.com</strong> con una cuenta de Gmail.</li>
-  <li>Hacé clic en "Agregar mi negocio".</li>
-  <li>Escribí el nombre exacto de tu negocio (el mismo que usás en todos lados).</li>
-  <li>Elegí la categoría que más se ajuste (podés agregar categorías secundarias).</li>
-  <li>Ingresá tu dirección. Si atendés a domicilio, podés ocultar la dirección y poner el área de cobertura.</li>
-  <li>Ingresá teléfono y sitio web (si tenés).</li>
+  <li>Haz clic en "Agregar mi negocio".</li>
+  <li>Escribe el nombre exacto de tu negocio (el mismo que usas en todos lados).</li>
+  <li>Elige la categoría que más se ajuste (puedes agregar categorías secundarias).</li>
+  <li>Ingresa tu dirección. Si atendés a domicilio, puedes ocultar la dirección y poner el área de cobertura.</li>
+  <li>Ingresa teléfono y sitio web (si tienes).</li>
   <li>Verificá con el código que te manda Google.</li>
 </ol>
 
 <h2>Cómo optimizar el perfil para aparecer primero</h2>
 <ul>
-  <li><strong>Fotos reales:</strong> subí al menos 5 fotos del local, productos y equipo. Los perfiles con fotos reciben 42% más solicitudes de direcciones.</li>
+  <li><strong>Fotos reales:</strong> sube al menos 5 fotos del local, productos y equipo. Los perfiles con fotos reciben 42% más solicitudes de direcciones.</li>
   <li><strong>Horarios completos:</strong> incluyendo feriados. Google penaliza los perfiles con horarios incorrectos.</li>
   <li><strong>Descripción completa:</strong> usá palabras que tus clientes usan para buscarte.</li>
   <li><strong>Publicaciones:</strong> Google Business permite publicar novedades, ofertas y eventos — úsalo al menos una vez por semana.</li>
@@ -1818,7 +1818,7 @@ export const posts: BlogPost[] = [
 <p>Después de la verificación, el perfil puede tardar 1-3 semanas en aparecer prominentemente en búsquedas locales. Con el perfil optimizado y algunas reseñas, la mayoría de los negocios en Linares consiguen aparecer en el "Pack 3" de Google (el mapa con tres resultados destacados) dentro del primer mes.</p>
 
 <h2>Google Business + LinaresYa = doble visibilidad</h2>
-<p>La combinación más efectiva para un negocio local en Linares es tener tanto Google Business como una ficha en LinaresYa. Los directorios locales refuerzan la señal de Google y te dan presencia directa en las búsquedas de vecinos que usan el directorio. <a href="/publicar">Publicá en LinaresYa gratis</a>.</p>
+<p>La combinación más efectiva para un negocio local en Linares es tener tanto Google Business como una ficha en LinaresYa. Los directorios locales refuerzan la señal de Google y te dan presencia directa en las búsquedas de vecinos que usan el directorio. <a href="/publicar">Publica en LinaresYa gratis</a>.</p>
 `,
   },
 
@@ -1863,11 +1863,11 @@ export const posts: BlogPost[] = [
 <ul>
   <li>Verificá que tenga formación certificada (técnico en masoterapia, kinesiólogo titulado, etc.)</li>
   <li>Contá tu historial de salud antes de la sesión</li>
-  <li>Si tenés una lesión o condición médica, consultá con un médico antes</li>
-  <li>Revisá las reseñas de otros clientes en LinaresYa</li>
+  <li>Si tienes una lesión o condición médica, consultá con un médico antes</li>
+  <li>Revisa las reseñas de otros clientes en LinaresYa</li>
 </ul>
 
-<p>Encontrá masajistas y terapeutas en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Ofrecés masajes en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+<p>Encuentra masajistas y terapeutas en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Ofreces masajes en Linares? <a href="/publicar">Publica tu servicio gratis</a>.</p>
 `,
   },
   {
@@ -1900,7 +1900,7 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>Moda en Linares vs. comprar online</h2>
-<p>Comprar ropa localmente tiene ventajas concretas: podés probarte antes de comprar, evitás los costos de despacho y devolución, y apoyás a la economía local. Muchas tiendas en Linares además tienen Instagram actualizado con sus últimas llegadas — seguílas para estar al tanto.</p>
+<p>Comprar ropa localmente tiene ventajas concretas: puedes probarte antes de comprar, evitás los costos de despacho y devolución, y apoyás a la economía local. Muchas tiendas en Linares además tienen Instagram actualizado con sus últimas llegadas — seguílas para estar al tanto.</p>
 
 <h2>¿Cuándo hay más ofertas en las tiendas de Linares?</h2>
 <ul>
@@ -1909,12 +1909,12 @@ export const posts: BlogPost[] = [
   <li><strong>Fiestas patrias y Navidad:</strong> temporada alta con colecciones especiales y promociones.</li>
 </ul>
 
-<p>Encontrá tiendas de ropa en Linares en <a href="/moda-y-ropa">LinaresYa — Moda y Ropa</a>. ¿Tenés una tienda de ropa en Linares? <a href="/publicar">Publicala gratis en el directorio</a>.</p>
+<p>Encuentra tiendas de ropa en Linares en <a href="/moda-y-ropa">LinaresYa — Moda y Ropa</a>. ¿Tienes una tienda de ropa en Linares? <a href="/publicar">Publícala gratis en el directorio</a>.</p>
 `,
   },
   {
     slug: "contador-impuestos-persona-natural-linares",
-    titulo: "Declaración de renta en Linares: todo lo que necesitás saber",
+    titulo: "Declaración de renta en Linares: todo lo que necesitas saber",
     descripcion:
       "Guía sobre la declaración de renta para trabajadores independientes y personas naturales en Linares. Cuándo declarar, quién te ayuda y cuánto cuesta.",
     fecha: "2025-05-21",
@@ -1928,7 +1928,7 @@ export const posts: BlogPost[] = [
       "boletas honorarios linares",
     ],
     contenido: `
-<p>Cada año entre abril y mayo, miles de trabajadores independientes y personas naturales en Linares deben presentar su <strong>declaración de renta</strong> al SII. Si nunca lo hiciste o querés entender el proceso, esta guía te explica lo esencial.</p>
+<p>Cada año entre abril y mayo, miles de trabajadores independientes y personas naturales en Linares deben presentar su <strong>declaración de renta</strong> al SII. Si nunca lo hiciste o quieres entender el proceso, esta guía te explica lo esencial.</p>
 
 <h2>¿Quiénes deben declarar renta en Chile?</h2>
 <ul>
@@ -1940,13 +1940,13 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>¿Cuándo se declara la renta?</h2>
-<p>La campaña de renta es habitualmente en <strong>abril</strong> (a veces hasta mayo). El SII habilita el Formulario 22 online para que revises y envíes tu declaración. Si tenés retención del 10,75% en tus boletas de honorarios, en muchos casos el SII ya tiene la información y podés aprobar la propuesta directamente.</p>
+<p>La campaña de renta es habitualmente en <strong>abril</strong> (a veces hasta mayo). El SII habilita el Formulario 22 online para que revises y envíes tu declaración. Si tienes retención del 10,75% en tus boletas de honorarios, en muchos casos el SII ya tiene la información y puedes aprobar la propuesta directamente.</p>
 
 <h2>¿Qué pasa si no declarás?</h2>
-<p>El SII puede multarte con un porcentaje del impuesto adeudado más reajustes e intereses. Si no estás seguro de si debés declarar, consultá con un contador — evitar la multa siempre es más barato que pagarla.</p>
+<p>El SII puede multarte con un porcentaje del impuesto adeudado más reajustes e intereses. Si no estás seguro de si debes declarar, consultá con un contador — evitar la multa siempre es más barato que pagarla.</p>
 
 <h2>¿Vale la pena contratar un contador en Linares para la renta?</h2>
-<p>Para casos simples (boletas de honorarios sin gastos complejos), el SII tiene propuestas automáticas que se pueden aprobar sin ayuda. Pero si tenés gastos deducibles, inversiones, arriendos o situaciones especiales, un <a href="/contador-tributario-linares">contador en Linares</a> puede ahorrarte impuestos legalmente.</p>
+<p>Para casos simples (boletas de honorarios sin gastos complejos), el SII tiene propuestas automáticas que se pueden aprobar sin ayuda. Pero si tienes gastos deducibles, inversiones, arriendos o situaciones especiales, un <a href="/contador-tributario-linares">contador en Linares</a> puede ahorrarte impuestos legalmente.</p>
 
 <h2>¿Cuánto cobra un contador por la declaración de renta en Linares?</h2>
 <ul>
@@ -1955,7 +1955,7 @@ export const posts: BlogPost[] = [
   <li>Empresa o situación compleja: desde $80.000</li>
 </ul>
 
-<p>Encontrá contadores y asesores tributarios en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Sos contador en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+<p>Encuentra contadores y asesores tributarios en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Eres contador en Linares? <a href="/publicar">Publica tu servicio gratis</a>.</p>
 `,
   },
   {
@@ -1974,14 +1974,14 @@ export const posts: BlogPost[] = [
       "comida a domicilio linares",
     ],
     contenido: `
-<p>Pedir comida a domicilio en Linares es cada vez más fácil. Varios restaurantes hacen su propio delivery y algunas plataformas de apps también operan en la ciudad. Acá te contamos cómo encontrar lo que buscás.</p>
+<p>Pedir comida a domicilio en Linares es cada vez más fácil. Varios restaurantes hacen su propio delivery y algunas plataformas de apps también operan en la ciudad. Acá te contamos cómo encontrar lo que buscas.</p>
 
 <h2>¿Hay apps de delivery en Linares?</h2>
 <p>Linares es una ciudad de tamaño mediano, y la cobertura de las grandes plataformas (Rappi, PedidosYa, Uber Eats) puede ser limitada o inexistente dependiendo de la zona y el período. Lo más confiable es:</p>
 <ul>
   <li>Revisar directamente si el restaurante que te gusta tiene su propio delivery por WhatsApp o teléfono.</li>
   <li>Buscar en redes sociales locales de Linares — muchos restaurantes anuncian su servicio de delivery en Instagram o Facebook.</li>
-  <li>Explorar LinaresYa donde podés contactar directamente a los restaurantes y consultar si hacen delivery.</li>
+  <li>Explorar LinaresYa donde puedes contactar directamente a los restaurantes y consultar si hacen delivery.</li>
 </ul>
 
 <h2>¿Qué tipo de comida entregan a domicilio en Linares?</h2>
@@ -1994,16 +1994,16 @@ export const posts: BlogPost[] = [
 
 <h2>Tips para pedir delivery en Linares</h2>
 <ul>
-  <li>Confirmá el tiempo de entrega antes de pedir — en horas pico puede demorar más.</li>
+  <li>Confirma el tiempo de entrega antes de pedir — en horas pico puede demorar más.</li>
   <li>Preguntá si el costo de despacho es fijo o varía por distancia.</li>
-  <li>Si pedís por WhatsApp, enviá tu dirección completa con referencias claras.</li>
+  <li>Si pides por WhatsApp, enviá tu dirección completa con referencias claras.</li>
   <li>Muchos restaurantes tienen un mínimo de pedido para el despacho.</li>
 </ul>
 
-<h2>¿Querés montar un servicio de delivery?</h2>
-<p>Si tenés un restaurante o negocio de comida en Linares y querés publicitar tu servicio de delivery, <a href="/publicar">publicá gratis en LinaresYa</a> con tu número de WhatsApp habilitado para pedidos directos.</p>
+<h2>¿Quieres montar un servicio de delivery?</h2>
+<p>Si tienes un restaurante o negocio de comida en Linares y quieres publicitar tu servicio de delivery, <a href="/publicar">publica gratis en LinaresYa</a> con tu número de WhatsApp habilitado para pedidos directos.</p>
 
-<p>Encontrá restaurantes con delivery en Linares en <a href="/restaurantes-y-cafeterias">LinaresYa — Restaurantes y Cafeterías</a>.</p>
+<p>Encuentra restaurantes con delivery en Linares en <a href="/restaurantes-y-cafeterias">LinaresYa — Restaurantes y Cafeterías</a>.</p>
 `,
   },
   {
@@ -2050,12 +2050,12 @@ export const posts: BlogPost[] = [
 <h2>Consejos para la primera visita</h2>
 <ul>
   <li>No uses palabras que asusten ("pinchar", "doler") antes de la visita.</li>
-  <li>Elegí una hora en que el niño esté descansado y de buen ánimo.</li>
+  <li>Elige una hora en que el niño esté descansado y de buen ánimo.</li>
   <li>Presentalo como una visita de revisión, no de "tratamiento".</li>
   <li>Muchos dentistas en Linares tienen juguetes y televisión para que los niños se distraigan.</li>
 </ul>
 
-<p>Encontrá dentistas en Linares en <a href="/dentistas">LinaresYa — Dentistas</a>. ¿Sos odontopediatra en Linares? <a href="/publicar">Publicá tu consulta gratis</a>.</p>
+<p>Encuentra dentistas en Linares en <a href="/dentistas">LinaresYa — Dentistas</a>. ¿Eres odontopediatra en Linares? <a href="/publicar">Publica tu consulta gratis</a>.</p>
 `,
   },
   {
@@ -2074,7 +2074,7 @@ export const posts: BlogPost[] = [
       "corredora seguros linares",
     ],
     contenido: `
-<p>Si tenés auto, moto o camioneta en Linares, necesitás al menos el seguro obligatorio (SOAP). Pero entender qué cubre cada tipo de seguro te puede ahorrar mucho dinero y problemas en caso de accidente.</p>
+<p>Si tienes auto, moto o camioneta en Linares, necesitas al menos el seguro obligatorio (SOAP). Pero entender qué cubre cada tipo de seguro te puede ahorrar mucho dinero y problemas en caso de accidente.</p>
 
 <h2>El SOAP: seguro obligatorio en Chile</h2>
 <p>El <strong>Seguro Obligatorio de Accidentes Personales (SOAP)</strong> es obligatorio para circular en Chile. Cubre lesiones a terceros (personas) en caso de accidente, pero NO cubre los daños materiales del vehículo.</p>
@@ -2086,7 +2086,7 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>Seguro de daños propios: ¿te conviene?</h2>
-<p>El seguro de daños propios cubre el auto si tenés un choque, robo, incendio o fenómeno meteorológico. Hay varias modalidades:</p>
+<p>El seguro de daños propios cubre el auto si tienes un choque, robo, incendio o fenómeno meteorológico. Hay varias modalidades:</p>
 <ul>
   <li><strong>Todo riesgo:</strong> la cobertura más amplia. Incluye daños propios y responsabilidad civil ampliada.</li>
   <li><strong>Seguro básico:</strong> cubre incendio, robo y responsabilidad civil. Más económico.</li>
@@ -2104,7 +2104,7 @@ export const posts: BlogPost[] = [
 <h2>Corredoras de seguros en Linares</h2>
 <p>Las corredoras de seguros son intermediarias que comparan distintas aseguradoras y te recomiendan la mejor opción para tu caso. Muchas tienen oficina en Linares y pueden cotizar en el momento. No cobran comisión adicional — la paga la aseguradora.</p>
 
-<p>Encontrá corredoras de seguros y servicios financieros en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tenés corredora de seguros en Linares? <a href="/publicar">Publicala gratis</a>.</p>
+<p>Encuentra corredoras de seguros y servicios financieros en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tienes corredora de seguros en Linares? <a href="/publicar">Publícala gratis</a>.</p>
 `,
   },
   {
@@ -2123,13 +2123,13 @@ export const posts: BlogPost[] = [
       "apoyo emprendedores linares",
     ],
     contenido: `
-<p>Linares tiene un ecosistema emprendedor en crecimiento. Si querés abrir tu negocio en la ciudad, hay recursos del Estado, del municipio y privados que pueden ayudarte a dar los primeros pasos sin tanto riesgo.</p>
+<p>Linares tiene un ecosistema emprendedor en crecimiento. Si quieres abrir tu negocio en la ciudad, hay recursos del Estado, del municipio y privados que pueden ayudarte a dar los primeros pasos sin tanto riesgo.</p>
 
 <h2>¿Por dónde empezar para abrir un negocio en Linares?</h2>
 <ol>
   <li><strong>Validá la idea:</strong> ¿hay demanda real? Hablá con posibles clientes antes de invertir.</li>
-  <li><strong>Hacé inicio de actividades en el SII:</strong> necesitás un RUT de empresa o trabajar como persona natural con segunda categoría.</li>
-  <li><strong>Revisá la patente comercial:</strong> en la Municipalidad de Linares, según el rubro y la ubicación.</li>
+  <li><strong>Haz inicio de actividades en el SII:</strong> necesitas un RUT de empresa o trabajar como persona natural con segunda categoría.</li>
+  <li><strong>Revisa la patente comercial:</strong> en la Municipalidad de Linares, según el rubro y la ubicación.</li>
   <li><strong>Abrí una cuenta bancaria de negocio:</strong> Banco Estado tiene la Cuenta RUT gratuita para personas naturales.</li>
   <li><strong>Publicitate:</strong> empezá con presencia en LinaresYa, redes sociales y Google Business.</li>
 </ol>
@@ -2141,18 +2141,18 @@ export const posts: BlogPost[] = [
   <li>Capacitaciones en gestión, marketing y finanzas.</li>
   <li>Asesoría personalizada para pequeños negocios.</li>
 </ul>
-<p>Ingresá a sercotec.cl o llamá a la oficina regional del Maule para consultar convocatorias vigentes.</p>
+<p>Ingresa a sercotec.cl o llamá a la oficina regional del Maule para consultar convocatorias vigentes.</p>
 
 <h2>Municipalidad de Linares y apoyo local</h2>
 <p>La OMIL (Oficina Municipal de Intermediación Laboral) y la Dirección de Desarrollo Económico del municipio tienen programas de apoyo a emprendedores locales. Vale la pena consultarles directamente sobre ferias municipales, capacitaciones y programas de subsidio.</p>
 
 <h2>Corfo y programas de financiamiento</h2>
-<p>La <strong>Corporación de Fomento de la Producción (Corfo)</strong> tiene líneas de financiamiento para emprendedores: Capital Abeja, Súmate, y líneas de crédito para pymes. Revisá corfo.cl para ver qué programas están activos.</p>
+<p>La <strong>Corporación de Fomento de la Producción (Corfo)</strong> tiene líneas de financiamiento para emprendedores: Capital Abeja, Súmate, y líneas de crédito para pymes. Revisa corfo.cl para ver qué programas están activos.</p>
 
 <h2>Presencia digital desde el día uno</h2>
-<p>Uno de los errores más comunes de los nuevos negocios en Linares es esperar a tener "todo listo" para aparecer en internet. Lo ideal es publicarte en directorios locales desde el primer día para empezar a generar visibilidad mientras construís el negocio. <a href="/publicar">Publicá gratis en LinaresYa</a> sin esperar a tener sitio web ni nada más.</p>
+<p>Uno de los errores más comunes de los nuevos negocios en Linares es esperar a tener "todo listo" para aparecer en internet. Lo ideal es publicarte en directorios locales desde el primer día para empezar a generar visibilidad mientras construís el negocio. <a href="/publicar">Publica gratis en LinaresYa</a> sin esperar a tener sitio web ni nada más.</p>
 
-<p>¿Ya tenés tu negocio? <a href="/publicar">Aparecé en LinaresYa gratis</a> y conectate con miles de vecinos de Linares desde hoy.</p>
+<p>¿Ya tienes tu negocio? <a href="/publicar">Aparece en LinaresYa gratis</a> y conéctate con miles de vecinos de Linares desde hoy.</p>
 `,
   },
   {
@@ -2195,15 +2195,15 @@ export const posts: BlogPost[] = [
 <h2>¿Cuándo conviene ir a una modista?</h2>
 <ul>
   <li>Compraste ropa en línea que no quedó exactamente a medida.</li>
-  <li>Tenés ropa favorita que se deterioró pero querés recuperar.</li>
-  <li>Necesitás un vestido o traje único para un evento especial.</li>
-  <li>Querés uniformes para tu negocio o equipo deportivo.</li>
+  <li>Tienes ropa favorita que se deterioró pero quieres recuperar.</li>
+  <li>Necesitas un vestido o traje único para un evento especial.</li>
+  <li>Quieres uniformes para tu negocio o equipo deportivo.</li>
 </ul>
 
 <h2>Tip: la ropa de segunda mano + modista</h2>
 <p>Una combinación muy popular en Linares es comprar ropa de segunda mano en buen estado y llevarla a ajustar con la modista. El resultado final es una prenda exclusiva a un costo mucho menor que la ropa nueva.</p>
 
-<p>Encontrá modistas y talleres de costura en Linares en <a href="/moda-y-ropa">LinaresYa — Moda y Ropa</a>. ¿Sos modista en Linares? <a href="/publicar">Publicá tu taller gratis</a>.</p>
+<p>Encuentra modistas y talleres de costura en Linares en <a href="/moda-y-ropa">LinaresYa — Moda y Ropa</a>. ¿Eres modista en Linares? <a href="/publicar">Publica tu taller gratis</a>.</p>
 `,
   },
 
@@ -2213,7 +2213,7 @@ export const posts: BlogPost[] = [
     slug: "kinesiologo-fisioterapeuta-linares",
     titulo: "Kinesiólogo en Linares: rehabilitación y fisioterapia",
     descripcion:
-      "¿Buscás kinesiólogo en Linares? Guía completa sobre rehabilitación física, fisioterapia, precios y cómo acceder a kinesiólogos con Fonasa.",
+      "¿Buscas kinesiólogo en Linares? Guía completa sobre rehabilitación física, fisioterapia, precios y cómo acceder a kinesiólogos con Fonasa.",
     fecha: "2026-05-10",
     categoria: "Salud",
     emoji: "🦿",
@@ -2238,7 +2238,7 @@ export const posts: BlogPost[] = [
   <li>Sesión de rehabilitación (45–60 min): $12.000–$20.000</li>
   <li>Kinesioterapia respiratoria: $10.000–$18.000</li>
 </ul>
-<p>Con <strong>Fonasa nivel B, C o D</strong>, podés atenderte en centros convenidos con bono de atención. El copago varía según el nivel.</p>
+<p>Con <strong>Fonasa nivel B, C o D</strong>, puedes atenderte en centros convenidos con bono de atención. El copago varía según el nivel.</p>
 
 <h2>Kinesiólogo a domicilio en Linares</h2>
 <p>Muchos kinesiólogos en Linares ofrecen servicio a domicilio, especialmente para adultos mayores o personas con movilidad reducida. El valor suele ser 20–30% más que la consulta en clínica, más el costo de traslado.</p>
@@ -2260,7 +2260,7 @@ export const posts: BlogPost[] = [
   <li><strong>Kinesio taping:</strong> vendaje funcional para soporte articular.</li>
 </ul>
 
-<p>Encontrá kinesiólogos en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Sos kinesiólogo? <a href="/publicar">Publicá tu consulta gratis</a>.</p>
+<p>Encuentra kinesiólogos en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Eres kinesiólogo? <a href="/publicar">Publica tu consulta gratis</a>.</p>
 `,
   },
 
@@ -2274,7 +2274,7 @@ export const posts: BlogPost[] = [
     emoji: "👓",
     keywords: ["optica linares", "lentes linares", "examen vista linares", "optometrista linares"],
     contenido: `
-<p>¿Necesitás lentes en Linares? Ya sea para corregir miopía, astigmatismo o presbicia, las <strong>ópticas en Linares</strong> ofrecen examen de vista, armazones y lentes de contacto a precios accesibles.</p>
+<p>¿Necesitas lentes en Linares? Ya sea para corregir miopía, astigmatismo o presbicia, las <strong>ópticas en Linares</strong> ofrecen examen de vista, armazones y lentes de contacto a precios accesibles.</p>
 
 <h2>¿Qué hacen las ópticas en Linares?</h2>
 <ul>
@@ -2308,7 +2308,7 @@ export const posts: BlogPost[] = [
 <h2>¿Cada cuánto cambiar los lentes?</h2>
 <p>Se recomienda un examen de vista anual. Si la graduación cambió más de 0.25 dioptrías, es conveniente actualizar los lentes. En niños se recomienda control cada 6 meses.</p>
 
-<p>Buscá ópticas en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Tenés una óptica en Linares? <a href="/publicar">Publicala gratis</a>.</p>
+<p>Busca ópticas en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Tienes una óptica en Linares? <a href="/publicar">Publícala gratis</a>.</p>
 `,
   },
 
@@ -2316,13 +2316,13 @@ export const posts: BlogPost[] = [
     slug: "lavanderia-linares",
     titulo: "Lavanderías en Linares: lavado y planchado a domicilio",
     descripcion:
-      "¿Buscás lavandería en Linares? Guía de servicios de lavado, planchado y tintorería. Precios, qué incluye cada servicio y cómo pedir retiro a domicilio.",
+      "¿Buscas lavandería en Linares? Guía de servicios de lavado, planchado y tintorería. Precios, qué incluye cada servicio y cómo pedir retiro a domicilio.",
     fecha: "2026-05-12",
     categoria: "Servicios del Hogar",
     emoji: "🧺",
     keywords: ["lavanderia linares", "lavado ropa linares", "tintoreria linares", "planchado linares"],
     contenido: `
-<p>¿No tenés tiempo para lavar o necesitás limpiar prendas delicadas? Las <strong>lavanderías en Linares</strong> ofrecen servicios completos de lavado, secado, planchado y tintorería con retiro y entrega a domicilio.</p>
+<p>¿No tienes tiempo para lavar o necesitas limpiar prendas delicadas? Las <strong>lavanderías en Linares</strong> ofrecen servicios completos de lavado, secado, planchado y tintorería con retiro y entrega a domicilio.</p>
 
 <h2>Servicios que ofrecen las lavanderías en Linares</h2>
 <ul>
@@ -2344,17 +2344,17 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>¿Qué prendas van a tintorería?</h2>
-<p>La etiqueta de cada prenda indica si requiere lavado en seco (símbolo de círculo). Llevá siempre a tintorería: trajes, chaquetas de cuero, tapados de lana, ropa bordada o con apliques delicados.</p>
+<p>La etiqueta de cada prenda indica si requiere lavado en seco (símbolo de círculo). Lleva siempre a tintorería: trajes, chaquetas de cuero, tapados de lana, ropa bordada o con apliques delicados.</p>
 
 <h2>Consejos para usar la lavandería</h2>
 <ul>
   <li>Separá la ropa blanca de la de color antes de llevarla.</li>
-  <li>Avisá si hay manchas específicas para que las traten antes del lavado.</li>
-  <li>Para ropa oscura, pedí que usen agua fría para no desteñir.</li>
+  <li>Avisa si hay manchas específicas para que las traten antes del lavado.</li>
+  <li>Para ropa oscura, pide que usen agua fría para no desteñir.</li>
   <li>Controlá los bolsillos antes de entregar (monedas y papeles dañan las máquinas).</li>
 </ul>
 
-<p>Buscá lavanderías en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Tenés una lavandería? <a href="/publicar">Publicala gratis</a>.</p>
+<p>Busca lavanderías en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Tienes una lavandería? <a href="/publicar">Publícala gratis</a>.</p>
 `,
   },
 
@@ -2383,7 +2383,7 @@ export const posts: BlogPost[] = [
 <ul>
   <li>Equipo split 12.000 BTU (habitación): $300.000–$500.000 (equipo + instalación)</li>
   <li>Equipo split 18.000 BTU (sala-comedor): $400.000–$700.000</li>
-  <li>Instalación sola (si ya tenés el equipo): $60.000–$120.000</li>
+  <li>Instalación sola (si ya tienes el equipo): $60.000–$120.000</li>
   <li>Mantención anual aire acondicionado: $20.000–$40.000</li>
   <li>Instalación calefont a gas: $40.000–$80.000</li>
 </ul>
@@ -2402,7 +2402,7 @@ export const posts: BlogPost[] = [
 <h2>¿Qué piden los técnicos para la instalación?</h2>
 <p>Para el aire acondicionado necesitarás: una pared exterior (o losa) para la unidad condensadora, toma de corriente exclusiva 220V, y espacio interior para la unidad evaporadora. El técnico evaluará la viabilidad en la visita.</p>
 
-<p>Buscá técnicos en climatización en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Ofrecés este servicio? <a href="/publicar">Publicá tu negocio gratis</a>.</p>
+<p>Busca técnicos en climatización en Linares en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Ofreces este servicio? <a href="/publicar">Publica tu negocio gratis</a>.</p>
 `,
   },
 
@@ -2452,9 +2452,9 @@ export const posts: BlogPost[] = [
 <p>Las notarías en Linares generalmente atienden de lunes a viernes de 9:00 a 14:00 horas. Algunos trámites pueden requerir hora previa. Te recomendamos llamar antes de ir para confirmar disponibilidad.</p>
 
 <h2>¿Necesito abogado para ir a la notaría?</h2>
-<p>Para trámites simples como poderes, declaraciones juradas o autorizaciones, <strong>no necesitás abogado</strong>. Para escrituras de compraventa de inmuebles o trámites complejos, se recomienda asesorarse con un abogado antes.</p>
+<p>Para trámites simples como poderes, declaraciones juradas o autorizaciones, <strong>no necesitas abogado</strong>. Para escrituras de compraventa de inmuebles o trámites complejos, se recomienda asesorarse con un abogado antes.</p>
 
-<p>¿Necesitás un abogado en Linares? Buscá en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Ofrecés servicios notariales? <a href="/publicar">Publicá gratis</a>.</p>
+<p>¿Necesitas un abogado en Linares? Busca en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Ofreces servicios notariales? <a href="/publicar">Publica gratis</a>.</p>
 `,
   },
 
@@ -2462,7 +2462,7 @@ export const posts: BlogPost[] = [
     slug: "arriendo-departamento-casa-linares",
     titulo: "Arriendo de casas y departamentos en Linares: guía y precios",
     descripcion:
-      "¿Buscás arriendo en Linares? Precios actualizados de casas y departamentos, requisitos para arrendar, qué revisar antes de firmar y corredores de propiedades.",
+      "¿Buscas arriendo en Linares? Precios actualizados de casas y departamentos, requisitos para arrendar, qué revisar antes de firmar y corredores de propiedades.",
     fecha: "2026-05-15",
     categoria: "Inmuebles",
     emoji: "🏠",
@@ -2503,7 +2503,7 @@ export const posts: BlogPost[] = [
 <p>El contrato de arrendamiento puede ser privado (firmado por ambas partes) o notarial. Se recomienda <strong>notarizarlo</strong> para mayor protección ante conflictos. La ley chilena regula los arriendos (Ley 18.101) y protege tanto al arrendador como al arrendatario.</p>
 
 <h2>Corredores de propiedades en Linares</h2>
-<p>Los corredores de propiedades en Linares cobran generalmente <strong>1 mes de arriendo + IVA</strong> como comisión por encontrarte la propiedad. Si encontrás algo directamente con el dueño, ahorras esa comisión.</p>
+<p>Los corredores de propiedades en Linares cobran generalmente <strong>1 mes de arriendo + IVA</strong> como comisión por encontrarte la propiedad. Si encuentras algo directamente con el dueño, ahorras esa comisión.</p>
 
 <h2>Sectores populares para arrendar en Linares</h2>
 <ul>
@@ -2512,7 +2512,7 @@ export const posts: BlogPost[] = [
   <li><strong>Sector norte (cerca de la ruta 5):</strong> buena conectividad, ideal para quienes viajan a Talca.</li>
 </ul>
 
-<p>Encontrá corredores de propiedades en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tenés una propiedad para arrendar? <a href="/publicar">Publicala gratis</a>.</p>
+<p>Encuentra corredores de propiedades en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tienes una propiedad para arrendar? <a href="/publicar">Publícala gratis</a>.</p>
 `,
   },
 
@@ -2555,7 +2555,7 @@ export const posts: BlogPost[] = [
 
 <h2>¿Cómo encontrar un buen cuidador en Linares?</h2>
 <ul>
-  <li>Pedí referencias a vecinos, iglesias o centros de salud.</li>
+  <li>Pide referencias a vecinos, iglesias o centros de salud.</li>
   <li>Verificá antecedentes penales (certificado de antecedentes del Registro Civil).</li>
   <li>Establecé un contrato claro con horarios, tareas y remuneración.</li>
   <li>Cotizad en previsión (como trabajador de casa particular si es permanente).</li>
@@ -2564,7 +2564,7 @@ export const posts: BlogPost[] = [
 <h2>Municipalidad de Linares: ayudas disponibles</h2>
 <p>La Municipalidad de Linares a través de la Dirección de Desarrollo Comunitario (DIDECO) ofrece programas de apoyo a adultos mayores en situación de vulnerabilidad. Consulta en la municipalidad sobre subsidios, canastas de alimentos y apoyo en salud.</p>
 
-<p>Buscá cuidadores y servicios de salud para adultos mayores en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Ofrecés este servicio? <a href="/publicar">Publicalo gratis</a>.</p>
+<p>Busca cuidadores y servicios de salud para adultos mayores en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Ofreces este servicio? <a href="/publicar">Publícalo gratis</a>.</p>
 `,
   },
 
@@ -2572,13 +2572,13 @@ export const posts: BlogPost[] = [
     slug: "imprenta-diseño-grafico-linares",
     titulo: "Imprenta y diseño gráfico en Linares: precios y servicios",
     descripcion:
-      "¿Buscás imprenta en Linares? Guía de servicios de impresión, folletería, banners, tarjetas de visita y diseño gráfico. Precios actualizados 2025.",
+      "¿Buscas imprenta en Linares? Guía de servicios de impresión, folletería, banners, tarjetas de visita y diseño gráfico. Precios actualizados 2025.",
     fecha: "2026-05-17",
     categoria: "Servicios Profesionales",
     emoji: "🖨️",
     keywords: ["imprenta linares", "diseño grafico linares", "impresion linares", "tarjetas visita linares", "banner linares"],
     contenido: `
-<p>Para negocios, eventos, organizaciones y particulares: las <strong>imprentas y diseñadores gráficos en Linares</strong> ofrecen todo lo que necesitás para hacer visible tu mensaje, desde tarjetas de visita hasta gigantografías.</p>
+<p>Para negocios, eventos, organizaciones y particulares: las <strong>imprentas y diseñadores gráficos en Linares</strong> ofrecen todo lo que necesitas para hacer visible tu mensaje, desde tarjetas de visita hasta gigantografías.</p>
 
 <h2>Servicios de impresión disponibles en Linares</h2>
 <ul>
@@ -2603,7 +2603,7 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>Diseño gráfico en Linares</h2>
-<p>Muchas imprentas en Linares también ofrecen servicios de diseño gráfico. Si ya tenés el diseño en PDF o formato listo para imprimir, el costo es solo de impresión. Si necesitás que te creen el diseño, suelen cobrar por separado o incluirlo según el volumen de la orden.</p>
+<p>Muchas imprentas en Linares también ofrecen servicios de diseño gráfico. Si ya tienes el diseño en PDF o formato listo para imprimir, el costo es solo de impresión. Si necesitas que te creen el diseño, suelen cobrar por separado o incluirlo según el volumen de la orden.</p>
 
 <h2>Tiempos de entrega típicos</h2>
 <ul>
@@ -2615,7 +2615,7 @@ export const posts: BlogPost[] = [
 <h2>Formatos para entregar a la imprenta</h2>
 <p>Lo ideal es entregar archivos en <strong>PDF de alta resolución</strong> (300 DPI), con sangrado de 3–5 mm. También aceptan AI (Illustrator), CDR (CorelDraw) o PSD (Photoshop). Evitá imágenes en Word o capturas de pantalla — pierden calidad al imprimir.</p>
 
-<p>Encontrá imprentas y diseñadores gráficos en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tenés imprenta o hacés diseño? <a href="/publicar">Publicá gratis</a>.</p>
+<p>Encuentra imprentas y diseñadores gráficos en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tienes imprenta o haces diseño? <a href="/publicar">Publica gratis</a>.</p>
 `,
   },
 
@@ -2623,13 +2623,13 @@ export const posts: BlogPost[] = [
     slug: "clases-musica-linares",
     titulo: "Clases de música en Linares: guitarra, piano, canto y más",
     descripcion:
-      "¿Buscás clases de música en Linares? Guía de academias, profesores particulares de guitarra, piano, batería y canto. Precios y cómo elegir el mejor profe.",
+      "¿Buscas clases de música en Linares? Guía de academias, profesores particulares de guitarra, piano, batería y canto. Precios y cómo elegir el mejor profe.",
     fecha: "2026-05-18",
     categoria: "Educación",
     emoji: "🎵",
     keywords: ["clases musica linares", "profesor guitarra linares", "academia musica linares", "clases piano linares", "clases canto linares"],
     contenido: `
-<p>Aprender música es uno de los mejores regalos que podés darle a un niño —o a vos mismo— en Linares. Ya sea guitarra, piano, canto, batería o ukelele, hay profes y academias locales que enseñan en tu barrio.</p>
+<p>Aprender música es uno de los mejores regalos que puedes darle a un niño —o a ti mismo— en Linares. Ya sea guitarra, piano, canto, batería o ukelele, hay profes y academias locales que enseñan en tu barrio.</p>
 
 <h2>Instrumentos que se enseñan en Linares</h2>
 <ul>
@@ -2667,7 +2667,7 @@ export const posts: BlogPost[] = [
   <li><strong>Profesor particular:</strong> más flexible, personalizado, se adapta a tu ritmo y horario.</li>
 </ul>
 
-<p>Buscá profesores de música y academias en Linares en <a href="/educacion">LinaresYa — Educación</a>. ¿Dás clases de música en Linares? <a href="/publicar">Publicate gratis</a>.</p>
+<p>Busca profesores de música y academias en Linares en <a href="/educacion">LinaresYa — Educación</a>. ¿Dás clases de música en Linares? <a href="/publicar">Publicate gratis</a>.</p>
 `,
   },
 
@@ -2681,7 +2681,7 @@ export const posts: BlogPost[] = [
     emoji: "🕊️",
     keywords: ["funeraria linares", "servicio funebre linares", "cremacion linares", "traslado fallecido linares", "velatorio linares"],
     contenido: `
-<p>En los momentos más difíciles, contar con una <strong>funeraria de confianza en Linares</strong> hace toda la diferencia. Acá encontrás información sobre servicios, precios y trámites para ayudarte a tomar decisiones informadas cuando más lo necesitás.</p>
+<p>En los momentos más difíciles, contar con una <strong>funeraria de confianza en Linares</strong> hace toda la diferencia. Acá encuentras información sobre servicios, precios y trámites para ayudarte a tomar decisiones informadas cuando más lo necesitas.</p>
 
 <h2>Servicios que ofrecen las funerarias en Linares</h2>
 <ul>
@@ -2711,7 +2711,7 @@ export const posts: BlogPost[] = [
   <li><strong>Permiso de sepultación o cremación:</strong> lo tramita la funeraria.</li>
   <li><strong>Notificación a la AFP, Isapre/Fonasa y empleador.</strong></li>
 </ol>
-<p>Las funerarias en Linares generalmente gestionan todos estos trámites por vos.</p>
+<p>Las funerarias en Linares generalmente gestionan todos estos trámites por ti.</p>
 
 <h2>Seguros de vida y planes funerarios</h2>
 <p>Muchas personas en Linares tienen seguros de vida o planes funerarios que cubren total o parcialmente los gastos. Verificá antes de contratar la funeraria si el fallecido tenía:</p>
@@ -2721,7 +2721,7 @@ export const posts: BlogPost[] = [
   <li>Seguro complementario del empleador.</li>
 </ul>
 
-<p>Encontrá funerarias en Linares en <a href="/servicios">LinaresYa — Servicios</a>. ¿Tenés una funeraria en Linares? <a href="/publicar">Publicala gratis</a>.</p>
+<p>Encuentra funerarias en Linares en <a href="/servicios">LinaresYa — Servicios</a>. ¿Tienes una funeraria en Linares? <a href="/publicar">Publícala gratis</a>.</p>
 `,
   },
 
@@ -2737,10 +2737,10 @@ export const posts: BlogPost[] = [
     emoji: "🚑",
     keywords: ["urgencias linares", "hospital linares urgencia", "samu linares", "emergencia medica linares"],
     contenido: `
-<p>Saber a dónde ir en una emergencia puede hacer la diferencia. Acá te explicamos todas las opciones de <strong>urgencias médicas en Linares</strong>: desde el SAMU hasta clínicas privadas, con sus horarios y lo que necesitás saber.</p>
+<p>Saber a dónde ir en una emergencia puede hacer la diferencia. Acá te explicamos todas las opciones de <strong>urgencias médicas en Linares</strong>: desde el SAMU hasta clínicas privadas, con sus horarios y lo que necesitas saber.</p>
 
 <h2>SAMU — Número de emergencia</h2>
-<p>El primer número que tenés que tener grabado: <strong>131</strong>. El SAMU (Servicio de Atención Médica de Urgencia) cubre toda la Región del Maule. Llamá al 131 en caso de:</p>
+<p>El primer número que tienes que tener grabado: <strong>131</strong>. El SAMU (Servicio de Atención Médica de Urgencia) cubre toda la Región del Maule. Llamá al 131 en caso de:</p>
 <ul>
   <li>Pérdida de consciencia o desmayo.</li>
   <li>Dificultad severa para respirar.</li>
@@ -2792,7 +2792,7 @@ export const posts: BlogPost[] = [
   <li>☎️ Fono Salud: <strong>600 360 7777</strong></li>
 </ul>
 
-<p>Encontrá médicos y centros de salud en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Tenés una clínica o consulta médica? <a href="/publicar">Publicala gratis</a>.</p>
+<p>Encuentra médicos y centros de salud en Linares en <a href="/salud-y-bienestar">LinaresYa — Salud y Bienestar</a>. ¿Tienes una clínica o consulta médica? <a href="/publicar">Publícala gratis</a>.</p>
 `,
   },
 
@@ -2808,19 +2808,19 @@ export const posts: BlogPost[] = [
     contenido: `
 <p>¿Problemas en el trabajo en Linares? Ya sea un despido injustificado, sueldo impago, acoso o una licencia rechazada, conocer tus derechos laborales y saber cómo actuar marca la diferencia. Acá te explicamos todo.</p>
 
-<h2>¿Cuándo necesitás un abogado laboral en Linares?</h2>
+<h2>¿Cuándo necesitas un abogado laboral en Linares?</h2>
 <ul>
   <li><strong>Despido injustificado o improcedente:</strong> si te despidieron sin causal válida o sin pagar la indemnización correcta.</li>
   <li><strong>Sueldo impago:</strong> si la empresa te debe semanas o meses de remuneración.</li>
   <li><strong>Acoso laboral (mobbing):</strong> conductas reiteradas de hostigamiento o maltrato en el trabajo.</li>
   <li><strong>Acoso sexual:</strong> comportamiento de naturaleza sexual no deseado en el trabajo.</li>
   <li><strong>Accidente del trabajo:</strong> si sufriste un accidente laboral y no recibes la atención o compensación correcta.</li>
-  <li><strong>Licencia médica rechazada:</strong> si la Compin rechazó tu licencia y querés apelar.</li>
+  <li><strong>Licencia médica rechazada:</strong> si la Compin rechazó tu licencia y quieres apelar.</li>
   <li><strong>No pago de cotizaciones:</strong> si tu empleador no te cotizó en AFP, Isapre o INP.</li>
 </ul>
 
 <h2>Inspección del Trabajo en Linares</h2>
-<p>Antes de contratar un abogado, podés ir gratis a la <strong>Inspección del Trabajo de Linares</strong>. Atienden denuncias sobre incumplimientos laborales, y muchos casos se resuelven con una mediación.</p>
+<p>Antes de contratar un abogado, puedes ir gratis a la <strong>Inspección del Trabajo de Linares</strong>. Atienden denuncias sobre incumplimientos laborales, y muchos casos se resuelven con una mediación.</p>
 <ul>
   <li><strong>Dirección:</strong> buscar en el sitio web de la Dirección del Trabajo (www.dt.gob.cl)</li>
   <li><strong>Teléfono central:</strong> 600 450 4000</li>
@@ -2836,7 +2836,7 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>El Juicio Oral del Trabajo en Linares</h2>
-<p>Chile tiene <strong>Juzgados de Letras del Trabajo</strong> que resuelven conflictos laborales. El proceso es relativamente rápido (3–12 meses) comparado con otros juicios. Si el monto reclamado es bajo, podés representarte solo, pero se recomienda abogado para montos importantes.</p>
+<p>Chile tiene <strong>Juzgados de Letras del Trabajo</strong> que resuelven conflictos laborales. El proceso es relativamente rápido (3–12 meses) comparado con otros juicios. Si el monto reclamado es bajo, puedes representarte solo, pero se recomienda abogado para montos importantes.</p>
 
 <h2>Indemnización por despido: ¿cuánto corresponde?</h2>
 <p>Dependiendo de la causal y la antigüedad:</p>
@@ -2847,9 +2847,9 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>Corporación de Asistencia Judicial (CAJMAULE)</h2>
-<p>Si no podés pagar un abogado, la <strong>Corporación de Asistencia Judicial del Maule (CAJMAULE)</strong> ofrece asesoría legal gratuita para personas de escasos recursos en Linares. Consultá disponibilidad en el municipio o llamando al número nacional.</p>
+<p>Si no puedes pagar un abogado, la <strong>Corporación de Asistencia Judicial del Maule (CAJMAULE)</strong> ofrece asesoría legal gratuita para personas de escasos recursos en Linares. Consultá disponibilidad en el municipio o llamando al número nacional.</p>
 
-<p>Encontrá abogados en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Sos abogado en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+<p>Encuentra abogados en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Eres abogado en Linares? <a href="/publicar">Publica tu servicio gratis</a>.</p>
 `,
   },
 
@@ -2878,7 +2878,7 @@ export const posts: BlogPost[] = [
 <h2>🚰 Fuga de agua: qué hacer primero</h2>
 <ol>
   <li><strong>Cierra la llave de paso general</strong> — generalmente está en el medidor de agua en la fachada o en el patio.</li>
-  <li>Si no encontrás la llave de paso, llamá a la empresa sanitaria (Essbio en Linares): <strong>600 362 0000</strong>.</li>
+  <li>Si no encuentras la llave de paso, llamá a la empresa sanitaria (Essbio en Linares): <strong>600 362 0000</strong>.</li>
   <li>Si el agua ya inundó el piso, desconecta los artefactos eléctricos del área.</li>
   <li>Llama a un gasfíter de emergencia.</li>
 </ol>
@@ -2911,7 +2911,7 @@ export const posts: BlogPost[] = [
   <li>Guarda el número de un gasfíter de confianza antes de necesitarlo.</li>
 </ul>
 
-<p>Encontrá gasfíteres en Linares — incluyendo servicio de urgencia — en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Sos gasfíter en Linares? <a href="/publicar">Publicá tu servicio gratis</a>.</p>
+<p>Encuentra gasfíteres en Linares — incluyendo servicio de urgencia — en <a href="/servicios-del-hogar">LinaresYa — Servicios del Hogar</a>. ¿Eres gasfíter en Linares? <a href="/publicar">Publica tu servicio gratis</a>.</p>
 `,
   },
 
@@ -2956,7 +2956,7 @@ export const posts: BlogPost[] = [
 <h2>Proceso de matrícula en Linares</h2>
 <p>El proceso de matrícula en Chile opera mediante el <strong>Sistema de Admisión Escolar (SAE)</strong>, administrado por el Ministerio de Educación:</p>
 <ol>
-  <li><strong>Postulación online</strong> (generalmente entre mayo y julio): ingresás al portal del MINEDUC y postulás a los colegios de tu preferencia.</li>
+  <li><strong>Postulación online</strong> (generalmente entre mayo y julio): ingresas al portal del MINEDUC y postulás a los colegios de tu preferencia.</li>
   <li><strong>Asignación</strong>: el sistema asigna cupos considerando hermanos en el establecimiento, cercanía y orden de preferencia.</li>
   <li><strong>Matrícula</strong>: una vez asignado, vas al colegio a concretar la matrícula en los plazos establecidos.</li>
 </ol>
@@ -2979,7 +2979,7 @@ export const posts: BlogPost[] = [
   <li>Becas de financiamiento para educación media y superior.</li>
 </ul>
 
-<p>¿Ofrecés clases particulares o servicios educativos en Linares? Publicá en <a href="/educacion">LinaresYa — Educación</a>. ¿Tenés un colegio o jardín infantil? <a href="/publicar">Registralo gratis</a>.</p>
+<p>¿Ofreces clases particulares o servicios educativos en Linares? Publica en <a href="/educacion">LinaresYa — Educación</a>. ¿Tienes un colegio o jardín infantil? <a href="/publicar">Registralo gratis</a>.</p>
 `,
   },
 
@@ -3052,7 +3052,7 @@ export const posts: BlogPost[] = [
 <h2>Ferias libres en Linares</h2>
 <p>Las ferias libres son una tradición en Linares. Ofrecen frutas, verduras, carnes y productos de temporada a precios más económicos que los supermercados. Generalmente funcionan los sábados por la mañana.</p>
 
-<p>Encontrá almacenes y tiendas de comestibles en Linares en <a href="/supermercados-y-almacenes">LinaresYa — Supermercados</a>. ¿Tenés un almacén o minimarket? <a href="/publicar">Publicalo gratis</a>.</p>
+<p>Encuentra almacenes y tiendas de comestibles en Linares en <a href="/supermercados-y-almacenes">LinaresYa — Supermercados</a>. ¿Tienes un almacén o minimarket? <a href="/publicar">Publícalo gratis</a>.</p>
 `,
   },
 
@@ -3090,7 +3090,7 @@ export const posts: BlogPost[] = [
 <p>Acredita quién es el dueño actual de un inmueble. Se obtiene en el <strong>Conservador de Bienes Raíces de Linares</strong> (no en la municipalidad).</p>
 
 <h3>Certificado de Residencia</h3>
-<p>Acredita que vivís en un domicilio de Linares. Útil para trámites en bancos, AFP, Isapre, etc.</p>
+<p>Acredita que vives en un domicilio de Linares. Útil para trámites en bancos, AFP, Isapre, etc.</p>
 <ul>
   <li>Se solicita en la DIDECO (Dirección de Desarrollo Comunitario) o en la junta de vecinos.</li>
   <li>Generalmente gratuito.</li>
@@ -3126,7 +3126,7 @@ export const posts: BlogPost[] = [
   <li>Apoyo a organizaciones comunitarias.</li>
 </ul>
 
-<p>¿Necesitás asesoría para trámites municipales en Linares? Encontrá abogados y gestores en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>.</p>
+<p>¿Necesitas asesoría para trámites municipales en Linares? Encuentra abogados y gestores en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>.</p>
 `,
   },
 
@@ -3153,7 +3153,7 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>Cajeros automáticos en Linares</h2>
-<p>Además de los cajeros de cada banco, encontrás cajeros Redcompra en:</p>
+<p>Además de los cajeros de cada banco, encuentras cajeros Redcompra en:</p>
 <ul>
   <li>Supermercados (Santa Isabel, Unimarc, Líder).</li>
   <li>Farmacias (Cruz Verde, Salcobrand).</li>
@@ -3163,7 +3163,7 @@ export const posts: BlogPost[] = [
 <p>Para encontrar el cajero más cercano, usá la app de tu banco o el localizador de Redbanc en redbanc.cl.</p>
 
 <h2>CajaVecina — BancoEstado</h2>
-<p>Si vivís en un sector alejado del centro, la <strong>CajaVecina</strong> es tu mejor aliada. Son puntos de atención de BancoEstado en almacenes, farmacias y minimarkets de barrio que permiten:</p>
+<p>Si vives en un sector alejado del centro, la <strong>CajaVecina</strong> es tu mejor aliada. Son puntos de atención de BancoEstado en almacenes, farmacias y minimarkets de barrio que permiten:</p>
 <ul>
   <li>Retirar efectivo de tu CuentaRUT.</li>
   <li>Depositar dinero.</li>
@@ -3171,7 +3171,7 @@ export const posts: BlogPost[] = [
   <li>Pagar el TAG y otros servicios.</li>
   <li>Recargar el Bip! y celulares.</li>
 </ul>
-<p>Buscá el punto CajaVecina más cercano en cajavecina.cl o en la app BancoEstado.</p>
+<p>Busca el punto CajaVecina más cercano en cajavecina.cl o en la app BancoEstado.</p>
 
 <h2>ServiEstado en Linares</h2>
 <p>Las oficinas <strong>ServiEstado</strong> permiten realizar trámites del Estado sin ir al banco:</p>
@@ -3182,7 +3182,7 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>Transferencias electrónicas en Chile</h2>
-<p>La transferencia electrónica entre cuentas es <strong>gratuita</strong> en Chile (por ley desde 2023). Para transferir necesitás:</p>
+<p>La transferencia electrónica entre cuentas es <strong>gratuita</strong> en Chile (por ley desde 2023). Para transferir necesitas:</p>
 <ul>
   <li>RUT del destinatario.</li>
   <li>Banco y tipo de cuenta.</li>
@@ -3191,14 +3191,14 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h2>Alternativas sin cuenta bancaria</h2>
-<p>Si no tenés cuenta bancaria en Linares, podés usar:</p>
+<p>Si no tienes cuenta bancaria en Linares, puedes usar:</p>
 <ul>
   <li><strong>CuentaRUT de BancoEstado:</strong> gratuita, sin requisitos de renta. Solo con cédula de identidad chilena o extranjería vigente.</li>
   <li><strong>Mercado Pago / MACH / Tenpo:</strong> billeteras digitales que permiten pagar y recibir dinero sin cuenta bancaria tradicional.</li>
   <li><strong>Pagos en efectivo:</strong> en ServiEstado, CajaVecina o directamente en el banco.</li>
 </ul>
 
-<p>¿Tenés un negocio de servicios financieros en Linares? Publicalo en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. <a href="/publicar">Registrá tu servicio gratis</a>.</p>
+<p>¿Tienes un negocio de servicios financieros en Linares? Publícalo en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. <a href="/publicar">Registra tu servicio gratis</a>.</p>
 `,
   },
 
@@ -3236,7 +3236,7 @@ export const posts: BlogPost[] = [
 <p>Mové al animal con cuidado sobre una superficie rígida (tabla, cartón grueso). No dobres la columna. Si está consciente, puede morder por dolor — improvisá un bozal con una tela suave.</p>
 
 <h3>Intoxicación</h3>
-<p><strong>No induzcas el vómito</strong> sin instrucción del veterinario. Llevá el envase del producto que ingirió. Llamá a la clínica veterinaria antes de ir para que se preparen.</p>
+<p><strong>No induzcas el vómito</strong> sin instrucción del veterinario. Lleva el envase del producto que ingirió. Llamá a la clínica veterinaria antes de ir para que se preparen.</p>
 
 <h3>Convulsión</h3>
 <p>Alejá objetos peligrosos. No pongas nada en la boca del animal. Cronometrá la duración. Cuando termine, mantenelo en lugar oscuro y tranquilo. Si dura más de 5 minutos, es emergencia.</p>
@@ -3255,7 +3255,7 @@ export const posts: BlogPost[] = [
 <h2>Zoonosis y control de mascotas en Linares</h2>
 <p>La Municipalidad de Linares ofrece campañas de vacunación antirrábica gratuita y esterilización subsidiada para perros y gatos. Consultá en la DIDECO municipal sobre el próximo operativo.</p>
 
-<p>Encontrá veterinarias en Linares en <a href="/mascotas-y-veterinaria">LinaresYa — Mascotas</a>. ¿Tenés clínica veterinaria con urgencias? <a href="/publicar">Publicala gratis</a>.</p>
+<p>Encuentra veterinarias en Linares en <a href="/mascotas-y-veterinaria">LinaresYa — Mascotas</a>. ¿Tienes clínica veterinaria con urgencias? <a href="/publicar">Publícala gratis</a>.</p>
 `,
   },
 
@@ -3263,13 +3263,13 @@ export const posts: BlogPost[] = [
     slug: "arriendo-local-comercial-linares",
     titulo: "Arriendo de locales comerciales en Linares: guía y precios",
     descripcion:
-      "¿Buscás local comercial en arriendo en Linares? Precios por sector, qué exigen los arrendadores y cómo elegir la mejor ubicación para tu negocio.",
+      "¿Buscas local comercial en arriendo en Linares? Precios por sector, qué exigen los arrendadores y cómo elegir la mejor ubicación para tu negocio.",
     fecha: "2026-05-28",
     categoria: "Inmuebles",
     emoji: "🏪",
     keywords: ["local comercial arriendo linares", "arriendo local linares", "bodega arriendo linares", "oficina arriendo linares"],
     contenido: `
-<p>¿Vas a abrir un negocio en Linares y buscás local? La ubicación puede hacer o deshacer un emprendimiento. Acá te explicamos precios, sectores y qué evaluar antes de firmar.</p>
+<p>¿Vas a abrir un negocio en Linares y buscas local? La ubicación puede hacer o deshacer un emprendimiento. Acá te explicamos precios, sectores y qué evaluar antes de firmar.</p>
 
 <h2>Precios de arriendo de locales en Linares (2025)</h2>
 <ul>
@@ -3309,21 +3309,21 @@ export const posts: BlogPost[] = [
   <li>Inicio de actividades en el SII (o compromiso de iniciarlo).</li>
   <li>Garantía: 1–3 meses de arriendo.</li>
   <li>Codeudor solidario (en muchos casos).</li>
-  <li>Declaración de IVA de los últimos 6 meses (si ya tenés negocio).</li>
+  <li>Declaración de IVA de los últimos 6 meses (si ya tienes negocio).</li>
 </ul>
 
 <h2>Aspectos legales del arriendo de local comercial</h2>
 <ul>
   <li>El contrato debe especificar el <strong>uso permitido</strong> del local.</li>
   <li>Verificá que el local tenga <strong>recepción de obra</strong> de la municipalidad (DOM).</li>
-  <li>Para algunos rubros (restorán, farmacia, clínica) necesitás <strong>informe sanitario</strong> del SEREMI de Salud.</li>
+  <li>Para algunos rubros (restorán, farmacia, clínica) necesitas <strong>informe sanitario</strong> del SEREMI de Salud.</li>
   <li>Coordiná quién paga las reparaciones estructurales vs. las de uso normal.</li>
 </ul>
 
 <h2>¿Es mejor comprar o arrendar local en Linares?</h2>
 <p>Para emprendedores nuevos, el arriendo es más recomendable: menor inversión inicial, flexibilidad para cambiar de ubicación si el negocio crece y sin riesgo de endeudamiento por propiedad. Comprar es conveniente cuando el negocio está estable y el flujo de caja es predecible.</p>
 
-<p>Encontrá locales y asesores inmobiliarios en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tenés locales en arriendo? <a href="/publicar">Publicá gratis</a>.</p>
+<p>Encuentra locales y asesores inmobiliarios en Linares en <a href="/servicios-profesionales">LinaresYa — Servicios Profesionales</a>. ¿Tienes locales en arriendo? <a href="/publicar">Publica gratis</a>.</p>
 `,
   },
 
@@ -3385,7 +3385,7 @@ export const posts: BlogPost[] = [
 
 <h2>¿Fibra óptica o cable en Linares?</h2>
 <ul>
-  <li><strong>Fibra óptica:</strong> más rápida, simétrica (misma velocidad de subida y bajada) y estable. Ideal si trabajás desde casa, hacés videollamadas o jugás online.</li>
+  <li><strong>Fibra óptica:</strong> más rápida, simétrica (misma velocidad de subida y bajada) y estable. Ideal si trabajas desde casa, haces videollamadas o jugás online.</li>
   <li><strong>Cable:</strong> velocidades asimétricas (descarga más rápida que subida). Suficiente para uso doméstico normal.</li>
   <li><strong>ADSL:</strong> tecnología más antigua, velocidades menores. Solo recomendable donde no hay otra opción.</li>
 </ul>
@@ -3393,12 +3393,12 @@ export const posts: BlogPost[] = [
 <h2>Tips para reclamar o mejorar tu servicio</h2>
 <ul>
   <li>Medí tu velocidad real en <strong>fast.com o speedtest.net</strong> antes de reclamar.</li>
-  <li>Si tu velocidad real es menor al 40% de lo contratado, tenés derecho a reclamar ante la <strong>Subtel</strong> (www.subtel.gob.cl).</li>
-  <li>Renegociá tu plan cada 12 meses — los clientes nuevos siempre reciben mejores ofertas y podés exigir lo mismo.</li>
-  <li>El router del proveedor puede ser un cuello de botella — preguntá si podés usar el tuyo propio.</li>
+  <li>Si tu velocidad real es menor al 40% de lo contratado, tienes derecho a reclamar ante la <strong>Subtel</strong> (www.subtel.gob.cl).</li>
+  <li>Renegociá tu plan cada 12 meses — los clientes nuevos siempre reciben mejores ofertas y puedes exigir lo mismo.</li>
+  <li>El router del proveedor puede ser un cuello de botella — preguntá si puedes usar el tuyo propio.</li>
 </ul>
 
-<p>¿Tenés un servicio de tecnología o soporte técnico en Linares? Publicalo en <a href="/tecnologia">LinaresYa</a>. <a href="/publicar">Registralo gratis</a>.</p>
+<p>¿Tienes un servicio de tecnología o soporte técnico en Linares? Publícalo en <a href="/tecnologia">LinaresYa</a>. <a href="/publicar">Registralo gratis</a>.</p>
 `,
   },
 ];

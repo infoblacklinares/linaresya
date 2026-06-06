@@ -303,7 +303,7 @@ export default async function BuscarPage({
             <p className="mt-1.5 text-sm text-muted-foreground max-w-sm mx-auto">
               {hayFiltros
                 ? "Probá quitar algunos filtros o cambiar los términos."
-                : "Escribí algo arriba o filtrá por categoría."}
+                : "Escribe algo arriba o filtrá por categoría."}
             </p>
             <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-2">
               {hayFiltros && (
@@ -376,7 +376,7 @@ export default async function BuscarPage({
           </ul>
         )}
 
-        {/* Pie "¿No está lo que buscás?" — se muestra cuando hay resultados pero con búsqueda activa */}
+        {/* Pie "¿No está lo que buscas?" — se muestra cuando hay resultados pero con búsqueda activa */}
         {itemsOrdenados.length > 0 && hayFiltros && (
           <div className="mx-4 mt-4 mb-2 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl bg-secondary/50 px-5 py-4">
             <p className="text-sm text-muted-foreground">

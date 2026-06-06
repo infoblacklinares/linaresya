@@ -93,7 +93,7 @@ export default async function QRPage({ params }: Props) {
         <div className="text-center">
           <p className="text-base font-bold">📱 Escaneame</p>
           <p className="text-sm text-foreground/70 mt-0.5">
-            Mirá nuestros horarios, contacto<br />y dejanos una reseña
+            Mira nuestros horarios, contacto<br />y dejanos una reseña
           </p>
         </div>
 
@@ -110,7 +110,7 @@ export default async function QRPage({ params }: Props) {
       <div className="mt-6 rounded-2xl bg-secondary/50 p-4 space-y-2 text-[13px]">
         <p className="font-semibold">¿Cómo usar este QR?</p>
         <ol className="list-decimal list-inside space-y-1 text-foreground/70">
-          <li>Hacé clic en "Imprimir" o guardá la imagen</li>
+          <li>Haz clic en "Imprimir" o guarda la imagen</li>
           <li>Pegalo en tu mostrador, ventana o menú</li>
           <li>Tus clientes lo escanean y llegan directo a tu ficha</li>
           <li>Pueden ver horarios, llamarte y dejar una reseña</li>
@@ -131,7 +131,7 @@ export default async function QRPage({ params }: Props) {
       {/* CTA Premium si no lo tienen */}
       <div className="mt-6 rounded-2xl bg-[#2B6E80]/10 border border-[#2B6E80]/20 p-4 text-center print:hidden">
         <p className="text-sm font-semibold text-[#2B6E80]">
-          ¿Querés que tus clientes te contacten por WhatsApp directo?
+          ¿Quieres que tus clientes te contacten por WhatsApp directo?
         </p>
         <a
           href="/premium"

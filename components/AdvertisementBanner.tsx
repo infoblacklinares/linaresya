@@ -49,7 +49,7 @@ export default function AdvertisementBanner({
               ¿Tu negocio aún no está aquí?
             </h3>
             <p className="mt-1 text-sm text-white/80">
-              Aparece gratis frente a miles de vecinos que buscan lo que ofrecés.
+              Aparece gratis frente a miles de vecinos que buscan lo que ofreces.
             </p>
             <Link
               href="/publicar"

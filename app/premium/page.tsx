@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
 // ── Datos de contacto y pago ─────────────────────────────────────────────────
-// Editá estos valores con tus datos reales.
+// Edita estos valores con tus datos reales.
 const WA_NUMERO   = "56984272557";           // sin + ni espacios
 const EMAIL_PAGO  = "infoblack.linares@gmail.com";
 
@@ -13,7 +13,7 @@ const BANCO       = "Banco Estado";
 const TIPO_CUENTA = "Cuenta RUT / Vista";
 const NRO_CUENTA  = "186537866";
 const RUT_TITULAR = "18.653.786-6";
-const NOMBRE_TITULAR = "Infoblack SpA";      // ← actualizá si el nombre difiere
+const NOMBRE_TITULAR = "Infoblack SpA";      // ← actualiza si el nombre difiere
 
 // Precio mensual y anual
 const PRECIO_MES  = 9900;
@@ -43,14 +43,14 @@ export const metadata: Metadata = {
 const FEATURES = [
   { emoji: "💬", titulo: "WhatsApp directo", desc: "Tus clientes te escriben en un clic desde tu ficha, sin intermediarios." },
   { emoji: "📸", titulo: "Fotos del negocio", desc: "Galería de hasta 8 fotos de tu local, productos o servicios." },
-  { emoji: "🔝", titulo: "Posición destacada", desc: "Aparecés antes que los negocios básicos en búsquedas y categorías." },
+  { emoji: "🔝", titulo: "Posición destacada", desc: "Apareces antes que los negocios básicos en búsquedas y categorías." },
   { emoji: "📊", titulo: "Estadísticas reales", desc: "Vistas, clics en WhatsApp, llamadas y cómo llegar — semana a semana." },
   { emoji: "✏️", titulo: "Edición autónoma", desc: "Link mágico para actualizar tus datos cuando quieras, sin depender de nadie." },
   { emoji: "⭐", titulo: "Badge Premium", desc: "Marca visual que genera confianza frente a negocios sin verificar." },
 ];
 
 const PASOS_PAGO = [
-  { n: "1", txt: "Hacé la transferencia con los datos de abajo." },
+  { n: "1", txt: "Haz la transferencia con los datos de abajo." },
   { n: "2", txt: "Mandá el comprobante por WhatsApp o al email." },
   { n: "3", txt: "En menos de 24 horas activamos tu plan Premium." },
 ];
@@ -58,15 +58,15 @@ const PASOS_PAGO = [
 const FAQ = [
   {
     q: "¿Hay contrato o permanencia mínima?",
-    a: "No. Podés cancelar cuando querás. Si pagás mensual, el plan corre hasta el próximo mes. Si pagaste anual y querés cancelar antes, te devolvemos los meses restantes.",
+    a: "No. Puedes cancelar cuando querás. Si pagas mensual, el plan corre hasta el próximo mes. Si pagaste anual y quieres cancelar antes, te devolvemos los meses restantes.",
   },
   {
     q: "¿Cómo activan mi Premium después de pagar?",
-    a: "Mandás el comprobante por WhatsApp o email. Nosotros lo verificamos y activamos tu plan dentro de las 24 horas siguientes, generalmente el mismo día.",
+    a: "Mandas el comprobante por WhatsApp o email. Nosotros lo verificamos y activamos tu plan dentro de las 24 horas siguientes, generalmente el mismo día.",
   },
   {
     q: "¿Qué pasa si ya tengo ficha básica?",
-    a: "Perfecto. Al activar Premium tu ficha existente se actualiza automáticamente: se habilita WhatsApp, subís las fotos y aparecés destacado.",
+    a: "Perfecto. Al activar Premium tu ficha existente se actualiza automáticamente: se habilita WhatsApp, subes las fotos y apareces destacado.",
   },
   {
     q: "¿Puedo probar Premium antes de pagar?",
@@ -126,7 +126,7 @@ export default function PremiumPage() {
       {/* ── Precios ────────────────────────────────────────────────── */}
       <section className="px-4 pt-7">
         <h2 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-4">
-          Elegí tu plan
+          Elige tu plan
         </h2>
         <div className="grid grid-cols-2 gap-3">
 
@@ -140,7 +140,7 @@ export default function PremiumPage() {
             </p>
             <p className="text-xs text-muted-foreground">por mes</p>
             <p className="mt-3 text-[12px] text-foreground/60 leading-snug">
-              Pagás cada mes. Cancelás cuando querás.
+              Pagas cada mes. Cancelas cuando querás.
             </p>
           </div>
 
@@ -282,14 +282,14 @@ export default function PremiumPage() {
             Hablar por WhatsApp
           </a>
           <p className="mt-4 text-[11px] text-white/40">
-            Sin contratos · Cancelás cuando querás · IVA incluido
+            Sin contratos · Cancelas cuando querás · IVA incluido
           </p>
         </div>
 
         <p className="mt-4 text-center text-xs text-muted-foreground">
-          ¿Todavía no tenés ficha?{" "}
+          ¿Todavía no tienes ficha?{" "}
           <Link href="/publicar" className="font-semibold underline hover:text-foreground">
-            Publicá gratis primero →
+            Publica gratis primero →
           </Link>
         </p>
       </section>

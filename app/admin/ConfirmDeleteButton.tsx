@@ -10,7 +10,7 @@ export default function ConfirmDeleteButton({
   action,
   id,
   label = "Eliminar",
-  mensaje = "¿Seguro que querés eliminar esto? Esta acción es irreversible.",
+  mensaje = "¿Seguro que quieres eliminar esto? Esta acción es irreversible.",
   className,
 }: {
   action: (formData: FormData) => Promise<void>;

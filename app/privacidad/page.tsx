@@ -74,7 +74,7 @@ export default function PrivacidadPage() {
         <section>
           <h2 className="text-base font-bold mb-1">5. Tus derechos</h2>
           <p>
-            Podes pedir en cualquier momento que actualicemos o eliminemos los
+            Puedes pedir en cualquier momento que actualicemos o eliminemos los
             datos de tu negocio escribiendonos a{" "}
             <a
               href="mailto:infoblack.linares@gmail.com"
@@ -82,7 +82,7 @@ export default function PrivacidadPage() {
             >
               infoblack.linares@gmail.com
             </a>
-            . Tambien podes pedir la eliminacion de una resena si crees que
+            . Tambien puedes pedir la eliminacion de una resena si crees que
             te perjudica injustamente; cada caso se evalua individualmente.
           </p>
         </section>

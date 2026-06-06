@@ -1,7 +1,7 @@
 import Script from "next/script";
 
 // GA4 tracking. Solo carga el script si la env var esta configurada en
-// produccion. En dev podes setear NEXT_PUBLIC_GA_ID si querés probar tracking
+// produccion. En dev puedes setear NEXT_PUBLIC_GA_ID si quieres probar tracking
 // (pero usualmente conviene dejarlo solo en prod para no contaminar reportes).
 export default function GoogleAnalytics() {
   const gaId = process.env.NEXT_PUBLIC_GA_ID;

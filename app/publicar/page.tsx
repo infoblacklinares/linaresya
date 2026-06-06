@@ -8,12 +8,12 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 export const metadata: Metadata = {
   title: "Publicar tu negocio gratis en Linares - LinaresYa",
   description:
-    "Sumá tu negocio, oficio o servicio a LinaresYa gratis. Aparecé frente a miles de vecinos de Linares que buscan lo que ofrecés. Sin registro, sin tarjeta.",
+    "Suma tu negocio, oficio o servicio a LinaresYa gratis. Aparece frente a miles de vecinos de Linares que buscan lo que ofreces. Sin registro, sin tarjeta.",
   alternates: { canonical: `${SITE_URL}/publicar` },
   openGraph: {
     title: "Publicar tu negocio gratis en Linares",
     description:
-      "Sumá tu negocio a LinaresYa gratis y aparecé en las búsquedas locales de Linares.",
+      "Suma tu negocio a LinaresYa gratis y aparece en las búsquedas locales de Linares.",
     url: `${SITE_URL}/publicar`,
     type: "website",
   },
@@ -24,8 +24,8 @@ type Categoria = { id: number; nombre: string; slug: string; emoji: string };
 const BENEFICIOS = [
   {
     icon: "🔍",
-    titulo: "Aparecés en búsquedas",
-    desc: "Vecinos que buscan lo que ofrecés te encuentran en LinaresYa y en Google.",
+    titulo: "Apareces en búsquedas",
+    desc: "Vecinos que buscan lo que ofreces te encuentran en LinaresYa y en Google.",
   },
   {
     icon: "📞",
@@ -40,12 +40,12 @@ const BENEFICIOS = [
   {
     icon: "📊",
     titulo: "Estadísticas propias",
-    desc: "Sabés cuántas personas vieron tu ficha, llamaron o buscaron cómo llegar.",
+    desc: "Sabes cuántas personas vieron tu ficha, llamaron o buscaron cómo llegar.",
   },
 ];
 
 const PASOS = [
-  { n: "1", txt: "Completás el formulario con los datos de tu negocio (tarda 3 minutos)." },
+  { n: "1", txt: "Completas el formulario con los datos de tu negocio (tarda 3 minutos)." },
   { n: "2", txt: "Revisamos la información y la activamos en las próximas horas." },
   { n: "3", txt: "Tu negocio aparece en el directorio y en las búsquedas locales de Linares." },
 ];
@@ -94,7 +94,7 @@ export default async function PublicarPage() {
         </h2>
         <p className="mt-3 text-sm text-white/80 leading-relaxed">
           Publicar es <strong className="text-white">gratis y sin registro</strong>.
-          Solo completás el formulario y te activamos en pocas horas.
+          Solo completas el formulario y te activamos en pocas horas.
         </p>
 
         {/* Stat bar */}
@@ -143,7 +143,7 @@ export default async function PublicarPage() {
         {/* Premium CTA */}
         <div className="mt-3 rounded-2xl border border-[#2B6E80]/30 bg-[#2B6E80]/5 px-4 py-4 flex items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-bold">¿Querés más? → Plan Premium</p>
+            <p className="text-sm font-bold">¿Quieres más? → Plan Premium</p>
             <p className="text-[12px] text-muted-foreground mt-0.5">
               WhatsApp directo, destacado en el directorio y más.
             </p>
@@ -160,7 +160,7 @@ export default async function PublicarPage() {
       {/* ── Separador ──────────────────────────────────────────────── */}
       <div className="mx-4 mt-7 border-t border-border" />
       <p className="text-center text-[11px] text-muted-foreground mt-3 mb-1">
-        Completá el formulario — tarda unos 3 minutos
+        Completa el formulario — tarda unos 3 minutos
       </p>
 
       {/* ── Formulario ─────────────────────────────────────────────── */}

@@ -5,12 +5,12 @@ import { supabase } from "@/lib/supabase";
 export const metadata: Metadata = {
   title: "Publica tu negocio gratis en Linares - LinaresYa",
   description:
-    "Aparece gratis en el directorio local de Linares. Miles de vecinos buscan negocios, gasfíteres, veterinarias, restaurantes y más. Registrate en 5 minutos.",
+    "Aparece gratis en el directorio local de Linares. Miles de vecinos buscan negocios, gasfíteres, veterinarias, restaurantes y más. Regístrate en 5 minutos.",
   alternates: { canonical: "https://linaresya.cl/para-negocios" },
   openGraph: {
     title: "Publica tu negocio gratis en Linares - LinaresYa",
     description:
-      "Miles de vecinos de Linares buscan negocios y servicios locales. Aparecé gratis en LinaresYa.",
+      "Miles de vecinos de Linares buscan negocios y servicios locales. Aparece gratis en LinaresYa.",
     url: "https://linaresya.cl/para-negocios",
     siteName: "LinaresYa",
     locale: "es_CL",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const pasos = [
   {
     n: "1",
-    titulo: "Completás el formulario",
+    titulo: "Completas el formulario",
     desc: "Nombre, categoría, teléfono, descripción y horarios. Tarda menos de 5 minutos.",
   },
   {
@@ -40,12 +40,12 @@ const beneficios = [
   {
     emoji: "🆓",
     titulo: "100% gratis",
-    desc: "El plan básico no tiene costo. Aparecés en el directorio sin pagar nada.",
+    desc: "El plan básico no tiene costo. Apareces en el directorio sin pagar nada.",
   },
   {
     emoji: "📍",
     titulo: "Aparecer en Google",
-    desc: "Tu ficha tiene SEO optimizado. Cuando alguien busca tu rubro en Linares, aparecés.",
+    desc: "Tu ficha tiene SEO optimizado. Cuando alguien busca tu rubro en Linares, apareces.",
   },
   {
     emoji: "🕐",
@@ -65,14 +65,14 @@ const beneficios = [
   {
     emoji: "📊",
     titulo: "Estadísticas (Premium)",
-    desc: "Sabés cuánta gente vio tu ficha, cuántos te llamaron y cómo llegaron a vos.",
+    desc: "Sabes cuánta gente vio tu ficha, cuántos te llamaron y cómo llegaron a ti.",
   },
 ];
 
 const preguntas = [
   {
     q: "¿Cuánto cuesta publicar?",
-    a: "El plan básico es completamente gratis. Si querés más visibilidad, WhatsApp directo y fotos, el plan Premium cuesta $9.900/mes.",
+    a: "El plan básico es completamente gratis. Si quieres más visibilidad, WhatsApp directo y fotos, el plan Premium cuesta $9.900/mes.",
   },
   {
     q: "¿Qué tipo de negocios pueden publicar?",
@@ -88,7 +88,7 @@ const preguntas = [
   },
   {
     q: "¿Necesito tener sitio web?",
-    a: "No. LinaresYa es tu presencia digital local. No necesitás web propia para aparecer y que te encuentren.",
+    a: "No. LinaresYa es tu presencia digital local. No necesitas web propia para aparecer y que te encuentren.",
   },
 ];
 

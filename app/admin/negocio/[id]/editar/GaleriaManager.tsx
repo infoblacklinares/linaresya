@@ -22,7 +22,7 @@ export default function GaleriaManager({
   if (fotos.length === 0) {
     return (
       <p className="text-[12px] text-muted-foreground italic">
-        Este negocio no tiene fotos en galeria. Podes subir nuevas abajo.
+        Este negocio no tiene fotos en galeria. Puedes subir nuevas abajo.
       </p>
     );
   }
