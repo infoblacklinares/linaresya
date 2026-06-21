@@ -428,62 +428,71 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Destacados — cards estilo Uber Eats */}
+      {/* Destacados — grid 2 columnas */}
       {destacados.length > 0 && (
         <section className="pt-8">
-          <div className="flex items-end justify-between px-4 mb-1">
+          <div className="flex items-end justify-between px-4 mb-3">
             <div>
               <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Destacados</h2>
-              <p className="text-xs text-[#8E8279]">Verificados y premiados por la comunidad</p>
+              <p className="text-xs text-[#8E8279]">Premium y verificados por la comunidad</p>
             </div>
             <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todo →</Link>
           </div>
-          <ul className="mt-3 space-y-2.5 px-4">
-            {destacados.map(d => {
+          <div className="grid grid-cols-2 gap-3 px-4">
+            {destacados.map((d, i) => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
               const rating = ratingsMap.get(d.id);
+              const isOpen = estaAbierto(d.id, openIds);
               return (
-                <li key={d.id}>
-                  <Link href={url} className="flex items-center gap-3.5 rounded-2xl bg-white p-3 shadow-[0_2px_14px_rgba(0,0,0,0.07)] border border-[#F0EDE8] transition hover:shadow-[0_4px_20px_rgba(0,0,0,0.11)] active:scale-[0.99]">
-                    {/* Imagen */}
-                    <div className="relative flex h-[76px] w-[76px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#F5F2EE] text-3xl">
-                      {d.foto_portada
-                        // eslint-disable-next-line @next/next/no-img-element
-                        ? <img src={d.foto_portada} alt={d.nombre} className="h-full w-full object-cover" />
-                        : <span>{d.categorias?.emoji ?? "📍"}</span>}
-                      <div className="absolute left-1 top-1">
-                        <FavoritoButton negocioId={d.id} variant="icon" />
-                      </div>
+                <Link
+                  key={d.id}
+                  href={url}
+                  className="group overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_22px_rgba(0,0,0,0.12)] active:scale-[0.98]"
+                >
+                  {/* Imagen */}
+                  <div className={`relative flex h-32 w-full items-center justify-center text-5xl ${catColor(i)}`}>
+                    {d.foto_portada
+                      // eslint-disable-next-line @next/next/no-img-element
+                      ? <img src={d.foto_portada} alt={d.nombre} className="h-full w-full object-cover" />
+                      : <span>{d.categorias?.emoji ?? "📍"}</span>}
+                    {/* Badge premium sobre imagen */}
+                    {d.plan === "premium" && (
+                      <span className="absolute left-2 top-2 rounded-full bg-[#F4B860] px-2 py-0.5 text-[9px] font-extrabold text-[#1A1410] shadow-sm">⭐ Premium</span>
+                    )}
+                    {/* Badge abierto/cerrado */}
+                    <span className={`absolute right-2 bottom-2 rounded-full px-2 py-0.5 text-[9px] font-bold backdrop-blur-sm ${badgeAbierto(isOpen).clases}`}>
+                      {badgeAbierto(isOpen).texto}
+                    </span>
+                    {/* Favorito */}
+                    <div className="absolute left-2 bottom-2">
+                      <FavoritoButton negocioId={d.id} variant="icon" />
                     </div>
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <p className="truncate text-[15px] font-black text-[#1A1410] leading-tight">{d.nombre}</p>
-                      {/* Badges */}
-                      <div className="mt-1 flex flex-wrap gap-1">
-                        {d.verificado && <span className="rounded-full bg-[#2B6E80]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#2B6E80]">✓ Verificado</span>}
-                        {d.plan === "premium" && <span className="rounded-full bg-[#F4B860]/20 px-1.5 py-0.5 text-[9px] font-bold text-[#8B5E0A]">⭐ Premium</span>}
-                        {esNuevo(d.creado_en) && <span className="rounded-full bg-[#3D5A45]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#3D5A45]">Nuevo</span>}
-                        {(() => { const b = badgeAbierto(estaAbierto(d.id, openIds)); return <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${b.clases}`}>{b.texto}</span>; })()}
-                      </div>
-                      {/* Meta */}
-                      <div className="mt-1.5 flex items-center gap-2">
-                        <p className="truncate text-[11px] text-[#8E8279]">
-                          {d.categorias?.emoji} {d.categorias?.nombre}{d.a_domicilio && " · 🛵 Domicilio"}
-                        </p>
-                        {rating && rating.count > 0 && (
-                          <span className="shrink-0 text-[11px] font-bold text-amber-500">
-                            ★ {(rating.sum / rating.count).toFixed(1)}
-                            <span className="font-normal text-[#8E8279]"> ({rating.count})</span>
-                          </span>
-                        )}
-                      </div>
+                  </div>
+
+                  {/* Info */}
+                  <div className="p-3">
+                    <p className="truncate text-sm font-black text-[#1A1410] leading-tight">{d.nombre}</p>
+                    <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">
+                      {d.categorias?.emoji} {d.categorias?.nombre}{d.a_domicilio ? " · 🛵" : ""}
+                    </p>
+                    <div className="mt-1.5 flex items-center gap-1.5 flex-wrap">
+                      {d.verificado && (
+                        <span className="rounded-full bg-[#2B6E80]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#2B6E80]">✓ Verif.</span>
+                      )}
+                      {esNuevo(d.creado_en) && (
+                        <span className="rounded-full bg-[#3D5A45]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#3D5A45]">Nuevo</span>
+                      )}
+                      {rating && rating.count > 0 && (
+                        <span className="text-[10px] font-bold text-amber-500">
+                          ★ {(rating.sum / rating.count).toFixed(1)}
+                        </span>
+                      )}
                     </div>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C8C2BC" strokeWidth="2.5" className="shrink-0"><path d="m9 18 6-6-6-6" /></svg>
-                  </Link>
-                </li>
+                  </div>
+                </Link>
               );
             })}
-          </ul>
+          </div>
         </section>
       )}
 
