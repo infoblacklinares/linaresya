@@ -16,9 +16,9 @@ const RUT_TITULAR = "18.653.786-6";
 const NOMBRE_TITULAR = "Infoblack SpA";      // ← actualiza si el nombre difiere
 
 // Precio mensual y anual
-const PRECIO_MES  = 9900;
-const PRECIO_ANIO = 99000;                   // 2 meses gratis vs mensual
-const PRECIO_MES_ANIO = Math.round(PRECIO_ANIO / 12); // ~4.166/mes
+const PRECIO_MES  = 4990;
+const PRECIO_ANIO = 49900;                   // 2 meses gratis vs mensual
+const PRECIO_MES_ANIO = Math.round(PRECIO_ANIO / 12); // ~4.158/mes
 
 const WA_MSG_PREMIUM = encodeURIComponent(
   "Hola! Quiero contratar el Plan Premium de LinaresYa. Te mando el comprobante de transferencia."

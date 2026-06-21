@@ -299,7 +299,7 @@ export default async function DuenoEstadisticasPage({
           <div className="rounded-2xl bg-[#F4B860]/10 border border-[#F4B860]/30 p-4">
             <p className="text-sm font-bold text-[#8B5E0A] mb-1">⭐ Plan Premium</p>
             <p className="text-[13px] text-foreground/70 leading-relaxed mb-3">
-              Con Premium activas WhatsApp directo, subes fotos de tu negocio y apareces destacado frente a los básicos. Desde $9.900/mes.
+              Con Premium activas WhatsApp directo, subes fotos de tu negocio y apareces destacado frente a los básicos. Desde $4.990/mes.
             </p>
             <Link
               href="/premium"

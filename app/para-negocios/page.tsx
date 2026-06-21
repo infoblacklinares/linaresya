@@ -72,7 +72,7 @@ const beneficios = [
 const preguntas = [
   {
     q: "¿Cuánto cuesta publicar?",
-    a: "El plan básico es completamente gratis. Si quieres más visibilidad, WhatsApp directo y fotos, el plan Premium cuesta $9.900/mes.",
+    a: "El plan básico es completamente gratis. Si quieres más visibilidad, WhatsApp directo y fotos, el plan Premium cuesta $4.990/mes.",
   },
   {
     q: "¿Qué tipo de negocios pueden publicar?",
@@ -209,7 +209,7 @@ export default async function ParaNegociosPage() {
           <div className="grid grid-cols-3 border-t border-border bg-secondary/40">
             <div className="px-3 py-2.5 text-left text-[11px] font-bold text-muted-foreground">Precio</div>
             <div className="px-3 py-2.5 border-l border-border text-[13px] font-bold text-center">Gratis</div>
-            <div className="px-3 py-2.5 border-l border-border text-[13px] font-bold text-center text-[#2B6E80]">$9.900/mes</div>
+            <div className="px-3 py-2.5 border-l border-border text-[13px] font-bold text-center text-[#2B6E80]">$4.990/mes</div>
           </div>
         </div>
       </section>
