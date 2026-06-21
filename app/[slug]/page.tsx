@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/jsonld";
 import { getOpenIds, estaAbierto } from "@/lib/horarios";
+import AnimatedCard from "@/components/AnimatedCard";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
 
@@ -125,11 +126,13 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
           <EmptyState emoji={cat.emoji} nombre={cat.nombre} />
         ) : (
           <div className="grid grid-cols-2 gap-3">
-            {items.map(n => {
+            {items.map((n, i) => {
               const rData = ratingsMap.get(n.id);
               const rating = rData && rData.count > 0 ? { avg: rData.sum / rData.count, count: rData.count } : null;
               return (
-                <NegocioCard key={n.id} n={n} categoriaSlug={cat.slug} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
+                <AnimatedCard key={n.id} index={i}>
+                  <NegocioCard n={n} categoriaSlug={cat.slug} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
+                </AnimatedCard>
               );
             })}
           </div>

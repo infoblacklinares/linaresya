@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { diaHoySantiago, horaAhoraSantiago, badgeAbierto } from "@/lib/horarios";
+import AnimatedCard from "@/components/AnimatedCard";
 
 const WA_SUGERIR = "56984272557";
 function waLinkSugerir(termino: string) {
@@ -362,13 +363,15 @@ export default async function BuscarPage({
           </div>
         ) : (
           <div className="px-4 grid grid-cols-2 gap-3">
-            {itemsOrdenados.map((n) => {
+            {itemsOrdenados.map((n, i) => {
               const rData = ratingsMap.get(n.id);
               const rating = rData && rData.count > 0
                 ? { avg: rData.sum / rData.count, count: rData.count }
                 : null;
               return (
-                <NegocioCard key={n.id} n={n} isOpen={resultOpenIds.includes(n.id)} rating={rating} />
+                <AnimatedCard key={n.id} index={i}>
+                  <NegocioCard n={n} isOpen={resultOpenIds.includes(n.id)} rating={rating} />
+                </AnimatedCard>
               );
             })}
           </div>

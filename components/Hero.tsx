@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AnimatedCounter from "@/components/AnimatedCounter";
 
 interface HeroProps {
   totalNegocios?: number;
@@ -43,7 +44,7 @@ export default function Hero({ totalNegocios, abiertosAhora }: HeroProps) {
               <div className="flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2 backdrop-blur-sm">
                 <span className="text-lg leading-none">🏪</span>
                 <div>
-                  <p className="text-xs font-black leading-none text-white">{totalNegocios}+</p>
+                  <p className="text-xs font-black leading-none text-white"><AnimatedCounter value={totalNegocios} />+</p>
                   <p className="mt-0.5 text-[10px] leading-none text-white/55">negocios</p>
                 </div>
               </div>
@@ -52,7 +53,7 @@ export default function Hero({ totalNegocios, abiertosAhora }: HeroProps) {
               <div className="flex items-center gap-2 rounded-2xl border border-emerald-400/20 bg-emerald-500/15 px-3 py-2 backdrop-blur-sm">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
                 <div>
-                  <p className="text-xs font-black leading-none text-emerald-300">{abiertosAhora}</p>
+                  <p className="text-xs font-black leading-none text-emerald-300"><AnimatedCounter value={abiertosAhora} duration={800} /></p>
                   <p className="mt-0.5 text-[10px] leading-none text-emerald-400/70">abiertos ahora</p>
                 </div>
               </div>
