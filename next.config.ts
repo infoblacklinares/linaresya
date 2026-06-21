@@ -1,12 +1,14 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
+  // Fija la raíz de Turbopack para evitar el error de detección de workspace
+  // cuando hay múltiples lockfiles en directorios superiores.
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
   experimental: {
     serverActions: {
-      // El default es 1MB. Subimos a 6MB para permitir foto_portada + galeria.
-      // Vercel Hobby permite hasta ~4.5 MB por funcion serverless. Cuando
-      // necesitemos mas (galeria de 4 fotos, etc) hay que migrar a uploads
-      // directos a Storage con signed URLs.
       bodySizeLimit: "6mb",
     },
   },
