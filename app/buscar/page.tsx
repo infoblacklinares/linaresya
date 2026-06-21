@@ -361,19 +361,17 @@ export default async function BuscarPage({
             )}
           </div>
         ) : (
-          <ul className="px-4 space-y-3">
+          <div className="px-4 grid grid-cols-2 gap-3">
             {itemsOrdenados.map((n) => {
               const rData = ratingsMap.get(n.id);
               const rating = rData && rData.count > 0
                 ? { avg: rData.sum / rData.count, count: rData.count }
                 : null;
               return (
-                <li key={n.id}>
-                  <NegocioCard n={n} isOpen={resultOpenIds.includes(n.id)} rating={rating} />
-                </li>
+                <NegocioCard key={n.id} n={n} isOpen={resultOpenIds.includes(n.id)} rating={rating} />
               );
             })}
-          </ul>
+          </div>
         )}
 
         {/* Pie "¿No está lo que buscas?" — se muestra cuando hay resultados pero con búsqueda activa */}
@@ -440,82 +438,71 @@ function ChipQuitar({ label, href }: { label: string; href: string }) {
 
 function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; rating?: { avg: number; count: number } | null }) {
   const esPremium = n.plan === "premium";
-  const badge = badgeAbierto(isOpen ?? false);
   const waNumber = n.whatsapp?.replace(/\D/g, "");
   const categoriaSlug = n.categorias?.slug ?? "sin-categoria";
   const href = `/${categoriaSlug}/${n.slug}`;
 
   return (
-    <div className="relative flex items-stretch gap-3 p-2 rounded-2xl hover:bg-secondary/60 transition group">
-      <Link href={href} aria-label={n.nombre} className="absolute inset-0 rounded-2xl z-0" />
+    <div className="relative rounded-2xl bg-white/80 backdrop-blur-sm border border-white shadow-[0_2px_12px_rgba(0,0,0,0.07)] overflow-hidden hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 transition-all group">
+      <Link href={href} aria-label={n.nombre} className="absolute inset-0 z-0" />
 
-      <div className="relative z-10 h-24 w-24 rounded-2xl overflow-hidden shrink-0 bg-secondary flex items-center justify-center pointer-events-none">
+      {/* Imagen */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-[#F0EDE8]">
         {n.foto_portada ? (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
+          <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
         ) : (
-          <span className="text-3xl opacity-60">{"\u{1F3EA}"}</span>
+          <div className="h-full w-full flex items-center justify-center text-4xl opacity-30">🏪</div>
         )}
+        <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/40 to-transparent" />
+        <div className="absolute bottom-2 left-2">
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm border ${
+            isOpen ? "bg-emerald-500/80 text-white border-emerald-400/40" : "bg-black/50 text-white/80 border-white/10"
+          }`}>
+            {isOpen ? "● Abierto" : "● Cerrado"}
+          </span>
+        </div>
         {esPremium && (
-          <span className="absolute top-1 left-1 text-[9px] font-bold bg-foreground text-background px-1.5 py-0.5 rounded-full">
-            Premium
-          </span>
+          <div className="absolute top-2 right-2">
+            <span className="text-[9px] font-bold bg-[#F4B860] text-[#1A1410] px-1.5 py-0.5 rounded-full">⭐ Premium</span>
+          </div>
+        )}
+        {n.verificado && (
+          <div className="absolute top-2 left-2">
+            <span className="h-5 w-5 rounded-full bg-sky-500 flex items-center justify-center shadow">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </span>
+          </div>
         )}
       </div>
 
-      <div className="relative z-10 flex-1 min-w-0 py-1 pointer-events-none">
-        <div className="flex items-center gap-1.5">
-          <p className="font-semibold text-[15px] truncate">{n.nombre}</p>
-          {n.verificado && (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-sky-500 shrink-0">
-              <path d="M12 2 9.5 4.5 6 4l-.5 3.5L2 9l2 3-2 3 3.5 1.5L6 20l3.5-.5L12 22l2.5-2.5L18 20l.5-3.5L22 15l-2-3 2-3-3.5-1.5L18 4l-3.5.5L12 2Zm-1.2 13.6-3.2-3.2 1.4-1.4 1.8 1.8 4.4-4.4 1.4 1.4-5.8 5.8Z" />
-            </svg>
-          )}
-        </div>
-        <p className="text-[13px] text-muted-foreground line-clamp-2 mt-0.5">
-          {n.descripcion ?? "Sin descripcion"}
-        </p>
-        <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]">
-          {n.categorias && (
-            <span className="bg-white border border-border px-2 py-0.5 rounded-full font-medium">
-              {n.categorias.emoji} {n.categorias.nombre}
-            </span>
-          )}
-          {n.tipo === "independiente" && (
-            <span className="bg-secondary px-2 py-0.5 rounded-full font-medium">Independiente</span>
-          )}
-          {n.a_domicilio && (
-            <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
-              A domicilio
-            </span>
-          )}
-          <span className={`px-2 py-0.5 rounded-full font-semibold ${badge.clases}`}>
-            {badge.texto}
-          </span>
-          {rating && (
-            <span className="inline-flex items-center gap-0.5 font-semibold text-amber-600">
-              ★ {rating.avg.toFixed(1)}
-              <span className="text-muted-foreground font-normal">({rating.count})</span>
-            </span>
-          )}
-        </div>
-      </div>
-
-      <div className="relative z-20 flex flex-col items-end justify-between py-1 shrink-0">
-        {waNumber && esPremium ? (
-          <a
-            href={`https://wa.me/${waNumber}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="h-9 px-3 rounded-full bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1 hover:bg-emerald-600 transition"
-          >
-            WhatsApp
-          </a>
-        ) : (
-          <span className="h-9 w-9 rounded-full bg-secondary flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition text-sm">
-            {"\u2192"}
-          </span>
+      {/* Info */}
+      <div className="p-3 relative z-10">
+        {n.categorias && (
+          <span className="text-[10px] font-semibold text-muted-foreground">{n.categorias.emoji} {n.categorias.nombre}</span>
         )}
+        <p className="font-bold text-[13px] text-[#1A1410] leading-tight line-clamp-1 mt-0.5">{n.nombre}</p>
+        {n.descripcion && (
+          <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5 leading-snug">{n.descripcion}</p>
+        )}
+        <div className="mt-2 flex items-center justify-between gap-1">
+          <div className="flex items-center gap-1.5">
+            {rating && <span className="text-[11px] font-bold text-amber-600">★ {rating.avg.toFixed(1)}</span>}
+            {n.a_domicilio && <span className="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded-full font-medium">🛵</span>}
+          </div>
+          {waNumber && esPremium ? (
+            <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener noreferrer"
+              className="relative z-20 h-7 w-7 rounded-full bg-[#25D366] flex items-center justify-center hover:bg-[#1ebe5d] transition shrink-0 shadow-sm">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+                <path d="M20.5 3.5A11 11 0 0 0 3 17l-1 5 5.2-1.4A11 11 0 1 0 20.5 3.5Zm-8.5 17a9 9 0 0 1-4.6-1.3l-.3-.2-3.1.8.8-3-.2-.3A9 9 0 1 1 12 20.5Z" />
+              </svg>
+            </a>
+          ) : (
+            <span className="h-6 w-6 rounded-full bg-secondary/50 flex items-center justify-center text-xs text-muted-foreground group-hover:bg-[#2B6E80] group-hover:text-white transition shrink-0">→</span>
+          )}
+        </div>
       </div>
     </div>
   );
