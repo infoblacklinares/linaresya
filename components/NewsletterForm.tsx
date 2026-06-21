@@ -29,28 +29,26 @@ export default function NewsletterForm() {
 
   return (
     <form action={action} className="space-y-2">
-      <div className="flex gap-2">
-        <input
-          ref={inputRef}
-          type="email"
-          name="email"
-          required
-          placeholder="tu@email.com"
-          className="flex-1 rounded-full bg-white/90 border border-[#E8E4DE] px-4 py-2.5 text-sm outline-none focus:border-[#2B6E80] transition placeholder:text-[#8E8279]"
-        />
-        <button
-          type="submit"
-          disabled={isPending}
-          className="shrink-0 rounded-full bg-[#2B6E80] text-white text-sm font-bold px-5 py-2.5 hover:bg-[#1f5268] disabled:opacity-60 transition"
-        >
-          {isPending ? "..." : "Suscribirse"}
-        </button>
-      </div>
+      <input
+        ref={inputRef}
+        type="email"
+        name="email"
+        required
+        placeholder="tu@email.com"
+        className="w-full rounded-xl bg-white/90 border border-white/20 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-white/40 transition placeholder:text-[#8E8279]"
+      />
+      <button
+        type="submit"
+        disabled={isPending}
+        className="w-full rounded-xl bg-white text-[#2B6E80] text-sm font-extrabold py-3 hover:bg-white/90 disabled:opacity-60 transition active:scale-[0.98]"
+      >
+        {isPending ? "Enviando…" : "Suscribirme gratis →"}
+      </button>
       {state.error && (
-        <p className="text-xs text-red-600 px-1">{state.error}</p>
+        <p className="text-xs text-red-300 px-1">{state.error}</p>
       )}
-      <p className="text-[11px] text-[#8E8279] px-1">
-        Sin spam. Solo novedades de Linares. Puedes darte de baja cuando quieras.
+      <p className="text-[11px] text-white/50 px-1">
+        Sin spam. Solo novedades de Linares.
       </p>
     </form>
   );

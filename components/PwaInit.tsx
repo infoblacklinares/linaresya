@@ -8,18 +8,29 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 function isIos() {
+  if (typeof navigator === "undefined") return false;
   return /iphone|ipad|ipod/i.test(navigator.userAgent);
 }
 
 function isInStandaloneMode() {
+  if (typeof window === "undefined") return false;
   return (
     window.matchMedia("(display-mode: standalone)").matches ||
-    ("standalone" in window.navigator && (window.navigator as { standalone?: boolean }).standalone === true)
+    ("standalone" in window.navigator &&
+      (window.navigator as { standalone?: boolean }).standalone === true)
   );
 }
 
+function getStorage(key: string): string | null {
+  try { return localStorage.getItem(key); } catch { return null; }
+}
+function setStorage(key: string, val: string) {
+  try { localStorage.setItem(key, val); } catch { /* ignore */ }
+}
+
 export default function PwaInit() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [visible, setVisible] = useState(false);
   const [showIosGuide, setShowIosGuide] = useState(false);
 
@@ -32,17 +43,17 @@ export default function PwaInit() {
     // No mostrar si ya está instalada como app
     if (isInStandaloneMode()) return;
 
-    // No mostrar si el usuario ya la descartó de forma permanente
-    if (localStorage.getItem("pwa-no-show")) return;
+    // No mostrar si el usuario ya la descartó permanentemente
+    if (getStorage("pwa-no-show")) return;
 
-    // Capturar el prompt nativo (Android/Chrome) para usarlo luego
+    // Capturar prompt nativo (Android Chrome)
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
     };
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Mostrar el banner inmediatamente
+    // Mostrar el banner inmediatamente (sin esperar evento del navegador)
     setVisible(true);
 
     return () => window.removeEventListener("beforeinstallprompt", handler);
@@ -50,25 +61,23 @@ export default function PwaInit() {
 
   const handleInstall = async () => {
     if (deferredPrompt) {
-      // Android/Chrome: lanzar diálogo nativo
       await deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === "accepted") {
         setVisible(false);
-        localStorage.setItem("pwa-no-show", "1");
+        setStorage("pwa-no-show", "1");
       }
     } else if (isIos()) {
-      // iOS Safari: mostrar guía manual
       setShowIosGuide(true);
     } else {
-      // Otros: ocultar silenciosamente
-      setVisible(false);
+      // Chrome en escritorio u otro: instrucción genérica
+      setShowIosGuide(true);
     }
   };
 
   const handleDismiss = () => {
     setVisible(false);
-    localStorage.setItem("pwa-no-show", "1");
+    setStorage("pwa-no-show", "1");
   };
 
   if (!visible) return null;
@@ -79,17 +88,14 @@ export default function PwaInit() {
       <div
         role="dialog"
         aria-label="Instalar LinaresYa"
-        className="fixed bottom-4 left-4 right-4 z-50 rounded-2xl bg-[#2B6E80] px-4 py-4 shadow-2xl"
+        className="fixed bottom-20 left-4 right-4 z-50 rounded-2xl bg-[#2B6E80] px-4 py-4 shadow-2xl border border-white/10"
       >
         <div className="flex items-center gap-3">
-          {/* Ícono */}
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
               <path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
             </svg>
           </div>
-
-          {/* Texto */}
           <div className="min-w-0 flex-1">
             <p className="text-sm font-bold text-white leading-tight">
               Instala LinaresYa
@@ -98,8 +104,6 @@ export default function PwaInit() {
               Acceso rápido desde tu pantalla de inicio
             </p>
           </div>
-
-          {/* Cerrar */}
           <button
             onClick={handleDismiss}
             aria-label="No gracias"
@@ -109,7 +113,6 @@ export default function PwaInit() {
           </button>
         </div>
 
-        {/* Botones de acción */}
         <div className="mt-3 flex gap-2">
           <button
             onClick={handleDismiss}
@@ -121,12 +124,12 @@ export default function PwaInit() {
             onClick={handleInstall}
             className="flex-1 rounded-xl bg-white py-2.5 text-xs font-bold text-[#2B6E80] transition hover:bg-white/90 active:scale-95"
           >
-            Instalar gratis →
+            Instalar →
           </button>
         </div>
       </div>
 
-      {/* Guía iOS */}
+      {/* Modal guía iOS / escritorio */}
       {showIosGuide && (
         <div
           className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 backdrop-blur-sm"
@@ -137,7 +140,9 @@ export default function PwaInit() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-base font-black text-[#1A1410]">Cómo instalar en iPhone</h2>
+              <h2 className="text-base font-black text-[#1A1410]">
+                {isIos() ? "Cómo instalar en iPhone" : "Cómo agregar al inicio"}
+              </h2>
               <button
                 onClick={() => { setShowIosGuide(false); setVisible(false); }}
                 className="text-[#8E8279] text-xl leading-none"
@@ -146,32 +151,55 @@ export default function PwaInit() {
               </button>
             </div>
 
-            <ol className="space-y-4">
-              <li className="flex items-start gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#2B6E80] text-xs font-bold text-white">1</span>
-                <div>
-                  <p className="text-sm font-semibold text-[#1A1410]">Toca el ícono de compartir</p>
-                  <p className="text-xs text-[#6B5E57] mt-0.5">El cuadro con flecha hacia arriba en Safari (↑)</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#2B6E80] text-xs font-bold text-white">2</span>
-                <div>
-                  <p className="text-sm font-semibold text-[#1A1410]">Selecciona &quot;Agregar a inicio&quot;</p>
-                  <p className="text-xs text-[#6B5E57] mt-0.5">Desplázate hacia abajo en el menú compartir</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#2B6E80] text-xs font-bold text-white">3</span>
-                <div>
-                  <p className="text-sm font-semibold text-[#1A1410]">Toca &quot;Agregar&quot;</p>
-                  <p className="text-xs text-[#6B5E57] mt-0.5">LinaresYa aparecerá en tu pantalla de inicio</p>
-                </div>
-              </li>
-            </ol>
+            {isIos() ? (
+              <ol className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#2B6E80] text-xs font-bold text-white">1</span>
+                  <div>
+                    <p className="text-sm font-semibold text-[#1A1410]">Toca el ícono compartir (↑)</p>
+                    <p className="text-xs text-[#6B5E57] mt-0.5">El cuadro con flecha hacia arriba en Safari</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#2B6E80] text-xs font-bold text-white">2</span>
+                  <div>
+                    <p className="text-sm font-semibold text-[#1A1410]">Selecciona &quot;Agregar a inicio&quot;</p>
+                    <p className="text-xs text-[#6B5E57] mt-0.5">Desplázate hacia abajo en el menú</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#2B6E80] text-xs font-bold text-white">3</span>
+                  <div>
+                    <p className="text-sm font-semibold text-[#1A1410]">Toca &quot;Agregar&quot;</p>
+                    <p className="text-xs text-[#6B5E57] mt-0.5">LinaresYa aparecerá en tu pantalla de inicio</p>
+                  </div>
+                </li>
+              </ol>
+            ) : (
+              <ol className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#2B6E80] text-xs font-bold text-white">1</span>
+                  <div>
+                    <p className="text-sm font-semibold text-[#1A1410]">Toca el menú del navegador (⋮)</p>
+                    <p className="text-xs text-[#6B5E57] mt-0.5">Los tres puntos arriba a la derecha</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#2B6E80] text-xs font-bold text-white">2</span>
+                  <div>
+                    <p className="text-sm font-semibold text-[#1A1410]">Selecciona &quot;Agregar a pantalla de inicio&quot;</p>
+                    <p className="text-xs text-[#6B5E57] mt-0.5">O &quot;Instalar aplicación&quot; en Chrome</p>
+                  </div>
+                </li>
+              </ol>
+            )}
 
             <button
-              onClick={() => { setShowIosGuide(false); setVisible(false); localStorage.setItem("pwa-no-show", "1"); }}
+              onClick={() => {
+                setShowIosGuide(false);
+                setVisible(false);
+                setStorage("pwa-no-show", "1");
+              }}
               className="mt-6 w-full rounded-xl bg-[#2B6E80] py-3 text-sm font-bold text-white transition active:scale-95"
             >
               Entendido
