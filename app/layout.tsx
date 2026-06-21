@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Footer from "@/components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import PwaInit from "@/components/PwaInit";
 import "./globals.css";
 
 const inter = Inter({
@@ -79,7 +80,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#0f172a",
+  themeColor: "#2B6E80",
   width: "device-width",
   initialScale: 1,
 };
@@ -98,6 +99,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <GoogleAnalytics />
+        <PwaInit />
       </body>
     </html>
   );
