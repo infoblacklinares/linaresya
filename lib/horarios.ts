@@ -54,9 +54,9 @@ export async function getOpenIds(negocioIds: string[]): Promise<string[]> {
   return ((data ?? []) as { negocio_id: string }[]).map((h) => h.negocio_id);
 }
 
-/** Comprueba si un negocio_id específico está en la lista de abiertos */
-export function estaAbierto(negocioId: string, openIds: string[]): boolean {
-  return openIds.includes(negocioId);
+/** Comprueba si un negocio_id específico está en el set de abiertos */
+export function estaAbierto(negocioId: string, openIds: Set<string>): boolean {
+  return openIds.has(negocioId);
 }
 
 /** Badge visual: "● Abierto" o "● Cerrado" */

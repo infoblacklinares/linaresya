@@ -132,7 +132,7 @@ export default async function CategoriaPage({
   }
 
   // Abierto Ahora: consultamos horarios para todos los negocios de la categoría.
-  const openIds = await getOpenIds(items.map((n) => n.id));
+  const openIds = new Set(await getOpenIds(items.map((n) => n.id)));
 
   const breadcrumbData = breadcrumbJsonLd([
     { name: "Inicio", url: SITE_URL },

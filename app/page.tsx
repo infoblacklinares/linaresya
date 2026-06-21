@@ -261,7 +261,8 @@ export default async function Home() {
 
   // ── Horarios: qué negocios están abiertos ahora ───────────────────────────
   const todosIds = [...destacados, ...recientes].map(n => n.id);
-  const openIds  = await getOpenIds(todosIds);
+  const openIdsArr = await getOpenIds(todosIds);
+  const openIds    = new Set(openIdsArr);
 
   // Negocios abiertos ahora (para la sección "Abiertos ahora")
   const negociosAbiertos = [...destacados, ...recientes]
