@@ -47,6 +47,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/farmacia-turno" className="hover:underline font-medium">
+                  Farmacia de turno
+                </Link>
+              </li>
+              <li>
                 <Link href="/buscar" className="hover:underline font-medium">
                   Buscar
                 </Link>
