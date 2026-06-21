@@ -1,78 +1,56 @@
 -- ─────────────────────────────────────────────────────────────────────────────
--- Asignar foto_portada a negocios sin foto, según su categoría.
--- Usa imágenes de Unsplash (libres, sin auth).
--- Ejecutar en Supabase SQL Editor.
+-- Fotos reales obtenidas de Google Maps para negocios de LinaresYa
+-- Fuente: búsqueda manual en Google Maps, junio 2026
+-- Ejecutar en: Supabase > SQL Editor
 -- ─────────────────────────────────────────────────────────────────────────────
 
--- Gastronomía — restaurantes, cafés, comida
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'gastronomia') AND nombre LIKE '%Restaurant%';
+-- GASTRONOMÍA
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHRD5kdeI5UigZ7kLiX9CIEVXRfGuMLWvdRIdi5WtciblUijLz02pqnKR5BSpsTxb7TjrQdJYCsDnHY7IiZxKP4ud5DCorRPNsazpr1IfhXhqklltgLjXc1tDagXCRo4XKSRVvh=w600-h400-k-no'
+WHERE slug = 'el-tumbaito';
 
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'gastronomia') AND (nombre ILIKE '%cafe%' OR nombre ILIKE '%café%');
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHuCMCeNbDyVvaMPpewYp8fZZQKzbHESs8agPBNCsF187XXS5t0QOEiAxX_7H1UNO_Pkh1tq4oOR3MW02koDiNCd9UfQfDguvLEquawaev711zXmXdQ3ZSzoQoIE3fPPLHc7uhe=w600-h400-k-no'
+WHERE slug = 'del-melado-al-nevado';
 
--- Para el resto de gastronomía sin foto
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'gastronomia');
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAG6D9fdjOXflBV-0i2YkXYNqe6xpoQ2uckmAWqG4xuxTXtf6ejXVw4PqL7R2CeK5p-3Wn-2veJOb6HGWq-ViorsKd1QH0zThPT_be_ucYKH3Wnmc32NS9VoFwCGPyf7JQH4BtlY=w600-h400-k-no'
+WHERE slug = 'vaiven-bar-restaurant';
 
--- Salud — clínicas, médicos, dentistas
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'salud') AND (nombre ILIKE '%dent%' OR nombre ILIKE '%dental%');
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAE8lwNS0O3NXr91IyvBoIQxxktxyoc6YOUuQ_T826ZtTucfKsOJbuVv4f-2INgETC_Tt-CLmWRL95Y8oSOUORDdHYuVw-cy-RfqG3DuUI_8sW3VkkfU-KLk4iYoKGLCaR01A03uSg=w600-h400-k-no'
+WHERE slug = 'terraza-alameda-resto-bar';
 
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'salud');
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAFM-ezCLAnGP6qBBJG9VPrTei7YCrhsKpfZVAdYLooRVcIuRSpUriUOAwRhqKyiNVm8N02PbTMkKkKAJCaXk6NnFH4V-G-oyY1AfCbU4rJQSzt-GrYSE0OoNiLnDhnxiQaZmnVoLsimBf4=w600-h400-k-no'
+WHERE slug = 'saffirio-restaurant';
 
--- Belleza — peluquerías, salones
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'belleza');
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAGnaHdwKmzwatgGzceIkRmR9k7BHUS80HuBzkHIzSDCiU7hxKiyJOJxPmG906dsnARgD4bi9RFii3o9H3EQJ80R-griHho_O3gSSW4Dz4RVME2q0EZK0hkU-RuxKQcpY6t6IR8f=w600-h400-k-no'
+WHERE slug = 'cafe-la-francesa';
 
--- Automotriz — talleres, mecánicos
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'automotriz');
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAFhVYhELfylQ4xwnFIX680HtEtVKIyANiH55mCNOyNkVoECo7Vn9GEAY2Ert48ucZ4KcmNOwIR2oOdJWd950TIkuOQkPzndgmxhZbskgaKRgrzj4FCGl3ya1FX_pQfT2OsZeoBtU6JAEg0n=w600-h400-k-no'
+WHERE slug = 'stereo-coffee-linares';
 
--- Comercio — tiendas, ferreterías, supermercados
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'comercio') AND (nombre ILIKE '%ferret%');
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAH-cHr2w6LJFAus9z0dyKTuNpInYfSkfgyseCsn51aeVAAvo-L8Qp9wd7sjr9JQXU4yHVi9jvDXavhgzULulpygW0PWsVM2zWG02OtRTq01-NG9mwO6haAx3PaVn7eHpKCDO0jZ0WQeLkqR=w600-h400-k-no'
+WHERE slug = 'panaderia-el-carmen';
 
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'comercio');
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAEZLBNowN0VxU-9HVKxDG2cpCxtP_mXpAwZbkqpKeaWLyZnfHBDZYd5sgSPNnc1DvSECqU27p6OkFcGPjGKiGJayxIFKyPMV-Awe19YZncBv4HV4a2gzSg2cHdaTee1QELLe3k=w600-h400-k-no'
+WHERE slug = 'amasanderia-y-pasteleria-brachil';
 
--- Servicios y oficios — gasfíteres, electricistas
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1621905251189-08b45249be78?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'servicios-y-oficios');
+-- SALUD
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAGBP4zQOlBwWcVqzgE00ar5q24qnBXzR63fyM2Ng6zhWMvsOuhXKhHEx02ErnwtjU118yUJ9mFWk33F29gB9DOUKfLR3oDKz20fZZtTWSGRv_ZnovgyQ21cu-tMBdCnefNausX0yQ=w600-h400-k-no'
+WHERE slug = 'hospital-de-linares';
 
--- Hogar — muebles, decoración, construcción
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'hogar');
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHYS5U6a1QvphIJN0Vq18YGQmXmv2_2OHtSL5-Dou905-o2C-e6zQwMsHvmflbKxsKcqGXQpw-ibNJL7HBq5tzxbCsvhX7XZyYmoQjLDvhayq9UvtI0g5nt-BqbtvmNtf97OYur=w600-h400-k-no'
+WHERE slug = 'clinica-dental-salud-oral';
 
--- Educación — colegios, academias
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'educacion');
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAF9Z9LkZHb5FGb1OWWwvNh3un3iPHF9_VGjUbLbYax_8mEFfxhBOaiGLbo5Nnjj4TGFvs7mHmWS0W9hclfIqoxLbUkfkEes_CChmHumkMrSmGMVYAZtJeQ_JJ87zapffOGyeEuk60LDtKTE=w600-h400-k-no'
+WHERE slug = 'topisima-optica-linares';
 
--- Mascotas — veterinarias, petshop
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'mascotas');
+-- BELLEZA
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAFEbJM3O-2Yx27oRMKj6O7ib0kNmkOuK6U30qKcufZ1GIQPuofbvUu7YFxOtgPxF2PgYKPg4sxoXVtuFp5Hzp1nG2ERVD2BLbwP0n2EJWdW_3OLJZgGHYaxt2j5ypgxI_jRIIYS=w600-h400-k-no'
+WHERE slug = 'salon-de-belleza-patricia';
 
--- Profesionales — abogados, contadores
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'profesionales');
-
--- Eventos — fotógrafos, banquetería
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'eventos');
-
--- Agro — viveros, agrícola
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&q=80'
-WHERE foto_portada IS NULL AND categoria_id = (SELECT id FROM categorias WHERE slug = 'agro');
-
--- Fallback: cualquier negocio sin foto aún
-UPDATE negocios SET foto_portada = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80'
-WHERE foto_portada IS NULL AND activo = true;
+UPDATE negocios SET foto_portada = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAFGLnszz7QnaRZS6A3aakJDwvVpQecvsnkNPgWbgMag89D0ry0M_hZT1v91zIAF1lp6Z22FovjFRQKvEqdmFFp-a43P32TzIzvAAxtSVMBA7ybBtF1alQ2ugPuW7ioYnZ55yfyiYJpm9jI5=w600-h400-k-no'
+WHERE slug = 'clinica-t-renova-spa';
 
 -- Verificar resultado
-SELECT c.slug, COUNT(*) as total, COUNT(n.foto_portada) as con_foto
-FROM negocios n
-JOIN categorias c ON c.id = n.categoria_id
-WHERE n.activo = true
-GROUP BY c.slug
-ORDER BY c.slug;
+SELECT nombre, slug, LEFT(foto_portada, 60) as foto_preview
+FROM negocios
+WHERE foto_portada IS NOT NULL AND activo = true
+ORDER BY nombre;
