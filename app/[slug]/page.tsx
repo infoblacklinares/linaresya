@@ -33,20 +33,38 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function CategoriaPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function CategoriaPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { slug } = await params;
+  const sp = await searchParams;
+  const filtroPremium   = sp.premium   === "1";
+  const filtroVerif     = sp.verificado === "1";
+  const filtroAbierto   = sp.abierto    === "1";
+  const filtroDomicilio = sp.domicilio  === "1";
+  const filtroOrden     = sp.orden === "rating" ? "rating" : "relevancia";
 
   const { data: categoria, error: catError } = await supabase.from("categorias").select("*").eq("slug", slug).eq("activa", true).single();
   if (catError || !categoria) notFound();
   const cat = categoria as Categoria;
 
-  const { data: negocios } = await supabase
+  let query = supabase
     .from("negocios")
     .select("id,nombre,slug,descripcion,tipo,plan,verificado,telefono,whatsapp,direccion,a_domicilio,foto_portada")
-    .eq("categoria_id", cat.id).eq("activo", true)
-    .order("plan", { ascending: false }).order("verificado", { ascending: false }).order("nombre", { ascending: true });
+    .eq("categoria_id", cat.id).eq("activo", true);
 
-  const items = (negocios ?? []) as Negocio[];
+  if (filtroPremium)   query = query.eq("plan", "premium");
+  if (filtroVerif)     query = query.eq("verificado", true);
+  if (filtroDomicilio) query = query.eq("a_domicilio", true);
+
+  query = query.order("plan", { ascending: false }).order("verificado", { ascending: false }).order("nombre", { ascending: true });
+
+  const { data: negocios } = await query;
+  let items = (negocios ?? []) as Negocio[];
 
   type ResenaRating = { negocio_id: string; estrellas: number };
   const ratingsMap = new Map<string, { sum: number; count: number }>();
@@ -59,6 +77,20 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
   }
 
   const openIds = new Set(await getOpenIds(items.map(n => n.id)));
+
+  // Filtro "abierto ahora" (post-query porque viene de tabla horarios)
+  if (filtroAbierto) items = items.filter(n => openIds.has(n.id));
+
+  // Orden por rating
+  if (filtroOrden === "rating") {
+    items = [...items].sort((a, b) => {
+      const ra = ratingsMap.get(a.id);
+      const rb = ratingsMap.get(b.id);
+      const avgA = ra ? ra.sum / ra.count : 0;
+      const avgB = rb ? rb.sum / rb.count : 0;
+      return avgB - avgA;
+    });
+  }
 
   const breadcrumbData = breadcrumbJsonLd([{ name: "Inicio", url: SITE_URL }, { name: cat.nombre, url: `${SITE_URL}/${cat.slug}` }]);
   const itemListData = itemListJsonLd(items.map(n => ({ nombre: n.nombre, slug: n.slug })), cat.slug);
@@ -101,16 +133,16 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
         {/* Filtros glass */}
         <div className="flex gap-2 overflow-x-auto px-4 pt-3 pb-4 no-scrollbar">
           {[
-            { label: "Todos",           href: `/${cat.slug}` },
-            { label: "🟢 Abierto ahora", href: `/buscar?categoria=${cat.slug}&abierto=1` },
-            { label: "⭐ Premium",       href: `/buscar?categoria=${cat.slug}&premium=1` },
-            { label: "🛵 A domicilio",   href: `/buscar?categoria=${cat.slug}&domicilio=1` },
-            { label: "✓ Verificados",    href: `/buscar?categoria=${cat.slug}&verificado=1` },
-            { label: "★ Mejor valorados", href: `/buscar?categoria=${cat.slug}&orden=rating` },
-          ].map((f, i) => (
+            { label: "Todos",             href: `/${cat.slug}`,                        activo: !filtroPremium && !filtroVerif && !filtroAbierto && !filtroDomicilio && filtroOrden === "relevancia" },
+            { label: "🟢 Abierto ahora",  href: `/${cat.slug}?abierto=1`,              activo: filtroAbierto },
+            { label: "⭐ Premium",         href: `/${cat.slug}?premium=1`,              activo: filtroPremium },
+            { label: "🛵 A domicilio",    href: `/${cat.slug}?domicilio=1`,            activo: filtroDomicilio },
+            { label: "✓ Verificados",     href: `/${cat.slug}?verificado=1`,           activo: filtroVerif },
+            { label: "★ Mejor valorados", href: `/${cat.slug}?orden=rating`,           activo: filtroOrden === "rating" },
+          ].map((f) => (
             <Link key={f.href} href={f.href}
               className={`shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-bold transition ${
-                i === 0
+                f.activo
                   ? "bg-white text-[#2B6E80] shadow-sm"
                   : "bg-white/15 backdrop-blur-sm border border-white/20 text-white hover:bg-white/25"
               }`}>
