@@ -31,6 +31,7 @@ type NegocioCard = {
   a_domicilio: boolean;
   zona_cobertura: string | null;
   creado_en?: string;
+  telefono: string | null;
   categorias: { nombre: string; slug: string; emoji: string } | null;
 };
 
@@ -89,6 +90,7 @@ function toNegocio(r: unknown): NegocioCard {
     a_domicilio:    Boolean(x.a_domicilio),
     zona_cobertura: (x.zona_cobertura as string | null) ?? null,
     creado_en:      (x.creado_en as string | undefined) ?? undefined,
+    telefono:       (x.telefono as string | null) ?? null,
     categorias:     normalizeCategoria(x.categorias),
   };
 }
@@ -126,7 +128,7 @@ export default async function Home() {
 
     supabase
       .from("negocios")
-      .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, categorias:categoria_id(nombre, slug, emoji)")
+      .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, telefono, categorias:categoria_id(nombre, slug, emoji)")
       .eq("activo", true)
       .order("plan",      { ascending: false })
       .order("verificado",{ ascending: false })
@@ -135,7 +137,7 @@ export default async function Home() {
 
     supabase
       .from("negocios")
-      .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, categorias:categoria_id(nombre, slug, emoji)")
+      .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, telefono, categorias:categoria_id(nombre, slug, emoji)")
       .eq("activo", true)
       .order("creado_en", { ascending: false })
       .limit(6),
@@ -261,13 +263,19 @@ export default async function Home() {
   const todosIds = [...destacados, ...recientes].map(n => n.id);
   const openIds  = await getOpenIds(todosIds);
 
+  // Negocios abiertos ahora (para la sección "Abiertos ahora")
+  const negociosAbiertos = [...destacados, ...recientes]
+    .filter(n => openIds.has(n.id))
+    .slice(0, 8);
+  const abiertosCount = negociosAbiertos.length;
+
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl bg-[#F9F8F6]">
       <JsonLd id="ld-organization" data={organizationJsonLd()} />
       <JsonLd id="ld-website"      data={websiteJsonLd()} />
 
       {/* Hero */}
-      <Hero totalNegocios={totalNegocios} />
+      <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} />
 
       {/* Filtros rápidos */}
       <div className="flex gap-2 overflow-x-auto px-4 pt-4 pb-1 no-scrollbar">
@@ -291,6 +299,53 @@ export default async function Home() {
           </Link>
         ))}
       </div>
+
+      {/* Abiertos ahora */}
+      {negociosAbiertos.length > 0 && (
+        <section className="pt-5">
+          <div className="flex items-center justify-between px-4 mb-3">
+            <div className="flex items-center gap-2">
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <h2 className="text-sm font-extrabold text-[#1A1410]">Abiertos ahora</h2>
+            </div>
+            <Link href="/buscar?abierto=1" className="text-xs font-semibold text-[#2B6E80]">Ver todos →</Link>
+          </div>
+          <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
+            {negociosAbiertos.map(n => {
+              const url = n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#";
+              return (
+                <div key={n.id} className="shrink-0 w-44 rounded-2xl bg-white border border-emerald-100 shadow-linares-sm overflow-hidden">
+                  <Link href={url} className="block p-3 pb-2">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                      <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wide">Abierto</span>
+                    </div>
+                    <p className="text-sm font-bold text-[#1A1410] truncate leading-tight">{n.nombre}</p>
+                    <p className="text-[10px] text-[#8E8279] mt-0.5 truncate">
+                      {n.categorias?.emoji} {n.categorias?.nombre}
+                    </p>
+                  </Link>
+                  {n.telefono ? (
+                    <a
+                      href={`tel:${n.telefono}`}
+                      className="flex items-center justify-center gap-1.5 border-t border-emerald-50 py-2 text-[11px] font-bold text-[#2B6E80] hover:bg-emerald-50 transition"
+                    >
+                      📞 Llamar
+                    </a>
+                  ) : (
+                    <Link
+                      href={n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#"}
+                      className="flex items-center justify-center gap-1 border-t border-emerald-50 py-2 text-[11px] font-bold text-[#2B6E80] hover:bg-emerald-50 transition"
+                    >
+                      Ver ficha →
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Categorías */}
       <section className="pt-6">
