@@ -154,7 +154,7 @@ function NegocioCard({
     <div className="relative rounded-2xl bg-white/80 backdrop-blur-sm border border-white shadow-[0_2px_12px_rgba(0,0,0,0.07)] overflow-hidden hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 transition-all group">
 
       {/* Link de fondo */}
-      <Link href={`/${categoriaSlug}/${n.slug}`} className="absolute inset-0 z-0" aria-label={n.nombre} />
+      <Link href={`/${categoriaSlug}/${n.slug}`} className="absolute inset-0 z-10" aria-label={n.nombre} />
 
       {/* Imagen */}
       <div className="relative aspect-[4/3] overflow-hidden bg-[#F0EDE8]">
