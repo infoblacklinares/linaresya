@@ -278,48 +278,52 @@ export default async function Home() {
       {/* Hero */}
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} />
 
-      {/* Filtros rápidos */}
-      <div className="flex gap-2 overflow-x-auto px-4 pt-4 pb-1 no-scrollbar">
+      {/* Filtros rápidos — estilo Uber Eats */}
+      <div className="flex gap-2 overflow-x-auto px-4 pt-4 pb-2 no-scrollbar">
         {[
-          { label: "Todos",        href: "/buscar" },
-          { label: "Abierto ahora",href: "/buscar?abierto=1" },
-          { label: "Premium",      href: "/buscar?premium=1" },
-          { label: "Verificados",  href: "/buscar?verificado=1" },
-          { label: "A domicilio",  href: "/buscar?domicilio=1" },
+          { label: "Todos",         icon: "🏠", href: "/buscar" },
+          { label: "Abierto ahora", icon: "🟢", href: "/buscar?abierto=1" },
+          { label: "Premium",       icon: "⭐", href: "/buscar?premium=1" },
+          { label: "Verificados",   icon: "✓",  href: "/buscar?verificado=1" },
+          { label: "A domicilio",   icon: "🛵", href: "/buscar?domicilio=1" },
         ].map((f, i) => (
           <Link
             key={f.href}
             href={f.href}
-            className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition ${
+            className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold transition flex items-center gap-1.5 ${
               i === 0
-                ? "bg-[#2B6E80] text-white shadow-sm"
-                : "border border-[#E8E4DE] bg-white text-[#1A1410] shadow-sm hover:bg-[#2B6E80]/5"
+                ? "bg-[#1A1410] text-white shadow-sm"
+                : "border border-[#E8E4DE] bg-white text-[#1A1410] hover:border-[#1A1410]/30"
             }`}
           >
+            <span className="text-base leading-none">{f.icon}</span>
             {f.label}
           </Link>
         ))}
       </div>
 
-      {/* Abiertos ahora */}
+      {/* Abiertos ahora — glassmorphism */}
       {negociosAbiertos.length > 0 && (
-        <section className="pt-5">
+        <section className="pt-6">
           <div className="flex items-center justify-between px-4 mb-3">
             <div className="flex items-center gap-2">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <h2 className="text-sm font-extrabold text-[#1A1410]">Abiertos ahora</h2>
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              </span>
+              <h2 className="text-xl font-black text-[#1A1410]">Abiertos ahora</h2>
             </div>
-            <Link href="/buscar?abierto=1" className="text-xs font-semibold text-[#2B6E80]">Ver todos →</Link>
+            <Link href="/buscar?abierto=1" className="text-xs font-bold text-[#2B6E80]">Ver todos →</Link>
           </div>
           <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
             {negociosAbiertos.map(n => {
               const url = n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#";
               return (
-                <div key={n.id} className="shrink-0 w-44 rounded-2xl bg-white border border-emerald-100 shadow-linares-sm overflow-hidden">
+                <div key={n.id} className="shrink-0 w-44 overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8]">
                   <Link href={url} className="block p-3 pb-2">
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-                      <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wide">Abierto</span>
+                    <div className="mb-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-100 px-2 py-0.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      <span className="text-[10px] font-bold text-emerald-700">Abierto</span>
                     </div>
                     <p className="text-sm font-bold text-[#1A1410] truncate leading-tight">{n.nombre}</p>
                     <p className="text-[10px] text-[#8E8279] mt-0.5 truncate">
@@ -329,14 +333,14 @@ export default async function Home() {
                   {n.telefono ? (
                     <a
                       href={`tel:${n.telefono}`}
-                      className="flex items-center justify-center gap-1.5 border-t border-emerald-50 py-2 text-[11px] font-bold text-[#2B6E80] hover:bg-emerald-50 transition"
+                      className="flex items-center justify-center gap-1.5 border-t border-[#F5F2EE] py-2.5 text-[11px] font-bold text-[#2B6E80] hover:bg-[#F5F2EE] transition"
                     >
                       📞 Llamar
                     </a>
                   ) : (
                     <Link
-                      href={n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#"}
-                      className="flex items-center justify-center gap-1 border-t border-emerald-50 py-2 text-[11px] font-bold text-[#2B6E80] hover:bg-emerald-50 transition"
+                      href={url}
+                      className="flex items-center justify-center gap-1 border-t border-[#F5F2EE] py-2.5 text-[11px] font-bold text-[#2B6E80] hover:bg-[#F5F2EE] transition"
                     >
                       Ver ficha →
                     </Link>
@@ -348,22 +352,22 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Categorías */}
+      {/* Categorías — iconos grandes estilo Uber Eats */}
       <section className="pt-6">
-        <div className="flex items-end justify-between px-4 mb-3">
-          <h2 className="text-base font-extrabold tracking-tight text-[#1A1410]">Categorías</h2>
-          <Link href="/buscar" className="text-xs font-semibold text-[#2B6E80]">Ver todas →</Link>
+        <div className="flex items-end justify-between px-4 mb-4">
+          <h2 className="text-xl font-black tracking-tight text-[#1A1410]">¿Qué necesitas?</h2>
+          <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todas →</Link>
         </div>
-        <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
+        <div className="flex gap-4 overflow-x-auto px-4 pb-3 no-scrollbar">
           {cats.map((cat, i) => (
-            <Link key={cat.id} href={`/${cat.slug}`} className="flex shrink-0 flex-col items-center gap-1.5 group">
-              <div className={`relative flex h-16 w-16 items-center justify-center rounded-2xl text-2xl shadow-linares-sm transition group-hover:-translate-y-0.5 ${catColor(i)}`}>
+            <Link key={cat.id} href={`/${cat.slug}`} className="flex shrink-0 flex-col items-center gap-2 group">
+              <div className="relative flex h-[72px] w-[72px] items-center justify-center rounded-[22px] bg-white text-[2rem] shadow-[0_2px_14px_rgba(0,0,0,0.09)] border border-[#F0EDE8] transition group-hover:-translate-y-1 group-hover:shadow-[0_8px_24px_rgba(0,0,0,0.13)]">
                 {cat.emoji}
                 {i === cats.length - 1 && (
-                  <span className="absolute -top-1 -right-1 rounded-full bg-[#C05A46] px-1.5 py-0.5 text-[8px] font-bold text-white">New</span>
+                  <span className="absolute -top-1.5 -right-1.5 rounded-full bg-[#C05A46] px-1.5 py-0.5 text-[8px] font-bold text-white shadow-sm">New</span>
                 )}
               </div>
-              <span className="w-16 text-center text-[10px] font-medium leading-tight text-[#8E8279]">{cat.nombre}</span>
+              <span className="w-[72px] text-center text-[11px] font-semibold leading-tight text-[#6B5E57]">{cat.nombre}</span>
             </Link>
           ))}
         </div>
@@ -424,55 +428,57 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Destacados */}
+      {/* Destacados — cards estilo Uber Eats */}
       {destacados.length > 0 && (
         <section className="pt-8">
           <div className="flex items-end justify-between px-4 mb-1">
-            <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Destacados</h2>
-            <Link href="/buscar" className="text-xs font-semibold text-[#2B6E80]">Ver todo →</Link>
+            <div>
+              <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Destacados</h2>
+              <p className="text-xs text-[#8E8279]">Verificados y premiados por la comunidad</p>
+            </div>
+            <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todo →</Link>
           </div>
-          <p className="px-4 mb-4 text-xs text-[#8E8279]">Negocios verificados y premium de la comunidad.</p>
-          <ul className="space-y-2 px-4">
+          <ul className="mt-3 space-y-2.5 px-4">
             {destacados.map(d => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
+              const rating = ratingsMap.get(d.id);
               return (
                 <li key={d.id}>
-                  <Link href={url} className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-linares-sm transition hover:shadow-linares">
-                    <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#E8E4DE] bg-[#F9F8F6] text-3xl">
+                  <Link href={url} className="flex items-center gap-3.5 rounded-2xl bg-white p-3 shadow-[0_2px_14px_rgba(0,0,0,0.07)] border border-[#F0EDE8] transition hover:shadow-[0_4px_20px_rgba(0,0,0,0.11)] active:scale-[0.99]">
+                    {/* Imagen */}
+                    <div className="relative flex h-[76px] w-[76px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#F5F2EE] text-3xl">
                       {d.foto_portada
                         // eslint-disable-next-line @next/next/no-img-element
                         ? <img src={d.foto_portada} alt={d.nombre} className="h-full w-full object-cover" />
                         : <span>{d.categorias?.emoji ?? "📍"}</span>}
-                      <div className="absolute left-1.5 top-1.5">
+                      <div className="absolute left-1 top-1">
                         <FavoritoButton negocioId={d.id} variant="icon" />
                       </div>
                     </div>
+                    {/* Info */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <p className="truncate text-sm font-bold text-[#1A1410]">{d.nombre}</p>
-                        {d.verificado && <span className="shrink-0 rounded-full bg-[#2B6E80]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#2B6E80]">✓ Verificado</span>}
-                        {d.plan === "premium" && <span className="shrink-0 rounded-full bg-[#F4B860]/20 px-1.5 py-0.5 text-[9px] font-bold text-[#8B5E0A]">⭐ Premium</span>}
-                        {esNuevo(d.creado_en) && <span className="shrink-0 rounded-full bg-[#3D5A45]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#3D5A45]">Nuevo</span>}
-                        {(() => { const b = badgeAbierto(estaAbierto(d.id, openIds)); return <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-bold ${b.clases}`}>{b.texto}</span>; })()}
+                      <p className="truncate text-[15px] font-black text-[#1A1410] leading-tight">{d.nombre}</p>
+                      {/* Badges */}
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {d.verificado && <span className="rounded-full bg-[#2B6E80]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#2B6E80]">✓ Verificado</span>}
+                        {d.plan === "premium" && <span className="rounded-full bg-[#F4B860]/20 px-1.5 py-0.5 text-[9px] font-bold text-[#8B5E0A]">⭐ Premium</span>}
+                        {esNuevo(d.creado_en) && <span className="rounded-full bg-[#3D5A45]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#3D5A45]">Nuevo</span>}
+                        {(() => { const b = badgeAbierto(estaAbierto(d.id, openIds)); return <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${b.clases}`}>{b.texto}</span>; })()}
                       </div>
-                      {d.descripcion && <p className="mt-0.5 truncate text-xs text-[#8E8279]">{d.descripcion}</p>}
-                      <div className="mt-0.5 flex items-center gap-2">
+                      {/* Meta */}
+                      <div className="mt-1.5 flex items-center gap-2">
                         <p className="truncate text-[11px] text-[#8E8279]">
-                          {d.categorias?.emoji} {d.categorias?.nombre}{d.a_domicilio && " · A domicilio"}
+                          {d.categorias?.emoji} {d.categorias?.nombre}{d.a_domicilio && " · 🛵 Domicilio"}
                         </p>
-                        {(() => {
-                          const r = ratingsMap.get(d.id);
-                          if (!r || r.count === 0) return null;
-                          return (
-                            <span className="shrink-0 text-[11px] font-semibold text-amber-600">
-                              ★ {(r.sum / r.count).toFixed(1)}
-                              <span className="text-[#8E8279] font-normal"> ({r.count})</span>
-                            </span>
-                          );
-                        })()}
+                        {rating && rating.count > 0 && (
+                          <span className="shrink-0 text-[11px] font-bold text-amber-500">
+                            ★ {(rating.sum / rating.count).toFixed(1)}
+                            <span className="font-normal text-[#8E8279]"> ({rating.count})</span>
+                          </span>
+                        )}
                       </div>
                     </div>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8E8279" strokeWidth="2" className="shrink-0"><path d="m9 18 6-6-6-6" /></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C8C2BC" strokeWidth="2.5" className="shrink-0"><path d="m9 18 6-6-6-6" /></svg>
                   </Link>
                 </li>
               );
@@ -481,33 +487,41 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Recién sumados */}
+      {/* Recién sumados — grid imagen-first */}
       {recientes.length > 0 && (
         <section className="pt-8">
-          <div className="px-4 mb-3">
-            <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Recién sumados</h2>
-            <p className="text-xs text-[#8E8279]">Los últimos en publicarse en LinaresYa.</p>
+          <div className="flex items-end justify-between px-4 mb-3">
+            <div>
+              <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Recién sumados</h2>
+              <p className="text-xs text-[#8E8279]">Los últimos en unirse a LinaresYa</p>
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-3 px-4">
             {recientes.map((d, i) => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
               return (
-                <Link key={d.id} href={url} className="overflow-hidden rounded-2xl bg-white shadow-linares-sm hover:shadow-linares transition">
-                  <div className={`relative flex h-28 w-full items-center justify-center text-4xl ${catColor(i + 4)}`}>
+                <Link key={d.id} href={url} className="overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] active:scale-[0.98]">
+                  <div className={`relative flex h-32 w-full items-center justify-center text-5xl ${catColor(i + 4)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
                       ? <img src={d.foto_portada} alt={d.nombre} className="h-full w-full object-cover" />
                       : <span>{d.categorias?.emoji ?? "📍"}</span>}
                     {esNuevo(d.creado_en) && (
-                      <span className="absolute left-2 top-2 rounded-full bg-[#3D5A45] px-2 py-0.5 text-[9px] font-bold text-white">Nuevo</span>
+                      <span className="absolute left-2 top-2 rounded-full bg-[#1A1410] px-2 py-0.5 text-[9px] font-bold text-white">Nuevo</span>
                     )}
+                    {/* Estado abierto badge en imagen */}
+                    {(() => {
+                      const b = badgeAbierto(estaAbierto(d.id, openIds));
+                      return (
+                        <span className={`absolute right-2 bottom-2 rounded-full px-2 py-0.5 text-[9px] font-bold backdrop-blur-sm ${b.clases}`}>
+                          {b.texto}
+                        </span>
+                      );
+                    })()}
                   </div>
                   <div className="p-3">
-                    <p className="truncate text-sm font-bold text-[#1A1410]">{d.nombre}</p>
-                    <div className="mt-0.5 flex items-center gap-1.5">
-                      <p className="truncate text-[10px] text-[#8E8279]">{d.categorias?.emoji} {d.categorias?.nombre}</p>
-                      {(() => { const b = badgeAbierto(estaAbierto(d.id, openIds)); return <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${b.clases}`}>{b.texto}</span>; })()}
-                    </div>
+                    <p className="truncate text-sm font-black text-[#1A1410]">{d.nombre}</p>
+                    <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">{d.categorias?.emoji} {d.categorias?.nombre}</p>
                   </div>
                 </Link>
               );
@@ -520,7 +534,7 @@ export default async function Home() {
       {resenasRecientes.length > 0 && (
         <section className="pt-8 px-4">
           <div className="mb-3">
-            <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Lo que dicen los vecinos</h2>
+            <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Lo que dicen los vecinos</h2>
             <p className="text-xs text-[#8E8279]">Reseñas reales de clientes de Linares</p>
           </div>
           <div className="space-y-3">
@@ -575,7 +589,7 @@ export default async function Home() {
       {/* Grid completo de categorías */}
       <section className="pb-24 pt-10">
         <div className="px-4 mb-3">
-          <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Todas las categorías</h2>
+          <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Todas las categorías</h2>
           <p className="text-xs text-[#8E8279]">{cats.length} categorías cubriendo todo Linares.</p>
         </div>
         <ul className="grid grid-cols-2 gap-3 px-4">
