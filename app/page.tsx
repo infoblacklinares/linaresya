@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import JsonLd from "@/components/JsonLd";
 import FavoritoButton from "@/components/FavoritoButton";
 import Hero from "@/components/Hero";
+import LinaresEsencial from "@/components/LinaresEsencial";
 import AdvertisementBanner from "@/components/AdvertisementBanner";
 import NewsletterForm from "@/components/NewsletterForm";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
@@ -318,6 +319,9 @@ export default async function Home() {
           </svg>
         </Link>
       </div>
+
+      {/* Linares Esencial */}
+      <LinaresEsencial />
 
       {/* Abiertos ahora — glassmorphism */}
       {negociosAbiertos.length > 0 && (
