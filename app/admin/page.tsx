@@ -288,18 +288,46 @@ export default async function AdminPage() {
 
       <section className="px-4 pt-10">
         <h2 className="text-xl font-extrabold tracking-tight mb-1">Activos</h2>
-        <p className="text-sm text-muted-foreground mb-4">Ultimos 200 negocios publicados.</p>
+        <p className="text-sm text-muted-foreground mb-4">
+          {act.length} negocios publicados, agrupados por categoría.
+        </p>
 
-        <ul className="space-y-3">
-          {act.map((n) => (
-            <NegocioCardAdmin key={n.id} negocio={n} categoria={n.categoria_id ? catsMap.get(n.categoria_id) : undefined} />
-          ))}
-          {act.length === 0 && (
-            <li className="rounded-2xl border-2 border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-              Todavia no hay negocios activos.
-            </li>
-          )}
-        </ul>
+        {act.length === 0 ? (
+          <div className="rounded-2xl border-2 border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+            Todavia no hay negocios activos.
+          </div>
+        ) : (() => {
+          // Agrupar por categoria_id
+          const grupos = new Map<number | null, NegocioRow[]>();
+          for (const n of act) {
+            const key = n.categoria_id ?? null;
+            if (!grupos.has(key)) grupos.set(key, []);
+            grupos.get(key)!.push(n);
+          }
+          // Ordenar: categorías con más negocios primero, sin categoría al final
+          const entries = Array.from(grupos.entries()).sort((a, b) => {
+            if (a[0] === null) return 1;
+            if (b[0] === null) return -1;
+            return b[1].length - a[1].length;
+          });
+          return entries.map(([catId, negocios]) => {
+            const cat = catId !== null ? catsMap.get(catId) : undefined;
+            return (
+              <div key={catId ?? "sin-cat"} className="mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-base">{cat?.emoji ?? "📦"}</span>
+                  <h3 className="text-sm font-bold text-foreground">{cat?.nombre ?? "Sin categoría"}</h3>
+                  <span className="text-xs font-semibold text-muted-foreground bg-secondary rounded-full px-2 py-0.5">{negocios.length}</span>
+                </div>
+                <ul className="space-y-3">
+                  {negocios.map((n) => (
+                    <NegocioCardAdmin key={n.id} negocio={n} categoria={cat} />
+                  ))}
+                </ul>
+              </div>
+            );
+          });
+        })()}
       </section>
     </main>
   );
