@@ -313,17 +313,19 @@ export default async function AdminPage() {
           return entries.map(([catId, negocios]) => {
             const cat = catId !== null ? catsMap.get(catId) : undefined;
             return (
-              <div key={catId ?? "sin-cat"} className="mb-6">
-                <div className="flex items-center gap-2 mb-2">
+              <div key={catId ?? "sin-cat"} className="mb-5">
+                {/* Cabecera de categoría */}
+                <div className="flex items-center gap-2 mb-1.5 px-1">
                   <span className="text-base">{cat?.emoji ?? "📦"}</span>
                   <h3 className="text-sm font-bold text-foreground">{cat?.nombre ?? "Sin categoría"}</h3>
                   <span className="text-xs font-semibold text-muted-foreground bg-secondary rounded-full px-2 py-0.5">{negocios.length}</span>
                 </div>
-                <ul className="space-y-3">
+                {/* Lista compacta */}
+                <div className="rounded-2xl bg-white border border-border overflow-hidden divide-y divide-border">
                   {negocios.map((n) => (
-                    <NegocioCardAdmin key={n.id} negocio={n} categoria={cat} />
+                    <NegocioRowAdmin key={n.id} negocio={n} />
                   ))}
-                </ul>
+                </div>
               </div>
             );
           });
@@ -349,6 +351,54 @@ function MiniStat({ label, value }: { label: string; value: number }) {
         {label}
       </p>
       <p className="text-xl font-extrabold mt-0.5">{value}</p>
+    </div>
+  );
+}
+
+function NegocioRowAdmin({ negocio }: { negocio: NegocioRow }) {
+  const fecha = new Date(negocio.creado_en).toLocaleDateString("es-CL", {
+    day: "2-digit", month: "short",
+  });
+  return (
+    <div className="flex items-center gap-3 px-3 py-2.5">
+      {/* Nombre + badges */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="text-sm font-semibold text-foreground truncate">{negocio.nombre}</span>
+          {negocio.verificado && (
+            <span className="text-[9px] font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full shrink-0">✓ Verif</span>
+          )}
+          {negocio.plan === "premium" && (
+            <span className="text-[9px] font-bold bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded-full shrink-0">⭐ Prem</span>
+          )}
+        </div>
+        <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
+          {negocio.telefono ?? negocio.direccion ?? negocio.tipo} · {fecha}
+        </p>
+      </div>
+      {/* Acciones */}
+      <div className="flex items-center gap-1 shrink-0">
+        <Link
+          href={`/admin/negocio/${negocio.id}/editar`}
+          className="text-[11px] font-semibold text-[#2B6E80] hover:underline px-1"
+        >
+          Editar
+        </Link>
+        {!negocio.verificado && (
+          <form action={verificarNegocio}>
+            <input type="hidden" name="id" value={negocio.id} />
+            <button type="submit" className="text-[11px] font-semibold text-emerald-700 hover:underline px-1">
+              Verificar
+            </button>
+          </form>
+        )}
+        <form action={desactivarNegocio}>
+          <input type="hidden" name="id" value={negocio.id} />
+          <button type="submit" className="text-[11px] font-semibold text-muted-foreground hover:text-rose-600 px-1">
+            Desactivar
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
