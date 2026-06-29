@@ -6,9 +6,15 @@ import Hero from "@/components/Hero";
 import LinaresEsencial from "@/components/LinaresEsencial";
 import AdvertisementBanner from "@/components/AdvertisementBanner";
 import NewsletterForm from "@/components/NewsletterForm";
+import FadeInSection from "@/components/FadeInSection";
+import AnimatedCard from "@/components/AnimatedCard";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
 import { getRecentPosts } from "@/lib/blog-posts";
+
+// Sin esto, Next.js cachea la página estáticamente y "Destacados" muestra
+// siempre el mismo resultado del build en vez de una selección al azar.
+export const revalidate = 0;
 
 // ── Tipos ─────────────────────────────────────────────────────────────────────
 type Categoria = {
@@ -66,6 +72,15 @@ const SIETE_DIAS_MS = 7 * 24 * 60 * 60 * 1000;
 function esNuevo(creado_en?: string) {
   if (!creado_en) return false;
   return Date.now() - new Date(creado_en).getTime() < SIETE_DIAS_MS;
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
 }
 
 function normalizeCategoria(raw: unknown): NegocioCard["categorias"] {
@@ -134,7 +149,7 @@ export default async function Home() {
       .order("plan",      { ascending: false })
       .order("verificado",{ ascending: false })
       .order("creado_en", { ascending: false })
-      .limit(6),
+      .limit(24),
 
     supabase
       .from("negocios")
@@ -175,8 +190,11 @@ export default async function Home() {
     );
   }
 
-  const cats       = (categorias ?? []) as Categoria[];
-  const destacados = ((destacadosData ?? []) as unknown[]).map(toNegocio);
+  const cats           = (categorias ?? []) as Categoria[];
+  const destacadosPool = ((destacadosData ?? []) as unknown[]).map(toNegocio);
+  // Pool de hasta 24 premium/verificados/recientes — se elige un grupo al azar
+  // de 6 en cada visita para que la sección no muestre siempre lo mismo.
+  const destacados     = shuffle(destacadosPool).slice(0, 6);
   const recientes  = ((recientesData  ?? []) as unknown[])
     .map(toNegocio)
     .filter(r => !destacados.some(d => d.id === r.id))
@@ -381,15 +399,17 @@ export default async function Home() {
         </div>
         <div className="flex gap-4 overflow-x-auto px-4 pb-3 no-scrollbar">
           {cats.map((cat, i) => (
-            <Link key={cat.id} href={`/${cat.slug}`} className="flex shrink-0 flex-col items-center gap-2 group">
-              <div className="relative flex h-[72px] w-[72px] items-center justify-center rounded-[22px] bg-white text-[2rem] shadow-[0_2px_14px_rgba(0,0,0,0.09)] border border-[#F0EDE8] transition group-hover:-translate-y-1 group-hover:shadow-[0_8px_24px_rgba(0,0,0,0.13)]">
-                {cat.emoji}
-                {i === cats.length - 1 && (
-                  <span className="absolute -top-1.5 -right-1.5 rounded-full bg-[#C05A46] px-1.5 py-0.5 text-[8px] font-bold text-white shadow-sm">New</span>
-                )}
-              </div>
-              <span className="w-[72px] text-center text-[11px] font-semibold leading-tight text-[#6B5E57]">{cat.nombre}</span>
-            </Link>
+            <AnimatedCard key={cat.id} index={i} className="shrink-0">
+              <Link href={`/${cat.slug}`} className="flex flex-col items-center gap-2 group">
+                <div className="relative flex h-[72px] w-[72px] items-center justify-center rounded-[22px] bg-white text-[2rem] shadow-[0_2px_14px_rgba(0,0,0,0.09)] border border-[#F0EDE8] transition group-hover:-translate-y-1 group-hover:shadow-[0_8px_24px_rgba(0,0,0,0.13)] active:scale-90">
+                  {cat.emoji}
+                  {i === cats.length - 1 && (
+                    <span className="absolute -top-1.5 -right-1.5 rounded-full bg-[#C05A46] px-1.5 py-0.5 text-[8px] font-bold text-white shadow-sm">New</span>
+                  )}
+                </div>
+                <span className="w-[72px] text-center text-[11px] font-semibold leading-tight text-[#6B5E57]">{cat.nombre}</span>
+              </Link>
+            </AnimatedCard>
           ))}
         </div>
       </section>
@@ -400,6 +420,7 @@ export default async function Home() {
       {/* Ofertas activas */}
       {ofertas.length > 0 && (
         <section className="pt-7">
+        <FadeInSection>
           <div className="flex items-center justify-between px-4 mb-3">
             <div>
               <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Ofertas activas</h2>
@@ -446,6 +467,7 @@ export default async function Home() {
               );
             })}
           </div>
+        </FadeInSection>
         </section>
       )}
 
@@ -465,8 +487,8 @@ export default async function Home() {
               const rating = ratingsMap.get(d.id);
               const isOpen = estaAbierto(d.id, openIds);
               return (
+                <AnimatedCard key={d.id} index={i}>
                 <Link
-                  key={d.id}
                   href={url}
                   className="group overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_22px_rgba(0,0,0,0.12)] active:scale-[0.98]"
                 >
@@ -511,6 +533,7 @@ export default async function Home() {
                     </div>
                   </div>
                 </Link>
+                </AnimatedCard>
               );
             })}
           </div>
@@ -530,7 +553,8 @@ export default async function Home() {
             {recientes.map((d, i) => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
               return (
-                <Link key={d.id} href={url} className="overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] active:scale-[0.98]">
+                <AnimatedCard key={d.id} index={i}>
+                <Link href={url} className="overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] active:scale-[0.98]">
                   <div className={`relative flex h-32 w-full items-center justify-center text-5xl ${catColor(i + 4)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
@@ -554,6 +578,7 @@ export default async function Home() {
                     <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">{d.categorias?.emoji} {d.categorias?.nombre}</p>
                   </div>
                 </Link>
+                </AnimatedCard>
               );
             })}
           </div>
@@ -568,10 +593,11 @@ export default async function Home() {
             <p className="text-xs text-[#8E8279]">Reseñas reales de clientes de Linares</p>
           </div>
           <div className="space-y-3">
-            {resenasRecientes.map(r => {
+            {resenasRecientes.map((r, i) => {
               const fichaUrl = r.categoriaSlug && r.negocioSlug ? `/${r.categoriaSlug}/${r.negocioSlug}` : null;
               return (
-                <div key={r.id} className="rounded-2xl bg-white shadow-linares-sm p-4">
+                <AnimatedCard key={r.id} index={i}>
+                <div className="rounded-2xl bg-white shadow-linares-sm p-4">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div className="min-w-0">
                       <p className="text-sm font-bold text-[#1A1410] truncate">{r.autor_nombre}</p>
@@ -591,6 +617,7 @@ export default async function Home() {
                     &ldquo;{r.comentario}&rdquo;
                   </p>
                 </div>
+                </AnimatedCard>
               );
             })}
           </div>
@@ -602,7 +629,7 @@ export default async function Home() {
 
       {/* Newsletter */}
       <section className="px-4 pt-8">
-        <div className="rounded-3xl bg-gradient-to-br from-[#1f5268] to-[#2B6E80] p-5">
+        <FadeInSection className="rounded-3xl bg-gradient-to-br from-[#1f5268] to-[#2B6E80] p-5">
           <div className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-white/90">
             📬 Novedades de Linares
           </div>
@@ -613,7 +640,7 @@ export default async function Home() {
             Un resumen semanal de lo mejor en Linares, directo a tu email.
           </p>
           <NewsletterForm />
-        </div>
+        </FadeInSection>
       </section>
 
       {/* Grid completo de categorías */}
@@ -625,13 +652,15 @@ export default async function Home() {
         <ul className="grid grid-cols-2 gap-3 px-4">
           {cats.map((cat, i) => (
             <li key={cat.id}>
-              <Link href={`/${cat.slug}`} className={`flex items-center gap-3 rounded-2xl p-4 shadow-linares-sm transition hover:shadow-linares ${catColor(i)}`}>
-                <span className="text-2xl">{cat.emoji}</span>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-bold">{cat.nombre}</p>
-                  <p className="text-[10px] opacity-60">/{cat.slug}</p>
-                </div>
-              </Link>
+              <AnimatedCard index={i % 8}>
+                <Link href={`/${cat.slug}`} className={`flex items-center gap-3 rounded-2xl p-4 shadow-linares-sm transition hover:shadow-linares ${catColor(i)}`}>
+                  <span className="text-2xl">{cat.emoji}</span>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-bold">{cat.nombre}</p>
+                    <p className="text-[10px] opacity-60">/{cat.slug}</p>
+                  </div>
+                </Link>
+              </AnimatedCard>
             </li>
           ))}
         </ul>
