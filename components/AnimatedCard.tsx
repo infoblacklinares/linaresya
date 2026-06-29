@@ -13,12 +13,16 @@ export default function AnimatedCard({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 28, scale: 0.86 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{ scale: 1.04, y: -3 }}
+      whileTap={{ scale: 0.95 }}
       transition={{
-        delay: Math.min(index, 10) * 0.06,
-        duration: 0.35,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        delay: Math.min(index, 10) * 0.07,
+        type: "spring",
+        stiffness: 260,
+        damping: 18,
+        mass: 0.6,
       }}
     >
       {children}

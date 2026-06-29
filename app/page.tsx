@@ -8,6 +8,7 @@ import AdvertisementBanner from "@/components/AdvertisementBanner";
 import NewsletterForm from "@/components/NewsletterForm";
 import FadeInSection from "@/components/FadeInSection";
 import AnimatedCard from "@/components/AnimatedCard";
+import NudgeArrow from "@/components/NudgeArrow";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
 import { getRecentPosts } from "@/lib/blog-posts";
@@ -352,7 +353,7 @@ export default async function Home() {
               </span>
               <h2 className="text-xl font-black text-[#1A1410]">Abiertos ahora</h2>
             </div>
-            <Link href="/buscar?abierto=1" className="text-xs font-bold text-[#2B6E80]">Ver todos →</Link>
+            <Link href="/buscar?abierto=1" className="text-xs font-bold text-[#2B6E80]">Ver todos <NudgeArrow /></Link>
           </div>
           <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
             {negociosAbiertos.map(n => {
@@ -395,7 +396,7 @@ export default async function Home() {
       <section className="pt-6">
         <div className="flex items-end justify-between px-4 mb-4">
           <h2 className="text-xl font-black tracking-tight text-[#1A1410]">¿Qué necesitas?</h2>
-          <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todas →</Link>
+          <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todas <NudgeArrow /></Link>
         </div>
         <div className="flex gap-4 overflow-x-auto px-4 pb-3 no-scrollbar">
           {cats.map((cat, i) => (
@@ -479,7 +480,7 @@ export default async function Home() {
               <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Destacados</h2>
               <p className="text-xs text-[#8E8279]">Premium y verificados por la comunidad</p>
             </div>
-            <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todo →</Link>
+            <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todo <NudgeArrow /></Link>
           </div>
           <div className="grid grid-cols-2 gap-3 px-4">
             {destacados.map((d, i) => {
@@ -622,7 +623,7 @@ export default async function Home() {
             })}
           </div>
           <Link href="/buscar" className="mt-3 block text-center text-xs font-semibold text-[#2B6E80]">
-            Ver todos los negocios →
+            Ver todos los negocios <NudgeArrow />
           </Link>
         </section>
       )}
@@ -676,7 +677,7 @@ export default async function Home() {
                 <h2 className="text-base font-extrabold tracking-tight text-[#1A1410]">Guías de Linares</h2>
                 <p className="text-xs text-[#8E8279]">Artículos útiles para vecinos</p>
               </div>
-              <Link href="/blog" className="text-xs font-semibold text-[#2B6E80]">Ver todo →</Link>
+              <Link href="/blog" className="text-xs font-semibold text-[#2B6E80]">Ver todo <NudgeArrow /></Link>
             </div>
             <div className="space-y-2">
               {recentBlog.map((art) => (

@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import AnimatedCounter from "@/components/AnimatedCounter";
 
 interface HeroProps {
@@ -62,8 +64,24 @@ export default function Hero({ totalNegocios, abiertosAhora }: HeroProps) {
         ) : <div className="mb-5" />}
 
         {/* Buscador glass */}
-        <form action="/buscar" method="get">
-          <div className="flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 p-1.5 pl-4 backdrop-blur-md">
+        <motion.form
+          action="/buscar"
+          method="get"
+          initial={{ opacity: 0, y: 14, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: "spring", stiffness: 240, damping: 20, delay: 0.1 }}
+        >
+          <motion.div
+            className="flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 p-1.5 pl-4 backdrop-blur-md"
+            animate={{
+              boxShadow: [
+                "0 0 0px 0px rgba(255,255,255,0)",
+                "0 0 0px 4px rgba(244,184,96,0.18)",
+                "0 0 0px 0px rgba(255,255,255,0)",
+              ],
+            }}
+            transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+          >
             <SearchIcon className="shrink-0 text-white/50" />
             <input
               name="q"
@@ -72,25 +90,37 @@ export default function Hero({ totalNegocios, abiertosAhora }: HeroProps) {
               autoComplete="off"
               className="min-w-0 flex-1 bg-transparent text-sm text-white placeholder-white/40 outline-none"
             />
-            <button
+            <motion.button
               type="submit"
-              className="shrink-0 rounded-xl bg-white px-4 py-2.5 text-xs font-extrabold text-[#2B6E80] transition hover:bg-white/90 active:scale-95"
+              className="shrink-0 rounded-xl bg-white px-4 py-2.5 text-xs font-extrabold text-[#2B6E80]"
+              whileHover={{ scale: 1.06 }}
+              whileTap={{ scale: 0.92 }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
             >
               Buscar
-            </button>
-          </div>
-        </form>
+            </motion.button>
+          </motion.div>
+        </motion.form>
 
         {/* Búsquedas rápidas */}
         <div className="mt-3 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-          {QUICK.map(q => (
-            <Link
+          {QUICK.map((q, i) => (
+            <motion.div
               key={q.href}
-              href={q.href}
-              className="shrink-0 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/80 backdrop-blur-sm transition hover:bg-white/20 active:scale-95"
+              initial={{ opacity: 0, y: 10, scale: 0.85 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              whileHover={{ scale: 1.08, y: -2 }}
+              whileTap={{ scale: 0.92 }}
+              transition={{ type: "spring", stiffness: 300, damping: 18, delay: 0.25 + i * 0.06 }}
+              className="shrink-0"
             >
-              {q.label}
-            </Link>
+              <Link
+                href={q.href}
+                className="block rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/80 backdrop-blur-sm transition hover:bg-white/20"
+              >
+                {q.label}
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
