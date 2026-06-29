@@ -8,7 +8,6 @@ import AdvertisementBanner from "@/components/AdvertisementBanner";
 import NewsletterForm from "@/components/NewsletterForm";
 import FadeInSection from "@/components/FadeInSection";
 import AnimatedCard from "@/components/AnimatedCard";
-import SplashScreen from "@/components/SplashScreen";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
 import { getRecentPosts } from "@/lib/blog-posts";
@@ -292,7 +291,6 @@ export default async function Home() {
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl bg-[#F9F8F6]">
-      <SplashScreen />
       <JsonLd id="ld-organization" data={organizationJsonLd()} />
       <JsonLd id="ld-website"      data={websiteJsonLd()} />
 
