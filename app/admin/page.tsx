@@ -10,7 +10,6 @@ import {
   logoutAction,
 } from "./actions";
 import ConfirmDeleteButton from "./ConfirmDeleteButton";
-import { CategoryGroup } from "./CategoryAccordion";
 
 export const metadata = {
   title: "Admin - LinaresYa",
@@ -316,11 +315,29 @@ export default async function AdminPage() {
               {entries.map(([catId, negocios]) => {
                 const cat = catId !== null ? catsMap.get(catId) : undefined;
                 return (
-                  <CategoryGroup key={catId ?? "sin-cat"} cat={cat} count={negocios.length}>
-                    {negocios.map((n) => (
-                      <NegocioRowAdmin key={n.id} negocio={n} />
-                    ))}
-                  </CategoryGroup>
+                  <details key={catId ?? "sin-cat"} className="group rounded-2xl border border-border bg-white overflow-hidden">
+                    <summary className="flex cursor-pointer items-center gap-3 px-4 py-3 hover:bg-secondary/40 transition-colors list-none">
+                      <span className="text-xl">{cat?.emoji ?? "📦"}</span>
+                      <span className="flex-1 text-sm font-bold text-foreground truncate">
+                        {cat?.nombre ?? "Sin categoría"}
+                      </span>
+                      <span className="text-xs font-semibold text-muted-foreground bg-secondary rounded-full px-2 py-0.5 shrink-0">
+                        {negocios.length}
+                      </span>
+                      {/* Flecha: rota cuando está abierto via CSS group-open */}
+                      <svg
+                        className="w-4 h-4 text-muted-foreground shrink-0 transition-transform duration-200 group-open:rotate-180"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
+                      >
+                        <path d="m6 9 6 6 6-6" />
+                      </svg>
+                    </summary>
+                    <div className="divide-y divide-border border-t border-border">
+                      {negocios.map((n) => (
+                        <NegocioRowAdmin key={n.id} negocio={n} />
+                      ))}
+                    </div>
+                  </details>
                 );
               })}
             </div>
