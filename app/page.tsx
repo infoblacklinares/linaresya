@@ -494,10 +494,10 @@ export default async function Home() {
                   className="group overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_22px_rgba(0,0,0,0.12)] active:scale-[0.98]"
                 >
                   {/* Imagen */}
-                  <div className={`relative flex h-32 w-full items-center justify-center text-5xl ${catColor(i)}`}>
+                  <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
-                      ? <img src={d.foto_portada} alt={d.nombre} className="h-full w-full object-cover" />
+                      ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover" />
                       : <span>{d.categorias?.emoji ?? "📍"}</span>}
                     {/* Badge premium sobre imagen */}
                     {d.plan === "premium" && (
@@ -556,10 +556,10 @@ export default async function Home() {
               return (
                 <AnimatedCard key={d.id} index={i}>
                 <Link href={url} className="overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] active:scale-[0.98]">
-                  <div className={`relative flex h-32 w-full items-center justify-center text-5xl ${catColor(i + 4)}`}>
+                  <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i + 4)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
-                      ? <img src={d.foto_portada} alt={d.nombre} className="h-full w-full object-cover" />
+                      ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover" />
                       : <span>{d.categorias?.emoji ?? "📍"}</span>}
                     {esNuevo(d.creado_en) && (
                       <span className="absolute left-2 top-2 rounded-full bg-[#1A1410] px-2 py-0.5 text-[9px] font-bold text-white">Nuevo</span>
