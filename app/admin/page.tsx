@@ -10,6 +10,7 @@ import {
   logoutAction,
 } from "./actions";
 import ConfirmDeleteButton from "./ConfirmDeleteButton";
+import { CategoryGroup } from "./CategoryAccordion";
 
 export const metadata = {
   title: "Admin - LinaresYa",
@@ -310,25 +311,20 @@ export default async function AdminPage() {
             if (b[0] === null) return -1;
             return b[1].length - a[1].length;
           });
-          return entries.map(([catId, negocios]) => {
-            const cat = catId !== null ? catsMap.get(catId) : undefined;
-            return (
-              <div key={catId ?? "sin-cat"} className="mb-5">
-                {/* Cabecera de categoría */}
-                <div className="flex items-center gap-2 mb-1.5 px-1">
-                  <span className="text-base">{cat?.emoji ?? "📦"}</span>
-                  <h3 className="text-sm font-bold text-foreground">{cat?.nombre ?? "Sin categoría"}</h3>
-                  <span className="text-xs font-semibold text-muted-foreground bg-secondary rounded-full px-2 py-0.5">{negocios.length}</span>
-                </div>
-                {/* Lista compacta */}
-                <div className="rounded-2xl bg-white border border-border overflow-hidden divide-y divide-border">
-                  {negocios.map((n) => (
-                    <NegocioRowAdmin key={n.id} negocio={n} />
-                  ))}
-                </div>
-              </div>
-            );
-          });
+          return (
+            <div className="space-y-2">
+              {entries.map(([catId, negocios]) => {
+                const cat = catId !== null ? catsMap.get(catId) : undefined;
+                return (
+                  <CategoryGroup key={catId ?? "sin-cat"} cat={cat} count={negocios.length}>
+                    {negocios.map((n) => (
+                      <NegocioRowAdmin key={n.id} negocio={n} />
+                    ))}
+                  </CategoryGroup>
+                );
+              })}
+            </div>
+          );
         })()}
       </section>
     </main>
