@@ -19,11 +19,13 @@ const QUICK = [
 
 export default function Hero({ totalNegocios, abiertosAhora }: HeroProps) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#2B6E80] via-[#205f72] to-[#163d4e]">
-      {/* Orbes decorativos glassmorphism */}
-      <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/5 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-16 -left-12 h-56 w-56 rounded-full bg-[#F4B860]/10 blur-3xl" />
-      <div className="pointer-events-none absolute top-10 right-8 h-32 w-32 rounded-full bg-[#C05A46]/10 blur-2xl" />
+    <section className="relative z-40 bg-gradient-to-br from-[#2B6E80] via-[#205f72] to-[#163d4e]">
+      {/* Orbes decorativos glassmorphism (capa recortada para no cortar el dropdown del buscador) */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/5 blur-3xl" />
+        <div className="absolute -bottom-16 -left-12 h-56 w-56 rounded-full bg-[#F4B860]/10 blur-3xl" />
+        <div className="absolute top-10 right-8 h-32 w-32 rounded-full bg-[#C05A46]/10 blur-2xl" />
+      </div>
 
       <div className="relative px-4 pt-6 pb-7">
         {/* Chip de ubicación */}

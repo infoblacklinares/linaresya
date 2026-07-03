@@ -3,13 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-type Sugerencia = { nombre: string; url: string; emoji: string };
+type Sugerencia = { nombre: string; url: string; emoji: string; foto: string | null };
 
 export default function SearchAutocomplete() {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [negocios, setNegocios] = useState<Sugerencia[]>([]);
   const [categorias, setCategorias] = useState<Sugerencia[]>([]);
+  const [fallback, setFallback] = useState<Sugerencia[]>([]);
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(-1);
   const boxRef = useRef<HTMLDivElement>(null);
@@ -33,6 +34,8 @@ export default function SearchAutocomplete() {
     if (q.trim().length < 2) {
       setNegocios([]);
       setCategorias([]);
+      setFallback([]);
+      setOpen(false);
       return;
     }
     const timer = setTimeout(async () => {
@@ -47,6 +50,7 @@ export default function SearchAutocomplete() {
         const data = await res.json();
         setNegocios(data.negocios ?? []);
         setCategorias(data.categorias ?? []);
+        setFallback(data.fallback ?? []);
         setOpen(true);
         setHighlighted(-1);
       } catch {
@@ -56,8 +60,9 @@ export default function SearchAutocomplete() {
     return () => clearTimeout(timer);
   }, [q]);
 
-  const items: Sugerencia[] = [...categorias, ...negocios];
+  const items: Sugerencia[] = [...categorias, ...negocios, ...fallback];
   const hasResults = items.length > 0;
+  const sinCoincidencias = negocios.length === 0 && categorias.length === 0 && fallback.length > 0;
 
   function submit() {
     if (highlighted >= 0 && items[highlighted]) {
@@ -90,8 +95,13 @@ export default function SearchAutocomplete() {
     }
   }
 
+  function pick(url: string) {
+    router.push(url);
+    setOpen(false);
+  }
+
   return (
-    <div ref={boxRef} className="relative">
+    <div ref={boxRef} className="relative z-50">
       <div className="flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 p-1.5 pl-4 backdrop-blur-md">
         <SearchIcon className="shrink-0 text-white/50" />
         <input
@@ -124,15 +134,25 @@ export default function SearchAutocomplete() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-2xl bg-white shadow-[0_8px_30px_rgba(0,0,0,0.18)]"
+            className="absolute inset-x-0 top-full z-[60] mt-2 max-h-[60vh] overflow-y-auto rounded-2xl bg-white shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
           >
+            {sinCoincidencias && (
+              <div className="px-4 pt-3 pb-1">
+                <p className="text-xs font-semibold text-[#1A1410]">
+                  Sin resultados para &ldquo;{q.trim()}&rdquo;
+                </p>
+                <p className="text-[10px] font-bold uppercase tracking-wide text-[#8E8279] mt-2">
+                  Quizás te interese
+                </p>
+              </div>
+            )}
             {categorias.length > 0 && (
               <div className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-wide text-[#8E8279]">
                 Categorías
               </div>
             )}
             {categorias.map((s, i) => (
-              <SuggestionRow key={s.url} s={s} active={highlighted === i} onPick={() => { router.push(s.url); setOpen(false); }} onHover={() => setHighlighted(i)} />
+              <SuggestionRow key={s.url} s={s} active={highlighted === i} onPick={() => pick(s.url)} onHover={() => setHighlighted(i)} />
             ))}
             {negocios.length > 0 && (
               <div className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-wide text-[#8E8279]">
@@ -142,7 +162,13 @@ export default function SearchAutocomplete() {
             {negocios.map((s, i) => {
               const idx = categorias.length + i;
               return (
-                <SuggestionRow key={s.url} s={s} active={highlighted === idx} onPick={() => { router.push(s.url); setOpen(false); }} onHover={() => setHighlighted(idx)} />
+                <SuggestionRow key={s.url} s={s} active={highlighted === idx} onPick={() => pick(s.url)} onHover={() => setHighlighted(idx)} />
+              );
+            })}
+            {fallback.map((s, i) => {
+              const idx = categorias.length + negocios.length + i;
+              return (
+                <SuggestionRow key={s.url} s={s} active={highlighted === idx} onPick={() => pick(s.url)} onHover={() => setHighlighted(idx)} />
               );
             })}
             <button
@@ -150,7 +176,7 @@ export default function SearchAutocomplete() {
               onClick={submit}
               className="w-full border-t border-[#F0EDE8] px-4 py-3 text-left text-xs font-bold text-[#2B6E80] hover:bg-[#F9F8F6] transition"
             >
-              Buscar “{q.trim()}” en todo LinaresYa →
+              Buscar &ldquo;{q.trim()}&rdquo; en todo LinaresYa →
             </button>
           </motion.div>
         )}
@@ -177,10 +203,20 @@ function SuggestionRow({
       onMouseEnter={onHover}
       className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition ${active ? "bg-[#F0EDE8]" : "hover:bg-[#F9F8F6]"}`}
     >
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F0EDE8] text-base">
-        {s.emoji}
-      </span>
+      {s.foto ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={s.foto}
+          alt={s.nombre}
+          className="h-9 w-9 shrink-0 rounded-xl object-cover"
+        />
+      ) : (
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#F0EDE8] text-base">
+          {s.emoji}
+        </span>
+      )}
       <span className="truncate text-sm font-semibold text-[#1A1410]">{s.nombre}</span>
+      <span className="ml-auto text-xs text-[#8E8279]">→</span>
     </button>
   );
 }
