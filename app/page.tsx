@@ -129,6 +129,10 @@ const CAT_COLORS = [
 ];
 const catColor = (i: number) => CAT_COLORS[i % CAT_COLORS.length];
 
+// Alturas variadas estilo Pinterest para el masonry
+const MASONRY_ASPECTS = ["aspect-[3/4]", "aspect-square", "aspect-[4/5]", "aspect-[4/3]"];
+const masonryAspect = (i: number) => MASONRY_ASPECTS[i % MASONRY_ASPECTS.length];
+
 // ── Página ────────────────────────────────────────────────────────────────────
 export default async function Home() {
   const hoy = new Date().toISOString().split("T")[0];
@@ -482,19 +486,19 @@ export default async function Home() {
             </div>
             <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todo <NudgeArrow /></Link>
           </div>
-          <div className="grid grid-cols-2 gap-3 px-4">
+          <div className="columns-2 gap-3 px-4">
             {destacados.map((d, i) => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
               const rating = ratingsMap.get(d.id);
               const isOpen = estaAbierto(d.id, openIds);
               return (
-                <AnimatedCard key={d.id} index={i}>
+                <AnimatedCard key={d.id} index={i} className="mb-3 break-inside-avoid">
                 <Link
                   href={url}
-                  className="group overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_22px_rgba(0,0,0,0.12)] active:scale-[0.98]"
+                  className="group block overflow-hidden rounded-3xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_22px_rgba(0,0,0,0.12)] active:scale-[0.98]"
                 >
                   {/* Imagen */}
-                  <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i)}`}>
+                  <div className={`relative w-full ${masonryAspect(i)} overflow-hidden flex items-center justify-center text-5xl ${catColor(i)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
                       ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover" />
@@ -550,13 +554,13 @@ export default async function Home() {
               <p className="text-xs text-[#8E8279]">Los últimos en unirse a LinaresYa</p>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3 px-4">
+          <div className="columns-2 gap-3 px-4">
             {recientes.map((d, i) => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
               return (
-                <AnimatedCard key={d.id} index={i}>
-                <Link href={url} className="overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] active:scale-[0.98]">
-                  <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i + 4)}`}>
+                <AnimatedCard key={d.id} index={i} className="mb-3 break-inside-avoid">
+                <Link href={url} className="block overflow-hidden rounded-3xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] active:scale-[0.98]">
+                  <div className={`relative w-full ${masonryAspect(i + 1)} overflow-hidden flex items-center justify-center text-5xl ${catColor(i + 4)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
                       ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover" />

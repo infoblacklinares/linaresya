@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import AnimatedCounter from "@/components/AnimatedCounter";
+import SearchAutocomplete from "@/components/SearchAutocomplete";
 
 interface HeroProps {
   totalNegocios?: number;
@@ -63,44 +64,14 @@ export default function Hero({ totalNegocios, abiertosAhora }: HeroProps) {
           </div>
         ) : <div className="mb-5" />}
 
-        {/* Buscador glass */}
-        <motion.form
-          action="/buscar"
-          method="get"
+        {/* Buscador con sugerencias en vivo */}
+        <motion.div
           initial={{ opacity: 0, y: 14, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ type: "spring", stiffness: 240, damping: 20, delay: 0.1 }}
         >
-          <motion.div
-            className="flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 p-1.5 pl-4 backdrop-blur-md"
-            animate={{
-              boxShadow: [
-                "0 0 0px 0px rgba(255,255,255,0)",
-                "0 0 0px 4px rgba(244,184,96,0.18)",
-                "0 0 0px 0px rgba(255,255,255,0)",
-              ],
-            }}
-            transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <SearchIcon className="shrink-0 text-white/50" />
-            <input
-              name="q"
-              type="search"
-              placeholder="gasfíter, dentista, restaurante…"
-              autoComplete="off"
-              className="min-w-0 flex-1 bg-transparent text-sm text-white placeholder-white/40 outline-none"
-            />
-            <motion.button
-              type="submit"
-              className="shrink-0 rounded-xl bg-white px-4 py-2.5 text-xs font-extrabold text-[#2B6E80]"
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.92 }}
-              transition={{ type: "spring", stiffness: 400, damping: 15 }}
-            >
-              Buscar
-            </motion.button>
-          </motion.div>
-        </motion.form>
+          <SearchAutocomplete />
+        </motion.div>
 
         {/* Búsquedas rápidas */}
         <div className="mt-3 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
@@ -132,14 +103,6 @@ function PinIcon() {
   return (
     <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
-    </svg>
-  );
-}
-function SearchIcon({ className }: { className?: string }) {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className={className}>
-      <circle cx="11" cy="11" r="7" />
-      <path d="m21 21-4.3-4.3" />
     </svg>
   );
 }
