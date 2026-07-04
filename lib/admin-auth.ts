@@ -5,9 +5,20 @@ const COOKIE_NAME = "admin_session";
 const COOKIE_SALT = "linaresya-admin-v1";
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 7; // 7 dias
 
-function expectedToken(): string {
+// El token incluye su fecha de expiracion firmada: "<exp>.<hmac(exp)>".
+// Asi una cookie robada deja de servir cuando vence, aunque no cambie
+// la password. Cambiar la password invalida todas las sesiones igual.
+function signExpiry(exp: number): string {
   const password = process.env.ADMIN_PASSWORD ?? "";
-  return crypto.createHash("sha256").update(password + COOKIE_SALT).digest("hex");
+  return crypto
+    .createHmac("sha256", password + COOKIE_SALT)
+    .update(String(exp))
+    .digest("hex");
+}
+
+function makeToken(): string {
+  const exp = Math.floor(Date.now() / 1000) + MAX_AGE_SECONDS;
+  return `${exp}.${signExpiry(exp)}`;
 }
 
 export async function isAdminAuthenticated(): Promise<boolean> {
@@ -16,9 +27,13 @@ export async function isAdminAuthenticated(): Promise<boolean> {
   const jar = await cookies();
   const c = jar.get(COOKIE_NAME);
   if (!c) return false;
+  const [expRaw, sig] = c.value.split(".");
+  const exp = Number(expRaw);
+  if (!Number.isFinite(exp) || !sig) return false;
+  if (exp < Math.floor(Date.now() / 1000)) return false; // sesion vencida
   // comparacion de tiempo constante para evitar timing attacks
-  const got = Buffer.from(c.value);
-  const want = Buffer.from(expectedToken());
+  const got = Buffer.from(sig);
+  const want = Buffer.from(signExpiry(exp));
   if (got.length !== want.length) return false;
   return crypto.timingSafeEqual(got, want);
 }
@@ -34,7 +49,7 @@ export function verifyPassword(input: string): boolean {
 
 export async function setAdminCookie(): Promise<void> {
   const jar = await cookies();
-  jar.set(COOKIE_NAME, expectedToken(), {
+  jar.set(COOKIE_NAME, makeToken(), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
