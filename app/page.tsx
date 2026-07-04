@@ -9,6 +9,7 @@ import NewsletterForm from "@/components/NewsletterForm";
 import FadeInSection from "@/components/FadeInSection";
 import AnimatedCard from "@/components/AnimatedCard";
 import NudgeArrow from "@/components/NudgeArrow";
+import StoriesBar, { type Historia } from "@/components/StoriesBar";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
 import { getRecentPosts } from "@/lib/blog-posts";
@@ -144,6 +145,7 @@ export default async function Home() {
     { data: ofertasData },
     { count: totalCount },
     { data: resenasRecientesData },
+    { data: historiasData },
   ] = await Promise.all([
     supabase.from("categorias").select("*").order("orden"),
 
@@ -182,6 +184,14 @@ export default async function Home() {
       .not("comentario", "is", null)
       .order("creado_en", { ascending: false })
       .limit(6),
+
+    // Historias vigentes de negocios premium (RLS filtra expiradas igual)
+    supabase
+      .from("historias")
+      .select("id, imagen_url, texto, negocio_id, negocios:negocio_id(nombre, foto_portada, plan, activo, slug, categorias:categoria_id(slug, emoji))")
+      .gt("expira_en", new Date().toISOString())
+      .order("creada_en", { ascending: false })
+      .limit(30),
   ]);
 
   if (error) {
@@ -256,6 +266,27 @@ export default async function Home() {
     }];
   }).slice(0, 3);
 
+  // Historias premium para la barra tipo Instagram
+  const historias: Historia[] = ((historiasData ?? []) as unknown[]).flatMap(r => {
+    const x = r as Record<string, unknown>;
+    const neg = Array.isArray(x.negocios) ? (x.negocios as unknown[])[0] : x.negocios;
+    if (!neg || typeof neg !== "object") return [];
+    const n = neg as Record<string, unknown>;
+    if (!n.activo || n.plan !== "premium") return [];
+    const catRaw = Array.isArray(n.categorias) ? (n.categorias as unknown[])[0] : n.categorias;
+    const cat = catRaw && typeof catRaw === "object" ? catRaw as Record<string, unknown> : null;
+    return [{
+      id: Number(x.id),
+      imagen_url: String(x.imagen_url ?? ""),
+      texto: (x.texto as string | null) ?? null,
+      negocio_id: String(x.negocio_id ?? ""),
+      nombre: String(n.nombre ?? ""),
+      emoji: cat ? String(cat.emoji ?? "🏪") : "🏪",
+      foto_portada: (n.foto_portada as string | null) ?? null,
+      url: cat ? `/${String(cat.slug)}/${String(n.slug)}` : "#",
+    }];
+  });
+
   // Ratings para negocios en Destacados (batch query + agrega en JS)
   type ResenaRating = { negocio_id: string; estrellas: number };
   const ratingsMap = new Map<string, { sum: number; count: number }>();
@@ -301,6 +332,9 @@ export default async function Home() {
 
       {/* Hero */}
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} />
+
+      {/* Historias premium — estilo Instagram */}
+      <StoriesBar historias={historias} />
 
       {/* Filtros rápidos — estilo Uber Eats */}
       <div className="flex gap-2 overflow-x-auto px-4 pt-4 pb-2 no-scrollbar">

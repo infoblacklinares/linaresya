@@ -210,6 +210,13 @@ export default async function AdminPage() {
             <p className="text-3xl font-extrabold mt-1">{reportesCount}</p>
           </Link>
         </div>
+        <Link
+          href="/admin/historias"
+          className="mt-3 flex items-center justify-between rounded-2xl bg-gradient-to-r from-[#F4B860]/20 to-[#C05A46]/10 border border-[#F4B860]/40 px-4 py-3 hover:opacity-90 transition"
+        >
+          <span className="text-sm font-bold">📸 Historias premium</span>
+          <span className="text-xs font-semibold text-muted-foreground">Gestionar →</span>
+        </Link>
       </section>
 
       <section className="px-4 pt-6">
