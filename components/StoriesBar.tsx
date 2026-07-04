@@ -16,6 +16,7 @@ export type Historia = {
 };
 
 const DURACION_MS = 5000;
+const DURACION_CON_TEXTO_MS = 7000;
 
 type Grupo = {
   negocio_id: string;
@@ -121,23 +122,40 @@ function StoryViewer({
 }) {
   const [idx, setIdx] = useState(0);
   const [progreso, setProgreso] = useState(0);
+  const [pausado, setPausado] = useState(false);
   const rafRef = useRef<number>(0);
+  const transcurridoRef = useRef<number>(0); // ms acumulados antes de la pausa
   const inicioRef = useRef<number>(0);
+  const pausadoRef = useRef(false);
 
   const historia = grupo.historias[idx];
   const total = grupo.historias.length;
+  // Con texto se da más tiempo para leer
+  const duracion = historia.texto ? DURACION_CON_TEXTO_MS : DURACION_MS;
 
   // Reiniciar índice al cambiar de grupo
   useEffect(() => {
     setIdx(0);
   }, [grupo.negocio_id]);
 
-  // Temporizador de avance con requestAnimationFrame
+  pausadoRef.current = pausado;
+
+  // Temporizador de avance con requestAnimationFrame, con soporte de pausa:
+  // mantener el dedo/mouse presionado congela el progreso (como Instagram).
   useEffect(() => {
+    transcurridoRef.current = 0;
     inicioRef.current = performance.now();
     setProgreso(0);
     function tick(now: number) {
-      const p = Math.min((now - inicioRef.current) / DURACION_MS, 1);
+      if (pausadoRef.current) {
+        // congelar: acumular lo transcurrido y correr el reloj de inicio
+        transcurridoRef.current += now - inicioRef.current;
+        inicioRef.current = now;
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
+      const transcurrido = transcurridoRef.current + (now - inicioRef.current);
+      const p = Math.min(transcurrido / duracion, 1);
       setProgreso(p);
       if (p < 1) {
         rafRef.current = requestAnimationFrame(tick);
@@ -150,7 +168,7 @@ function StoryViewer({
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idx, grupo.negocio_id, total]);
+  }, [idx, grupo.negocio_id, total, duracion]);
 
   // Bloquear scroll del body mientras está abierto
   useEffect(() => {
@@ -166,6 +184,20 @@ function StoryViewer({
   function siguiente() {
     if (idx + 1 < total) setIdx(i => i + 1);
     else onNextGroup();
+  }
+
+  // Mantener presionado pausa; un toque corto navega. Si el dedo estuvo
+  // más de 250 ms, el click posterior se ignora (era una pausa, no un tap).
+  const holdInicioRef = useRef(0);
+  function holdStart() {
+    holdInicioRef.current = Date.now();
+    setPausado(true);
+  }
+  function holdEnd() {
+    setPausado(false);
+  }
+  function fueHold(): boolean {
+    return Date.now() - holdInicioRef.current > 250;
   }
 
   return (
@@ -218,9 +250,34 @@ function StoryViewer({
           className="absolute inset-0 h-full w-full object-contain"
         />
 
-        {/* Zonas táctiles anterior/siguiente */}
-        <button type="button" aria-label="Anterior" onClick={anterior} className="absolute inset-y-0 left-0 w-1/3 z-10" />
-        <button type="button" aria-label="Siguiente" onClick={siguiente} className="absolute inset-y-0 right-0 w-2/3 z-10" />
+        {/* Zonas táctiles: toque corto navega, mantener presionado pausa */}
+        <button
+          type="button"
+          aria-label="Anterior"
+          onPointerDown={holdStart}
+          onPointerUp={holdEnd}
+          onPointerLeave={holdEnd}
+          onPointerCancel={holdEnd}
+          onClick={() => { if (!fueHold()) anterior(); }}
+          className="absolute inset-y-0 left-0 w-1/3 z-10 touch-none select-none"
+        />
+        <button
+          type="button"
+          aria-label="Siguiente"
+          onPointerDown={holdStart}
+          onPointerUp={holdEnd}
+          onPointerLeave={holdEnd}
+          onPointerCancel={holdEnd}
+          onClick={() => { if (!fueHold()) siguiente(); }}
+          className="absolute inset-y-0 right-0 w-2/3 z-10 touch-none select-none"
+        />
+
+        {/* Indicador de pausa */}
+        {pausado && (
+          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 rounded-full bg-black/50 px-3 py-1.5 text-xs font-bold text-white pointer-events-none">
+            ⏸ Pausado
+          </span>
+        )}
 
         {/* Texto + CTA */}
         <div className="absolute bottom-0 inset-x-0 z-20 bg-gradient-to-t from-black/80 to-transparent px-4 pb-6 pt-16">
