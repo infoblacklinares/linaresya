@@ -9,20 +9,25 @@ const init: HistoriaState = { ok: false };
 export default function HistoriaForm({
   premium,
 }: {
-  premium: { id: string; nombre: string }[];
+  premium: { id: string; nombre: string; plan?: string }[];
 }) {
   const [state, action, isPending] = useActionState(crearHistoria, init);
 
   return (
     <form action={action} className="space-y-4 rounded-2xl bg-white border border-border p-4">
       <div>
-        <label className="text-sm font-bold block mb-1.5">Negocio premium</label>
+        <label className="text-sm font-bold block mb-1.5">Negocio</label>
         <select name="negocio_id" required className="input-ue w-full">
           <option value="">Elige un negocio…</option>
           {premium.map(n => (
-            <option key={n.id} value={n.id}>{n.nombre}</option>
+            <option key={n.id} value={n.id}>
+              {n.plan === "premium" ? "⭐ " : ""}{n.nombre}
+            </option>
           ))}
         </select>
+        <p className="mt-1 text-[11px] text-muted-foreground">
+          Como admin puedes publicar para cualquier negocio activo (⭐ = premium).
+        </p>
       </div>
 
       <div>

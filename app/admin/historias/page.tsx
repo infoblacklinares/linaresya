@@ -25,9 +25,9 @@ export default async function AdminHistoriasPage() {
   const [{ data: premium }, { data: historias }] = await Promise.all([
     supabaseAdmin
       .from("negocios")
-      .select("id, nombre")
+      .select("id, nombre, plan")
       .eq("activo", true)
-      .eq("plan", "premium")
+      .order("plan", { ascending: false })
       .order("nombre"),
     supabaseAdmin
       .from("historias")
@@ -50,7 +50,7 @@ export default async function AdminHistoriasPage() {
 
       {(premium ?? []).length === 0 ? (
         <p className="rounded-2xl border-2 border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-          No hay negocios premium activos todavía.
+          No hay negocios activos todavía.
         </p>
       ) : (
         <HistoriaForm premium={premium ?? []} />

@@ -22,14 +22,15 @@ export async function crearHistoria(
   if (!imagenUrl) return { ok: false, error: "Sube una imagen para la historia." };
   const horasValidas = [24, 48, 72].includes(horas) ? horas : 24;
 
-  // Solo negocios premium activos pueden tener historias
+  // El admin puede publicar para cualquier negocio activo (los dueños,
+  // cuando tengan acceso propio, quedarán limitados a premium).
   const { data: negocio } = await supabaseAdmin
     .from("negocios")
-    .select("id, plan, activo")
+    .select("id, activo")
     .eq("id", negocioId)
     .single();
-  if (!negocio || !negocio.activo || negocio.plan !== "premium") {
-    return { ok: false, error: "Solo negocios premium activos pueden tener historias." };
+  if (!negocio || !negocio.activo) {
+    return { ok: false, error: "El negocio no existe o no está activo." };
   }
 
   const expira = new Date(Date.now() + horasValidas * 60 * 60 * 1000).toISOString();

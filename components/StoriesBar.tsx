@@ -48,8 +48,6 @@ export default function StoriesBar({ historias }: { historias: Historia[] }) {
 
   const [abierto, setAbierto] = useState<number | null>(null);
 
-  if (grupos.length === 0) return null;
-
   return (
     <>
       <div className="pt-4">
@@ -58,6 +56,17 @@ export default function StoriesBar({ historias }: { historias: Historia[] }) {
           <span className="rounded-full bg-[#F4B860]/20 px-2 py-0.5 text-[9px] font-extrabold text-[#8B5E0A]">⭐ Premium</span>
         </div>
         <div className="flex gap-3 overflow-x-auto px-4 pb-1 no-scrollbar">
+          {/* CTA: agrega tu historia (beneficio premium) */}
+          <Link href="/premium" className="flex shrink-0 flex-col items-center gap-1.5 w-[68px]">
+            <span className="rounded-full p-[2.5px] border-2 border-dashed border-[#F4B860]">
+              <span className="flex h-[58px] w-[58px] items-center justify-center rounded-full bg-[#F4B860]/10 text-2xl font-black text-[#8B5E0A]">
+                +
+              </span>
+            </span>
+            <span className="w-full truncate text-center text-[10px] font-semibold text-[#8B5E0A]">
+              Tu historia
+            </span>
+          </Link>
           {grupos.map((g, i) => (
             <motion.button
               key={g.negocio_id}

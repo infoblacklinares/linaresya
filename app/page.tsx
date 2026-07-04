@@ -272,7 +272,7 @@ export default async function Home() {
     const neg = Array.isArray(x.negocios) ? (x.negocios as unknown[])[0] : x.negocios;
     if (!neg || typeof neg !== "object") return [];
     const n = neg as Record<string, unknown>;
-    if (!n.activo || n.plan !== "premium") return [];
+    if (!n.activo) return [];
     const catRaw = Array.isArray(n.categorias) ? (n.categorias as unknown[])[0] : n.categorias;
     const cat = catRaw && typeof catRaw === "object" ? catRaw as Record<string, unknown> : null;
     return [{
