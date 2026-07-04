@@ -141,6 +141,12 @@ export default function LeaveReviewForm({
 
       <p className="text-[10px] text-muted-foreground text-center">
         Tu resena va a una cola de moderacion antes de publicarse.
+        Al enviarla aceptas que tu nombre y comentario se publiquen en esta
+        ficha, segun nuestra{" "}
+        <a href="/privacidad" target="_blank" className="underline font-medium">
+          Politica de Privacidad
+        </a>
+        . Puedes pedir su eliminacion cuando quieras.
       </p>
     </form>
   );

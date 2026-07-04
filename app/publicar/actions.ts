@@ -79,6 +79,14 @@ export async function publicarNegocio(
     };
   }
 
+  // Consentimiento explicito de tratamiento de datos (Ley 21.719)
+  if (formData.get("acepta_privacidad") !== "on") {
+    return {
+      ok: false,
+      error: "Debes aceptar la Política de Privacidad para publicar tu negocio.",
+    };
+  }
+
   const nombre = String(formData.get("nombre") ?? "").trim();
   const categoriaIdRaw = String(formData.get("categoria_id") ?? "").trim();
   const tipoRaw = String(formData.get("tipo") ?? "negocio").trim();

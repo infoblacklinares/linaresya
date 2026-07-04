@@ -217,6 +217,26 @@ export default function PublishForm({ categorias }: { categorias: Categoria[] })
         </>
       )}
 
+      {/* Consentimiento de datos personales (Ley 21.719) */}
+      <label className="flex items-start gap-3 rounded-2xl bg-secondary/50 px-4 py-3 cursor-pointer">
+        <input
+          type="checkbox"
+          name="acepta_privacidad"
+          required
+          className="mt-0.5 h-4 w-4 accent-foreground shrink-0"
+        />
+        <span className="text-xs text-foreground/80 leading-relaxed">
+          He leído y acepto la{" "}
+          <a href="/privacidad" target="_blank" className="font-semibold underline">
+            Política de Privacidad
+          </a>
+          . Entiendo que los datos del negocio (nombre, teléfono, dirección,
+          fotos) se publicarán en la ficha para que los vecinos puedan
+          contactarme, y que puedo pedir su modificación o eliminación en
+          cualquier momento.
+        </span>
+      </label>
+
       <div className="pt-2">
         <button
           type="submit"

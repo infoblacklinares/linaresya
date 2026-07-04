@@ -48,7 +48,11 @@ export default function NewsletterForm() {
         <p className="text-xs text-red-300 px-1">{state.error}</p>
       )}
       <p className="text-[11px] text-white/50 px-1">
-        Sin spam. Solo novedades de Linares.
+        Sin spam. Solo novedades de Linares. Al suscribirte aceptas nuestra{" "}
+        <a href="/privacidad" className="underline text-white/70 hover:text-white">
+          Política de Privacidad
+        </a>
+        . Puedes darte de baja cuando quieras desde cualquier correo.
       </p>
     </form>
   );
