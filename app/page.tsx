@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import JsonLd from "@/components/JsonLd";
 import FavoritoButton from "@/components/FavoritoButton";
 import Hero from "@/components/Hero";
@@ -329,6 +330,48 @@ export default async function Home() {
 
   const totalNegocios = totalCount ?? destacados.length;
 
+  // ── Negocio del día: rotación determinística por fecha ────────────────────
+  // Mismo negocio para todos durante el día, cambia solo a medianoche.
+  let negocioDelDia: NegocioCard | null = null;
+  if (totalNegocios > 0) {
+    const offset = Math.floor(Date.now() / 86_400_000) % totalNegocios;
+    const { data: delDiaData } = await supabase
+      .from("negocios")
+      .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, telefono, categorias:categoria_id(nombre, slug, emoji)")
+      .eq("activo", true)
+      .order("creado_en", { ascending: true })
+      .range(offset, offset);
+    if (delDiaData?.[0]) negocioDelDia = toNegocio(delDiaData[0]);
+  }
+
+  // ── Lo más visto de la semana (estadisticas_diarias es tabla cerrada:
+  //    se consulta server-side con service role, solo lectura agregada) ──────
+  const hace7 = new Date(Date.now() - 7 * 86_400_000).toISOString().slice(0, 10);
+  const { data: statsSemana } = await supabaseAdmin
+    .from("estadisticas_diarias")
+    .select("negocio_id, vistas")
+    .gte("fecha", hace7);
+  const vistasPorNegocio = new Map<string, number>();
+  for (const row of ((statsSemana ?? []) as { negocio_id: string; vistas: number }[])) {
+    vistasPorNegocio.set(row.negocio_id, (vistasPorNegocio.get(row.negocio_id) ?? 0) + (row.vistas ?? 0));
+  }
+  const topIds = [...vistasPorNegocio.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4)
+    .filter(([, v]) => v > 0)
+    .map(([id]) => id);
+  let masVistos: NegocioCard[] = [];
+  if (topIds.length > 0) {
+    const { data: masVistosData } = await supabase
+      .from("negocios")
+      .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, telefono, categorias:categoria_id(nombre, slug, emoji)")
+      .eq("activo", true)
+      .in("id", topIds);
+    masVistos = ((masVistosData ?? []) as unknown[])
+      .map(toNegocio)
+      .sort((a, b) => (vistasPorNegocio.get(b.id) ?? 0) - (vistasPorNegocio.get(a.id) ?? 0));
+  }
+
   // ── Horarios: qué negocios están abiertos ahora ───────────────────────────
   const todosIds = [...destacados, ...recientes].map(n => n.id);
   const openIdsArr = await getOpenIds(todosIds);
@@ -442,6 +485,38 @@ export default async function Home() {
               );
             })}
           </div>
+        </section>
+      )}
+
+      {/* Negocio del día — rotación diaria automática */}
+      {negocioDelDia && (
+        <section className="px-4 pt-6">
+          <FadeInSection>
+            <Link
+              href={negocioDelDia.categorias ? `/${negocioDelDia.categorias.slug}/${negocioDelDia.slug}` : "#"}
+              className="relative block overflow-hidden rounded-3xl bg-gradient-to-br from-[#1A1410] to-[#3D3428] shadow-[0_6px_24px_rgba(0,0,0,0.18)] active:scale-[0.99] transition"
+            >
+              <div className="flex items-center gap-4 p-4">
+                <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-white/10 flex items-center justify-center text-3xl">
+                  {negocioDelDia.foto_portada
+                    // eslint-disable-next-line @next/next/no-img-element
+                    ? <img src={negocioDelDia.foto_portada} alt={negocioDelDia.nombre} className="h-full w-full object-cover" />
+                    : <span>{negocioDelDia.categorias?.emoji ?? "🏪"}</span>}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#F4B860] px-2 py-0.5 text-[9px] font-extrabold text-[#1A1410]">
+                    🏆 Negocio del día
+                  </span>
+                  <p className="mt-1.5 truncate text-base font-black text-white leading-tight">{negocioDelDia.nombre}</p>
+                  <p className="truncate text-[11px] text-white/60">
+                    {negocioDelDia.categorias?.emoji} {negocioDelDia.categorias?.nombre}
+                    {negocioDelDia.verificado ? " · ✓ Verificado" : ""}
+                  </p>
+                </div>
+                <span className="shrink-0 text-white/50 text-lg">→</span>
+              </div>
+            </Link>
+          </FadeInSection>
         </section>
       )}
 
@@ -634,6 +709,44 @@ export default async function Home() {
                     <p className="truncate text-sm font-black text-[#1A1410]">{d.nombre}</p>
                     <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">{d.categorias?.emoji} {d.categorias?.nombre}</p>
                   </div>
+                </Link>
+                </AnimatedCard>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Lo más visto de la semana — prueba social con datos reales */}
+      {masVistos.length > 0 && (
+        <section className="pt-8 px-4">
+          <div className="mb-3">
+            <h2 className="text-xl font-black tracking-tight text-[#1A1410]">🔥 Lo más visto</h2>
+            <p className="text-xs text-[#8E8279]">Los negocios que más miran los vecinos esta semana</p>
+          </div>
+          <div className="space-y-2">
+            {masVistos.map((n, i) => {
+              const url = n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#";
+              const vistas = vistasPorNegocio.get(n.id) ?? 0;
+              return (
+                <AnimatedCard key={n.id} index={i}>
+                <Link href={url} className="flex items-center gap-3 rounded-2xl bg-white border border-[#F0EDE8] shadow-linares-sm p-3 hover:shadow-linares transition active:scale-[0.99]">
+                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-black ${i === 0 ? "bg-[#F4B860] text-[#1A1410]" : "bg-[#F0EDE8] text-[#8E8279]"}`}>
+                    {i + 1}
+                  </span>
+                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-[#F0EDE8] flex items-center justify-center text-xl">
+                    {n.foto_portada
+                      // eslint-disable-next-line @next/next/no-img-element
+                      ? <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
+                      : <span>{n.categorias?.emoji ?? "🏪"}</span>}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-bold text-[#1A1410]">{n.nombre}</p>
+                    <p className="truncate text-[10px] text-[#8E8279]">{n.categorias?.emoji} {n.categorias?.nombre}</p>
+                  </div>
+                  <span className="shrink-0 text-[10px] font-bold text-[#C05A46]">
+                    👁 {vistas} {vistas === 1 ? "vista" : "vistas"}
+                  </span>
                 </Link>
                 </AnimatedCard>
               );
