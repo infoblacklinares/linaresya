@@ -61,6 +61,7 @@ type Negocio = {
   disponibilidad: string | null;
   foto_portada: string | null;
   creado_en: string;
+  actualizado_en: string | null;
 };
 
 type Dia =
@@ -445,6 +446,17 @@ export default async function NegocioDetalle({
                 A domicilio
               </span>
             )}
+            {(() => {
+              // Sello de frescura: cuándo se actualizó la ficha por última vez
+              const ref = n.actualizado_en ?? n.creado_en;
+              const dias = Math.floor((Date.now() - new Date(ref).getTime()) / 86_400_000);
+              const texto = dias <= 0 ? "Actualizado hoy" : dias === 1 ? "Actualizado ayer" : dias <= 60 ? `Actualizado hace ${dias} días` : null;
+              return texto ? (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-medium bg-[#2B6E80]/8 text-[#2B6E80]">
+                  ↻ {texto}
+                </span>
+              ) : null;
+            })()}
             {ratingPromedio && (
               <span className="inline-flex items-center gap-1 font-semibold">
                 {"\u2B50"} {ratingPromedio}

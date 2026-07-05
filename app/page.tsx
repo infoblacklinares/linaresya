@@ -145,6 +145,7 @@ export default async function Home() {
     { data: ofertasData },
     { count: totalCount },
     { data: resenasRecientesData },
+    { data: categoriaCountsData },
     { data: historiasData },
   ] = await Promise.all([
     supabase.from("categorias").select("*").order("orden"),
@@ -184,6 +185,12 @@ export default async function Home() {
       .not("comentario", "is", null)
       .order("creado_en", { ascending: false })
       .limit(6),
+
+    // Conteo de negocios activos por categoría (agregado en JS)
+    supabase
+      .from("negocios")
+      .select("categoria_id")
+      .eq("activo", true),
 
     // Historias vigentes de negocios premium (RLS filtra expiradas igual)
     supabase
@@ -265,6 +272,14 @@ export default async function Home() {
       categoriaEmoji: cat ? String(cat.emoji ?? "🏪") : "🏪",
     }];
   }).slice(0, 3);
+
+  // Conteo de negocios activos por categoría
+  const catCounts = new Map<number, number>();
+  for (const row of ((categoriaCountsData ?? []) as { categoria_id: number | null }[])) {
+    if (row.categoria_id !== null) {
+      catCounts.set(row.categoria_id, (catCounts.get(row.categoria_id) ?? 0) + 1);
+    }
+  }
 
   // Historias premium para la barra tipo Instagram
   const historias: Historia[] = ((historiasData ?? []) as unknown[]).flatMap(r => {
@@ -447,6 +462,9 @@ export default async function Home() {
                   )}
                 </div>
                 <span className="w-[72px] text-center text-[11px] font-semibold leading-tight text-[#6B5E57]">{cat.nombre}</span>
+                {(catCounts.get(cat.id) ?? 0) > 0 && (
+                  <span className="text-[9px] font-bold text-[#2B6E80] -mt-1">{catCounts.get(cat.id)} negocios</span>
+                )}
               </Link>
             </AnimatedCard>
           ))}
@@ -696,7 +714,11 @@ export default async function Home() {
                   <span className="text-2xl">{cat.emoji}</span>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-bold">{cat.nombre}</p>
-                    <p className="text-[10px] opacity-60">/{cat.slug}</p>
+                    <p className="text-[10px] opacity-60">
+                      {(catCounts.get(cat.id) ?? 0) > 0
+                        ? `${catCounts.get(cat.id)} negocio${catCounts.get(cat.id) === 1 ? "" : "s"}`
+                        : "Próximamente"}
+                    </p>
                   </div>
                 </Link>
               </AnimatedCard>

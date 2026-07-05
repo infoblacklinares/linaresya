@@ -5,6 +5,16 @@ import { motion, AnimatePresence } from "framer-motion";
 
 type Sugerencia = { nombre: string; url: string; emoji: string; foto: string | null };
 
+// Búsquedas populares mostradas al enfocar el buscador vacío
+const POPULARES = [
+  { q: "restaurante", emoji: "🍽️" },
+  { q: "farmacia", emoji: "💊" },
+  { q: "gasfíter", emoji: "🔧" },
+  { q: "veterinaria", emoji: "🐾" },
+  { q: "ferretería", emoji: "🔨" },
+  { q: "peluquería", emoji: "💇" },
+];
+
 export default function SearchAutocomplete() {
   const router = useRouter();
   const [q, setQ] = useState("");
@@ -107,7 +117,7 @@ export default function SearchAutocomplete() {
         <input
           value={q}
           onChange={e => setQ(e.target.value)}
-          onFocus={() => hasResults && setOpen(true)}
+          onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
           type="search"
           placeholder="gasfíter, dentista, restaurante…"
@@ -125,6 +135,35 @@ export default function SearchAutocomplete() {
           Buscar
         </motion.button>
       </div>
+
+      {/* Búsquedas populares al enfocar vacío */}
+      <AnimatePresence>
+        {open && q.trim().length < 2 && (
+          <motion.div
+            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            className="absolute inset-x-0 top-full z-[60] mt-2 overflow-hidden rounded-2xl bg-white shadow-[0_12px_40px_rgba(0,0,0,0.25)] p-3"
+          >
+            <p className="px-1 pb-2 text-[10px] font-bold uppercase tracking-wide text-[#8E8279]">
+              Búsquedas populares
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {POPULARES.map(p => (
+                <button
+                  key={p.q}
+                  type="button"
+                  onClick={() => { router.push(`/buscar?q=${encodeURIComponent(p.q)}`); setOpen(false); }}
+                  className="rounded-full bg-[#F9F8F6] border border-[#E8E4DE] px-3 py-1.5 text-xs font-semibold text-[#1A1410] hover:border-[#2B6E80]/40 hover:bg-[#2B6E80]/5 transition"
+                >
+                  {p.emoji} {p.q}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Dropdown de sugerencias estilo Pinterest */}
       <AnimatePresence>

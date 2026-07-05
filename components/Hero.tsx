@@ -28,18 +28,23 @@ export default function Hero({ totalNegocios, abiertosAhora }: HeroProps) {
       </div>
 
       <div className="relative px-4 pt-6 pb-7">
-        {/* Chip de ubicación */}
-        <div className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/90 backdrop-blur-sm">
-          <PinIcon />
-          Linares, Región del Maule
+        {/* Chips: ubicación + autoridad */}
+        <div className="mb-5 flex flex-wrap gap-2">
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/90 backdrop-blur-sm">
+            <PinIcon />
+            Linares, Región del Maule
+          </div>
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#F4B860]/30 bg-[#F4B860]/15 px-3 py-1.5 text-xs font-semibold text-[#F4B860] backdrop-blur-sm">
+            ✓ Actualizado hoy
+          </div>
         </div>
 
-        {/* Titular estilo Uber Eats */}
+        {/* Titular con autoridad */}
         <h1 className="mb-1 text-[1.9rem] font-black leading-[1.1] tracking-tight text-white">
-          Hola, Linares 👋
+          La guía digital<br />de Linares
         </h1>
         <p className="mb-5 text-sm text-white/60 leading-snug">
-          Negocios locales, horarios reales y ofertas de hoy.
+          Negocios verificados, horarios reales y ofertas de hoy — todo en un solo lugar.
         </p>
 
         {/* Stats — tarjetas glass */}
