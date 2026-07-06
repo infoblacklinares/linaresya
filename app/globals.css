@@ -207,3 +207,12 @@
   text-underline-offset: 3px;
 }
 .prose-linares a:hover { color: #1f5268; }
+
+/* Accesibilidad: anillo de foco visible para navegación por teclado (WCAG 2.1 AA).
+   Solo aplica a :focus-visible (teclado), no molesta al clic con mouse. */
+*:focus-visible {
+  outline: 3px solid #F4B860;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(244, 184, 96, 0.35);
+  border-radius: 4px;
+}

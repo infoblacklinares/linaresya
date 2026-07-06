@@ -130,9 +130,13 @@ export default function SearchAutocomplete() {
 
   return (
     <div ref={boxRef} className="relative z-50">
+      <label htmlFor="main-search" className="sr-only">
+        Buscar negocios, servicios o rubros en Linares
+      </label>
       <div className="flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 p-1.5 pl-4 backdrop-blur-md">
         <SearchIcon className="shrink-0 text-white/50" />
         <input
+          id="main-search"
           value={q}
           onChange={e => setQ(e.target.value)}
           onFocus={() => { setRecientes(leerRecientes()); setOpen(true); }}

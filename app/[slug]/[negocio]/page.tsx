@@ -104,10 +104,10 @@ const DIAS_ORDEN: Dia[] = [
 const DIAS_LABEL: Record<Dia, string> = {
   lunes: "Lunes",
   martes: "Martes",
-  miercoles: "Miercoles",
+  miercoles: "Miércoles",
   jueves: "Jueves",
   viernes: "Viernes",
-  sabado: "Sabado",
+  sabado: "Sábado",
   domingo: "Domingo",
 };
 
@@ -485,8 +485,8 @@ export default async function NegocioDetalle({
       </section>
 
       <section className="px-4 mt-5">
-        <div className="grid grid-cols-3 gap-2">
-          {wa ? (
+        <div className={`grid gap-2 ${wa ? "grid-cols-3" : "grid-cols-2"}`}>
+          {wa && (
             <TrackedActionButton
               href={wa}
               negocioId={n.id}
@@ -495,12 +495,6 @@ export default async function NegocioDetalle({
               icon={<WhatsAppIcon />}
               label="WhatsApp"
               primary
-            />
-          ) : (
-            <ActionButton
-              href="/premium"
-              icon={<WhatsAppIcon />}
-              label="Solo Premium"
             />
           )}
           {tel ? (
@@ -524,7 +518,7 @@ export default async function NegocioDetalle({
               label="Llegar"
             />
           ) : (
-            <ActionButton disabled icon={<MapIcon />} label="Sin direccion" />
+            <ActionButton disabled icon={<MapIcon />} label="Sin dirección" />
           )}
         </div>
         {n.sitio_web && (

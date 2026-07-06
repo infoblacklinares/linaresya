@@ -18,7 +18,7 @@ export interface BlogPost {
 export const posts: BlogPost[] = [
   {
     slug: "restaurantes-en-linares",
-    titulo: "Los mejores restaurantes en Linares, Chile (2025)",
+    titulo: "Los mejores restaurantes en Linares, Chile (2026)",
     descripcion:
       "Guía actualizada de los mejores restaurantes en Linares, Región del Maule. Desde cocina chilena tradicional hasta sushi y delivery a domicilio.",
     fecha: "2025-05-15",
@@ -2470,7 +2470,7 @@ export const posts: BlogPost[] = [
     contenido: `
 <p>El mercado de <strong>arriendos en Linares</strong> ofrece opciones para distintos presupuestos: desde piezas y departamentos en el centro hasta casas amplias en sectores residenciales. Acá te contamos qué esperar en precios y cómo arrendar sin problemas.</p>
 
-<h2>Precios de arriendo en Linares (2025)</h2>
+<h2>Precios de arriendo en Linares (2026)</h2>
 <ul>
   <li><strong>Pieza amoblada (sector centro):</strong> $80.000–$150.000/mes</li>
   <li><strong>Departamento 1 dormitorio:</strong> $180.000–$280.000/mes</li>
@@ -3271,7 +3271,7 @@ export const posts: BlogPost[] = [
     contenido: `
 <p>¿Vas a abrir un negocio en Linares y buscas local? La ubicación puede hacer o deshacer un emprendimiento. Acá te explicamos precios, sectores y qué evaluar antes de firmar.</p>
 
-<h2>Precios de arriendo de locales en Linares (2025)</h2>
+<h2>Precios de arriendo de locales en Linares (2026)</h2>
 <ul>
   <li><strong>Local pequeño en el centro (hasta 30 m²):</strong> $200.000–$400.000/mes</li>
   <li><strong>Local mediano en el centro (30–80 m²):</strong> $350.000–$700.000/mes</li>
@@ -3329,7 +3329,7 @@ export const posts: BlogPost[] = [
 
   {
     slug: "telefonia-internet-linares",
-    titulo: "Internet y telefonía en Linares: proveedores y precios 2025",
+    titulo: "Internet y telefonía en Linares: proveedores y precios 2026",
     descripcion:
       "Guía de proveedores de internet y telefonía en Linares. Fibra óptica, cable, banda ancha y planes móviles. Precios y cobertura actualizada.",
     fecha: "2026-05-29",

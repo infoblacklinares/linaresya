@@ -26,7 +26,7 @@ export default function LeaveReviewForm({
       <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-center">
         <div className="text-3xl mb-1">{"✨"}</div>
         <p className="font-bold text-emerald-800 text-sm">
-          Gracias por tu resena
+          Gracias por tu reseña
         </p>
         <p className="text-[12px] text-emerald-700 mt-1">
           Va a aparecer cuando la revisemos.
@@ -63,7 +63,7 @@ export default function LeaveReviewForm({
           required
           minLength={2}
           maxLength={60}
-          placeholder="Como te llamas"
+          placeholder="Cómo te llamas"
           className="w-full bg-white rounded-xl px-3 py-2 text-sm border border-border outline-none focus:border-foreground"
         />
         {fe.autor_nombre && (
@@ -75,7 +75,7 @@ export default function LeaveReviewForm({
 
       <div>
         <label className="block text-xs font-semibold mb-1.5">
-          Tu calificacion
+          Tu calificación
         </label>
         <div className="flex items-center gap-1">
           {[1, 2, 3, 4, 5].map((n) => {
@@ -115,7 +115,7 @@ export default function LeaveReviewForm({
           name="comentario"
           rows={3}
           maxLength={500}
-          placeholder="Que te parecio? Atencion, calidad, lo que quieras contar..."
+          placeholder="¿Qué te pareció? Atención, calidad, lo que quieras contar..."
           className="w-full bg-white rounded-xl px-3 py-2 text-sm border border-border outline-none focus:border-foreground resize-none"
         />
         {fe.comentario && (
@@ -136,11 +136,11 @@ export default function LeaveReviewForm({
         disabled={isPending}
         className="w-full rounded-full bg-foreground text-background text-sm font-semibold py-3 disabled:opacity-60"
       >
-        {isPending ? "Enviando..." : "Enviar resena"}
+        {isPending ? "Enviando..." : "Enviar reseña"}
       </button>
 
       <p className="text-[10px] text-muted-foreground text-center">
-        Tu resena va a una cola de moderacion antes de publicarse.
+        Tu reseña será revisada por nuestro equipo de moderación antes de su publicación.
         Al enviarla aceptas que tu nombre y comentario se publiquen en esta
         ficha, segun nuestra{" "}
         <a href="/privacidad" target="_blank" className="underline font-medium">

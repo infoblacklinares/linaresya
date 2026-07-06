@@ -20,10 +20,10 @@ type DiaState = {
 const DIAS: { key: Dia; label: string; corto: string }[] = [
   { key: "lunes", label: "Lunes", corto: "Lun" },
   { key: "martes", label: "Martes", corto: "Mar" },
-  { key: "miercoles", label: "Miercoles", corto: "Mie" },
+  { key: "miercoles", label: "Miércoles", corto: "Mié" },
   { key: "jueves", label: "Jueves", corto: "Jue" },
   { key: "viernes", label: "Viernes", corto: "Vie" },
-  { key: "sabado", label: "Sabado", corto: "Sab" },
+  { key: "sabado", label: "Sábado", corto: "Sáb" },
   { key: "domingo", label: "Domingo", corto: "Dom" },
 ];
 
