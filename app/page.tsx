@@ -145,6 +145,7 @@ export default async function Home() {
     { data: recientesData },
     { data: ofertasData },
     { count: totalCount },
+    { count: verificadosCount },
     { data: resenasRecientesData },
     { data: categoriaCountsData },
     { data: eventosData },
@@ -178,6 +179,8 @@ export default async function Home() {
       .limit(10),
 
     supabase.from("negocios").select("id", { count: "exact", head: true }).eq("activo", true),
+
+    supabase.from("negocios").select("id", { count: "exact", head: true }).eq("activo", true).eq("verificado", true),
 
     // Últimas reseñas aprobadas con comentario para la sección de prueba social
     supabase
@@ -402,7 +405,7 @@ export default async function Home() {
       <JsonLd id="ld-website"      data={websiteJsonLd()} />
 
       {/* Hero */}
-      <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} />
+      <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} verificados={verificadosCount ?? 0} />
 
       {/* Historias premium — estilo Instagram */}
       <StoriesBar historias={historias} />
@@ -571,9 +574,7 @@ export default async function Home() {
               <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Ofertas activas</h2>
               <p className="text-xs text-[#8E8279]">Promociones vigentes hoy en Linares</p>
             </div>
-            <span className="flex items-center gap-1 rounded-full bg-[#C05A46]/10 px-2.5 py-1 text-xs font-bold text-[#C05A46]">
-              🔥 {ofertas.length}
-            </span>
+            <Link href="/ofertas" className="text-xs font-bold text-[#2B6E80]">Ver todas <NudgeArrow /></Link>
           </div>
           <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
             {ofertas.map(o => {

@@ -5,6 +5,22 @@ import { motion, AnimatePresence } from "framer-motion";
 
 type Sugerencia = { nombre: string; url: string; emoji: string; foto: string | null };
 
+// Búsquedas recientes del usuario (solo en su navegador)
+const RECIENTES_KEY = "linaresya_busquedas";
+function leerRecientes(): string[] {
+  try {
+    const raw = localStorage.getItem(RECIENTES_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr.filter((x): x is string => typeof x === "string").slice(0, 5) : [];
+  } catch { return []; }
+}
+function guardarReciente(q: string) {
+  try {
+    const arr = [q, ...leerRecientes().filter(x => x !== q)].slice(0, 5);
+    localStorage.setItem(RECIENTES_KEY, JSON.stringify(arr));
+  } catch { /* sin localStorage */ }
+}
+
 // Búsquedas populares mostradas al enfocar el buscador vacío
 const POPULARES = [
   { q: "restaurante", emoji: "🍽️" },
@@ -23,6 +39,7 @@ export default function SearchAutocomplete() {
   const [fallback, setFallback] = useState<Sugerencia[]>([]);
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(-1);
+  const [recientes, setRecientes] = useState<string[]>([]);
   const boxRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -78,6 +95,7 @@ export default function SearchAutocomplete() {
     if (highlighted >= 0 && items[highlighted]) {
       router.push(items[highlighted].url);
     } else if (q.trim()) {
+      guardarReciente(q.trim());
       router.push(`/buscar?q=${encodeURIComponent(q.trim())}`);
     }
     setOpen(false);
@@ -117,7 +135,7 @@ export default function SearchAutocomplete() {
         <input
           value={q}
           onChange={e => setQ(e.target.value)}
-          onFocus={() => setOpen(true)}
+          onFocus={() => { setRecientes(leerRecientes()); setOpen(true); }}
           onKeyDown={onKeyDown}
           type="search"
           placeholder="gasfíter, dentista, restaurante…"
@@ -146,6 +164,25 @@ export default function SearchAutocomplete() {
             transition={{ duration: 0.15, ease: "easeOut" }}
             className="absolute inset-x-0 top-full z-[60] mt-2 overflow-hidden rounded-2xl bg-white shadow-[0_12px_40px_rgba(0,0,0,0.25)] p-3"
           >
+            {recientes.length > 0 && (
+              <>
+                <p className="px-1 pb-2 text-[10px] font-bold uppercase tracking-wide text-[#8E8279]">
+                  Tus búsquedas recientes
+                </p>
+                <div className="flex flex-wrap gap-2 pb-3">
+                  {recientes.map(r => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => { guardarReciente(r); router.push(`/buscar?q=${encodeURIComponent(r)}`); setOpen(false); }}
+                      className="rounded-full bg-[#2B6E80]/5 border border-[#2B6E80]/20 px-3 py-1.5 text-xs font-semibold text-[#2B6E80] hover:bg-[#2B6E80]/10 transition"
+                    >
+                      ↻ {r}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
             <p className="px-1 pb-2 text-[10px] font-bold uppercase tracking-wide text-[#8E8279]">
               Búsquedas populares
             </p>
