@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import type { Metadata } from "next";
+import QRCode from "qrcode";
 import PrintButton from "./PrintButton";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
@@ -50,8 +51,13 @@ export default async function QRPage({ params }: Props) {
   const c = cat as { nombre: string; slug: string; emoji: string };
 
   const fichaUrl = `${SITE_URL}/${c.slug}/${n.slug}`;
-  // Usamos la API gratuita de qrserver.com — sin dependencias npm.
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=16&data=${encodeURIComponent(fichaUrl)}`;
+  // Generamos el QR localmente (sin llamadas a terceros). El data URL PNG
+  // funciona con la CSP (img-src data:) y no envía la URL a ningún servidor externo.
+  const qrUrl = await QRCode.toDataURL(fichaUrl, {
+    width: 280,
+    margin: 2,
+    errorCorrectionLevel: "M",
+  });
 
   return (
     <main className="flex-1 mx-auto w-full max-w-lg px-4 pt-8 pb-12">
