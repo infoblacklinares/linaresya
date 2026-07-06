@@ -217,6 +217,13 @@ export default async function AdminPage() {
           <span className="text-sm font-bold">📸 Historias premium</span>
           <span className="text-xs font-semibold text-muted-foreground">Gestionar →</span>
         </Link>
+        <Link
+          href="/admin/eventos"
+          className="mt-2 flex items-center justify-between rounded-2xl bg-gradient-to-r from-[#2B6E80]/10 to-[#3D5A45]/10 border border-[#2B6E80]/30 px-4 py-3 hover:opacity-90 transition"
+        >
+          <span className="text-sm font-bold">🗓️ Eventos de Linares</span>
+          <span className="text-xs font-semibold text-muted-foreground">Gestionar →</span>
+        </Link>
       </section>
 
       <section className="px-4 pt-6">

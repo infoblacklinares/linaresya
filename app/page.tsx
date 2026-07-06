@@ -147,6 +147,7 @@ export default async function Home() {
     { count: totalCount },
     { data: resenasRecientesData },
     { data: categoriaCountsData },
+    { data: eventosData },
     { data: historiasData },
   ] = await Promise.all([
     supabase.from("categorias").select("*").order("orden"),
@@ -192,6 +193,14 @@ export default async function Home() {
       .from("negocios")
       .select("categoria_id")
       .eq("activo", true),
+
+    // Próximos eventos (RLS filtra los terminados)
+    supabase
+      .from("eventos")
+      .select("id, titulo, emoji, lugar, fecha_inicio, destacado")
+      .order("destacado", { ascending: false })
+      .order("fecha_inicio")
+      .limit(5),
 
     // Historias vigentes de negocios premium (RLS filtra expiradas igual)
     supabase
@@ -281,6 +290,10 @@ export default async function Home() {
       catCounts.set(row.categoria_id, (catCounts.get(row.categoria_id) ?? 0) + 1);
     }
   }
+
+  // Próximos eventos para la agenda de la portada
+  type EventoHome = { id: number; titulo: string; emoji: string; lugar: string; fecha_inicio: string; destacado: boolean };
+  const eventos_home = (eventosData ?? []) as EventoHome[];
 
   // Historias premium para la barra tipo Instagram
   const historias: Historia[] = ((historiasData ?? []) as unknown[]).flatMap(r => {
@@ -711,6 +724,42 @@ export default async function Home() {
                   </div>
                 </Link>
                 </AnimatedCard>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Agenda de eventos */}
+      {eventos_home.length > 0 && (
+        <section className="pt-8">
+          <div className="flex items-end justify-between px-4 mb-3">
+            <div>
+              <h2 className="text-xl font-black tracking-tight text-[#1A1410]">🗓️ Agenda de Linares</h2>
+              <p className="text-xs text-[#8E8279]">Panoramas y eventos de la ciudad</p>
+            </div>
+            <Link href="/eventos" className="text-xs font-bold text-[#2B6E80]">Ver todos <NudgeArrow /></Link>
+          </div>
+          <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
+            {eventos_home.map(e => {
+              const d = new Date(e.fecha_inicio);
+              const dia = d.getDate();
+              const mes = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"][d.getMonth()];
+              return (
+                <Link
+                  key={e.id}
+                  href="/eventos"
+                  className="flex w-56 shrink-0 items-center gap-3 rounded-2xl bg-white border border-[#F0EDE8] shadow-linares-sm p-3 hover:shadow-linares transition active:scale-[0.98]"
+                >
+                  <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-[#2B6E80] text-white">
+                    <span className="text-base font-black leading-none">{dia}</span>
+                    <span className="text-[9px] font-bold uppercase">{mes}</span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="truncate text-xs font-bold text-[#1A1410]">{e.emoji} {e.titulo}</p>
+                    <p className="truncate text-[10px] text-[#8E8279]">📍 {e.lugar}</p>
+                  </div>
+                </Link>
               );
             })}
           </div>
