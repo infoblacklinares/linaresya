@@ -41,9 +41,10 @@ export const metadata: Metadata = {
 };
 
 const FEATURES = [
+  { emoji: "📲", titulo: "Historias 24h", desc: "Publica historias tipo Instagram que aparecen arriba de todo en la portada. Ideales para ofertas del día." },
   { emoji: "💬", titulo: "WhatsApp directo", desc: "Tus clientes te escriben en un clic desde tu ficha, sin intermediarios." },
+  { emoji: "🔝", titulo: "Posición destacada", desc: "Apareces antes que los negocios básicos en búsquedas y categorías, y entras al 'Negocio del día'." },
   { emoji: "📸", titulo: "Fotos del negocio", desc: "Galería de hasta 8 fotos de tu local, productos o servicios." },
-  { emoji: "🔝", titulo: "Posición destacada", desc: "Apareces antes que los negocios básicos en búsquedas y categorías." },
   { emoji: "📊", titulo: "Estadísticas reales", desc: "Vistas, clics en WhatsApp, llamadas y cómo llegar — semana a semana." },
   { emoji: "✏️", titulo: "Edición autónoma", desc: "Link mágico para actualizar tus datos cuando quieras, sin depender de nadie." },
   { emoji: "⭐", titulo: "Badge Premium", desc: "Marca visual que genera confianza frente a negocios sin verificar." },
