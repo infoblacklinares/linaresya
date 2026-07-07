@@ -66,9 +66,15 @@ export default function PrivacidadPage() {
           <p>
             Registramos contadores anonimos de vistas y clicks por negocio. No
             guardamos IP, identificadores de dispositivo ni ningun dato que
-            permita identificar al visitante. Los favoritos se guardan solo en tu
-            propio navegador (localStorage) y nunca se envian a nuestros
-            servidores.
+            permita identificar al visitante. Los favoritos y tus busquedas
+            recientes se guardan solo en tu propio navegador (localStorage) y
+            nunca se envian a nuestros servidores.
+          </p>
+          <p className="mt-2">
+            <strong>No usamos cookies de rastreo ni herramientas de analitica de
+            terceros</strong> (como Google Analytics o pixeles de redes sociales).
+            Por eso no necesitas aceptar ningun banner de cookies para navegar:
+            simplemente no te rastreamos.
           </p>
         </section>
 
