@@ -167,7 +167,7 @@ export default async function Home() {
       .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, telefono, categorias:categoria_id(nombre, slug, emoji)")
       .eq("activo", true)
       .order("creado_en", { ascending: false })
-      .limit(6),
+      .limit(20),
 
     supabase
       .from("ofertas")
@@ -230,10 +230,12 @@ export default async function Home() {
   // Pool de hasta 24 premium/verificados/recientes — se elige un grupo al azar
   // de 6 en cada visita para que la sección no muestre siempre lo mismo.
   const destacados     = shuffle(destacadosPool).slice(0, 6);
-  const recientes  = ((recientesData  ?? []) as unknown[])
-    .map(toNegocio)
-    .filter(r => !destacados.some(d => d.id === r.id))
-    .slice(0, 4);
+  // De los 20 más nuevos, se muestran 4 al azar en cada carga (rota al recargar)
+  const recientes  = shuffle(
+    ((recientesData ?? []) as unknown[])
+      .map(toNegocio)
+      .filter(r => !destacados.some(d => d.id === r.id))
+  ).slice(0, 4);
 
   const ofertas: OfertaHome[] = ((ofertasData ?? []) as unknown[]).map(r => {
     const x   = r as Record<string, unknown>;

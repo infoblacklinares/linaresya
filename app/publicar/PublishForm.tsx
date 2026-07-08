@@ -15,26 +15,36 @@ type Categoria = {
 
 const estadoInicial: PublicarState = { ok: false };
 
-export default function PublishForm({ categorias }: { categorias: Categoria[] }) {
+export default function PublishForm({ categorias, esAdmin = false }: { categorias: Categoria[]; esAdmin?: boolean }) {
   const [state, formAction, isPending] = useActionState(publicarNegocio, estadoInicial);
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const turnstileSiteKey = esAdmin ? undefined : process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   if (state.ok) {
     return (
       <div className="mx-4 mt-6 rounded-3xl ue-shadow bg-white p-8 text-center">
         <div className="text-5xl mb-3">{"\u{2705}"}</div>
         <h2 className="text-2xl font-extrabold tracking-tight">
-          Solicitud enviada
+          {esAdmin ? "Negocio creado" : "Solicitud enviada"}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Gracias por sumarte. Revisaremos tu negocio y lo activaremos en las proximas horas.
+          {esAdmin
+            ? "El negocio quedó activo y ya aparece en el sitio."
+            : "Gracias por sumarte. Revisaremos tu negocio y lo activaremos en las proximas horas."}
         </p>
         <a
-          href="/"
+          href={esAdmin ? "/admin" : "/"}
           className="mt-5 inline-flex items-center justify-center rounded-full bg-foreground text-background text-sm font-semibold px-5 py-2.5"
         >
-          Volver al inicio
+          {esAdmin ? "Volver al admin" : "Volver al inicio"}
         </a>
+        {esAdmin && (
+          <a
+            href="/admin/negocio/nuevo"
+            className="mt-2 block text-sm font-semibold text-[#2B6E80]"
+          >
+            + Agregar otro negocio
+          </a>
+        )}
       </div>
     );
   }
@@ -217,25 +227,27 @@ export default function PublishForm({ categorias }: { categorias: Categoria[] })
         </>
       )}
 
-      {/* Consentimiento de datos personales (Ley 21.719) */}
-      <label className="flex items-start gap-3 rounded-2xl bg-secondary/50 px-4 py-3 cursor-pointer">
-        <input
-          type="checkbox"
-          name="acepta_privacidad"
-          required
-          className="mt-0.5 h-4 w-4 accent-foreground shrink-0"
-        />
-        <span className="text-xs text-foreground/80 leading-relaxed">
-          He leído y acepto la{" "}
-          <a href="/privacidad" target="_blank" className="font-semibold underline">
-            Política de Privacidad
-          </a>
-          . Entiendo que los datos del negocio (nombre, teléfono, dirección,
-          fotos) se publicarán en la ficha para que los vecinos puedan
-          contactarme, y que puedo pedir su modificación o eliminación en
-          cualquier momento.
-        </span>
-      </label>
+      {/* Consentimiento de datos personales (Ley 21.719) — solo público */}
+      {!esAdmin && (
+        <label className="flex items-start gap-3 rounded-2xl bg-secondary/50 px-4 py-3 cursor-pointer">
+          <input
+            type="checkbox"
+            name="acepta_privacidad"
+            required
+            className="mt-0.5 h-4 w-4 accent-foreground shrink-0"
+          />
+          <span className="text-xs text-foreground/80 leading-relaxed">
+            He leído y acepto la{" "}
+            <a href="/privacidad" target="_blank" className="font-semibold underline">
+              Política de Privacidad
+            </a>
+            . Entiendo que los datos del negocio (nombre, teléfono, dirección,
+            fotos) se publicarán en la ficha para que los vecinos puedan
+            contactarme, y que puedo pedir su modificación o eliminación en
+            cualquier momento.
+          </span>
+        </label>
+      )}
 
       <div className="pt-2">
         <button
@@ -243,12 +255,18 @@ export default function PublishForm({ categorias }: { categorias: Categoria[] })
           disabled={isPending}
           className="w-full rounded-full bg-foreground text-background text-sm font-semibold px-6 py-4 disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {isPending ? "Enviando..." : "Enviar solicitud"}
+          {isPending ? "Enviando..." : esAdmin ? "Crear negocio activo" : "Enviar solicitud"}
         </button>
         <p className="mt-3 text-[11px] text-muted-foreground text-center">
-          Al enviar, tu negocio queda pendiente de revision.
-          <br />
-          Te activaremos en las proximas horas si todo esta en orden.
+          {esAdmin ? (
+            "El negocio quedará activo y visible de inmediato."
+          ) : (
+            <>
+              Al enviar, tu negocio queda pendiente de revision.
+              <br />
+              Te activaremos en las proximas horas si todo esta en orden.
+            </>
+          )}
         </p>
       </div>
 

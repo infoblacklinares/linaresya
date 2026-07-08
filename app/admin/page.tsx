@@ -211,8 +211,15 @@ export default async function AdminPage() {
           </Link>
         </div>
         <Link
+          href="/admin/negocio/nuevo"
+          className="mt-3 flex items-center justify-between rounded-2xl bg-foreground text-background px-4 py-3.5 hover:opacity-90 transition"
+        >
+          <span className="text-sm font-bold">➕ Agregar negocio</span>
+          <span className="text-xs font-semibold opacity-70">Crear activo →</span>
+        </Link>
+        <Link
           href="/admin/historias"
-          className="mt-3 flex items-center justify-between rounded-2xl bg-gradient-to-r from-[#F4B860]/20 to-[#C05A46]/10 border border-[#F4B860]/40 px-4 py-3 hover:opacity-90 transition"
+          className="mt-2 flex items-center justify-between rounded-2xl bg-gradient-to-r from-[#F4B860]/20 to-[#C05A46]/10 border border-[#F4B860]/40 px-4 py-3 hover:opacity-90 transition"
         >
           <span className="text-sm font-bold">📸 Historias premium</span>
           <span className="text-xs font-semibold text-muted-foreground">Gestionar →</span>

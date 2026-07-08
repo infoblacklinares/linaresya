@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendAdminPublicacionNotification } from "@/lib/email";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 export type PublicarState = {
   ok: boolean;
@@ -64,27 +65,33 @@ export async function publicarNegocio(
   _prevState: PublicarState,
   formData: FormData,
 ): Promise<PublicarState> {
-  // Captcha (Cloudflare Turnstile). Si no hay secret config, se salta.
-  const turnstileToken = String(formData.get("cf-turnstile-response") ?? "");
-  const h = await headers();
-  const ip =
-    h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    h.get("x-real-ip") ||
-    null;
-  const captchaOk = await verifyTurnstile(turnstileToken, ip);
-  if (!captchaOk) {
-    return {
-      ok: false,
-      error: "No pudimos verificar que no eres un bot. Recarga e intenta otra vez.",
-    };
-  }
+  // Si lo publica el admin desde el panel: sin captcha, sin consentimiento
+  // (es su propio dato) y el negocio queda activo de inmediato.
+  const esAdmin = await isAdminAuthenticated();
 
-  // Consentimiento explicito de tratamiento de datos (Ley 21.719)
-  if (formData.get("acepta_privacidad") !== "on") {
-    return {
-      ok: false,
-      error: "Debes aceptar la Política de Privacidad para publicar tu negocio.",
-    };
+  if (!esAdmin) {
+    // Captcha (Cloudflare Turnstile). Si no hay secret config, se salta.
+    const turnstileToken = String(formData.get("cf-turnstile-response") ?? "");
+    const h = await headers();
+    const ip =
+      h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      h.get("x-real-ip") ||
+      null;
+    const captchaOk = await verifyTurnstile(turnstileToken, ip);
+    if (!captchaOk) {
+      return {
+        ok: false,
+        error: "No pudimos verificar que no eres un bot. Recarga e intenta otra vez.",
+      };
+    }
+
+    // Consentimiento explicito de tratamiento de datos (Ley 21.719)
+    if (formData.get("acepta_privacidad") !== "on") {
+      return {
+        ok: false,
+        error: "Debes aceptar la Política de Privacidad para publicar tu negocio.",
+      };
+    }
   }
 
   const nombre = String(formData.get("nombre") ?? "").trim();
@@ -181,7 +188,7 @@ export async function publicarNegocio(
       categoria_id: categoriaId,
       tipo,
       plan: "basico",
-      activo: false,
+      activo: esAdmin, // admin publica activo; público queda pendiente
       verificado: false,
       telefono: telefono || null,
       whatsapp,
