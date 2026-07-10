@@ -138,21 +138,34 @@ export default function ScheduleInput({
         {DIAS.map(({ key, label, corto }) => {
           const d = estado[key];
           return (
-            <div
-              key={key}
-              className="grid grid-cols-[64px_1fr_auto] items-center gap-2 px-3 py-2.5"
-            >
-              <span className="text-[13px] font-semibold">
-                <span className="hidden sm:inline">{label}</span>
-                <span className="sm:hidden">{corto}</span>
-              </span>
-
-              {d.cerrado ? (
-                <span className="text-[12px] text-muted-foreground italic">
-                  Cerrado
+            <div key={key} className="px-3 py-2.5">
+              {/* Línea 1: día + casilla Cerrado (siempre visible, incluso en móvil) */}
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[13px] font-semibold">
+                  <span className="hidden sm:inline">{label}</span>
+                  <span className="sm:hidden">{corto}</span>
                 </span>
+                <label className="flex items-center gap-1.5 text-[11px] font-medium cursor-pointer shrink-0">
+                  <input
+                    type="checkbox"
+                    name={`horario_${key}_cerrado`}
+                    checked={d.cerrado}
+                    onChange={(e) =>
+                      actualizar(key, { cerrado: e.target.checked })
+                    }
+                    className="h-4 w-4 accent-foreground"
+                  />
+                  Cerrado
+                </label>
+              </div>
+
+              {/* Línea 2: horas (solo si el día está abierto) */}
+              {d.cerrado ? (
+                <p className="mt-1 text-[12px] text-muted-foreground italic">
+                  No atiende este día
+                </p>
               ) : (
-                <div className="flex items-center gap-1.5 text-[13px]">
+                <div className="mt-2 flex items-center gap-1.5 text-[13px]">
                   <input
                     type="time"
                     name={`horario_${key}_abre`}
@@ -176,19 +189,6 @@ export default function ScheduleInput({
                   />
                 </div>
               )}
-
-              <label className="flex items-center gap-1.5 text-[11px] font-medium cursor-pointer">
-                <input
-                  type="checkbox"
-                  name={`horario_${key}_cerrado`}
-                  checked={d.cerrado}
-                  onChange={(e) =>
-                    actualizar(key, { cerrado: e.target.checked })
-                  }
-                  className="h-3.5 w-3.5 accent-foreground"
-                />
-                Cerrado
-              </label>
             </div>
           );
         })}
