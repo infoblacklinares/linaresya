@@ -33,6 +33,7 @@ type NegocioRow = {
   disponibilidad: string | null;
   categoria_id: number | null;
   creado_en: string;
+  premium_hasta: string | null;
 };
 
 type Categoria = { id: number; nombre: string; emoji: string; slug: string };
@@ -60,14 +61,14 @@ export default async function AdminPage() {
     supabaseAdmin
       .from("negocios")
       .select(
-        "id, nombre, slug, tipo, plan, activo, verificado, telefono, whatsapp, direccion, descripcion, a_domicilio, zona_cobertura, disponibilidad, categoria_id, creado_en",
+        "id, nombre, slug, tipo, plan, activo, verificado, telefono, whatsapp, direccion, descripcion, a_domicilio, zona_cobertura, disponibilidad, categoria_id, creado_en, premium_hasta",
       )
       .eq("activo", false)
       .order("creado_en", { ascending: false }),
     supabaseAdmin
       .from("negocios")
       .select(
-        "id, nombre, slug, tipo, plan, activo, verificado, telefono, whatsapp, direccion, descripcion, a_domicilio, zona_cobertura, disponibilidad, categoria_id, creado_en",
+        "id, nombre, slug, tipo, plan, activo, verificado, telefono, whatsapp, direccion, descripcion, a_domicilio, zona_cobertura, disponibilidad, categoria_id, creado_en, premium_hasta",
       )
       .eq("activo", true)
       .order("creado_en", { ascending: false })
@@ -389,10 +390,21 @@ function MiniStat({ label, value }: { label: string; value: number }) {
   );
 }
 
+// Estado de vencimiento del premium según premium_hasta.
+function estadoPremium(plan: string, premiumHasta: string | null): { texto: string; clase: string } | null {
+  if (plan !== "premium" || !premiumHasta) return null;
+  const dias = Math.floor((new Date(premiumHasta).getTime() - Date.now()) / 86_400_000);
+  if (dias < 0) return { texto: "Vencido", clase: "bg-rose-100 text-rose-800" };
+  if (dias === 0) return { texto: "Vence hoy", clase: "bg-rose-100 text-rose-800" };
+  if (dias <= 7) return { texto: `Vence en ${dias}d`, clase: "bg-orange-100 text-orange-800" };
+  return null;
+}
+
 function NegocioRowAdmin({ negocio }: { negocio: NegocioRow }) {
   const fecha = new Date(negocio.creado_en).toLocaleDateString("es-CL", {
     day: "2-digit", month: "short",
   });
+  const venc = estadoPremium(negocio.plan, negocio.premium_hasta);
   return (
     <div className="flex items-center gap-3 px-3 py-2.5">
       {/* Nombre + badges */}
@@ -404,6 +416,9 @@ function NegocioRowAdmin({ negocio }: { negocio: NegocioRow }) {
           )}
           {negocio.plan === "premium" && (
             <span className="text-[9px] font-bold bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded-full shrink-0">⭐ Prem</span>
+          )}
+          {venc && (
+            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${venc.clase}`}>⏳ {venc.texto}</span>
           )}
         </div>
         <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
