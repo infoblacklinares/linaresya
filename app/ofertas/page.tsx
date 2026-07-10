@@ -30,8 +30,9 @@ export default async function OfertasPage() {
   const hoy = new Date().toISOString().split("T")[0];
   const { data } = await supabase
     .from("ofertas")
-    .select("id, titulo, descripcion, descuento_pct, precio_normal, precio_oferta, imagen_url, fecha_fin, boosteada, negocios:negocio_id(nombre, slug, categorias:categoria_id(slug, emoji))")
+    .select("id, titulo, descripcion, descuento_pct, precio_normal, precio_oferta, imagen_url, fecha_fin, boosteada, negocios:negocio_id!inner(nombre, slug, activo, categorias:categoria_id(slug, emoji))")
     .eq("activa", true)
+    .eq("negocios.activo", true)
     .gte("fecha_fin", hoy)
     .order("boosteada", { ascending: false })
     .order("fecha_fin");

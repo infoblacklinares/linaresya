@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/cleanup-orphans",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/expire-premium",
+      "schedule": "0 7 * * *"
     }
   ]
 }
