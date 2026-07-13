@@ -36,8 +36,25 @@ export function horaAhoraSantiago(): string {
 }
 
 /**
+ * ¿La hora "ahora" cae dentro del rango [abre, cierra)?
+ * Maneja horarios que cruzan la medianoche (ej. 20:00 → 02:00).
+ * Los tres valores deben venir en el mismo formato de ancho fijo
+ * ("HH:MM" o "HH:MM:SS") para comparar lexicográficamente.
+ */
+export function dentroDeRango(ahora: string, abre: string, cierra: string): boolean {
+  if (abre === cierra) return false; // rango vacío / sin definir
+  if (cierra > abre) {
+    // Horario normal dentro del mismo día
+    return ahora >= abre && ahora < cierra;
+  }
+  // Horario nocturno que cruza medianoche
+  return ahora >= abre || ahora < cierra;
+}
+
+/**
  * Dado un array de negocio IDs, devuelve cuáles están abiertos ahora mismo.
  * Consulta la tabla `horarios` usando el día y hora actuales en Santiago.
+ * Evalúa en JS para soportar horarios que cruzan la medianoche.
  */
 export async function getOpenIds(negocioIds: string[]): Promise<string[]> {
   if (!negocioIds.length) return [];
@@ -45,13 +62,13 @@ export async function getOpenIds(negocioIds: string[]): Promise<string[]> {
   const ahora = horaAhoraSantiago();
   const { data } = await supabase
     .from("horarios")
-    .select("negocio_id")
+    .select("negocio_id, abre, cierra")
     .in("negocio_id", negocioIds)
     .eq("dia", dia)
-    .eq("cerrado", false)
-    .lte("abre", ahora)
-    .gt("cierra", ahora);
-  return ((data ?? []) as { negocio_id: string }[]).map((h) => h.negocio_id);
+    .eq("cerrado", false);
+  return ((data ?? []) as { negocio_id: string; abre: string | null; cierra: string | null }[])
+    .filter((h) => h.abre && h.cierra && dentroDeRango(ahora, h.abre, h.cierra))
+    .map((h) => h.negocio_id);
 }
 
 /** Comprueba si un negocio_id específico está en el set de abiertos */

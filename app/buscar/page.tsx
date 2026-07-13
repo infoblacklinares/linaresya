@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
-import { diaHoySantiago, horaAhoraSantiago, badgeAbierto } from "@/lib/horarios";
+import { diaHoySantiago, horaAhoraSantiago, badgeAbierto, dentroDeRango } from "@/lib/horarios";
 import AnimatedCard from "@/components/AnimatedCard";
 
 const WA_SUGERIR = "56984272557";
@@ -66,12 +66,12 @@ export default async function BuscarPage({
     const ahora = horaAhoraSantiago();
     const { data: horarios } = await supabase
       .from("horarios")
-      .select("negocio_id")
+      .select("negocio_id, abre, cierra")
       .eq("dia", dia)
-      .eq("cerrado", false)
-      .lte("abre", ahora)
-      .gt("cierra", ahora);
-    openIds = ((horarios ?? []) as { negocio_id: string }[]).map((h) => h.negocio_id);
+      .eq("cerrado", false);
+    openIds = ((horarios ?? []) as { negocio_id: string; abre: string | null; cierra: string | null }[])
+      .filter((h) => h.abre && h.cierra && dentroDeRango(ahora, h.abre, h.cierra))
+      .map((h) => h.negocio_id);
   }
 
   let query = supabase
@@ -157,13 +157,13 @@ export default async function BuscarPage({
     const ahora = horaAhoraSantiago();
     const { data: h } = await supabase
       .from("horarios")
-      .select("negocio_id")
+      .select("negocio_id, abre, cierra")
       .in("negocio_id", allIds)
       .eq("dia", dia)
-      .eq("cerrado", false)
-      .lte("abre", ahora)
-      .gt("cierra", ahora);
-    resultOpenIds = ((h ?? []) as { negocio_id: string }[]).map((x) => x.negocio_id);
+      .eq("cerrado", false);
+    resultOpenIds = ((h ?? []) as { negocio_id: string; abre: string | null; cierra: string | null }[])
+      .filter((x) => x.abre && x.cierra && dentroDeRango(ahora, x.abre, x.cierra))
+      .map((x) => x.negocio_id);
   }
 
   function urlWith(changes: Record<string, string | null>): string {

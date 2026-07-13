@@ -8,6 +8,7 @@ import LeaveReviewForm from "./LeaveReviewForm";
 import ShareButton from "./ShareButton";
 import ReportarButton from "./ReportarButton";
 import FavoritoButton from "@/components/FavoritoButton";
+import { dentroDeRango } from "@/lib/horarios";
 import JsonLd from "@/components/JsonLd";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 // Regex permisivo para detectar bots/crawlers conocidos. No queremos
@@ -139,7 +140,7 @@ function estaAbierto(horarios: Horario[]): {
   const ahora = horaAhora();
   const abre = h.abre.slice(0, 5);
   const cierra = h.cierra.slice(0, 5);
-  return { abierto: ahora >= abre && ahora < cierra, horarioHoy: h };
+  return { abierto: dentroDeRango(ahora, abre, cierra), horarioHoy: h };
 }
 
 function fmtHora(h: string | null): string {
