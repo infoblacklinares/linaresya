@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Eventos en Linares - Agenda de la ciudad | LinaresYa",
   description:
     "Ferias, conciertos, actividades municipales y panoramas en Linares. La agenda de eventos de la ciudad, siempre actualizada.",
-  alternates: { canonical: `${SITE_URL}/eventos` },
+  alternates: { canonical: `${SITE_URL}/agenda` },
 };
 
 export const revalidate = 300; // 5 min

@@ -742,7 +742,7 @@ export default async function Home() {
               <h2 className="text-xl font-black tracking-tight text-[#1A1410]">🗓️ Agenda de Linares</h2>
               <p className="text-xs text-[#8E8279]">Panoramas y eventos de la ciudad</p>
             </div>
-            <Link href="/eventos" className="text-xs font-bold text-[#2B6E80]">Ver todos <NudgeArrow /></Link>
+            <Link href="/agenda" className="text-xs font-bold text-[#2B6E80]">Ver todos <NudgeArrow /></Link>
           </div>
           <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
             {eventos_home.map(e => {
@@ -752,7 +752,7 @@ export default async function Home() {
               return (
                 <Link
                   key={e.id}
-                  href="/eventos"
+                  href="/agenda"
                   className="flex w-56 shrink-0 items-center gap-3 rounded-2xl bg-white border border-[#F0EDE8] shadow-linares-sm p-3 hover:shadow-linares transition active:scale-[0.98]"
                 >
                   <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-[#2B6E80] text-white">

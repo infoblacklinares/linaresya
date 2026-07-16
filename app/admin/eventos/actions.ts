@@ -57,7 +57,7 @@ export async function crearEvento(
   }
 
   revalidatePath("/");
-  revalidatePath("/eventos");
+  revalidatePath("/agenda");
   revalidatePath("/admin/eventos");
   return { ok: true };
 }
@@ -68,6 +68,6 @@ export async function eliminarEvento(formData: FormData): Promise<void> {
   if (!Number.isFinite(id)) return;
   await supabaseAdmin.from("eventos").delete().eq("id", id);
   revalidatePath("/");
-  revalidatePath("/eventos");
+  revalidatePath("/agenda");
   revalidatePath("/admin/eventos");
 }
