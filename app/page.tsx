@@ -403,7 +403,7 @@ export default async function Home() {
   const abiertosCount = negociosAbiertos.length;
 
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl bg-[#F9F8F6]">
+    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-6xl bg-[#F9F8F6]">
       <JsonLd id="ld-organization" data={organizationJsonLd()} />
       <JsonLd id="ld-website"      data={websiteJsonLd()} />
 
@@ -630,7 +630,7 @@ export default async function Home() {
             </div>
             <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todo <NudgeArrow /></Link>
           </div>
-          <div className="columns-2 gap-3 px-4">
+          <div className="columns-2 lg:columns-4 gap-3 px-4">
             {destacados.map((d, i) => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
               const rating = ratingsMap.get(d.id);
@@ -698,7 +698,7 @@ export default async function Home() {
               <p className="text-xs text-[#8E8279]">Los últimos en unirse a LinaresYa</p>
             </div>
           </div>
-          <div className="columns-2 gap-3 px-4">
+          <div className="columns-2 lg:columns-4 gap-3 px-4">
             {recientes.map((d, i) => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
               return (
@@ -777,7 +777,7 @@ export default async function Home() {
             <h2 className="text-xl font-black tracking-tight text-[#1A1410]">🔥 Lo más visto</h2>
             <p className="text-xs text-[#8E8279]">Los negocios que más miran los vecinos esta semana</p>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0">
             {masVistos.map((n, i) => {
               const url = n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#";
               const vistas = vistasPorNegocio.get(n.id) ?? 0;
@@ -815,7 +815,7 @@ export default async function Home() {
             <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Lo que dicen los vecinos</h2>
             <p className="text-xs text-[#8E8279]">Reseñas reales de clientes de Linares</p>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
             {resenasRecientes.map((r, i) => {
               const fichaUrl = r.categoriaSlug && r.negocioSlug ? `/${r.categoriaSlug}/${r.negocioSlug}` : null;
               return (
@@ -852,7 +852,7 @@ export default async function Home() {
 
       {/* Newsletter */}
       <section className="px-4 pt-8">
-        <FadeInSection className="rounded-3xl bg-gradient-to-br from-[#1f5268] to-[#2B6E80] p-5">
+        <FadeInSection className="rounded-3xl bg-gradient-to-br from-[#1f5268] to-[#2B6E80] p-5 lg:max-w-2xl lg:mx-auto lg:p-8">
           <div className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-white/90">
             📬 Novedades de Linares
           </div>
@@ -872,7 +872,7 @@ export default async function Home() {
           <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Todas las categorías</h2>
           <p className="text-xs text-[#8E8279]">{cats.length} categorías cubriendo todo Linares.</p>
         </div>
-        <ul className="grid grid-cols-2 gap-3 px-4">
+        <ul className="grid grid-cols-2 lg:grid-cols-4 gap-3 px-4">
           {cats.map((cat, i) => (
             <li key={cat.id}>
               <AnimatedCard index={i % 8}>
@@ -905,7 +905,7 @@ export default async function Home() {
               </div>
               <Link href="/blog" className="text-xs font-semibold text-[#2B6E80]">Ver todo <NudgeArrow /></Link>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 lg:grid lg:grid-cols-3 lg:gap-2 lg:space-y-0">
               {recentBlog.map((art) => (
                 <Link
                   key={art.slug}

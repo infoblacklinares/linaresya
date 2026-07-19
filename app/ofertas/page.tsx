@@ -63,7 +63,7 @@ export default async function OfertasPage() {
   });
 
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl bg-[#F9F8F6] px-4 py-8 pb-24">
+    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-6xl bg-[#F9F8F6] px-4 py-8 pb-24">
       <Link href="/" className="text-xs font-semibold text-[#8E8279] hover:text-[#1A1410]">
         ← Volver al inicio
       </Link>
@@ -81,7 +81,7 @@ export default async function OfertasPage() {
           <p className="text-xs text-[#8E8279] mt-1">Vuelve pronto — los negocios publican promociones cada semana.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {ofertas.map(o => {
             const url = o.negocio?.categoria_slug && o.negocio?.slug ? `/${o.negocio.categoria_slug}/${o.negocio.slug}` : "#";
             const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);

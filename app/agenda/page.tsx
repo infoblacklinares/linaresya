@@ -49,7 +49,7 @@ export default async function EventosPage() {
   const eventos = (data ?? []) as Evento[];
 
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl bg-[#F9F8F6] px-4 py-8 pb-24">
+    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-5xl bg-[#F9F8F6] px-4 py-8 pb-24">
       <Link href="/" className="text-xs font-semibold text-[#8E8279] hover:text-[#1A1410]">
         ← Volver al inicio
       </Link>
@@ -69,7 +69,7 @@ export default async function EventosPage() {
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0 lg:items-start">
           {eventos.map(e => {
             const f = partesFecha(e.fecha_inicio);
             return (

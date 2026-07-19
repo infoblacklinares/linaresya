@@ -6,7 +6,7 @@ export default function Footer() {
 
   return (
     <footer className="mt-12 border-t border-border bg-secondary/30">
-      <div className="mx-auto w-full max-w-3xl px-4 py-8 space-y-6">
+      <div className="mx-auto w-full max-w-3xl lg:max-w-6xl px-4 py-8 space-y-6">
         {/* Newsletter en el footer */}
         <div className="rounded-2xl bg-secondary/60 p-4">
           <p className="text-sm font-bold mb-1">📬 Novedades de Linares</p>

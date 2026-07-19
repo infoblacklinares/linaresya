@@ -188,7 +188,7 @@ export default async function BuscarPage({
     Boolean(q) || Boolean(categoriaSlug) || Boolean(tipo) || premium || verificado || abierto || domicilio;
 
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl">
+    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-6xl">
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-border">
         <div className="px-4 pt-4 pb-3 flex items-center gap-3">
           <Link
@@ -362,7 +362,7 @@ export default async function BuscarPage({
             )}
           </div>
         ) : (
-          <div className="px-4 grid grid-cols-2 gap-3">
+          <div className="px-4 grid grid-cols-2 lg:grid-cols-4 gap-3">
             {itemsOrdenados.map((n, i) => {
               const rData = ratingsMap.get(n.id);
               const rating = rData && rData.count > 0

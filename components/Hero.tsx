@@ -28,7 +28,7 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
         <div className="absolute top-10 right-8 h-32 w-32 rounded-full bg-[#C05A46]/10 blur-2xl" />
       </div>
 
-      <div className="relative px-4 pt-6 pb-7">
+      <div className="relative px-4 pt-6 pb-7 lg:px-10 lg:pt-10 lg:pb-12">
         {/* Chips: ubicación + autoridad */}
         <div className="mb-5 flex flex-wrap gap-2">
           <div className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/90 backdrop-blur-sm">
@@ -41,10 +41,10 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
         </div>
 
         {/* Titular con autoridad */}
-        <h1 className="mb-1 text-[1.9rem] font-black leading-[1.1] tracking-tight text-white">
+        <h1 className="mb-1 text-[1.9rem] lg:text-5xl font-black leading-[1.1] tracking-tight text-white">
           La guía digital<br />de Linares
         </h1>
-        <p className="mb-5 text-sm text-white/60 leading-snug">
+        <p className="mb-5 text-sm lg:text-base text-white/60 leading-snug lg:max-w-xl">
           Negocios verificados, horarios reales y ofertas de hoy — todo en un solo lugar.
         </p>
 
@@ -86,6 +86,7 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
           initial={{ opacity: 0, y: 14, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ type: "spring", stiffness: 240, damping: 20, delay: 0.1 }}
+          className="lg:max-w-2xl"
         >
           <SearchAutocomplete />
         </motion.div>
