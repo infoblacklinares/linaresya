@@ -403,12 +403,15 @@ export default async function Home() {
   const abiertosCount = negociosAbiertos.length;
 
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-6xl bg-[#F9F8F6]">
+    <main className="flex-1 w-full bg-[#F9F8F6]">
       <JsonLd id="ld-organization" data={organizationJsonLd()} />
       <JsonLd id="ld-website"      data={websiteJsonLd()} />
 
-      {/* Hero */}
+      {/* Hero — full-bleed en desktop, contenido centrado adentro */}
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} verificados={verificadosCount ?? 0} />
+
+      {/* Contenido centrado */}
+      <div className="mx-auto w-full max-w-2xl lg:max-w-6xl">
 
       {/* Historias premium — estilo Instagram */}
       <StoriesBar historias={historias} />
@@ -921,6 +924,8 @@ export default async function Home() {
           </section>
         );
       })()}
+
+      </div>{/* /contenido centrado */}
 
       {/* Bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-[#E8E4DE] bg-white/95 backdrop-blur">

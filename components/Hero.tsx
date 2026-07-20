@@ -28,9 +28,9 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
         <div className="absolute top-10 right-8 h-32 w-32 rounded-full bg-[#C05A46]/10 blur-2xl" />
       </div>
 
-      <div className="relative px-4 pt-6 pb-7 lg:px-10 lg:pt-10 lg:pb-12">
+      <div className="relative mx-auto w-full max-w-2xl lg:max-w-4xl px-4 pt-6 pb-7 lg:px-8 lg:pt-12 lg:pb-14">
         {/* Chips: ubicación + autoridad */}
-        <div className="mb-5 flex flex-wrap gap-2">
+        <div className="mb-5 flex flex-wrap gap-2 lg:justify-center">
           <div className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/90 backdrop-blur-sm">
             <PinIcon />
             Linares, Región del Maule
@@ -41,16 +41,16 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
         </div>
 
         {/* Titular con autoridad */}
-        <h1 className="mb-1 text-[1.9rem] lg:text-5xl font-black leading-[1.1] tracking-tight text-white">
-          La guía digital<br />de Linares
+        <h1 className="mb-1 text-[1.9rem] lg:text-5xl font-black leading-[1.1] tracking-tight text-white lg:text-center">
+          La guía digital<br className="lg:hidden" /> de Linares
         </h1>
-        <p className="mb-5 text-sm lg:text-base text-white/60 leading-snug lg:max-w-xl">
+        <p className="mb-5 text-sm lg:text-base text-white/60 leading-snug lg:max-w-xl lg:mx-auto lg:text-center">
           Negocios verificados, horarios reales y ofertas de hoy — todo en un solo lugar.
         </p>
 
         {/* Stats — tarjetas glass */}
         {(totalNegocios || abiertosAhora) ? (
-          <div className="mb-5 flex gap-2">
+          <div className="mb-5 flex gap-2 lg:justify-center">
             {totalNegocios ? (
               <div className="flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2 backdrop-blur-sm">
                 <span className="text-lg leading-none">🏪</span>
@@ -86,13 +86,13 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
           initial={{ opacity: 0, y: 14, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ type: "spring", stiffness: 240, damping: 20, delay: 0.1 }}
-          className="lg:max-w-2xl"
+          className="lg:max-w-2xl lg:mx-auto"
         >
           <SearchAutocomplete />
         </motion.div>
 
         {/* Búsquedas rápidas */}
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+        <div className="mt-3 flex gap-2 overflow-x-auto pb-1 no-scrollbar lg:flex-wrap lg:justify-center lg:overflow-visible">
           {QUICK.map((q, i) => (
             <motion.div
               key={q.href}
