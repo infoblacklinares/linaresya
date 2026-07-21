@@ -11,6 +11,7 @@ import FadeInSection from "@/components/FadeInSection";
 import AnimatedCard from "@/components/AnimatedCard";
 import NudgeArrow from "@/components/NudgeArrow";
 import StoriesBar, { type Historia } from "@/components/StoriesBar";
+import MarqueeRow from "@/components/MarqueeRow";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
 import { getRecentPosts } from "@/lib/blog-posts";
@@ -156,14 +157,14 @@ export default async function Home() {
       .order("plan",      { ascending: false })
       .order("verificado",{ ascending: false })
       .order("creado_en", { ascending: false })
-      .limit(24),
+      .limit(60),
 
     supabase
       .from("negocios")
       .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, telefono, categorias:categoria_id(nombre, slug, emoji)")
       .eq("activo", true)
       .order("creado_en", { ascending: false })
-      .limit(20),
+      .limit(60),
 
     supabase
       .from("ofertas")
@@ -223,16 +224,11 @@ export default async function Home() {
   }
 
   const cats           = (categorias ?? []) as Categoria[];
-  const destacadosPool = ((destacadosData ?? []) as unknown[]).map(toNegocio);
-  // Pool de hasta 24 premium/verificados/recientes — se elige un grupo al azar
-  // de 6 en cada visita para que la sección no muestre siempre lo mismo.
-  const destacados     = shuffle(destacadosPool).slice(0, 6);
-  // De los 20 más nuevos, se muestran 4 al azar en cada carga (rota al recargar)
-  const recientes  = shuffle(
-    ((recientesData ?? []) as unknown[])
-      .map(toNegocio)
-      .filter(r => !destacados.some(d => d.id === r.id))
-  ).slice(0, 4);
+  // Se muestran TODOS los negocios en carruseles de auto-scroll.
+  // Destacados: todos, barajados (premium/verificados salieron primero de la BD).
+  const destacados = shuffle(((destacadosData ?? []) as unknown[]).map(toNegocio));
+  // Recién sumados: todos, en orden de fecha (los más nuevos primero).
+  const recientes  = ((recientesData ?? []) as unknown[]).map(toNegocio);
 
   const ofertas: OfertaHome[] = ((ofertasData ?? []) as unknown[]).map(r => {
     const x   = r as Record<string, unknown>;
@@ -629,23 +625,23 @@ export default async function Home() {
             </div>
             <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todo <NudgeArrow /></Link>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 px-4">
+          <MarqueeRow>
             {destacados.map((d, i) => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
               const rating = ratingsMap.get(d.id);
               const isOpen = estaAbierto(d.id, openIds);
               return (
-                <AnimatedCard key={d.id} index={i} className="">
                 <Link
+                  key={d.id}
                   href={url}
-                  className="group block overflow-hidden rounded-3xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_22px_rgba(0,0,0,0.12)] active:scale-[0.98]"
+                  className="group block w-44 lg:w-52 shrink-0 overflow-hidden rounded-3xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
                 >
                   {/* Imagen */}
                   <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
-                      ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover" />
-                      : <span>{d.categorias?.emoji ?? "📍"}</span>}
+                      ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                      : <span className="transition-transform duration-500 group-hover:scale-110">{d.categorias?.emoji ?? "📍"}</span>}
                     {/* Badge premium sobre imagen */}
                     {d.plan === "premium" && (
                       <span className="absolute left-2 top-2 rounded-full bg-[#F4B860] px-2 py-0.5 text-[9px] font-extrabold text-[#1A1410] shadow-sm">⭐ Premium</span>
@@ -662,7 +658,7 @@ export default async function Home() {
 
                   {/* Info */}
                   <div className="p-3">
-                    <p className="truncate text-sm font-black text-[#1A1410] leading-tight">{d.nombre}</p>
+                    <p className="truncate text-sm font-black text-[#1A1410] leading-tight group-hover:text-[#2B6E80] transition-colors">{d.nombre}</p>
                     <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">
                       {d.categorias?.emoji} {d.categorias?.nombre}{d.a_domicilio ? " · 🛵" : ""}
                     </p>
@@ -681,10 +677,9 @@ export default async function Home() {
                     </div>
                   </div>
                 </Link>
-                </AnimatedCard>
               );
             })}
-          </div>
+          </MarqueeRow>
         </section>
       )}
 
@@ -697,17 +692,16 @@ export default async function Home() {
               <p className="text-xs text-[#8E8279]">Los últimos en unirse a LinaresYa</p>
             </div>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 px-4">
+          <MarqueeRow speed={0.35}>
             {recientes.map((d, i) => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
               return (
-                <AnimatedCard key={d.id} index={i} className="">
-                <Link href={url} className="block overflow-hidden rounded-3xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] active:scale-[0.98]">
+                <Link key={d.id} href={url} className="group block w-44 lg:w-52 shrink-0 overflow-hidden rounded-3xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]">
                   <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i + 4)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
-                      ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover" />
-                      : <span>{d.categorias?.emoji ?? "📍"}</span>}
+                      ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                      : <span className="transition-transform duration-500 group-hover:scale-110">{d.categorias?.emoji ?? "📍"}</span>}
                     {esNuevo(d.creado_en) && (
                       <span className="absolute left-2 top-2 rounded-full bg-[#1A1410] px-2 py-0.5 text-[9px] font-bold text-white">Nuevo</span>
                     )}
@@ -722,14 +716,13 @@ export default async function Home() {
                     })()}
                   </div>
                   <div className="p-3">
-                    <p className="truncate text-sm font-black text-[#1A1410]">{d.nombre}</p>
+                    <p className="truncate text-sm font-black text-[#1A1410] group-hover:text-[#2B6E80] transition-colors">{d.nombre}</p>
                     <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">{d.categorias?.emoji} {d.categorias?.nombre}</p>
                   </div>
                 </Link>
-                </AnimatedCard>
               );
             })}
-          </div>
+          </MarqueeRow>
         </section>
       )}
 
