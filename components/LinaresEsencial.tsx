@@ -9,7 +9,21 @@ type Lugar = {
   info: string;
   telefono: string | null;
   maps: string;
+  // Foto del lugar. Sube el archivo a /public/esencial/ y pon la ruta aquí,
+  // ej: imagen: "/esencial/zoo.jpg". Si no hay foto, se usa un degradado.
+  imagen?: string;
 };
+
+// Degradado de fondo por tipo (fallback cuando el lugar no tiene foto).
+const GRADIENTES: Record<string, string> = {
+  Turismo:     "from-emerald-500 to-emerald-800",
+  Transporte:  "from-sky-500 to-blue-800",
+  Salud:       "from-rose-500 to-rose-800",
+  Servicios:   "from-amber-500 to-orange-700",
+  Seguridad:   "from-teal-600 to-teal-900",
+  Emergencia:  "from-red-500 to-red-800",
+};
+const gradiente = (tipo: string) => GRADIENTES[tipo] ?? "from-[#2B6E80] to-[#163d4e]";
 
 const LUGARES: Lugar[] = [
   {
@@ -180,52 +194,62 @@ export default function LinaresEsencial() {
         {LUGARES.map((lugar) => (
           <div
             key={lugar.nombre}
-            className="shrink-0 w-40 rounded-2xl bg-white border border-[#F0EDE8] shadow-[0_2px_14px_rgba(0,0,0,0.07)] overflow-hidden"
+            className="group relative shrink-0 w-48 aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_2px_14px_rgba(0,0,0,0.10)] border border-[#F0EDE8]"
           >
-            {/* Emoji área */}
-            <div className="flex items-center justify-center h-20 bg-gradient-to-br from-[#F9F8F6] to-[#EFE9E2] text-4xl">
-              {lugar.emoji}
-            </div>
+            {/* Fondo: foto del lugar o degradado por categoría */}
+            {lugar.imagen ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={lugar.imagen}
+                alt={lugar.nombre}
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+            ) : (
+              <div className={`absolute inset-0 bg-gradient-to-br ${gradiente(lugar.tipo)}`} />
+            )}
+            {/* Degradado oscuro para legibilidad del texto */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10" />
 
-            {/* Info */}
-            <div className="p-3 pb-2">
-              <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${lugar.tipoColor}`}>
-                {lugar.tipo}
-              </span>
-              <p className="mt-1 text-[13px] font-black text-[#1A1410] leading-tight line-clamp-1">
+            {/* Badge de categoría arriba */}
+            <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-bold text-[#1A1410] backdrop-blur-sm">
+              {lugar.tipo}
+            </span>
+
+            {/* Info + acciones sobre la imagen */}
+            <div className="absolute inset-x-0 bottom-0 p-3">
+              <p className="text-[15px] font-black text-white leading-tight line-clamp-1 drop-shadow">
                 {lugar.nombre}
               </p>
-              <p className="text-[10px] text-[#8E8279] mt-0.5 line-clamp-1">{lugar.descripcion}</p>
-              <p className="text-[10px] text-[#6B5E57] mt-1 font-medium">{lugar.info}</p>
-            </div>
+              <p className="text-[11px] text-white/80 mt-0.5 line-clamp-1">{lugar.descripcion}</p>
+              <p className="text-[10px] text-white/70 mt-0.5 font-medium">{lugar.info}</p>
 
-            {/* Acciones */}
-            <div className="grid grid-cols-2 border-t border-[#F0EDE8]">
-              <a
-                href={lugar.maps}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center py-2 text-[10px] font-bold text-[#2B6E80] hover:bg-[#F5F2EE] transition border-r border-[#F0EDE8]"
-              >
-                📍 Mapa
-              </a>
-              {lugar.telefono ? (
-                <a
-                  href={`tel:${lugar.telefono}`}
-                  className="flex items-center justify-center py-2 text-[10px] font-bold text-[#2B6E80] hover:bg-[#F5F2EE] transition"
-                >
-                  📞 Llamar
-                </a>
-              ) : (
+              <div className="mt-2.5 grid grid-cols-2 gap-1.5">
                 <a
                   href={lugar.maps}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center py-2 text-[10px] font-bold text-[#8E8279] hover:bg-[#F5F2EE] transition"
+                  className="flex items-center justify-center gap-1 rounded-full bg-white/20 py-1.5 text-[10px] font-bold text-white backdrop-blur-md hover:bg-white/30 transition"
                 >
-                  Ver →
+                  📍 Mapa
                 </a>
-              )}
+                {lugar.telefono ? (
+                  <a
+                    href={`tel:${lugar.telefono}`}
+                    className="flex items-center justify-center gap-1 rounded-full bg-white py-1.5 text-[10px] font-bold text-[#1A1410] hover:bg-white/90 transition"
+                  >
+                    📞 Llamar
+                  </a>
+                ) : (
+                  <a
+                    href={lugar.maps}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1 rounded-full bg-white/20 py-1.5 text-[10px] font-bold text-white backdrop-blur-md hover:bg-white/30 transition"
+                  >
+                    Ver →
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         ))}
