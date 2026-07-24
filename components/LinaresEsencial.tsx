@@ -28,6 +28,7 @@ const gradiente = (tipo: string) => GRADIENTES[tipo] ?? "from-[#2B6E80] to-[#163
 const LUGARES: Lugar[] = [
   {
     nombre: "Zoo de Linares",
+    imagen: "/esencial/zoo.jpg",
     emoji: "🦁",
     tipo: "Turismo",
     tipoColor: "bg-emerald-100 text-emerald-700",
@@ -38,6 +39,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Terminal de Buses",
+    imagen: "/esencial/terminal.jpg",
     emoji: "🚌",
     tipo: "Transporte",
     tipoColor: "bg-blue-100 text-blue-700",
@@ -48,6 +50,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Hospital de Linares",
+    imagen: "/esencial/hospital.jpg",
     emoji: "🏥",
     tipo: "Salud",
     tipoColor: "bg-red-100 text-red-700",
@@ -58,6 +61,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Municipalidad",
+    imagen: "/esencial/municipalidad.png",
     emoji: "🏛️",
     tipo: "Servicios",
     tipoColor: "bg-amber-100 text-amber-700",
@@ -68,6 +72,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Registro Civil",
+    imagen: "/esencial/registro-civil.jpg",
     emoji: "📋",
     tipo: "Servicios",
     tipoColor: "bg-amber-100 text-amber-700",
@@ -78,6 +83,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Carabineros",
+    imagen: "/esencial/carabineros.png",
     emoji: "🚔",
     tipo: "Seguridad",
     tipoColor: "bg-green-100 text-green-700",
@@ -88,6 +94,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Plaza de Armas",
+    imagen: "/esencial/Plaza_de_Armas.jpg",
     emoji: "🌳",
     tipo: "Turismo",
     tipoColor: "bg-emerald-100 text-emerald-700",
@@ -98,6 +105,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Catedral",
+    imagen: "/esencial/catedral.jpg",
     emoji: "⛪",
     tipo: "Turismo",
     tipoColor: "bg-emerald-100 text-emerald-700",
@@ -108,6 +116,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Bomberos",
+    imagen: "/esencial/bomberos.png",
     emoji: "🚒",
     tipo: "Emergencia",
     tipoColor: "bg-red-100 text-red-700",
@@ -118,6 +127,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "CESFAM",
+    imagen: "/esencial/cesfam.jpg",
     emoji: "⚕️",
     tipo: "Salud",
     tipoColor: "bg-red-100 text-red-700",
@@ -128,6 +138,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Veterinaria de urgencia",
+    imagen: "/esencial/veterinaria.jpg",
     emoji: "🐾",
     tipo: "Salud",
     tipoColor: "bg-red-100 text-red-700",
@@ -138,6 +149,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Bancos",
+    imagen: "/esencial/bancos.jpg",
     emoji: "🏦",
     tipo: "Servicios",
     tipoColor: "bg-amber-100 text-amber-700",
@@ -148,6 +160,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Cajeros automáticos",
+    imagen: "/esencial/cajeros-automaticos.jpg",
     emoji: "💳",
     tipo: "Servicios",
     tipoColor: "bg-amber-100 text-amber-700",
@@ -158,6 +171,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Notarías",
+    imagen: "/esencial/notarias.jpg",
     emoji: "📜",
     tipo: "Servicios",
     tipoColor: "bg-amber-100 text-amber-700",
@@ -168,6 +182,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Bencineras",
+    imagen: "/esencial/bencineras.jpg",
     emoji: "⛽",
     tipo: "Transporte",
     tipoColor: "bg-blue-100 text-blue-700",
