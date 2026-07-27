@@ -409,7 +409,7 @@ export default async function NegocioDetalle({
         </div>
 
         {/* Panel blanco que sube sobre la foto */}
-        <div className="relative -mt-8 rounded-t-[2rem] bg-white px-4 pt-14 pb-3 lg:mx-auto lg:w-full lg:max-w-3xl lg:rounded-[2rem] lg:-mt-16 lg:shadow-[0_-4px_30px_rgba(0,0,0,0.08)]">
+        <div className="relative -mt-8 rounded-t-[2rem] bg-white px-4 pt-14 pb-3 lg:mx-auto lg:w-full lg:max-w-4xl lg:rounded-[2rem] lg:-mt-16 lg:shadow-[0_-4px_30px_rgba(0,0,0,0.08)]">
           {/* Avatar circular superpuesto */}
           <div className="absolute -top-12 left-1/2 -translate-x-1/2">
             <div className="h-24 w-24 rounded-full ring-4 ring-white shadow-lg overflow-hidden bg-secondary flex items-center justify-center text-4xl">
@@ -440,7 +440,7 @@ export default async function NegocioDetalle({
           )}
 
           {/* Fila de 3 stats */}
-          <div className="mt-4 grid grid-cols-3 divide-x divide-border rounded-2xl bg-secondary/40 py-3">
+          <div className="mt-4 grid grid-cols-3 divide-x divide-border rounded-2xl bg-[#F9F8F6] border border-[#F0EDE8] py-3">
             <div className="text-center px-2">
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Calificación</p>
               <p className="text-lg font-extrabold mt-0.5">{ratingPromedio ? `★ ${ratingPromedio}` : "—"}</p>
@@ -479,9 +479,9 @@ export default async function NegocioDetalle({
 
 
       {/* Contenido: 1 columna en movil, 2 columnas en escritorio */}
-      <div className="mx-auto w-full max-w-2xl lg:max-w-7xl lg:px-6">
-        <div className="lg:grid lg:grid-cols-3 lg:gap-8 lg:items-start lg:pt-6">
-          <div className="lg:col-span-2 lg:min-w-0">
+      <div className="mx-auto w-full max-w-2xl lg:max-w-full lg:px-8 xl:px-14">
+        <div className="lg:grid lg:grid-cols-4 lg:gap-8 lg:items-start lg:pt-6">
+          <div className="lg:col-span-3 lg:min-w-0">
       {n.descripcion && (
         <section className="px-4 mt-6">
           <h2 className="text-base font-bold mb-2">Acerca de</h2>
