@@ -50,8 +50,46 @@ export async function updateNegocio(
   const activo = formData.get("activo") === "on";
   const verificado = formData.get("verificado") === "on";
   const premiumHastaRaw = String(formData.get("premium_hasta") ?? "").trim();
+  const latRaw = String(formData.get("lat") ?? "").trim();
+  const lngRaw = String(formData.get("lng") ?? "").trim();
 
   const fieldErrors: Record<string, string> = {};
+
+  // Coordenadas. Comodidad: si en "Latitud" pegan "-35.84, -71.59" (formato
+  // que copia Google Maps), se parte automaticamente en los dos campos.
+  let lat: number | null = null;
+  let lng: number | null = null;
+  let latTexto = latRaw;
+  let lngTexto = lngRaw;
+  if (latRaw.includes(",") && !lngRaw) {
+    const partes = latRaw.split(",").map((x) => x.trim());
+    if (partes.length === 2) {
+      latTexto = partes[0];
+      lngTexto = partes[1];
+    }
+  }
+  if (latTexto) {
+    const v = Number(latTexto);
+    if (!Number.isFinite(v) || v < -90 || v > 90) {
+      fieldErrors.lat = "Latitud invalida (-90 a 90)";
+    } else {
+      lat = v;
+    }
+  }
+  if (lngTexto) {
+    const v = Number(lngTexto);
+    if (!Number.isFinite(v) || v < -180 || v > 180) {
+      fieldErrors.lng = "Longitud invalida (-180 a 180)";
+    } else {
+      lng = v;
+    }
+  }
+  // Solo sirven en par: si falta una, no se guarda ninguna.
+  if ((lat === null) !== (lng === null)) {
+    fieldErrors.lat = "Completa latitud y longitud, o deja ambas vacias";
+    lat = null;
+    lng = null;
+  }
   if (nombre.length < 3) fieldErrors.nombre = "Minimo 3 caracteres";
   if (nombre.length > 80) fieldErrors.nombre = "Maximo 80 caracteres";
   if (descripcion.length > 1000) fieldErrors.descripcion = "Maximo 1000 caracteres";
@@ -116,6 +154,8 @@ export async function updateNegocio(
     email: email || null,
     sitio_web: sitioWeb || null,
     direccion: direccion || null,
+    lat,
+    lng,
     a_domicilio: aDomicilio,
     zona_cobertura: zonaCobertura || null,
     disponibilidad: disponibilidad || null,

@@ -24,6 +24,8 @@ type Negocio = {
   activo: boolean;
   verificado: boolean;
   premium_hasta: string | null;
+  lat: number | null;
+  lng: number | null;
 };
 
 type Categoria = {
@@ -75,7 +77,7 @@ export default async function EditarNegocioPage({
     supabaseAdmin
       .from("negocios")
       .select(
-        "id,nombre,slug,categoria_id,tipo,plan,descripcion,telefono,whatsapp,email,sitio_web,direccion,a_domicilio,zona_cobertura,disponibilidad,foto_portada,activo,verificado,premium_hasta",
+        "id,nombre,slug,categoria_id,tipo,plan,descripcion,telefono,whatsapp,email,sitio_web,direccion,a_domicilio,zona_cobertura,disponibilidad,foto_portada,activo,verificado,premium_hasta,lat,lng",
       )
       .eq("id", id)
       .single(),

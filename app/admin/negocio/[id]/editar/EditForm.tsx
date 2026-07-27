@@ -35,6 +35,8 @@ type Negocio = {
   email: string | null;
   sitio_web: string | null;
   direccion: string | null;
+  lat: number | null;
+  lng: number | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;
   disponibilidad: string | null;
@@ -215,6 +217,28 @@ export default function EditForm({
             className="input-ue"
           />
         </Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Latitud" error={fe.lat}>
+            <input
+              name="lat"
+              defaultValue={negocio.lat ?? ""}
+              placeholder="-35.84650"
+              className="input-ue"
+            />
+          </Field>
+          <Field label="Longitud" error={fe.lng}>
+            <input
+              name="lng"
+              defaultValue={negocio.lng ?? ""}
+              placeholder="-71.59300"
+              className="input-ue"
+            />
+          </Field>
+        </div>
+        <p className="text-[11px] text-muted-foreground -mt-1">
+          Para &quot;Cerca de mí&quot;. En Google Maps: clic derecho sobre el local →
+          clic en las coordenadas (se copian) → pégalas aquí separadas por coma en Latitud.
+        </p>
         <label className="flex items-center gap-2 py-2">
           <input
             type="checkbox"
