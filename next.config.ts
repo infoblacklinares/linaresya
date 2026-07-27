@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
       "img-src 'self' data: blob: https://*.supabase.co",
       "font-src 'self' data:",
       "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com",
-      "frame-src https://challenges.cloudflare.com",
+      "frame-src https://challenges.cloudflare.com https://www.google.com https://maps.google.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
