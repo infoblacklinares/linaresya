@@ -2,7 +2,7 @@ import { SkeletonBox } from "@/components/Skeleton";
 
 export default function NegocioLoading() {
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl">
+    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-7xl">
       {/* Hero */}
       <SkeletonBox className="h-56 w-full rounded-none" />
 

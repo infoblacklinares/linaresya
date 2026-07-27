@@ -364,7 +364,7 @@ export default async function NegocioDetalle({
   ]);
 
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-4xl">
+    <main className="flex-1 w-full">
       <JsonLd id="ld-negocio" data={negocioJsonLdData} />
       <JsonLd id="ld-breadcrumb" data={breadcrumbData} />
       <section className="relative">
@@ -409,7 +409,7 @@ export default async function NegocioDetalle({
         </div>
 
         {/* Panel blanco que sube sobre la foto */}
-        <div className="relative -mt-8 rounded-t-[2rem] bg-white px-4 pt-14 pb-3">
+        <div className="relative -mt-8 rounded-t-[2rem] bg-white px-4 pt-14 pb-3 lg:mx-auto lg:w-full lg:max-w-3xl lg:rounded-[2rem] lg:-mt-16 lg:shadow-[0_-4px_30px_rgba(0,0,0,0.08)]">
           {/* Avatar circular superpuesto */}
           <div className="absolute -top-12 left-1/2 -translate-x-1/2">
             <div className="h-24 w-24 rounded-full ring-4 ring-white shadow-lg overflow-hidden bg-secondary flex items-center justify-center text-4xl">
@@ -477,64 +477,19 @@ export default async function NegocioDetalle({
         </div>
       </section>
 
-      <section className="px-4 mt-5">
-        <div className={`grid gap-2 ${wa ? "grid-cols-3" : "grid-cols-2"}`}>
-          {wa && (
-            <TrackedActionButton
-              href={wa}
-              negocioId={n.id}
-              evento="whatsapp"
-              external
-              icon={<WhatsAppIcon />}
-              label="WhatsApp"
-              primary
-            />
-          )}
-          {tel ? (
-            <TrackedActionButton
-              href={tel}
-              negocioId={n.id}
-              evento="telefono"
-              icon={<PhoneIcon />}
-              label="Llamar"
-            />
-          ) : (
-            <ActionButton disabled icon={<PhoneIcon />} label="Llamar" />
-          )}
-          {maps ? (
-            <TrackedActionButton
-              href={maps}
-              negocioId={n.id}
-              evento="maps"
-              external
-              icon={<MapIcon />}
-              label="Llegar"
-            />
-          ) : (
-            <ActionButton disabled icon={<MapIcon />} label="Sin dirección" />
-          )}
-        </div>
-        {n.sitio_web && (
-          <div className="mt-2">
-            <a
-              href={n.sitio_web}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 rounded-2xl py-3 text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 transition w-full"
-            >
-              <GlobeIcon />
-              Visitar sitio web
-            </a>
-          </div>
-        )}
-        <div className="mt-2">
-          <ShareButton
-            url={`${SITE_URL}/${categoria.slug}/${n.slug}`}
-            title={n.nombre}
-            text={`${n.nombre} en LinaresYa - ${categoria.nombre}`}
-          />
-        </div>
-      </section>
+
+      {/* Contenido: 1 columna en movil, 2 columnas en escritorio */}
+      <div className="mx-auto w-full max-w-2xl lg:max-w-7xl lg:px-6">
+        <div className="lg:grid lg:grid-cols-3 lg:gap-8 lg:items-start lg:pt-6">
+          <div className="lg:col-span-2 lg:min-w-0">
+      {n.descripcion && (
+        <section className="px-4 mt-6">
+          <h2 className="text-base font-bold mb-2">Acerca de</h2>
+          <p className="text-[14px] leading-relaxed text-foreground/80 whitespace-pre-line">
+            {n.descripcion}
+          </p>
+        </section>
+      )}
 
       {/* Ofertas vigentes del negocio */}
       {ofertasNegocio.length > 0 && (
@@ -573,15 +528,6 @@ export default async function NegocioDetalle({
               );
             })}
           </div>
-        </section>
-      )}
-
-      {n.descripcion && (
-        <section className="px-4 mt-6">
-          <h2 className="text-base font-bold mb-2">Acerca de</h2>
-          <p className="text-[14px] leading-relaxed text-foreground/80 whitespace-pre-line">
-            {n.descripcion}
-          </p>
         </section>
       )}
 
@@ -660,59 +606,6 @@ export default async function NegocioDetalle({
           </div>
         )}
       </section>
-
-      {(n.direccion || n.zona_cobertura) && (
-        <section className="px-4 mt-6">
-          <h2 className="text-base font-bold mb-2">Ubicación</h2>
-          {/* Card de ubicación con fondo tipo mapa (sin iframe: nunca se bloquea) */}
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-[#EAF0EF]">
-            {/* Trama de calles decorativa */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 opacity-[0.5]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(#cfdcd9 1.5px, transparent 1.5px), linear-gradient(90deg, #cfdcd9 1.5px, transparent 1.5px), linear-gradient(#dde7e5 1px, transparent 1px), linear-gradient(90deg, #dde7e5 1px, transparent 1px)",
-                backgroundSize: "72px 72px, 72px 72px, 18px 18px, 18px 18px",
-              }}
-            />
-            {/* Avenida diagonal */}
-            <div aria-hidden="true" className="absolute -inset-x-8 top-1/2 h-6 -translate-y-1/2 -rotate-12 bg-white/70" />
-
-            <div className="relative p-5">
-              {/* Pin central */}
-              <div className="flex justify-center">
-                <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#2B6E80] text-2xl text-white shadow-lg ring-4 ring-white">
-                  {"\u{1F4CD}"}
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2B6E80] opacity-20" />
-                </span>
-              </div>
-
-              {n.direccion && (
-                <p className="mt-3 text-center text-[15px] font-bold text-[#1A1410]">
-                  {n.direccion}{n.ciudad ? `, ${n.ciudad}` : ""}
-                </p>
-              )}
-              {n.zona_cobertura && (
-                <p className="mt-1 text-center text-xs text-muted-foreground">
-                  Cobertura: {n.zona_cobertura}
-                </p>
-              )}
-
-              {maps && (
-                <a
-                  href={maps}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 flex items-center justify-center gap-2 rounded-full bg-[#1A1410] py-3 text-sm font-bold text-white transition hover:bg-[#2B6E80] active:scale-95"
-                >
-                  🧭 Cómo llegar
-                </a>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
 
       {fotos.length > 0 && (
         <section className="mt-6">
@@ -830,6 +723,123 @@ export default async function NegocioDetalle({
           </p>
         )}
       </section>
+          </div>
+          <aside className="lg:sticky lg:top-4 lg:space-y-2">
+      <section className="px-4 mt-5">
+        <div className={`grid gap-2 ${wa ? "grid-cols-3" : "grid-cols-2"}`}>
+          {wa && (
+            <TrackedActionButton
+              href={wa}
+              negocioId={n.id}
+              evento="whatsapp"
+              external
+              icon={<WhatsAppIcon />}
+              label="WhatsApp"
+              primary
+            />
+          )}
+          {tel ? (
+            <TrackedActionButton
+              href={tel}
+              negocioId={n.id}
+              evento="telefono"
+              icon={<PhoneIcon />}
+              label="Llamar"
+            />
+          ) : (
+            <ActionButton disabled icon={<PhoneIcon />} label="Llamar" />
+          )}
+          {maps ? (
+            <TrackedActionButton
+              href={maps}
+              negocioId={n.id}
+              evento="maps"
+              external
+              icon={<MapIcon />}
+              label="Llegar"
+            />
+          ) : (
+            <ActionButton disabled icon={<MapIcon />} label="Sin dirección" />
+          )}
+        </div>
+        {n.sitio_web && (
+          <div className="mt-2">
+            <a
+              href={n.sitio_web}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 rounded-2xl py-3 text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 transition w-full"
+            >
+              <GlobeIcon />
+              Visitar sitio web
+            </a>
+          </div>
+        )}
+        <div className="mt-2">
+          <ShareButton
+            url={`${SITE_URL}/${categoria.slug}/${n.slug}`}
+            title={n.nombre}
+            text={`${n.nombre} en LinaresYa - ${categoria.nombre}`}
+          />
+        </div>
+      </section>
+
+      {(n.direccion || n.zona_cobertura) && (
+        <section className="px-4 mt-6">
+          <h2 className="text-base font-bold mb-2">Ubicación</h2>
+          {/* Card de ubicación con fondo tipo mapa (sin iframe: nunca se bloquea) */}
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-[#EAF0EF]">
+            {/* Trama de calles decorativa */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 opacity-[0.5]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(#cfdcd9 1.5px, transparent 1.5px), linear-gradient(90deg, #cfdcd9 1.5px, transparent 1.5px), linear-gradient(#dde7e5 1px, transparent 1px), linear-gradient(90deg, #dde7e5 1px, transparent 1px)",
+                backgroundSize: "72px 72px, 72px 72px, 18px 18px, 18px 18px",
+              }}
+            />
+            {/* Avenida diagonal */}
+            <div aria-hidden="true" className="absolute -inset-x-8 top-1/2 h-6 -translate-y-1/2 -rotate-12 bg-white/70" />
+
+            <div className="relative p-5">
+              {/* Pin central */}
+              <div className="flex justify-center">
+                <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#2B6E80] text-2xl text-white shadow-lg ring-4 ring-white">
+                  {"\u{1F4CD}"}
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2B6E80] opacity-20" />
+                </span>
+              </div>
+
+              {n.direccion && (
+                <p className="mt-3 text-center text-[15px] font-bold text-[#1A1410]">
+                  {n.direccion}{n.ciudad ? `, ${n.ciudad}` : ""}
+                </p>
+              )}
+              {n.zona_cobertura && (
+                <p className="mt-1 text-center text-xs text-muted-foreground">
+                  Cobertura: {n.zona_cobertura}
+                </p>
+              )}
+
+              {maps && (
+                <a
+                  href={maps}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 flex items-center justify-center gap-2 rounded-full bg-[#1A1410] py-3 text-sm font-bold text-white transition hover:bg-[#2B6E80] active:scale-95"
+                >
+                  🧭 Cómo llegar
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+          </aside>
+        </div>
+      </div>
     </main>
   );
 }
