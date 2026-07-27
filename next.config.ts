@@ -30,7 +30,7 @@ const nextConfig: NextConfig = {
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://*.supabase.co",
+      "img-src 'self' data: blob: https://*.supabase.co https://tile.openstreetmap.org https://*.tile.openstreetmap.org",
       "font-src 'self' data:",
       "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com",
       "frame-src https://challenges.cloudflare.com",

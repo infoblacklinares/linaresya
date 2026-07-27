@@ -8,6 +8,7 @@ import LeaveReviewForm from "./LeaveReviewForm";
 import ShareButton from "./ShareButton";
 import ReportarButton from "./ReportarButton";
 import FavoritoButton from "@/components/FavoritoButton";
+import MapaNegocio from "@/components/MapaNegocio";
 import { dentroDeRango } from "@/lib/horarios";
 import JsonLd from "@/components/JsonLd";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
@@ -787,7 +788,13 @@ export default async function NegocioDetalle({
       {(n.direccion || n.zona_cobertura) && (
         <section className="px-4 mt-6">
           <h2 className="text-base font-bold mb-2">Ubicación</h2>
-          {/* Card de ubicación con fondo tipo mapa (sin iframe: nunca se bloquea) */}
+          {/* Mapa real (OpenStreetMap) cuando el negocio tiene coordenadas */}
+          {n.lat != null && n.lng != null && (
+            <div className="mb-3">
+              <MapaNegocio lat={n.lat} lng={n.lng} nombre={n.nombre} />
+            </div>
+          )}
+          {/* Card de ubicación: dirección + CTA (y respaldo visual si no hay coordenadas) */}
           <div className="relative overflow-hidden rounded-3xl border border-border bg-[#EAF0EF]">
             {/* Trama de calles decorativa */}
             <div
@@ -803,13 +810,15 @@ export default async function NegocioDetalle({
             <div aria-hidden="true" className="absolute -inset-x-8 top-1/2 h-6 -translate-y-1/2 -rotate-12 bg-white/70" />
 
             <div className="relative p-5">
-              {/* Pin central */}
-              <div className="flex justify-center">
-                <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#2B6E80] text-2xl text-white shadow-lg ring-4 ring-white">
-                  {"\u{1F4CD}"}
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2B6E80] opacity-20" />
-                </span>
-              </div>
+              {/* Pin decorativo: solo cuando no hay mapa real */}
+              {(n.lat == null || n.lng == null) && (
+                <div className="flex justify-center">
+                  <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#2B6E80] text-2xl text-white shadow-lg ring-4 ring-white">
+                    {"\u{1F4CD}"}
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2B6E80] opacity-20" />
+                  </span>
+                </div>
+              )}
 
               {n.direccion && (
                 <p className="mt-3 text-center text-[15px] font-bold text-[#1A1410]">
