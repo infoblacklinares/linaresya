@@ -167,20 +167,6 @@ function mapsLink(n: Negocio): string | null {
   return null;
 }
 
-// URL del iframe embed de Google Maps. Usa el endpoint /maps?q=...&output=embed
-// que no requiere API key (a diferencia del Embed API oficial). Si hay lat/lng
-// los usa; si no, geocodifica con la direccion + ciudad.
-function mapsEmbed(n: Negocio): string | null {
-  if (n.lat != null && n.lng != null) {
-    return `https://www.google.com/maps?q=${n.lat},${n.lng}&z=16&output=embed`;
-  }
-  if (n.direccion) {
-    const q = encodeURIComponent(`${n.direccion}, ${n.ciudad ?? "Linares"}, Chile`);
-    return `https://www.google.com/maps?q=${q}&z=16&output=embed`;
-  }
-  return null;
-}
-
 export async function generateMetadata({
   params,
 }: {
@@ -330,7 +316,6 @@ export default async function NegocioDetalle({
   const wa = esPremium && n.whatsapp ? whatsAppLink(n.whatsapp, n.nombre) : null;
   const tel = n.telefono ? telLink(n.telefono) : null;
   const maps = mapsLink(n);
-  const mapEmbedUrl = mapsEmbed(n);
 
   const ratingPromedio =
     resenas.length > 0
@@ -379,12 +364,12 @@ export default async function NegocioDetalle({
   ]);
 
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl">
+    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-4xl">
       <JsonLd id="ld-negocio" data={negocioJsonLdData} />
       <JsonLd id="ld-breadcrumb" data={breadcrumbData} />
       <section className="relative">
         {/* Foto de portada full-bleed */}
-        <div className="relative h-72 sm:h-80 w-full overflow-hidden bg-secondary">
+        <div className="relative h-72 sm:h-80 lg:h-[26rem] w-full overflow-hidden bg-secondary">
           {n.foto_portada ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
@@ -604,33 +589,56 @@ export default async function NegocioDetalle({
         <h2 className="text-base font-bold mb-2">Horarios</h2>
         {tieneHorariosEstructurados ? (
           <>
-            <ul className="rounded-2xl bg-secondary/60 divide-y divide-border overflow-hidden">
+            {/* Banner de estado actual */}
+            <div className={`mb-3 flex items-center gap-3 rounded-2xl px-4 py-3 ${abierto ? "bg-emerald-50 border border-emerald-200" : "bg-rose-50 border border-rose-200"}`}>
+              <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-lg ${abierto ? "bg-emerald-500/15" : "bg-rose-500/15"}`}>
+                {abierto ? "🟢" : "🔴"}
+              </span>
+              <div className="min-w-0">
+                <p className={`text-sm font-extrabold ${abierto ? "text-emerald-700" : "text-rose-700"}`}>
+                  {abierto ? "Abierto ahora" : "Cerrado ahora"}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {horarioHoy && !horarioHoy.cerrado && horarioHoy.abre
+                    ? `Hoy atiende ${fmtHora(horarioHoy.abre)}–${fmtHora(horarioHoy.cierra)}`
+                    : "Hoy no atiende"}
+                </p>
+              </div>
+            </div>
+
+            {/* Semana en tarjetas */}
+            <ul className="space-y-1.5 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0">
               {DIAS_ORDEN.map((d) => {
                 const h = horarios.find((x) => x.dia === d);
                 const isToday = d === diaHoy();
+                const cerrado = !h || h.cerrado;
                 return (
                   <li
                     key={d}
-                    className={`flex items-center justify-between px-4 py-2.5 text-[13px] ${
-                      isToday ? "bg-white font-semibold" : ""
+                    className={`flex items-center justify-between rounded-2xl px-4 py-2.5 text-[13px] transition ${
+                      isToday
+                        ? "bg-[#1A1410] text-white shadow-md"
+                        : "bg-secondary/50 hover:bg-secondary"
                     }`}
                   >
-                    <span>
+                    <span className="flex items-center gap-2 font-semibold">
                       {DIAS_LABEL[d]}
                       {isToday && (
-                        <span className="ml-2 text-[10px] font-bold text-muted-foreground uppercase">
+                        <span className="rounded-full bg-white/20 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide">
                           Hoy
                         </span>
                       )}
                     </span>
                     <span
-                      className={
-                        !h || h.cerrado ? "text-muted-foreground" : "text-foreground"
-                      }
+                      className={`font-bold tabular-nums ${
+                        isToday
+                          ? "text-white"
+                          : cerrado
+                            ? "text-muted-foreground font-medium"
+                            : "text-foreground"
+                      }`}
                     >
-                      {!h || h.cerrado
-                        ? "Cerrado"
-                        : `${fmtHora(h.abre)} - ${fmtHora(h.cierra)}`}
+                      {cerrado ? "Cerrado" : `${fmtHora(h!.abre)} – ${fmtHora(h!.cierra)}`}
                     </span>
                   </li>
                 );
@@ -655,44 +663,54 @@ export default async function NegocioDetalle({
 
       {(n.direccion || n.zona_cobertura) && (
         <section className="px-4 mt-6">
-          <h2 className="text-base font-bold mb-2">Ubicacion</h2>
-          <div className="rounded-2xl bg-secondary/60 p-4 text-[14px]">
-            {n.direccion && (
-              <p>
-                {"\u{1F4CD}"} {n.direccion}
-                {n.ciudad ? `, ${n.ciudad}` : ""}
-              </p>
-            )}
-            {n.zona_cobertura && (
-              <p className="mt-1 text-muted-foreground">
-                Cobertura: {n.zona_cobertura}
-              </p>
-            )}
-            {maps && (
-              <a
-                href={maps}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-sky-600"
-              >
-                Ver en Google Maps {"\u2192"}
-              </a>
-            )}
-          </div>
-          {mapEmbedUrl && (
-            <div className="mt-3 rounded-2xl overflow-hidden border border-border bg-secondary/40">
-              <iframe
-                src={mapEmbedUrl}
-                title={`Mapa de ${n.nombre}`}
-                width="100%"
-                height="240"
-                style={{ border: 0 }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
-              />
+          <h2 className="text-base font-bold mb-2">Ubicación</h2>
+          {/* Card de ubicación con fondo tipo mapa (sin iframe: nunca se bloquea) */}
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-[#EAF0EF]">
+            {/* Trama de calles decorativa */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 opacity-[0.5]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(#cfdcd9 1.5px, transparent 1.5px), linear-gradient(90deg, #cfdcd9 1.5px, transparent 1.5px), linear-gradient(#dde7e5 1px, transparent 1px), linear-gradient(90deg, #dde7e5 1px, transparent 1px)",
+                backgroundSize: "72px 72px, 72px 72px, 18px 18px, 18px 18px",
+              }}
+            />
+            {/* Avenida diagonal */}
+            <div aria-hidden="true" className="absolute -inset-x-8 top-1/2 h-6 -translate-y-1/2 -rotate-12 bg-white/70" />
+
+            <div className="relative p-5">
+              {/* Pin central */}
+              <div className="flex justify-center">
+                <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#2B6E80] text-2xl text-white shadow-lg ring-4 ring-white">
+                  {"\u{1F4CD}"}
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2B6E80] opacity-20" />
+                </span>
+              </div>
+
+              {n.direccion && (
+                <p className="mt-3 text-center text-[15px] font-bold text-[#1A1410]">
+                  {n.direccion}{n.ciudad ? `, ${n.ciudad}` : ""}
+                </p>
+              )}
+              {n.zona_cobertura && (
+                <p className="mt-1 text-center text-xs text-muted-foreground">
+                  Cobertura: {n.zona_cobertura}
+                </p>
+              )}
+
+              {maps && (
+                <a
+                  href={maps}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 flex items-center justify-center gap-2 rounded-full bg-[#1A1410] py-3 text-sm font-bold text-white transition hover:bg-[#2B6E80] active:scale-95"
+                >
+                  🧭 Cómo llegar
+                </a>
+              )}
             </div>
-          )}
+          </div>
         </section>
       )}
 
@@ -706,7 +724,7 @@ export default async function NegocioDetalle({
                 key={f.id}
                 src={f.url}
                 alt=""
-                className="h-32 w-40 sm:h-40 sm:w-52 rounded-2xl object-cover shrink-0"
+                className="h-32 w-40 sm:h-40 sm:w-52 lg:h-56 lg:w-72 rounded-2xl object-cover shrink-0"
               />
             ))}
           </div>
@@ -730,7 +748,7 @@ export default async function NegocioDetalle({
             Todavia no hay resenas. Se el primero en dejar una.
           </div>
         ) : (
-          <ul className="space-y-3">
+          <ul className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0 lg:items-start">
             {resenas.map((r) => (
               <li key={r.id} className="rounded-2xl bg-secondary/60 p-4">
                 <div className="flex items-center justify-between gap-2">
