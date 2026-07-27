@@ -383,105 +383,112 @@ export default async function NegocioDetalle({
       <JsonLd id="ld-negocio" data={negocioJsonLdData} />
       <JsonLd id="ld-breadcrumb" data={breadcrumbData} />
       <section className="relative">
-        <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-secondary">
+        {/* Foto de portada full-bleed */}
+        <div className="relative h-72 sm:h-80 w-full overflow-hidden bg-secondary">
           {n.foto_portada ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={n.foto_portada}
-              alt={n.nombre}
-              className="h-full w-full object-cover"
-            />
+            <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
           ) : (
-            <div className="h-full w-full flex items-center justify-center text-7xl">
+            <div className={`h-full w-full flex items-center justify-center text-8xl bg-gradient-to-br ${esPremium ? "from-[#2B6E80] to-[#163d4e]" : "from-[#F9F8F6] to-[#E8E4DE]"}`}>
               {categoria.emoji}
             </div>
           )}
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/25" />
+
+          {/* Volver (glass) */}
           <Link
             href={`/${categoria.slug}`}
             aria-label="Volver"
-            className="absolute top-4 left-4 h-10 w-10 rounded-full bg-white/95 flex items-center justify-center ue-shadow hover:bg-white transition"
+            className="absolute top-5 left-4 h-10 w-10 rounded-full bg-white/25 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/40 transition"
           >
             <BackIcon />
           </Link>
-          {esPremium && (
-            <span className="absolute top-4 right-4 text-[10px] font-bold bg-foreground text-background px-2.5 py-1 rounded-full">
-              Premium
-            </span>
+
+          {/* Favorito (glass) */}
+          <div className="absolute top-5 right-4">
+            <FavoritoButton negocioId={n.id} variant="icon" />
+          </div>
+
+          {/* Widget flotante de estado */}
+          {tieneHorariosEstructurados && (
+            <div className="absolute top-16 left-4 rounded-2xl bg-white/15 backdrop-blur-md px-4 py-2.5 text-white">
+              <div className="flex items-center gap-1.5">
+                <span className={`h-2 w-2 rounded-full ${abierto ? "bg-emerald-400" : "bg-rose-400"}`} />
+                <span className="text-xs font-bold">{abierto ? "Abierto ahora" : "Cerrado"}</span>
+              </div>
+              {horarioHoy && !horarioHoy.cerrado && horarioHoy.abre && (
+                <p className="text-[11px] text-white/80 mt-0.5">Hoy {fmtHora(horarioHoy.abre)}–{fmtHora(horarioHoy.cierra)}</p>
+              )}
+            </div>
           )}
         </div>
 
-        <div className="px-4 pt-4">
-          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">
-            {categoria.emoji} {categoria.nombre}
-            {n.tipo === "independiente" ? " - Independiente" : ""}
+        {/* Panel blanco que sube sobre la foto */}
+        <div className="relative -mt-8 rounded-t-[2rem] bg-white px-4 pt-14 pb-3">
+          {/* Avatar circular superpuesto */}
+          <div className="absolute -top-12 left-1/2 -translate-x-1/2">
+            <div className="h-24 w-24 rounded-full ring-4 ring-white shadow-lg overflow-hidden bg-secondary flex items-center justify-center text-4xl">
+              {n.foto_portada ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
+              ) : (
+                <span>{categoria.emoji}</span>
+              )}
+            </div>
+            {esPremium && (
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-extrabold bg-[#F4B860] text-[#1A1410] px-2 py-0.5 rounded-full shadow">⭐ Premium</span>
+            )}
+          </div>
+
+          {/* Cabecera centrada */}
+          <p className="text-center text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+            {categoria.emoji} {categoria.nombre}{n.tipo === "independiente" ? " · Independiente" : ""}
           </p>
-          <div className="flex items-start gap-2 mt-1">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
+          <div className="flex items-center justify-center gap-1.5 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-center">
               {n.nombre}
             </h1>
             {n.verificado && <VerifiedIcon />}
           </div>
+          {n.direccion && (
+            <p className="text-center text-xs text-muted-foreground mt-1">📍 {n.direccion}</p>
+          )}
 
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-            {tieneHorariosEstructurados ? (
-              <>
-                <span
-                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold ${
-                    abierto
-                      ? "bg-emerald-50 text-emerald-700"
-                      : "bg-rose-50 text-rose-700"
-                  }`}
-                >
-                  <span
-                    className={`h-1.5 w-1.5 rounded-full ${
-                      abierto ? "bg-emerald-500" : "bg-rose-500"
-                    }`}
-                  />
-                  {abierto ? "Abierto ahora" : "Cerrado ahora"}
-                </span>
-                {horarioHoy && !horarioHoy.cerrado && horarioHoy.abre && (
-                  <span className="text-muted-foreground">
-                    Hoy {fmtHora(horarioHoy.abre)} - {fmtHora(horarioHoy.cierra)}
-                  </span>
-                )}
-              </>
-            ) : n.disponibilidad ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold bg-sky-50 text-sky-700">
-                <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
-                {n.disponibilidad}
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold bg-secondary text-muted-foreground">
-                Consultar horario
-              </span>
-            )}
-            {n.a_domicilio && (
-              <span className="bg-secondary text-foreground px-2.5 py-1 rounded-full font-medium">
-                A domicilio
-              </span>
-            )}
-            {(() => {
-              // Sello de frescura: cuándo se actualizó la ficha por última vez
-              const ref = n.actualizado_en ?? n.creado_en;
-              const dias = Math.floor((Date.now() - new Date(ref).getTime()) / 86_400_000);
-              const texto = dias <= 0 ? "Actualizado hoy" : dias === 1 ? "Actualizado ayer" : dias <= 60 ? `Actualizado hace ${dias} días` : null;
-              return texto ? (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-medium bg-[#2B6E80]/8 text-[#2B6E80]">
-                  ↻ {texto}
-                </span>
-              ) : null;
-            })()}
-            {ratingPromedio && (
-              <span className="inline-flex items-center gap-1 font-semibold">
-                {"\u2B50"} {ratingPromedio}
-                <span className="text-muted-foreground font-normal">
-                  ({resenas.length})
-                </span>
-              </span>
-            )}
-            <FavoritoButton negocioId={n.id} variant="pill" />
+          {/* Fila de 3 stats */}
+          <div className="mt-4 grid grid-cols-3 divide-x divide-border rounded-2xl bg-secondary/40 py-3">
+            <div className="text-center px-2">
+              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Calificación</p>
+              <p className="text-lg font-extrabold mt-0.5">{ratingPromedio ? `★ ${ratingPromedio}` : "—"}</p>
+            </div>
+            <div className="text-center px-2">
+              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Reseñas</p>
+              <p className="text-lg font-extrabold mt-0.5">{resenas.length}</p>
+            </div>
+            <div className="text-center px-2">
+              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Estado</p>
+              <p className={`text-lg font-extrabold mt-0.5 ${tieneHorariosEstructurados ? (abierto ? "text-emerald-600" : "text-rose-600") : ""}`}>
+                {tieneHorariosEstructurados ? (abierto ? "Abierto" : "Cerrado") : (n.disponibilidad ? "Consultar" : "—")}
+              </p>
+            </div>
           </div>
+
+          {/* Chips extra */}
+          {(() => {
+            const ref = n.actualizado_en ?? n.creado_en;
+            const dias = Math.floor((Date.now() - new Date(ref).getTime()) / 86_400_000);
+            const fresco = dias <= 0 ? "Actualizado hoy" : dias === 1 ? "Actualizado ayer" : dias <= 60 ? `Hace ${dias} días` : null;
+            if (!n.a_domicilio && !fresco) return null;
+            return (
+              <div className="mt-3 flex flex-wrap justify-center gap-2 text-xs">
+                {n.a_domicilio && (
+                  <span className="bg-[#3D5A45]/10 text-[#3D5A45] px-2.5 py-1 rounded-full font-semibold">🛵 A domicilio</span>
+                )}
+                {fresco && (
+                  <span className="bg-[#2B6E80]/8 text-[#2B6E80] px-2.5 py-1 rounded-full font-medium">↻ {fresco}</span>
+                )}
+              </div>
+            );
+          })()}
         </div>
       </section>
 
