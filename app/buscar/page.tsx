@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { diaHoySantiago, horaAhoraSantiago, badgeAbierto, dentroDeRango } from "@/lib/horarios";
 import AnimatedCard from "@/components/AnimatedCard";
+import CercaDeMi from "@/components/CercaDeMi";
 
 const WA_SUGERIR = "56984272557";
 function waLinkSugerir(termino: string) {
@@ -29,6 +30,8 @@ type NegocioRow = {
   direccion: string | null;
   a_domicilio: boolean;
   foto_portada: string | null;
+  lat: number | null;
+  lng: number | null;
   categorias: { id: number; nombre: string; slug: string; emoji: string } | null;
 };
 
@@ -77,7 +80,7 @@ export default async function BuscarPage({
   let query = supabase
     .from("negocios")
     .select(
-      "id, nombre, slug, descripcion, tipo, plan, verificado, telefono, whatsapp, direccion, a_domicilio, foto_portada, categorias:categoria_id(id, nombre, slug, emoji)",
+      "id, nombre, slug, descripcion, tipo, plan, verificado, telefono, whatsapp, direccion, a_domicilio, foto_portada, lat, lng, categorias:categoria_id(id, nombre, slug, emoji)",
     )
     .eq("activo", true);
 
@@ -226,7 +229,8 @@ export default async function BuscarPage({
           </form>
         </div>
 
-        <div className="px-4 pb-3 flex gap-2 overflow-x-auto no-scrollbar">
+        <div className="px-4 pb-3 flex items-start gap-2 overflow-x-auto no-scrollbar">
+          <CercaDeMi contenedorId="resultados-buscar" />
           <FilterPill href={urlWith({ abierto: abierto ? null : "1" })} active={abierto}>
             Abierto ahora
           </FilterPill>
@@ -362,14 +366,19 @@ export default async function BuscarPage({
             )}
           </div>
         ) : (
-          <div className="px-4 grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div id="resultados-buscar" className="px-4 grid grid-cols-2 lg:grid-cols-4 gap-3">
             {itemsOrdenados.map((n, i) => {
               const rData = ratingsMap.get(n.id);
               const rating = rData && rData.count > 0
                 ? { avg: rData.sum / rData.count, count: rData.count }
                 : null;
               return (
-                <AnimatedCard key={n.id} index={i}>
+                <AnimatedCard
+                  key={n.id}
+                  index={i}
+                  data-lat={n.lat ?? undefined}
+                  data-lng={n.lng ?? undefined}
+                >
                   <NegocioCard n={n} isOpen={resultOpenIds.includes(n.id)} rating={rating} />
                 </AnimatedCard>
               );
@@ -487,6 +496,8 @@ function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; r
           <span className="text-[10px] font-semibold text-muted-foreground">{n.categorias.emoji} {n.categorias.nombre}</span>
         )}
         <p className="font-bold text-[13px] text-[#1A1410] leading-tight line-clamp-1 mt-0.5">{n.nombre}</p>
+        {/* Distancia: la rellena CercaDeMi en el navegador */}
+        <span data-distancia className="hidden text-[10px] font-bold text-[#2B6E80] mt-0.5" />
         {n.descripcion && (
           <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5 leading-snug">{n.descripcion}</p>
         )}

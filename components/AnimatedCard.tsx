@@ -5,13 +5,17 @@ export default function AnimatedCard({
   children,
   index,
   className,
+  ...rest
 }: {
   children: React.ReactNode;
   index: number;
   className?: string;
+  // Permite pasar atributos data-* (ej: data-lat / data-lng para "Cerca de mí")
+  [key: `data-${string}`]: string | number | undefined;
 }) {
   return (
     <motion.div
+      {...rest}
       className={className}
       initial={{ opacity: 0, y: 28, scale: 0.86 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
