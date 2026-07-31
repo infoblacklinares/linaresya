@@ -96,7 +96,7 @@ export default async function CategoriaPage({
   const itemListData = itemListJsonLd(items.map(n => ({ nombre: n.nombre, slug: n.slug })), cat.slug);
 
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-6xl bg-[#F9F8F6]">
+    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-full lg:px-8 xl:px-14 bg-[#F9F8F6]">
       <JsonLd id="ld-breadcrumb" data={breadcrumbData} />
       <JsonLd id="ld-itemlist" data={itemListData} />
 

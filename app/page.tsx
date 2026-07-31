@@ -403,7 +403,7 @@ export default async function Home() {
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} verificados={verificadosCount ?? 0} />
 
       {/* Contenido centrado */}
-      <div className="mx-auto w-full max-w-2xl lg:max-w-6xl">
+      <div className="mx-auto w-full max-w-2xl lg:max-w-full lg:px-4 xl:px-10">
 
       {/* Historias premium — estilo Instagram */}
       <StoriesBar historias={historias} />

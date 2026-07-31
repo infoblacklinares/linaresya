@@ -191,7 +191,7 @@ export default async function BuscarPage({
     Boolean(q) || Boolean(categoriaSlug) || Boolean(tipo) || premium || verificado || abierto || domicilio;
 
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-6xl">
+    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-full lg:px-8 xl:px-14">
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-border">
         <div className="px-4 pt-4 pb-3 flex items-center gap-3">
           <Link

@@ -63,7 +63,7 @@ export default async function OfertasPage() {
   });
 
   return (
-    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-6xl bg-[#F9F8F6] px-4 py-8 pb-24">
+    <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-full lg:px-8 xl:px-14 bg-[#F9F8F6] px-4 py-8 pb-24">
       <Link href="/" className="text-xs font-semibold text-[#8E8279] hover:text-[#1A1410]">
         ← Volver al inicio
       </Link>
