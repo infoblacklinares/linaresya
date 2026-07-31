@@ -40,6 +40,16 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
           </div>
         </div>
 
+        {/* Marca */}
+        <div className="mb-2 flex items-center gap-2 lg:justify-center">
+          <span className="flex h-9 w-9 lg:h-11 lg:w-11 items-center justify-center rounded-2xl bg-white text-lg lg:text-xl shadow-lg">
+            📍
+          </span>
+          <span className="text-2xl lg:text-4xl font-black tracking-tight text-white">
+            Linares<span className="text-[#F4B860]">Ya</span>
+          </span>
+        </div>
+
         {/* Titular con autoridad */}
         <h1 className="mb-1 text-[1.9rem] lg:text-5xl font-black leading-[1.1] tracking-tight text-white lg:text-center">
           La guía digital<br className="lg:hidden" /> de Linares
