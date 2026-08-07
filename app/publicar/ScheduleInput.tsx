@@ -174,7 +174,6 @@ export default function ScheduleInput({
                       actualizar(key, { abre: e.target.value })
                     }
                     className="bg-white rounded-lg px-2 py-1 border border-border outline-none focus:border-foreground"
-                    required={!d.cerrado}
                   />
                   <span className="text-muted-foreground">-</span>
                   <input
@@ -185,7 +184,6 @@ export default function ScheduleInput({
                       actualizar(key, { cierra: e.target.value })
                     }
                     className="bg-white rounded-lg px-2 py-1 border border-border outline-none focus:border-foreground"
-                    required={!d.cerrado}
                   />
                 </div>
               )}
