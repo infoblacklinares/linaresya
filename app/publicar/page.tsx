@@ -69,18 +69,23 @@ export default async function PublicarPage() {
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl">
       {/* ── Sticky header ──────────────────────────────────────────── */}
-      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-border">
+      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-[#E8E4DE]">
         <div className="px-4 py-3 flex items-center gap-3">
+          {/* Volver: icono + texto, para que se vea claramente que hay salida */}
           <Link
             href="/"
-            aria-label="Volver"
-            className="h-9 w-9 rounded-full bg-secondary flex items-center justify-center shrink-0"
+            className="flex items-center gap-1.5 rounded-full bg-[#F9F8F6] border border-[#E8E4DE] pl-2 pr-3 py-1.5 text-xs font-bold text-[#1A1410] hover:border-[#2B6E80]/40 transition shrink-0"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <path d="m15 18-6-6 6-6" />
             </svg>
+            Volver
           </Link>
-          <h1 className="text-base font-bold tracking-tight">Publicar mi negocio</h1>
+          <h1 className="text-base font-bold tracking-tight text-[#1A1410] truncate">Publicar mi negocio</h1>
+          {/* Marca clicable a la derecha: otra salida evidente al inicio */}
+          <Link href="/" className="ml-auto shrink-0 text-sm font-black tracking-tight text-[#1A1410]">
+            Linares<span className="text-[#F4B860]">Ya</span>
+          </Link>
         </div>
       </header>
 
@@ -171,6 +176,16 @@ export default async function PublicarPage() {
       )}
 
       <PublishForm categorias={categorias} />
+
+      {/* Salida al final: para quien llega abajo y decide no publicar ahora */}
+      <div className="px-4 pb-10 -mt-4 text-center">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2B6E80] hover:underline"
+        >
+          ← Volver al inicio de LinaresYa
+        </Link>
+      </div>
     </main>
   );
 }

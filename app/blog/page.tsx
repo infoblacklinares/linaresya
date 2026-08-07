@@ -37,6 +37,12 @@ export default function BlogPage() {
     <main className="mx-auto w-full max-w-2xl flex-1 bg-[#F9F8F6] pb-24">
       {/* Header */}
       <div className="bg-gradient-to-br from-[#2B6E80] to-[#1f5268] px-4 py-10">
+        <Link
+          href="/"
+          className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-sm hover:bg-white/25 transition"
+        >
+          ← Volver al inicio
+        </Link>
         <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/90">
           📝 Blog
         </div>
