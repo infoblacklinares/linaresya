@@ -193,7 +193,27 @@ const LUGARES: Lugar[] = [
   },
 ];
 
+/** Baraja una copia del arreglo (Fisher-Yates). */
+function barajar<T>(arr: T[]): T[] {
+  const copia = [...arr];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia;
+}
+
+// Urgencias: van siempre primero y en orden fijo. Si alguien entra apurado
+// buscando Bomberos o el Hospital, no puede depender del azar.
+const TIPOS_URGENCIA = new Set(["Emergencia", "Salud", "Seguridad"]);
+
 export default function LinaresEsencial() {
+  // El resto rota en cada carga para que la sección se sienta viva.
+  // La portada es dinámica (revalidate = 0), así que esto cambia por visita.
+  const urgencias = LUGARES.filter((l) => TIPOS_URGENCIA.has(l.tipo));
+  const resto = barajar(LUGARES.filter((l) => !TIPOS_URGENCIA.has(l.tipo)));
+  const lugares = [...urgencias, ...resto];
+
   return (
     <section className="pt-6">
       {/* Header */}
@@ -206,7 +226,7 @@ export default function LinaresEsencial() {
 
       {/* Cards scroll horizontal */}
       <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
-        {LUGARES.map((lugar) => (
+        {lugares.map((lugar) => (
           <div
             key={lugar.nombre}
             className="group relative shrink-0 w-48 aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_2px_14px_rgba(0,0,0,0.10)] border border-[#F0EDE8]"

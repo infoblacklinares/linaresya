@@ -486,13 +486,28 @@ export default async function Home() {
             {negociosAbiertos.map(n => {
               const url = n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#";
               return (
-                <div key={n.id} className="shrink-0 w-44 overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8]">
-                  <Link href={url} className="block p-3 pb-2">
-                    <div className="mb-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-100 px-2 py-0.5">
+                <div key={n.id} className="group shrink-0 w-44 overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_10px_26px_rgba(0,0,0,0.14)] hover:-translate-y-1">
+                  {/* Banda de foto baja: impacto visual sin agrandar la card */}
+                  <Link href={url} className="relative block h-20 w-full overflow-hidden bg-[#F0EDE8]">
+                    {n.foto_portada ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={n.foto_portada}
+                        alt={n.nombre}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                    ) : (
+                      <span className="absolute inset-0 flex items-center justify-center text-3xl">
+                        {n.categorias?.emoji ?? "🏪"}
+                      </span>
+                    )}
+                    <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-white/90 backdrop-blur-sm px-2 py-0.5 shadow-sm">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                       <span className="text-[10px] font-bold text-emerald-700">Abierto</span>
-                    </div>
-                    <p className="text-sm font-bold text-[#1A1410] truncate leading-tight">{n.nombre}</p>
+                    </span>
+                  </Link>
+                  <Link href={url} className="block p-3 pt-2 pb-2">
+                    <p className="text-sm font-bold text-[#1A1410] truncate leading-tight group-hover:text-[#2B6E80] transition-colors">{n.nombre}</p>
                     <p className="text-[10px] text-[#8E8279] mt-0.5 truncate">
                       {n.categorias?.emoji} {n.categorias?.nombre}
                     </p>
