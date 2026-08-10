@@ -30,27 +30,32 @@ const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
 export default function SplashAnimado({
   onFin,
   bg = "#eae9e4",
+  velocidad = 1,
 }: {
   onFin?: () => void;
   bg?: string;
+  /** Multiplicador de tiempo. 1 = escena completa (3s). 1.9 ≈ 1.6s. */
+  velocidad?: number;
 }) {
-  const [t, setT] = useState(0);
+  const [tReal, setTReal] = useState(0);
+  const t = tReal * velocidad;
   const rafRef = useRef(0);
   const finRef = useRef(false);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
-      setT(DURACION_ESCENA);
+      setTReal(DURACION_ESCENA / velocidad);
       onFin?.();
       return;
     }
 
+    const finalReal = DURACION_ESCENA / velocidad;
     const inicio = performance.now();
     const tick = (ahora: number) => {
       const seg = (ahora - inicio) / 1000;
-      setT(seg);
-      if (seg < DURACION_ESCENA) {
+      setTReal(seg);
+      if (seg < finalReal) {
         rafRef.current = requestAnimationFrame(tick);
       } else if (!finRef.current) {
         finRef.current = true;
@@ -59,7 +64,7 @@ export default function SplashAnimado({
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [onFin]);
+  }, [onFin, velocidad]);
 
   // ── Pin: caída con rebote ───────────────────────────────────────────
   const dropDur = 1.1;

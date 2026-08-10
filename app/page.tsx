@@ -11,6 +11,7 @@ import FadeInSection from "@/components/FadeInSection";
 import AnimatedCard from "@/components/AnimatedCard";
 import NudgeArrow from "@/components/NudgeArrow";
 import StoriesBar, { type Historia } from "@/components/StoriesBar";
+import SplashHome from "@/components/SplashHome";
 import MarqueeRow from "@/components/MarqueeRow";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
@@ -398,6 +399,9 @@ export default async function Home() {
     <main className="flex-1 w-full bg-[#F9F8F6]">
       <JsonLd id="ld-organization" data={organizationJsonLd()} />
       <JsonLd id="ld-website"      data={websiteJsonLd()} />
+
+      {/* Splash de bienvenida: una vez por sesión, encima del contenido */}
+      <SplashHome />
 
       {/* Hero — full-bleed en desktop, contenido centrado adentro */}
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} verificados={verificadosCount ?? 0} />
