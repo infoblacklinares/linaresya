@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Footer from "@/components/Footer";
 import PwaInit from "@/components/PwaInit";
+import CookieConsent from "@/components/CookieConsent";
 import "./globals.css";
 
 const inter = Inter({
@@ -97,6 +98,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground pb-20 font-sans">
         {children}
         <Footer />
+        <CookieConsent />
         <PwaInit />
       </body>
     </html>
