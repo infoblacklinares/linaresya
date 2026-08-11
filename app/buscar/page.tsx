@@ -38,13 +38,25 @@ type NegocioRow = {
 type Categoria = { id: number; nombre: string; slug: string; emoji: string };
 
 
+// Sanitizar entrada: Remover caracteres peligrosos
+function sanitizeSearch(input: string): string {
+  if (!input) return "";
+  // Remover caracteres que podrían usarse en XSS
+  let sanitized = input.replace(/[<>"'`]/g, "");
+  // Validar: Solo letras (incl. acentos), números, espacios, guiones
+  if (!/^[a-záéíóúñ0-9\s\-()&|"']*$/i.test(sanitized)) {
+    return "";
+  }
+  return sanitized.trim().slice(0, 80);
+}
+
 export default async function BuscarPage({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const sp = await searchParams;
-  const q = typeof sp.q === "string" ? sp.q.trim() : "";
+  const q = sanitizeSearch(typeof sp.q === "string" ? sp.q : "");
   const categoriaSlug = typeof sp.categoria === "string" ? sp.categoria : "";
   const tipo = sp.tipo === "independiente" || sp.tipo === "negocio" ? sp.tipo : "";
   const premium = sp.premium === "1";
@@ -91,9 +103,7 @@ export default async function BuscarPage({
     //   '"pizza napolitana"'  -> frase exacta
     //   'comida OR almacen'   -> OR explicito
     //   'pizza -pollo'        -> excluir "pollo"
-    // Cortamos a 80 chars por las dudas (evitar abuso).
-    const term = q.slice(0, 80);
-    query = query.textSearch("busqueda", term, {
+    query = query.textSearch("busqueda", q, {
       type: "websearch",
       config: "spanish_unaccent",
     });
