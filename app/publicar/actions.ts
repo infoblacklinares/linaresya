@@ -236,7 +236,18 @@ export async function publicarNegocio(
     cerrado: boolean;
   }> = [];
 
-  for (const dia of DIAS) {
+  // Si el form no mando ningun campo de horario (por ejemplo un formulario
+  // que no monta el bloque de horarios), no inventamos filas: el bucle de
+  // abajo marcaria los 7 dias como cerrados y la ficha diria que el negocio
+  // no atiende nunca. Sin filas, la ficha muestra "Consultar horario".
+  const hayHorarios = DIAS.some(
+    (dia) =>
+      formData.has(`horario_${dia}_cerrado`) ||
+      formData.has(`horario_${dia}_abre`) ||
+      formData.has(`horario_${dia}_cierra`),
+  );
+
+  for (const dia of hayHorarios ? DIAS : []) {
     const cerrado = formData.get(`horario_${dia}_cerrado`) === "on";
     const abreRaw = String(formData.get(`horario_${dia}_abre`) ?? "").trim();
     const cierraRaw = String(formData.get(`horario_${dia}_cierra`) ?? "").trim();
