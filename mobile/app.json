@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "LinaresYa",
+    "slug": "linaresya-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#f2f2f3"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTabletMode": true,
+      "bundleIdentifier": "cl.linaresya.mobile"
+    },
+    "android": {
+      "package": "cl.linaresya.mobile",
+      "versionCode": 1
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "origin": false,
+          "asyncRoutes": true
+        }
+      ]
+    ],
+    "scheme": "linaresya"
+  }
+}
