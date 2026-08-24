@@ -4,11 +4,18 @@ import { headers } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendAdminPublicacionNotification } from "@/lib/email";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { generarTokenDueno, HORAS_ALTA } from "@/lib/dueno-token";
 
 export type PublicarState = {
   ok: boolean;
   error?: string;
   fieldErrors?: Record<string, string>;
+  /**
+   * Link para que el dueño complete fotos y horarios el mismo. Se muestra en
+   * la pantalla de exito: sin esto, completar la ficha depende de que el admin
+   * genere y mande el link a mano, negocio por negocio.
+   */
+  editarUrl?: string;
 };
 
 // Verifica el token de Cloudflare Turnstile. Si no hay TURNSTILE_SECRET_KEY
@@ -384,5 +391,15 @@ export async function publicarNegocio(
     // Ignorado a proposito: el email nunca debe romper el flujo.
   }
 
-  return { ok: true };
+  // Link de edicion para el dueño, en la misma pantalla de exito. El editor
+  // por token no exige que el negocio este activo, asi que puede cargar fotos
+  // y horarios mientras la ficha espera revision: el admin aprueba una sola
+  // vez, ya completa.
+  const links = await generarTokenDueno(insertado.id as string, {
+    email,
+    ip: "alta-web",
+    horas: HORAS_ALTA,
+  });
+
+  return { ok: true, editarUrl: links?.editarUrl };
 }

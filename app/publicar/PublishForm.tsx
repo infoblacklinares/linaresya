@@ -2,6 +2,7 @@
 
 import Script from "next/script";
 import Link from "next/link";
+import LinkDueno from "@/components/LinkDueno";
 import { useActionState, useCallback, useState } from "react";
 import { publicarNegocio, type PublicarState } from "./actions";
 import ScheduleFields from "./ScheduleFields";
@@ -128,8 +129,10 @@ export default function PublishForm({
         <p className="mt-2 text-sm text-[#6B5E57]">
           {esAdmin
             ? "El negocio quedó activo y ya aparece en el sitio."
-            : "Revisamos tu negocio y lo activamos en las próximas horas. Después te mandamos un link para que completes fotos y horarios cuando quieras."}
+            : "Revisamos tu negocio y lo activamos en las próximas horas. Mientras tanto, ya podés completar fotos y horarios vos mismo."}
         </p>
+
+        {state.editarUrl && <LinkDueno url={state.editarUrl} />}
         <a
           href={esAdmin ? "/admin" : "/"}
           className="mt-5 inline-flex items-center justify-center rounded-full bg-[#1A1410] text-white text-sm font-bold px-6 py-3"

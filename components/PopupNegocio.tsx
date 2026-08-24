@@ -2,6 +2,7 @@
 
 import Script from "next/script";
 import Link from "next/link";
+import LinkDueno from "@/components/LinkDueno";
 import { usePathname } from "next/navigation";
 import { useActionState, useCallback, useEffect, useRef, useState } from "react";
 import { publicarNegocio, type PublicarState } from "@/app/publicar/actions";
@@ -286,9 +287,11 @@ export default function PopupNegocio() {
               ¡Listo! Solicitud enviada
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-[#6B5E57]">
-              Revisamos tu negocio y lo activamos en las próximas horas. Después
-              te mandamos un link para completar fotos y horarios cuando quieras.
+              Revisamos tu negocio y lo activamos en las próximas horas. Mientras
+              tanto, ya podés completar fotos y horarios vos mismo.
             </p>
+
+            {state.editarUrl && <LinkDueno url={state.editarUrl} />}
             <button
               type="button"
               onClick={cerrar}
