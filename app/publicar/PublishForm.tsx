@@ -192,6 +192,8 @@ export default function PublishForm({
 
   return (
     <form action={formAction} className="px-4 pb-10 pt-2">
+      {/* De donde vino el alta, para distinguirla de la del popup */}
+      <input type="hidden" name="origen" value="formulario" />
       {state.error && (
         <div className="mb-4 rounded-2xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800">
           {state.error}

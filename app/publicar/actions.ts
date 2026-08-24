@@ -107,6 +107,16 @@ export async function publicarNegocio(
   const zonaCobertura = String(formData.get("zona_cobertura") ?? "").trim();
   const disponibilidad = String(formData.get("disponibilidad") ?? "").trim();
 
+  // De donde viene el alta. El popup de la portada y /publicar usan este mismo
+  // action, asi que sin esto las dos quedan identicas en la tabla y no hay
+  // forma de saber cuanto aporta el popup.
+  const origenRaw = String(formData.get("origen") ?? "").trim();
+  const origen: "popup" | "formulario" | "admin" = esAdmin
+    ? "admin"
+    : origenRaw === "popup"
+      ? "popup"
+      : "formulario";
+
   // Validacion
   const fieldErrors: Record<string, string> = {};
   if (nombre.length < 3) fieldErrors.nombre = "Minimo 3 caracteres";
@@ -179,9 +189,7 @@ export async function publicarNegocio(
     }
   }
 
-  const { data: insertado, error } = await supabaseAdmin
-    .from("negocios")
-    .insert({
+  const fila = {
       nombre,
       slug,
       descripcion: descripcion || null,
@@ -201,9 +209,28 @@ export async function publicarNegocio(
       a_domicilio: aDomicilio,
       zona_cobertura: zonaCobertura || null,
       disponibilidad: disponibilidad || null,
-    })
+  };
+
+  // La columna `origen` se agrega con supabase/origen_negocios.sql, que se
+  // corre a mano. Si el SQL todavia no se ejecuto, Supabase rechaza la fila
+  // entera por columna desconocida: en ese caso reintentamos sin ella, porque
+  // publicar un negocio nunca puede quedar bloqueado por una metrica.
+  let { data: insertado, error } = await supabaseAdmin
+    .from("negocios")
+    .insert({ ...fila, origen })
     .select("id")
     .single();
+
+  if (error && /origen/i.test(error.message)) {
+    console.warn(
+      "[publicar] Falta la columna `origen`: corre supabase/origen_negocios.sql. El negocio se guarda sin ella.",
+    );
+    ({ data: insertado, error } = await supabaseAdmin
+      .from("negocios")
+      .insert(fila)
+      .select("id")
+      .single());
+  }
 
   if (error || !insertado) {
     return {

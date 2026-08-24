@@ -316,6 +316,8 @@ export default function PopupNegocio() {
             </div>
 
             <form action={formAction} className="px-6 pb-6 pt-5">
+              {/* De donde vino el alta, para poder medir si el popup sirve */}
+              <input type="hidden" name="origen" value="popup" />
               {state.error && (
                 <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
                   {state.error}
