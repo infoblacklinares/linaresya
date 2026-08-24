@@ -44,6 +44,7 @@ export default async function AdminPage() {
   }
 
   // Fecha hace 7 dias en formato YYYY-MM-DD para queries de "ultima semana"
+  // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
   const haceSieteDias = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
     .toISOString()
     .slice(0, 10);

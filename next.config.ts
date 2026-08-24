@@ -26,13 +26,22 @@ const nextConfig: NextConfig = {
     // inline de Next.js y el runtime de desarrollo. El valor real de la
     // política está en restringir los ORÍGENES: solo self, Supabase y
     // Cloudflare Turnstile pueden cargar scripts/conexiones.
+    // Google Analytics solo entra al CSP si hay medicion configurada
+    // (NEXT_PUBLIC_GA_ID). Sin eso, el banner de cookies no inyecta nada.
+    const gaScript = process.env.NEXT_PUBLIC_GA_ID
+      ? " https://www.googletagmanager.com"
+      : "";
+    const gaConnect = process.env.NEXT_PUBLIC_GA_ID
+      ? " https://www.google-analytics.com https://*.google-analytics.com"
+      : "";
+
     const csp = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+      `script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com${gaScript}`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https://*.supabase.co https://tile.openstreetmap.org https://*.tile.openstreetmap.org",
       "font-src 'self' data:",
-      "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com",
+      `connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com${gaConnect}`,
       "frame-src https://challenges.cloudflare.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",

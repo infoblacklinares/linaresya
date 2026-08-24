@@ -67,6 +67,7 @@ export default async function DuenoEditarPage({
   }
 
   const expira = new Date((tokenRow as { expira_en: string }).expira_en);
+  // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
   if (Date.now() > expira.getTime()) {
     return <TokenInvalidoView reason="El link ya expiró. Solicita uno nuevo." />;
   }

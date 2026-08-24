@@ -53,7 +53,10 @@ export default function PwaInit() {
     };
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Mostrar el banner inmediatamente (sin esperar evento del navegador)
+    // Mostrar el banner inmediatamente (sin esperar evento del navegador).
+    // Solo se puede decidir en el navegador: depende de standalone y storage,
+    // que no existen en el render del servidor.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- ver nota
     setVisible(true);
 
     return () => window.removeEventListener("beforeinstallprompt", handler);

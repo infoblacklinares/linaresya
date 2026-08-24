@@ -3,42 +3,61 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+// GA4: se carga solo si hay medicion configurada. Sin
+// NEXT_PUBLIC_GA_ID no inyectamos nada (antes se inyectaba el id de ejemplo
+// "G-XXXXXXXXXX", que ademas el CSP bloquea).
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
+declare global {
+  interface Window {
+    dataLayer: unknown[];
+  }
+}
+
+let gaCargado = false;
+
+function cargarGoogleAnalytics() {
+  if (!GA_ID || gaCargado) return;
+  gaCargado = true;
+
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+  document.head.appendChild(script);
+
+  window.dataLayer = window.dataLayer || [];
+  const gtag = (...args: unknown[]) => {
+    window.dataLayer.push(args);
+  };
+  gtag('js', new Date());
+  gtag('config', GA_ID);
+}
+
 export default function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // localStorage solo existe en el navegador: por eso se lee al montar y
+    // no en el render inicial, que tambien corre en el servidor. El render
+    // extra es intencional: asi el banner nunca sale en el HTML estatico.
     const consent = localStorage.getItem('cookie-consent');
     if (!consent) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- ver nota de arriba
       setIsVisible(true);
     } else if (consent === 'accepted') {
-      loadGoogleAnalytics();
+      cargarGoogleAnalytics();
     }
   }, []);
 
   const handleAccept = () => {
     localStorage.setItem('cookie-consent', 'accepted');
     setIsVisible(false);
-    loadGoogleAnalytics();
+    cargarGoogleAnalytics();
   };
 
   const handleReject = () => {
     localStorage.setItem('cookie-consent', 'rejected');
     setIsVisible(false);
-  };
-
-  const loadGoogleAnalytics = () => {
-    // GA4 script injection
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX';
-    document.head.appendChild(script);
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag(...args: any[]) {
-      window.dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
   };
 
   if (!isVisible) return null;

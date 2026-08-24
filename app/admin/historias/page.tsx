@@ -63,6 +63,7 @@ export default async function AdminHistoriasPage() {
         <div className="space-y-2">
           {rows.map(h => {
             const neg = Array.isArray(h.negocios) ? h.negocios[0] : h.negocios;
+            // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
             const horasRestantes = Math.max(0, Math.round((new Date(h.expira_en).getTime() - Date.now()) / 3_600_000));
             return (
               <div key={h.id} className="flex items-center gap-3 rounded-2xl bg-white border border-border p-3">

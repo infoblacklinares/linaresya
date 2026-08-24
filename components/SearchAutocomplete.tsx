@@ -59,6 +59,9 @@ export default function SearchAutocomplete() {
   // Fetch con debounce
   useEffect(() => {
     if (q.trim().length < 2) {
+      // Limpieza sincrónica a propósito: si esperamos al fetch siguiente,
+      // quedan visibles las sugerencias de la búsqueda anterior.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- ver nota
       setNegocios([]);
       setCategorias([]);
       setFallback([]);

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import type { Metadata } from "next";
 import QRCode from "qrcode";
@@ -9,7 +10,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 type Props = { params: Promise<{ categoria: string; negocio: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { categoria, negocio: negocioSlug } = await params;
+  const { negocio: negocioSlug } = await params;
   const { data } = await supabase
     .from("negocios")
     .select("nombre, categorias:categoria_id(slug)")
@@ -116,7 +117,7 @@ export default async function QRPage({ params }: Props) {
       <div className="mt-6 rounded-2xl bg-secondary/50 p-4 space-y-2 text-[13px]">
         <p className="font-semibold">¿Cómo usar este QR?</p>
         <ol className="list-decimal list-inside space-y-1 text-foreground/70">
-          <li>Haz clic en "Imprimir" o guarda la imagen</li>
+          <li>Haz clic en &ldquo;Imprimir&rdquo; o guarda la imagen</li>
           <li>Pegalo en tu mostrador, ventana o menú</li>
           <li>Tus clientes lo escanean y llegan directo a tu ficha</li>
           <li>Pueden ver horarios, llamarte y dejar una reseña</li>
@@ -139,12 +140,12 @@ export default async function QRPage({ params }: Props) {
         <p className="text-sm font-semibold text-[#2B6E80]">
           ¿Quieres que tus clientes te contacten por WhatsApp directo?
         </p>
-        <a
+        <Link
           href="/premium"
           className="mt-2 inline-block text-xs font-bold text-[#2B6E80] underline"
         >
           Ver Plan Premium →
-        </a>
+        </Link>
       </div>
 
       {/* Print styles */}

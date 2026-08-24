@@ -3,6 +3,7 @@ import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Footer from "@/components/Footer";
 import PwaInit from "@/components/PwaInit";
 import CookieConsent from "@/components/CookieConsent";
+import PopupNegocio from "@/components/PopupNegocio";
 import "./globals.css";
 
 const inter = Inter({
@@ -99,6 +100,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <CookieConsent />
+        <PopupNegocio />
         <PwaInit />
       </body>
     </html>

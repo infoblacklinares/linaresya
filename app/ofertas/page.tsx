@@ -84,6 +84,7 @@ export default async function OfertasPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {ofertas.map(o => {
             const url = o.negocio?.categoria_slug && o.negocio?.slug ? `/${o.negocio.categoria_slug}/${o.negocio.slug}` : "#";
+            // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
             const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);
             return (
               <Link key={o.id} href={url} className="relative overflow-hidden rounded-2xl border border-[#E8E4DE] bg-white shadow-linares-sm hover:shadow-linares transition active:scale-[0.98]">

@@ -1,6 +1,7 @@
 "use client";
 
 import Script from "next/script";
+import Link from "next/link";
 import { useActionState, useCallback, useState } from "react";
 import { publicarNegocio, type PublicarState } from "./actions";
 import ScheduleFields from "./ScheduleFields";
@@ -136,12 +137,12 @@ export default function PublishForm({
           {esAdmin ? "Volver al admin" : "Volver al inicio"}
         </a>
         {esAdmin && (
-          <a
+          <Link
             href="/admin/negocio/nuevo"
             className="mt-3 block text-sm font-semibold text-[#2B6E80]"
           >
             + Agregar otro negocio
-          </a>
+          </Link>
         )}
       </div>
     );
@@ -533,32 +534,6 @@ export default function PublishForm({
         </div>
       )}
 
-      <style>{`
-        .input-ue {
-          width: 100%;
-          background: #F9F8F6;
-          color: #1A1410;
-          border-radius: 1rem;
-          padding: 0.875rem 1rem;
-          font-size: 0.9375rem;
-          outline: none;
-          border: 1px solid #E8E4DE;
-          transition: border-color 0.15s, background 0.15s;
-        }
-        .input-ue:focus {
-          border-color: #2B6E80;
-          background: #fff;
-        }
-        .input-ue::placeholder { color: #A39A93; }
-        .paso-ue { animation: pasoIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes pasoIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: none; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .paso-ue { animation: none; }
-        }
-      `}</style>
     </form>
   );
 }

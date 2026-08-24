@@ -1,5 +1,6 @@
 "use client";
 
+import type * as Leaflet from "leaflet";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import { distanciaKm, formatoDistancia } from "@/lib/distancia";
@@ -28,10 +29,11 @@ type Cat = { slug: string; nombre: string; emoji: string; total: number };
  */
 export default function MapaExplorar({ negocios }: { negocios: NegocioMapa[] }) {
   const contenedor = useRef<HTMLDivElement>(null);
-  // Tipos laxos: Leaflet se carga en runtime, no en el bundle del servidor.
-  const mapaRef = useRef<any>(null);
-  const capaRef = useRef<any>(null);
-  const LRef = useRef<any>(null);
+  // Leaflet toca `window`, asi que se carga en runtime con import dinamico:
+  // los tipos vienen de @types/leaflet sin arrastrar la libreria al server.
+  const mapaRef = useRef<Leaflet.Map | null>(null);
+  const capaRef = useRef<Leaflet.LayerGroup | null>(null);
+  const LRef = useRef<typeof Leaflet | null>(null);
   const [listo, setListo] = useState(false);
   const [filtro, setFiltro] = useState<string>("");
   const [ubicando, setUbicando] = useState(false);

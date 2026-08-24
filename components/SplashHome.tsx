@@ -32,6 +32,9 @@ export default function SplashHome() {
       // sin sessionStorage (modo restringido): mejor no mostrarlo
       visto = true;
     }
+    // sessionStorage no existe en el servidor: por eso el splash se decide
+    // al montar y el primer render no pinta nada.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- ver nota
     setMostrar(!visto);
     if (!visto) {
       document.body.style.overflow = "hidden";

@@ -393,21 +393,6 @@ export default function EditForm({
         </button>
       </div>
 
-      <style>{`
-        .input-ue {
-          width: 100%;
-          border: 1px solid var(--color-border, #e5e5e5);
-          border-radius: 0.75rem;
-          padding: 0.625rem 0.875rem;
-          font-size: 0.9rem;
-          background: #fff;
-          outline: none;
-          transition: border-color 0.15s;
-        }
-        .input-ue:focus {
-          border-color: var(--color-foreground, #000);
-        }
-      `}</style>
     </form>
   );
 }

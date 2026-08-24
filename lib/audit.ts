@@ -6,8 +6,8 @@ interface AuditLogInput {
   entityId: string;
   userId?: string;
   userIp?: string;
-  before?: Record<string, any>;
-  after?: Record<string, any>;
+  before?: Record<string, unknown>;
+  after?: Record<string, unknown>;
   reason?: string;
 }
 

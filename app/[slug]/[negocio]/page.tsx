@@ -461,6 +461,7 @@ export default async function NegocioDetalle({
           {/* Chips extra */}
           {(() => {
             const ref = n.actualizado_en ?? n.creado_en;
+            // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
             const dias = Math.floor((Date.now() - new Date(ref).getTime()) / 86_400_000);
             const fresco = dias <= 0 ? "Actualizado hoy" : dias === 1 ? "Actualizado ayer" : dias <= 60 ? `Hace ${dias} días` : null;
             if (!n.a_domicilio && !fresco) return null;
@@ -498,6 +499,7 @@ export default async function NegocioDetalle({
           <h2 className="text-base font-bold mb-2">🔥 Ofertas de {n.nombre}</h2>
           <div className="space-y-2">
             {ofertasNegocio.map(o => {
+              // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
               const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);
               return (
                 <div key={o.id} className="flex items-center gap-3 rounded-2xl bg-white border border-[#C05A46]/20 shadow-linares-sm p-3">
