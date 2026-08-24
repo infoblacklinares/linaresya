@@ -21,6 +21,7 @@ type Negocio = {
   descripcion: string | null;
   telefono: string | null;
   whatsapp: string | null;
+  email: string | null;
   direccion: string | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;
@@ -142,6 +143,21 @@ export default function DuenoEditForm({
             placeholder="9 1234 5678"
           />
         </Field>
+
+      <Field
+        label="Tu email"
+        hint="Con esto podés pedir un link nuevo solo, en /dueno/solicitar, si perdés este. Sin email dependés de que te lo generemos a mano."
+        error={fe.email}
+      >
+        <input
+          type="email"
+          name="email"
+          defaultValue={negocio.email ?? ""}
+          placeholder="tu@email.com"
+          maxLength={120}
+          className="input-ue"
+        />
+      </Field>
       </section>
 
       <section className="space-y-3">

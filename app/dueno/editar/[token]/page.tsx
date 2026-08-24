@@ -24,6 +24,7 @@ type Negocio = {
   descripcion: string | null;
   telefono: string | null;
   whatsapp: string | null;
+  email: string | null;
   direccion: string | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;
@@ -81,7 +82,7 @@ export default async function DuenoEditarPage({
       supabaseAdmin
         .from("negocios")
         .select(
-          "id, nombre, slug, descripcion, telefono, whatsapp, direccion, a_domicilio, zona_cobertura, disponibilidad, foto_portada, activo, categorias:categoria_id(slug)",
+          "id, nombre, slug, descripcion, telefono, whatsapp, email, direccion, a_domicilio, zona_cobertura, disponibilidad, foto_portada, activo, categorias:categoria_id(slug)",
         )
         .eq("id", negocioId)
         .single(),
