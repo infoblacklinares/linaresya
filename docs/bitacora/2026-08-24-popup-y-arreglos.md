@@ -212,11 +212,31 @@ Lo único que depende de tu Supabase de producción y quedó sin probar contra �
 
 ---
 
+## Medición del popup (paso 1, hecho después)
+
+El popup y `/publicar` usan el mismo server action, así que las altas quedaban
+idénticas y no había forma de saber cuántas trae el popup.
+
+- `supabase/origen_negocios.sql` agrega la columna `origen` a `negocios`
+  (`popup` | `formulario` | `admin`). **Hay que correrlo a mano en el editor de
+  Supabase**; se puede antes o después de desplegar.
+- Cada formulario manda su origen en un campo oculto; si publica el admin, el
+  action lo fuerza a `admin`.
+- `/admin` muestra "Desde el popup" en las cifras de la semana.
+- Si el SQL no se corrió, publicar sigue funcionando: el insert se reintenta sin
+  la columna y el panel esconde esa cifra en vez de romperse.
+
+Lo que **todavía** no se mide: cuántos ven el popup y cuántos lo cierran. Eso es
+el paso 2 (tabla de eventos del sitio), que no está hecho.
+
 ## Pendientes / decisiones tuyas
 
 1. Confirmar en `linaresya.cl/?popup=1` que el popup aparece y que el select de
    categorías se llena.
-2. Decidir si querés 404 real en fichas inexistentes, sabiendo el costo (sección
+2. Correr `supabase/origen_negocios.sql` en Supabase para que empiece a
+   registrarse el origen.
+3. Decidir si querés 404 real en fichas inexistentes, sabiendo el costo (sección
    7).
-3. Si querés analytics, definir `NEXT_PUBLIC_GA_ID`.
-4. Si el sitio crece, mover el rate limiting a Cloudflare.
+4. Si querés analytics, definir `NEXT_PUBLIC_GA_ID`. Ojo: GA no mide el popup
+   por sí solo, esos son eventos personalizados (paso 2).
+5. Si el sitio crece, mover el rate limiting a Cloudflare.
