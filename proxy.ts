@@ -15,6 +15,19 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Solo cuentan las busquedas de verdad. Antes tambien contaban:
+  //  - los prefetch de Next: el footer enlaza a /buscar en todas las
+  //    paginas, asi que navegar un rato agotaba la cuota y el usuario se
+  //    quedaba sin poder buscar durante un minuto;
+  //  - abrir /buscar sin consulta, que no busca nada.
+  const esPrefetch =
+    request.headers.get('next-router-prefetch') === '1' ||
+    request.headers.get('purpose') === 'prefetch';
+  const hayConsulta = (request.nextUrl.searchParams.get('q') ?? '').trim() !== '';
+  if (esPrefetch || !hayConsulta) {
+    return NextResponse.next();
+  }
+
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
   const now = Date.now();
   const key = `${ip}-search`;

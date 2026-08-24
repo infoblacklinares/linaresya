@@ -40,6 +40,8 @@ export type Negocio = {
   disponibilidad: string | null
   foto_portada: string | null
   creado_en: string
+  // La ficha de negocio lo usa para el sello "Actualizado hace X".
+  actualizado_en: string | null
 }
 
 export type Oferta = {
