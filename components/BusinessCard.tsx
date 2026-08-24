@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import Badge from './Badge'
 import { MapPin, Phone, MessageCircle, Star } from 'lucide-react'
 
@@ -26,8 +27,6 @@ const BusinessCard = ({
   image,
   address,
   distance,
-  phone,
-  whatsapp,
   rating,
   reviews,
   isOpen = true,
@@ -41,7 +40,13 @@ const BusinessCard = ({
       {/* Imagen */}
       <div className="relative w-full h-48 bg-gradient-to-br from-[#F9F8F6] to-[#E8E4DE] overflow-hidden">
         {image ? (
-          <img src={image} alt={name} className="w-full h-full object-cover" />
+          <Image
+            src={image}
+            alt={name}
+            fill
+            sizes="(max-width: 640px) 100vw, 320px"
+            className="object-cover"
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-[#8E8279] text-4xl">📦</div>

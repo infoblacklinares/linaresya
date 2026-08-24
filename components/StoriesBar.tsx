@@ -120,7 +120,7 @@ function StoryViewer({
   onClose: () => void;
   onNextGroup: () => void;
 }) {
-  const [idx, setIdx] = useState(0);
+  const [idxState, setIdx] = useState(0);
   const [progreso, setProgreso] = useState(0);
   const [pausado, setPausado] = useState(false);
   const rafRef = useRef<number>(0);
@@ -128,24 +128,36 @@ function StoryViewer({
   const inicioRef = useRef<number>(0);
   const pausadoRef = useRef(false);
 
-  const historia = grupo.historias[idx];
+  // Reiniciar el índice al cambiar de grupo. Se ajusta durante el render
+  // (patrón recomendado por React) en vez de en un efecto: así este mismo
+  // render ya usa la primera historia del grupo nuevo. Antes se hacía en un
+  // efecto y quedaba un render con el índice viejo, que reventaba si el grupo
+  // nuevo tenía menos historias que el anterior.
+  const [grupoPrevio, setGrupoPrevio] = useState(grupo.negocio_id);
+  const cambioDeGrupo = grupoPrevio !== grupo.negocio_id;
+  if (cambioDeGrupo) {
+    setGrupoPrevio(grupo.negocio_id);
+    setIdx(0);
+  }
+
   const total = grupo.historias.length;
+  const idx = Math.min(cambioDeGrupo ? 0 : idxState, total - 1);
+  const historia = grupo.historias[idx];
   // Con texto se da más tiempo para leer
   const duracion = historia.texto ? DURACION_CON_TEXTO_MS : DURACION_MS;
 
-  // Reiniciar índice al cambiar de grupo
+  // Espejo de `pausado` para leerlo dentro del rAF sin re-crear el bucle.
   useEffect(() => {
-    setIdx(0);
-  }, [grupo.negocio_id]);
-
-  pausadoRef.current = pausado;
+    pausadoRef.current = pausado;
+  }, [pausado]);
 
   // Temporizador de avance con requestAnimationFrame, con soporte de pausa:
   // mantener el dedo/mouse presionado congela el progreso (como Instagram).
   useEffect(() => {
     transcurridoRef.current = 0;
     inicioRef.current = performance.now();
-    setProgreso(0);
+    // El primer tick (el frame siguiente) ya escribe el progreso en ~0, así
+    // que no hace falta resetearlo aquí.
     function tick(now: number) {
       if (pausadoRef.current) {
         // congelar: acumular lo transcurrido y correr el reloj de inicio

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useEffect, useRef } from "react";
 import { suscribirNewsletter, type NewsletterState } from "@/app/newsletter/actions";
 
@@ -49,9 +50,9 @@ export default function NewsletterForm() {
       )}
       <p className="text-[11px] text-white/50 px-1">
         Sin spam. Solo novedades de Linares. Al suscribirte aceptas nuestra{" "}
-        <a href="/privacidad" className="underline text-white/70 hover:text-white">
+        <Link href="/privacidad" className="underline text-white/70 hover:text-white">
           Política de Privacidad
-        </a>
+        </Link>
         . Puedes darte de baja cuando quieras desde cualquier correo.
       </p>
     </form>

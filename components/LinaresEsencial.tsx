@@ -1,4 +1,3 @@
-import Link from "next/link";
 
 type Lugar = {
   nombre: string;

@@ -33,6 +33,7 @@ export default async function AdminEventosPage() {
   const { data: eventos } = await supabaseAdmin
     .from("eventos")
     .select("id, titulo, emoji, lugar, fecha_inicio, fecha_fin, destacado")
+    // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
     .gte("fecha_inicio", new Date(Date.now() - 86_400_000).toISOString())
     .order("fecha_inicio");
 

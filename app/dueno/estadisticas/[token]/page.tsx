@@ -65,6 +65,7 @@ export default async function DuenoEstadisticasPage({
   }
 
   const expira = new Date((tokenRow as { expira_en: string }).expira_en);
+  // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
   if (Date.now() > expira.getTime()) {
     return <TokenInvalidoView expirado />;
   }

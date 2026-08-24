@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
-import { diaHoySantiago, horaAhoraSantiago, badgeAbierto, dentroDeRango } from "@/lib/horarios";
+import { diaHoySantiago, horaAhoraSantiago, dentroDeRango } from "@/lib/horarios";
 import AnimatedCard from "@/components/AnimatedCard";
 import CercaDeMi from "@/components/CercaDeMi";
 
@@ -42,7 +42,7 @@ type Categoria = { id: number; nombre: string; slug: string; emoji: string };
 function sanitizeSearch(input: string): string {
   if (!input) return "";
   // Remover caracteres que podrían usarse en XSS
-  let sanitized = input.replace(/[<>"'`]/g, "");
+  const sanitized = input.replace(/[<>"'`]/g, "");
   // Validar: Solo letras (incl. acentos), números, espacios, guiones
   if (!/^[a-záéíóúñ0-9\s\-()&|"']*$/i.test(sanitized)) {
     return "";
@@ -146,7 +146,7 @@ export default async function BuscarPage({
   }
 
   // Ordenar por rating si se pidió (sort JS sobre los hasta 100 resultados)
-  let itemsOrdenados = [...items];
+  const itemsOrdenados = [...items];
   if (orden === "rating") {
     itemsOrdenados.sort((a, b) => {
       const ra = ratingsMap.get(a.id);

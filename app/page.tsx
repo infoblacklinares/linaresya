@@ -346,6 +346,7 @@ export default async function Home() {
   // Mismo negocio para todos durante el día, cambia solo a medianoche.
   let negocioDelDia: NegocioCard | null = null;
   if (totalNegocios > 0) {
+    // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
     const offset = Math.floor(Date.now() / 86_400_000) % totalNegocios;
     const { data: delDiaData } = await supabase
       .from("negocios")
@@ -358,6 +359,7 @@ export default async function Home() {
 
   // ── Lo más visto de la semana (estadisticas_diarias es tabla cerrada:
   //    se consulta server-side con service role, solo lectura agregada) ──────
+  // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
   const hace7 = new Date(Date.now() - 7 * 86_400_000).toISOString().slice(0, 10);
   const { data: statsSemana } = await supabaseAdmin
     .from("estadisticas_diarias")
@@ -613,6 +615,7 @@ export default async function Home() {
           <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
             {ofertas.map(o => {
               const url  = o.negocio?.categoria_slug && o.negocio?.slug ? `/${o.negocio.categoria_slug}/${o.negocio.slug}` : "#";
+              // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
               const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);
               return (
                 <Link key={o.id} href={url} className="relative w-48 shrink-0 overflow-hidden rounded-2xl border border-[#E8E4DE] bg-white shadow-linares-sm hover:shadow-linares transition">

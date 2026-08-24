@@ -223,23 +223,6 @@ export default function DuenoEditForm({
         </button>
       </div>
 
-      <style>{`
-        .input-ue {
-          width: 100%;
-          background: oklch(0.96 0 0);
-          border-radius: 1rem;
-          padding: 0.875rem 1rem;
-          font-size: 0.875rem;
-          outline: none;
-          border: 1px solid transparent;
-          transition: border-color 0.15s, background 0.15s;
-        }
-        .input-ue:focus {
-          border-color: oklch(0.10 0 0);
-          background: #fff;
-        }
-        .input-ue::placeholder { color: oklch(0.55 0 0); }
-      `}</style>
     </form>
   );
 }

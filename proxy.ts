@@ -9,7 +9,7 @@ const rateLimitStore = new Map<string, number[]>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minuto
 const RATE_LIMIT_MAX = 30;
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   if (!pathname.startsWith('/buscar')) {
     return NextResponse.next();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import {
   isFavorito,
   toggleFavorito,
@@ -16,31 +16,21 @@ export default function FavoritoButton({
   negocioId: string;
   variant?: "icon" | "pill";
 }) {
-  const [activo, setActivo] = useState(false);
-  const [montado, setMontado] = useState(false);
-
-  useEffect(() => {
-    setActivo(isFavorito(negocioId));
-    setMontado(true);
-    return onFavoritosChanged(() => {
-      setActivo(isFavorito(negocioId));
-    });
-  }, [negocioId]);
+  // Los favoritos viven en localStorage: son un store externo, y esta es la
+  // API de React para leerlos sin desincronizar el render del servidor.
+  // En el servidor (y durante la hidratacion) se asume "no favorito"; apenas
+  // hidrata, React vuelve a leer el valor real.
+  const activo = useSyncExternalStore(
+    onFavoritosChanged,
+    () => isFavorito(negocioId),
+    () => false,
+  );
 
   function handleClick(e: React.MouseEvent) {
     // Si el boton vive dentro de un Link, evitamos navegar
     e.preventDefault();
     e.stopPropagation();
     toggleFavorito(negocioId);
-  }
-
-  if (!montado) {
-    // Placeholder mientras hidrata, mismo tamaño para que no salte el layout
-    return variant === "icon" ? (
-      <span className="inline-block h-8 w-8" aria-hidden="true" />
-    ) : (
-      <span className="inline-block h-9 w-24" aria-hidden="true" />
-    );
   }
 
   if (variant === "pill") {

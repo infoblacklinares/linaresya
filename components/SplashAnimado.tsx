@@ -45,6 +45,9 @@ export default function SplashAnimado({
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
+      // matchMedia solo existe en el navegador: saltamos al final de la
+      // escena en cuanto sabemos que el usuario pidió menos movimiento.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- ver nota
       setTReal(DURACION_ESCENA / velocidad);
       onFin?.();
       return;
