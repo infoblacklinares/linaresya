@@ -7,7 +7,10 @@ import { supabase } from '@/lib/supabase'
    * - Usa indice: idx_negocios_categoria_id
    * - Devuelve: nombres, slug, foto, verificado, categoria, count de resenas
    */
-export async function getNegocios(categoriaId, limit = 20) {
+export async function getNegocios(
+  categoriaId?: number | null,
+  limit = 20,
+) {
     let query = supabase
       .from('negocios')
       .select(`
@@ -43,7 +46,7 @@ export async function getNegocios(categoriaId, limit = 20) {
  * - 4 queries paralelas en lugar de joins costosos
  * - Aprovecha indices en negocio_id, activa, aprobada
  */
-export async function getNegocioCompleto(slug) {
+export async function getNegocioCompleto(slug: string) {
     const { data: negocio, error: negError } = await supabase
       .from('negocios')
       .select(`
@@ -119,7 +122,11 @@ export async function getNegocioCompleto(slug) {
  * - Sanitiza entrada (XSS A03)
  * - Soporta filtro por categoria
  */
-export async function buscarNegocios(q, categoriaId, limit = 20) {
+export async function buscarNegocios(
+  q: string,
+  categoriaId?: number | null,
+  limit = 20,
+) {
     const cleanQ = q
       .replace(/[<>]/g, '')
       .trim()
@@ -168,7 +175,10 @@ export async function buscarNegocios(q, categoriaId, limit = 20) {
  * QUERY 4: Estadisticas diarias de un negocio (para dashboard propietario)
  * - Usa indice: idx_estadisticas_negocio_fecha
  */
-export async function getEstadisticasNegocio(negocioId, diasAtras = 30) {
+export async function getEstadisticasNegocio(
+  negocioId: string,
+  diasAtras = 30,
+) {
     const fechaInicio = new Date()
     fechaInicio.setDate(fechaInicio.getDate() - diasAtras)
 
