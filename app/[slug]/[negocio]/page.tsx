@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { getCategoriaPorSlug, getNegocioPorSlug } from "@/lib/consultas";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
@@ -175,23 +176,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug: categoriaSlug, negocio: negocioSlug } = await params;
 
-  const { data: cat } = await supabase
-    .from("categorias")
-    .select("id,nombre,slug,emoji")
-    .eq("slug", categoriaSlug)
-    .single();
+  const cat = await getCategoriaPorSlug(categoriaSlug);
+  // Sin status 404 posible aca (ver nota en lib/consultas.ts), al menos que
+  // no se indexe: si no, Google guarda URLs que no existen.
+  if (!cat) return { title: "Negocio no encontrado", robots: { index: false, follow: false } };
 
-  if (!cat) return { title: "Negocio no encontrado" };
+  const neg = await getNegocioPorSlug(negocioSlug, cat.id);
 
-  const { data: neg } = await supabase
-    .from("negocios")
-    .select("nombre,slug,descripcion,direccion,foto_portada")
-    .eq("slug", negocioSlug)
-    .eq("categoria_id", (cat as { id: number }).id)
-    .eq("activo", true)
-    .single();
-
-  if (!neg) return { title: "Negocio no encontrado" };
+  if (!neg) return { title: "Negocio no encontrado", robots: { index: false, follow: false } };
 
   const n = neg as {
     nombre: string;
@@ -251,22 +243,13 @@ export default async function NegocioDetalle({
 }) {
   const { slug: categoriaSlug, negocio: negocioSlug } = await params;
 
-  const { data: cat } = await supabase
-    .from("categorias")
-    .select("id,nombre,slug,emoji")
-    .eq("slug", categoriaSlug)
-    .single();
+  // Ambas ya las resolvio el layout: cache() hace que no se repitan.
+  const cat = await getCategoriaPorSlug(categoriaSlug);
 
   if (!cat) notFound();
   const categoria = cat as Categoria;
 
-  const { data: neg } = await supabase
-    .from("negocios")
-    .select("*")
-    .eq("slug", negocioSlug)
-    .eq("categoria_id", categoria.id)
-    .eq("activo", true)
-    .single();
+  const neg = await getNegocioPorSlug(negocioSlug, categoria.id);
 
   if (!neg) notFound();
   const n = neg as Negocio;

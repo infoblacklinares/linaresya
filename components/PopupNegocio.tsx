@@ -9,8 +9,12 @@ import { publicarNegocio, type PublicarState } from "@/app/publicar/actions";
 type Categoria = { id: number; nombre: string; emoji: string };
 
 const CLAVE = "linaresya_popup_negocio";
-const DEMORA_MS = 9000; // deja respirar la visita antes de interrumpir
+const DEMORA_MS = 5000; // deja respirar la visita antes de interrumpir
 const DIAS_ESPERA = 7; // si lo cierran, no vuelve a aparecer en 7 dias
+// Cuanto se espera, como maximo, a que respondan el banner de cookies.
+// Pasado ese rato el popup sale igual: la mayoria de la gente nunca toca el
+// banner, y antes eso lo dejaba sin aparecer nunca.
+const ESPERA_COOKIES_MS = 5000;
 
 // Rutas donde el popup sobra o estorba: el formulario completo, el panel,
 // la edicion del dueno, la ficha para imprimir QR y la pagina offline.
@@ -46,12 +50,14 @@ function guardarMarca(estado: Marca["estado"]) {
  * enviarlo ahi mismo con lo minimo (nombre, categoria y WhatsApp).
  *
  * Reglas para que no sea molesto:
- *  - Aparece a los ~9s de la visita, nunca de golpe al cargar (para entonces
+ *  - Aparece a los ~5s de la visita, nunca de golpe al cargar (para entonces
  *    el splash de la portada ya termino).
  *  - Una sola vez: si lo cierran vuelve recien en 7 dias; si envian el
  *    negocio, no vuelve nunca.
  *  - No aparece en /publicar, /admin, /dueno, /qr ni /offline.
  *  - Se cierra con Esc, tocando el fondo o con "Ahora no".
+ *  - Espera a que respondan el banner de cookies, pero como maximo 5s.
+ *  - ?popup=1 lo fuerza, para poder revisarlo sin limpiar el navegador.
  *
  * Usa el mismo server action que el formulario completo, asi que el negocio
  * entra igual que siempre: inactivo hasta que el admin lo revise.
@@ -91,13 +97,19 @@ export default function PopupNegocio() {
   useEffect(() => {
     if (excluida) return;
 
-    const marca = leerMarca();
-    if (marca?.estado === "enviado") return;
-    if (
-      marca?.estado === "cerrado" &&
-      Date.now() - marca.ts < DIAS_ESPERA * 24 * 60 * 60 * 1000
-    ) {
-      return;
+    // ?popup=1 lo fuerza al toque, ignorando marcas y esperas. Sirve para
+    // revisarlo sin tener que limpiar el navegador.
+    const forzado = new URLSearchParams(window.location.search).get("popup") === "1";
+
+    if (!forzado) {
+      const marca = leerMarca();
+      if (marca?.estado === "enviado") return;
+      if (
+        marca?.estado === "cerrado" &&
+        Date.now() - marca.ts < DIAS_ESPERA * 24 * 60 * 60 * 1000
+      ) {
+        return;
+      }
     }
 
     const abrir = () => {
@@ -109,7 +121,8 @@ export default function PopupNegocio() {
       if (document.visibilityState === "visible") abrir();
     };
 
-    // No tapamos el banner de cookies: primero que respondan eso.
+    // Mejor no tapar el banner de cookies mientras lo estan respondiendo,
+    // pero solo por un rato: si no lo tocan, el popup sale igual.
     const cookiesRespondidas = () => {
       try {
         return localStorage.getItem("cookie-consent") !== null;
@@ -120,29 +133,30 @@ export default function PopupNegocio() {
 
     let reintento: ReturnType<typeof setInterval> | undefined;
 
-    const intentar = () => {
+    const intentar = (ultimaChance: boolean) => {
       // Si la pestana esta en segundo plano esperamos a que vuelvan: abrirlo
       // a ciegas gastaria la unica oportunidad que tenemos.
       if (document.visibilityState !== "visible") {
         document.addEventListener("visibilitychange", alVolver, { once: true });
         return true;
       }
-      if (!cookiesRespondidas()) return false;
+      if (!ultimaChance && !cookiesRespondidas()) return false;
       abrir();
       return true;
     };
 
     const timer = setTimeout(() => {
-      if (intentar()) return;
-      // Siguen sin decidir las cookies: revisamos un rato y despues soltamos.
-      let vueltas = 0;
+      if (forzado) {
+        abrir();
+        return;
+      }
+      if (intentar(false)) return;
+
+      const limite = Date.now() + ESPERA_COOKIES_MS;
       reintento = setInterval(() => {
-        vueltas++;
-        if (intentar() || vueltas > 20) {
-          if (reintento) clearInterval(reintento);
-        }
-      }, 3000);
-    }, DEMORA_MS);
+        if (intentar(Date.now() >= limite) && reintento) clearInterval(reintento);
+      }, 1000);
+    }, forzado ? 0 : DEMORA_MS);
 
     return () => {
       clearTimeout(timer);
@@ -245,7 +259,11 @@ export default function PopupNegocio() {
       <div
         ref={dialogoRef}
         tabIndex={-1}
-        className="relative max-h-[92vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white shadow-[0_18px_60px_rgba(0,0,0,0.28)] outline-none"
+        // El contenedor se enfoca solo para anclar la trampa de foco: no es
+        // navegable con Tab, asi que no le corresponde el anillo global de
+        // :focus-visible (que ademas pisa la sombra de la tarjeta).
+        style={{ outline: "none", boxShadow: "0 18px 60px rgba(0,0,0,0.28)" }}
+        className="relative max-h-[92vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white"
       >
         <button
           type="button"

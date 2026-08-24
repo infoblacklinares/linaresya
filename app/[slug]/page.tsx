@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { getCategoriaPorSlug } from "@/lib/consultas";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -19,8 +20,8 @@ type Negocio = {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const { data } = await supabase.from("categorias").select("nombre,slug,descripcion,emoji").eq("slug", slug).eq("activa", true).single();
-  if (!data) return { title: "Categoría no encontrada" };
+  const data = await getCategoriaPorSlug(slug);
+  if (!data || !data.activa) return { title: "Categoría no encontrada", robots: { index: false, follow: false } };
   const c = data as { nombre: string; slug: string; descripcion: string | null; emoji: string };
   const titulo = `${c.nombre} en Linares`;
   const descripcion = (c.descripcion ?? `Encuentra ${c.nombre.toLowerCase()} en Linares. Contacto directo, horarios, ubicación y más en LinaresYa.`).slice(0, 160);
@@ -48,8 +49,9 @@ export default async function CategoriaPage({
   const filtroDomicilio = sp.domicilio  === "1";
   const filtroOrden     = sp.orden === "rating" ? "rating" : "relevancia";
 
-  const { data: categoria, error: catError } = await supabase.from("categorias").select("*").eq("slug", slug).eq("activa", true).single();
-  if (catError || !categoria) notFound();
+  const categoria = await getCategoriaPorSlug(slug);
+  // La categoria existe (lo verifico el layout); aca ademas tiene que estar activa.
+  if (!categoria || !categoria.activa) notFound();
   const cat = categoria as Categoria;
 
   let query = supabase
