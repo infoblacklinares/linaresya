@@ -133,7 +133,12 @@ export default async function AdminPage() {
   const embudo = embudoError
     ? null
     : (() => {
-        const suma = { popup_visto: 0, popup_cerrado: 0, popup_enviado: 0 };
+        const suma = {
+          visita_portada: 0,
+          popup_visto: 0,
+          popup_cerrado: 0,
+          popup_enviado: 0,
+        };
         for (const fila of (embudoRaw ?? []) as unknown[]) {
           const x = fila as { evento?: unknown; conteo?: unknown };
           const evento = String(x.evento ?? "");
@@ -288,20 +293,31 @@ export default async function AdminPage() {
         </div>
       </section>
 
-      {embudo && embudo.popup_visto > 0 && (
+      {embudo && (embudo.visita_portada > 0 || embudo.popup_visto > 0) && (
         <section className="px-4 pt-6">
           <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
             Popup de la portada
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <MiniStat label="Visitas" value={embudo.visita_portada} />
             <MiniStat label="Lo vieron" value={embudo.popup_visto} />
             <MiniStat label="Lo cerraron" value={embudo.popup_cerrado} />
             <MiniStat label="Publicaron" value={embudo.popup_enviado} />
-            <MiniStat
-              label="Conversion %"
-              value={Math.round((embudo.popup_enviado / embudo.popup_visto) * 100)}
-            />
           </div>
+          <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
+            Visitas cuenta una por sesion del navegador; el popup aparece una vez
+            cada 7 dias por navegador, asi que vistos sobre visitas da el orden de
+            magnitud, no un porcentaje exacto.
+            {embudo.popup_visto > 0 && (
+              <>
+                {" "}De los que lo vieron, publicaron el{" "}
+                <strong>
+                  {Math.round((embudo.popup_enviado / embudo.popup_visto) * 100)}%
+                </strong>
+                .
+              </>
+            )}
+          </p>
         </section>
       )}
 

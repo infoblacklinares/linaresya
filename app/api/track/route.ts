@@ -7,7 +7,12 @@ type Evento = (typeof EVENTOS_VALIDOS)[number];
 
 // Eventos del sitio: no cuelgan de ningun negocio (el popup de la portada se
 // ve antes de que exista uno). Sincronizado con eventos_sitio.sql.
-const EVENTOS_SITIO = ["popup_visto", "popup_cerrado", "popup_enviado"] as const;
+const EVENTOS_SITIO = [
+  "popup_visto",
+  "popup_cerrado",
+  "popup_enviado",
+  "visita_portada",
+] as const;
 type EventoSitio = (typeof EVENTOS_SITIO)[number];
 
 // UUID v4-ish: aceptamos cualquier formato canonico de uuid.

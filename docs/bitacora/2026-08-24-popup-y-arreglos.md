@@ -240,6 +240,25 @@ de la pestaña y no espera respuesta.
 `/admin` muestra "Popup de la portada": lo vieron, lo cerraron, publicaron y el
 % de conversión de la semana.
 
+### El denominador
+
+Los primeros datos (7 vistos, 6 cerrados, 0 publicados, todos del día del
+despliegue) dejaron a la vista que faltaba con qué comparar: saber que 7
+personas vieron el popup no distingue "vino poca gente" de "vino mucha y el
+popup no aparece".
+
+`ContadorVisita` marca `visita_portada` **una vez por sesión del navegador**
+(no por carga: ir y volver a la portada no infla el número), y el panel lo
+muestra al lado del embudo. Es un contador agregado por día, sin cookies ni
+nada que identifique a nadie, así que no depende del consentimiento.
+
+Ojo al leerlo: las visitas se cuentan por sesión y el popup aparece una vez
+cada 7 días por navegador, así que vistos/visitas da el orden de magnitud, no
+un porcentaje exacto. Eso está escrito también en el panel.
+
+Requiere **volver a correr `supabase/eventos_sitio.sql`** (es idempotente): lo
+único que cambia es la lista blanca de la función.
+
 Igual que con `origen`: si el SQL no se corrió, `/api/track` responde ok, el
 panel esconde la sección y el popup funciona idéntico.
 
