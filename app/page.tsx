@@ -11,7 +11,7 @@ import FadeInSection from "@/components/FadeInSection";
 import AnimatedCard from "@/components/AnimatedCard";
 import NudgeArrow from "@/components/NudgeArrow";
 import StoriesBar, { type Historia } from "@/components/StoriesBar";
-import SplashHome from "@/components/SplashHome";
+import SplashHomeLeon from "@/components/SplashHomeLeon";
 import ContadorVisita from "@/components/ContadorVisita";
 import MarqueeRow from "@/components/MarqueeRow";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
@@ -403,8 +403,8 @@ export default async function Home() {
       <JsonLd id="ld-organization" data={organizationJsonLd()} />
       <JsonLd id="ld-website"      data={websiteJsonLd()} />
 
-      {/* Splash de bienvenida: una vez por sesión, encima del contenido */}
-      <SplashHome />
+      {/* Splash de bienvenida: el león, cada vez que se abre la portada */}
+      <SplashHomeLeon />
       <ContadorVisita />
 
       {/* Hero — full-bleed en desktop, contenido centrado adentro */}
