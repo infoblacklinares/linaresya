@@ -8,6 +8,12 @@
 -- exista ningun negocio. Sin esto solo sabiamos cuantas altas trae el popup
 -- (columna `origen`), no cuantos lo vieron ni cuantos lo cerraron.
 --
+-- ACTUALIZACION 28/08: se agrega `visita_portada`. Sin ese denominador, saber
+-- que 7 personas vieron el popup no dice nada: no se distingue "vino poca
+-- gente" de "vino mucha y el popup no aparece". Si ya corriste este archivo
+-- antes, correlo de nuevo entero: es idempotente y lo unico que cambia es la
+-- lista blanca de la funcion.
+--
 -- Se puede correr antes o despues de desplegar: si la tabla no existe todavia,
 -- /api/track responde ok igual y el panel esconde el embudo.
 -- =============================================================================
@@ -34,7 +40,9 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 BEGIN
-  IF p_evento NOT IN ('popup_visto', 'popup_cerrado', 'popup_enviado') THEN
+  IF p_evento NOT IN (
+    'popup_visto', 'popup_cerrado', 'popup_enviado', 'visita_portada'
+  ) THEN
     RAISE EXCEPTION 'Evento de sitio invalido: %', p_evento;
   END IF;
 
@@ -60,5 +68,11 @@ GRANT EXECUTE ON FUNCTION public.incrementar_evento_sitio(TEXT) TO authenticated
 --   WHERE fecha >= CURRENT_DATE - 30
 --   GROUP BY 1 ORDER BY 2 DESC;
 --
--- El panel /admin muestra vistos, enviados y el % de conversion de la semana.
+-- El panel /admin muestra visitas, vistos, publicados y el % de conversion de
+-- la semana.
+--
+-- Ojo al comparar: `visita_portada` se cuenta una vez por sesion del navegador
+-- y el popup aparece una vez cada 7 dias por navegador, asi que vistos/visitas
+-- no es una division exacta. Sirve para el orden de magnitud, no para un
+-- porcentaje fino.
 -- =============================================================================
