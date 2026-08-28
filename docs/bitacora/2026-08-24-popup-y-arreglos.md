@@ -226,8 +226,22 @@ idénticas y no había forma de saber cuántas trae el popup.
 - Si el SQL no se corrió, publicar sigue funcionando: el insert se reintenta sin
   la columna y el panel esconde esa cifra en vez de romperse.
 
-Lo que **todavía** no se mide: cuántos ven el popup y cuántos lo cierran. Eso es
-el paso 2 (tabla de eventos del sitio), que no está hecho.
+### Paso 2: el embudo
+
+`supabase/eventos_sitio.sql` agrega una tabla chica de eventos que no cuelgan de
+ningún negocio (`fecha`, `evento`, `conteo`) y su función de incremento con lista
+blanca. **También hay que correrlo a mano en Supabase.**
+
+El popup marca `popup_visto` al abrirse, `popup_cerrado` si lo cierran y
+`popup_enviado` al publicar, contra `/api/track`, que ahora acepta esos tres
+eventos sin `negocio_id`. Se manda con `sendBeacon`, así que sobrevive al cierre
+de la pestaña y no espera respuesta.
+
+`/admin` muestra "Popup de la portada": lo vieron, lo cerraron, publicaron y el
+% de conversión de la semana.
+
+Igual que con `origen`: si el SQL no se corrió, `/api/track` responde ok, el
+panel esconde la sección y el popup funciona idéntico.
 
 ## Pendientes / decisiones tuyas
 

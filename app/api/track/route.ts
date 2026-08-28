@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-// Eventos validos. Mantener sincronizado con el CHECK en estadisticas.sql.
+// Eventos de negocio. Mantener sincronizado con el CHECK en estadisticas.sql.
 const EVENTOS_VALIDOS = ["vista", "whatsapp", "telefono", "maps"] as const;
 type Evento = (typeof EVENTOS_VALIDOS)[number];
+
+// Eventos del sitio: no cuelgan de ningun negocio (el popup de la portada se
+// ve antes de que exista uno). Sincronizado con eventos_sitio.sql.
+const EVENTOS_SITIO = ["popup_visto", "popup_cerrado", "popup_enviado"] as const;
+type EventoSitio = (typeof EVENTOS_SITIO)[number];
 
 // UUID v4-ish: aceptamos cualquier formato canonico de uuid.
 const UUID_RE =
@@ -26,6 +31,20 @@ export async function POST(req: Request) {
   const negocioId =
     typeof body.negocio_id === "string" ? body.negocio_id.trim() : "";
   const evento = typeof body.evento === "string" ? body.evento.trim() : "";
+
+  // Eventos del sitio: sin negocio_id y con su propia funcion.
+  if (EVENTOS_SITIO.includes(evento as EventoSitio)) {
+    const { error } = await supabase.rpc("incrementar_evento_sitio", {
+      p_evento: evento,
+    });
+    if (error) {
+      // La tabla se crea a mano con supabase/eventos_sitio.sql. Si todavia no
+      // se corrio, esto falla: lo logueamos y respondemos ok igual, porque una
+      // metrica no puede ensuciar la consola de quien esta navegando.
+      console.error("[track] rpc evento_sitio:", error.message);
+    }
+    return NextResponse.json({ ok: true });
+  }
 
   if (!UUID_RE.test(negocioId)) {
     return NextResponse.json({ ok: false, error: "negocio_id invalido" }, { status: 400 });
@@ -50,5 +69,9 @@ export async function POST(req: Request) {
 
 // Health check rapido para debug. GET /api/track devuelve los eventos validos.
 export async function GET() {
-  return NextResponse.json({ ok: true, eventos: EVENTOS_VALIDOS });
+  return NextResponse.json({
+    ok: true,
+    eventos: EVENTOS_VALIDOS,
+    eventos_sitio: EVENTOS_SITIO,
+  });
 }

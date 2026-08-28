@@ -38,6 +38,33 @@ function leerMarca(): Marca | null {
   }
 }
 
+/**
+ * Marca un evento del embudo del popup: cuantos lo ven, cuantos lo cierran y
+ * cuantos publican. Sin esto solo se sabe cuantas altas trae (columna
+ * `origen`), que no alcanza para decidir si conviene tenerlo ni con cuanta
+ * demora.
+ *
+ * No espera respuesta ni rompe nada si falla: es una metrica, no parte del
+ * flujo. sendBeacon sobrevive al cierre de la pestaña.
+ */
+function medir(evento: "popup_visto" | "popup_cerrado" | "popup_enviado") {
+  try {
+    const cuerpo = JSON.stringify({ evento });
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon("/api/track", new Blob([cuerpo], { type: "text/plain" }));
+      return;
+    }
+    void fetch("/api/track", {
+      method: "POST",
+      body: cuerpo,
+      keepalive: true,
+      headers: { "Content-Type": "application/json" },
+    }).catch(() => {});
+  } catch {
+    /* sin red o sin permisos: la metrica se pierde, el popup sigue igual */
+  }
+}
+
 function guardarMarca(estado: Marca["estado"]) {
   try {
     localStorage.setItem(CLAVE, JSON.stringify({ estado, ts: Date.now() }));
@@ -90,7 +117,10 @@ export default function PopupNegocio() {
   const cerrar = useCallback(() => {
     setAbierto(false);
     // Si ya lo enviaron manda la marca "enviado" que grabo el efecto de exito.
-    if (!state.ok) guardarMarca("cerrado");
+    if (!state.ok) {
+      guardarMarca("cerrado");
+      medir("popup_cerrado");
+    }
     focoPrevio.current?.focus();
   }, [state.ok]);
 
@@ -116,6 +146,7 @@ export default function PopupNegocio() {
     const abrir = () => {
       focoPrevio.current = document.activeElement as HTMLElement | null;
       setAbierto(true);
+      medir("popup_visto");
     };
 
     const alVolver = () => {
@@ -233,7 +264,10 @@ export default function PopupNegocio() {
 
   // Enviado: que no vuelva a aparecer en este navegador.
   useEffect(() => {
-    if (state.ok) guardarMarca("enviado");
+    if (state.ok) {
+      guardarMarca("enviado");
+      medir("popup_enviado");
+    }
   }, [state.ok]);
 
   if (!abierto) return null;

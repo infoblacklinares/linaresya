@@ -59,6 +59,7 @@ export default async function AdminPage() {
     { data: stats7dRaw },
     { count: reportesPendientes },
     { count: popup7d, error: popupError },
+    { data: embudoRaw, error: embudoError },
   ] = await Promise.all([
     supabaseAdmin
       .from("negocios")
@@ -109,6 +110,14 @@ export default async function AdminPage() {
       .select("id", { count: "exact", head: true })
       .eq("origen", "popup")
       .gte("creado_en", haceSieteDias),
+
+    // Embudo del popup: vistos, cerrados y enviados de la semana. Igual que la
+    // consulta de arriba, va aparte porque la tabla se crea a mano con
+    // supabase/eventos_sitio.sql: si no existe, esta falla sola.
+    supabaseAdmin
+      .from("eventos_sitio")
+      .select("evento, conteo")
+      .gte("fecha", haceSieteDias),
   ]);
 
   const pend = (pendientes ?? []) as NegocioRow[];
@@ -119,6 +128,21 @@ export default async function AdminPage() {
   // null = la columna `origen` aun no existe; en ese caso no mostramos la cifra
   // en vez de mostrar un cero que se leeria como "el popup no trajo a nadie".
   const desdePopup7d = popupError ? null : (popup7d ?? 0);
+
+  // Embudo del popup. null = la tabla eventos_sitio todavia no existe.
+  const embudo = embudoError
+    ? null
+    : (() => {
+        const suma = { popup_visto: 0, popup_cerrado: 0, popup_enviado: 0 };
+        for (const fila of (embudoRaw ?? []) as unknown[]) {
+          const x = fila as { evento?: unknown; conteo?: unknown };
+          const evento = String(x.evento ?? "");
+          if (evento in suma) {
+            suma[evento as keyof typeof suma] += Number(x.conteo ?? 0);
+          }
+        }
+        return suma;
+      })();
   const resenas7d = nuevasResenas7d ?? 0;
   const catsMap = new Map<number, Categoria>(
     ((cats ?? []) as Categoria[]).map((c) => [c.id, c]),
@@ -263,6 +287,23 @@ export default async function AdminPage() {
           <MiniStat label="Clicks" value={totalClicks7d} />
         </div>
       </section>
+
+      {embudo && embudo.popup_visto > 0 && (
+        <section className="px-4 pt-6">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+            Popup de la portada
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <MiniStat label="Lo vieron" value={embudo.popup_visto} />
+            <MiniStat label="Lo cerraron" value={embudo.popup_cerrado} />
+            <MiniStat label="Publicaron" value={embudo.popup_enviado} />
+            <MiniStat
+              label="Conversion %"
+              value={Math.round((embudo.popup_enviado / embudo.popup_visto) * 100)}
+            />
+          </div>
+        </section>
+      )}
 
       {topVistos.length > 0 && (
         <section className="px-4 pt-6">
