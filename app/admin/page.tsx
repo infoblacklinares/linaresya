@@ -58,6 +58,7 @@ export default async function AdminPage() {
     { count: nuevasResenas7d },
     { data: stats7dRaw },
     { count: reportesPendientes },
+    { count: popup7d, error: popupError },
   ] = await Promise.all([
     supabaseAdmin
       .from("negocios")
@@ -98,6 +99,16 @@ export default async function AdminPage() {
       .from("reportes")
       .select("id", { count: "exact", head: true })
       .eq("resuelto", false),
+
+    // Altas que trajo el popup de la portada. Va en su propia consulta a
+    // proposito: la columna `origen` se crea con supabase/origen_negocios.sql,
+    // que se corre a mano, y si todavia no existe esta falla sola sin voltear
+    // el resto del panel.
+    supabaseAdmin
+      .from("negocios")
+      .select("id", { count: "exact", head: true })
+      .eq("origen", "popup")
+      .gte("creado_en", haceSieteDias),
   ]);
 
   const pend = (pendientes ?? []) as NegocioRow[];
@@ -105,6 +116,9 @@ export default async function AdminPage() {
   const resCount = resenasPendientes ?? 0;
   const reportesCount = reportesPendientes ?? 0;
   const nuevos7d = nuevosNegocios7d ?? 0;
+  // null = la columna `origen` aun no existe; en ese caso no mostramos la cifra
+  // en vez de mostrar un cero que se leeria como "el popup no trajo a nadie".
+  const desdePopup7d = popupError ? null : (popup7d ?? 0);
   const resenas7d = nuevasResenas7d ?? 0;
   const catsMap = new Map<number, Categoria>(
     ((cats ?? []) as Categoria[]).map((c) => [c.id, c]),
@@ -241,6 +255,9 @@ export default async function AdminPage() {
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <MiniStat label="Negocios nuevos" value={nuevos7d} />
+          {desdePopup7d !== null && (
+            <MiniStat label="Desde el popup" value={desdePopup7d} />
+          )}
           <MiniStat label="Resenas nuevas" value={resenas7d} />
           <MiniStat label="Vistas" value={totalVistas7d} />
           <MiniStat label="Clicks" value={totalClicks7d} />

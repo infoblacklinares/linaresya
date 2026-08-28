@@ -21,6 +21,7 @@ type Negocio = {
   descripcion: string | null;
   telefono: string | null;
   whatsapp: string | null;
+  email: string | null;
   direccion: string | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;
@@ -40,12 +41,15 @@ export default function DuenoEditForm({
   horarios,
   fotosGaleria,
   fichaUrl,
+  publicada,
 }: {
   token: string;
   negocio: Negocio;
   horarios: HorarioInicial[];
   fotosGaleria: FotoGaleria[];
   fichaUrl: string;
+  /** Falso mientras la ficha espera revision: todavia no hay que enlazarla. */
+  publicada: boolean;
 }) {
   const [state, formAction, pending] = useActionState(
     updateNegocioDueno,
@@ -57,17 +61,29 @@ export default function DuenoEditForm({
     <form action={formAction} className="space-y-6 pb-8">
       <input type="hidden" name="token" value={token} />
 
+      {!publicada && (
+        <div className="rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 px-4 py-3 text-sm">
+          <span className="font-semibold">Tu ficha está en revisión.</span> Podés
+          completarla igual: cuando la aprobemos sale publicada con todo lo que
+          hayas cargado acá.
+        </div>
+      )}
+
       {state.ok && (
         <div className="rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 text-sm font-medium">
           Cambios guardados.{" "}
-          <Link
-            href={fichaUrl}
-            className="underline font-bold"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Ver mi ficha publicada
-          </Link>
+          {publicada ? (
+            <Link
+              href={fichaUrl}
+              className="underline font-bold"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ver mi ficha publicada
+            </Link>
+          ) : (
+            <span>Se verán apenas aprobemos la ficha.</span>
+          )}
         </div>
       )}
       {state.error && !state.ok && (
@@ -127,6 +143,21 @@ export default function DuenoEditForm({
             placeholder="9 1234 5678"
           />
         </Field>
+
+      <Field
+        label="Tu email"
+        hint="Con esto podés pedir un link nuevo solo, en /dueno/solicitar, si perdés este. Sin email dependés de que te lo generemos a mano."
+        error={fe.email}
+      >
+        <input
+          type="email"
+          name="email"
+          defaultValue={negocio.email ?? ""}
+          placeholder="tu@email.com"
+          maxLength={120}
+          className="input-ue"
+        />
+      </Field>
       </section>
 
       <section className="space-y-3">

@@ -4,11 +4,18 @@ import { headers } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendAdminPublicacionNotification } from "@/lib/email";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { generarTokenDueno, HORAS_ALTA } from "@/lib/dueno-token";
 
 export type PublicarState = {
   ok: boolean;
   error?: string;
   fieldErrors?: Record<string, string>;
+  /**
+   * Link para que el dueño complete fotos y horarios el mismo. Se muestra en
+   * la pantalla de exito: sin esto, completar la ficha depende de que el admin
+   * genere y mande el link a mano, negocio por negocio.
+   */
+  editarUrl?: string;
 };
 
 // Verifica el token de Cloudflare Turnstile. Si no hay TURNSTILE_SECRET_KEY
@@ -107,6 +114,16 @@ export async function publicarNegocio(
   const zonaCobertura = String(formData.get("zona_cobertura") ?? "").trim();
   const disponibilidad = String(formData.get("disponibilidad") ?? "").trim();
 
+  // De donde viene el alta. El popup de la portada y /publicar usan este mismo
+  // action, asi que sin esto las dos quedan identicas en la tabla y no hay
+  // forma de saber cuanto aporta el popup.
+  const origenRaw = String(formData.get("origen") ?? "").trim();
+  const origen: "popup" | "formulario" | "admin" = esAdmin
+    ? "admin"
+    : origenRaw === "popup"
+      ? "popup"
+      : "formulario";
+
   // Validacion
   const fieldErrors: Record<string, string> = {};
   if (nombre.length < 3) fieldErrors.nombre = "Minimo 3 caracteres";
@@ -179,9 +196,7 @@ export async function publicarNegocio(
     }
   }
 
-  const { data: insertado, error } = await supabaseAdmin
-    .from("negocios")
-    .insert({
+  const fila = {
       nombre,
       slug,
       descripcion: descripcion || null,
@@ -201,9 +216,28 @@ export async function publicarNegocio(
       a_domicilio: aDomicilio,
       zona_cobertura: zonaCobertura || null,
       disponibilidad: disponibilidad || null,
-    })
+  };
+
+  // La columna `origen` se agrega con supabase/origen_negocios.sql, que se
+  // corre a mano. Si el SQL todavia no se ejecuto, Supabase rechaza la fila
+  // entera por columna desconocida: en ese caso reintentamos sin ella, porque
+  // publicar un negocio nunca puede quedar bloqueado por una metrica.
+  let { data: insertado, error } = await supabaseAdmin
+    .from("negocios")
+    .insert({ ...fila, origen })
     .select("id")
     .single();
+
+  if (error && /origen/i.test(error.message)) {
+    console.warn(
+      "[publicar] Falta la columna `origen`: corre supabase/origen_negocios.sql. El negocio se guarda sin ella.",
+    );
+    ({ data: insertado, error } = await supabaseAdmin
+      .from("negocios")
+      .insert(fila)
+      .select("id")
+      .single());
+  }
 
   if (error || !insertado) {
     return {
@@ -357,5 +391,15 @@ export async function publicarNegocio(
     // Ignorado a proposito: el email nunca debe romper el flujo.
   }
 
-  return { ok: true };
+  // Link de edicion para el dueño, en la misma pantalla de exito. El editor
+  // por token no exige que el negocio este activo, asi que puede cargar fotos
+  // y horarios mientras la ficha espera revision: el admin aprueba una sola
+  // vez, ya completa.
+  const links = await generarTokenDueno(insertado.id as string, {
+    email,
+    ip: "alta-web",
+    horas: HORAS_ALTA,
+  });
+
+  return { ok: true, editarUrl: links?.editarUrl };
 }

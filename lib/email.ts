@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { firmarAccionAdmin } from "@/lib/admin-link";
 
 // Cliente lazy: solo se crea si hay RESEND_API_KEY. Asi en dev local, preview
 // deploys, o si te olvidas de setear la env var, el sistema sigue andando sin
@@ -59,6 +60,11 @@ export async function sendAdminPublicacionNotification(
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://linaresya.cl";
     const adminUrl = `${siteUrl}/admin`;
 
+    // Link firmado para aprobar sin abrir el panel ni iniciar sesion. Abrirlo
+    // no aprueba nada: muestra el negocio y pide confirmar.
+    const firma = firmarAccionAdmin(negocio.id, "aprobar");
+    const aprobarUrl = firma ? `${siteUrl}/admin/aprobar/${firma}` : null;
+
     const subject = `Nuevo ${negocio.tipo === "independiente" ? "independiente" : "negocio"} pendiente: ${negocio.nombre}`;
 
     const filas: Array<[string, string]> = [];
@@ -95,8 +101,11 @@ export async function sendAdminPublicacionNotification(
       <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
         ${filasHtml}
       </table>
-      <a href="${escapeHtml(adminUrl)}" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:600;">
-        Revisar en el admin
+      ${aprobarUrl ? `<a href="${escapeHtml(aprobarUrl)}" style="display:inline-block;background:#2B6E80;color:#fff;text-decoration:none;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:600;margin-right:8px;">
+        Revisar y aprobar
+      </a>` : ""}
+      <a href="${escapeHtml(adminUrl)}" style="display:inline-block;background:#fff;color:#0f172a;text-decoration:none;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:600;border:1.5px solid #e2e8f0;">
+        Abrir el panel
       </a>
     </div>
     <div style="padding:16px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
@@ -108,7 +117,7 @@ export async function sendAdminPublicacionNotification(
 </body>
 </html>`;
 
-    const text = `Nuevo negocio pendiente: ${negocio.nombre}\n\n${filas.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\nRevisar: ${adminUrl}`;
+    const text = `Nuevo negocio pendiente: ${negocio.nombre}\n\n${filas.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\n${aprobarUrl ? `Revisar y aprobar: ${aprobarUrl}\n` : ""}Panel: ${adminUrl}`;
 
     const { data, error } = await c.emails.send({
       from: FROM,

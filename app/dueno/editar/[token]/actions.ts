@@ -69,6 +69,7 @@ export async function updateNegocioDueno(
   const descripcion = String(formData.get("descripcion") ?? "").trim();
   const telefono = String(formData.get("telefono") ?? "").trim();
   const whatsappRaw = String(formData.get("whatsapp") ?? "").trim();
+  const emailRaw = String(formData.get("email") ?? "").trim().toLowerCase();
   const direccion = String(formData.get("direccion") ?? "").trim();
   const aDomicilio = formData.get("a_domicilio") === "on";
   const zonaCobertura = String(formData.get("zona_cobertura") ?? "").trim();
@@ -81,6 +82,14 @@ export async function updateNegocioDueno(
   if (descripcion.length > 1000) fieldErrors.descripcion = "Maximo 1000 caracteres";
   if (zonaCobertura.length > 200) fieldErrors.zona_cobertura = "Maximo 200 caracteres";
   if (disponibilidad.length > 120) fieldErrors.disponibilidad = "Maximo 120 caracteres";
+
+  // Email: opcional. Es lo que despues le permite pedir un link nuevo solo en
+  // /dueno/solicitar, sin depender del admin.
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (emailRaw) {
+    if (emailRaw.length > 120) fieldErrors.email = "Maximo 120 caracteres";
+    else if (!EMAIL_RE.test(emailRaw)) fieldErrors.email = "Ese email no parece valido";
+  }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
   const isUrlBucket = (url: string): boolean =>
@@ -118,6 +127,7 @@ export async function updateNegocioDueno(
     a_domicilio: aDomicilio,
     zona_cobertura: zonaCobertura || null,
     disponibilidad: disponibilidad || null,
+    email: emailRaw || null,
   };
   if (fotoPortada && isUrlBucket(fotoPortada)) {
     update.foto_portada = fotoPortada;
