@@ -3,14 +3,20 @@
 import { useCallback, useEffect, useState } from "react";
 import SplashLeon from "./SplashLeon";
 
-const VELOCIDAD = 2.8; // escena de 9.8s comprimida a ~3.5s
+const CLAVE = "linaresya_splash_leon_visto";
+// La escena esta escrita para 9.8s. A 3.9 dura ~2.5s: sigue leyendose
+// "linaresya.cl" (~0.7s en pantalla) sin cobrarle 3.5s a cada visita.
+const VELOCIDAD = 3.9;
 const FADE_MS = 420;
 
 /**
  * Capa de bienvenida de la portada con el leon.
  *
- * Reglas:
- *  - Se muestra CADA vez que se abre la portada (no usa sessionStorage).
+ * Reglas pensadas para no estorbar:
+ *  - Se muestra UNA sola vez por sesion del navegador (sessionStorage).
+ *    LinaresYa se usa con apuro ("a que hora cierra la farmacia"), asi que
+ *    repetir la animacion en cada consulta la convierte en un peaje.
+ *  - Dura ~2.5s y se desvanece sola.
  *  - Se puede saltar tocando la pantalla o con Escape.
  *  - Si el sistema pide reducir movimiento, muestra el fotograma final y cierra.
  *
@@ -18,17 +24,26 @@ const FADE_MS = 420;
  * retrasa la carga real ni afecta al SEO.
  */
 export default function SplashHomeLeon() {
-  // null = primer render en el servidor: no pintamos nada para evitar
-  // desajuste de hidratacion, igual que en SplashHome.
+  // null = aun no sabemos (no renderizamos nada para evitar desajuste de
+  // hidratacion, igual que en SplashHome).
   const [mostrar, setMostrar] = useState<boolean | null>(null);
   const [saliendo, setSaliendo] = useState(false);
 
   useEffect(() => {
-    // sessionStorage/DOM no existen en el servidor: el splash se decide al
-    // montar, por eso el primer render no pinta nada.
+    let visto = false;
+    try {
+      visto = sessionStorage.getItem(CLAVE) === "1";
+    } catch {
+      // sin sessionStorage (modo restringido): mejor no mostrarlo
+      visto = true;
+    }
+    // sessionStorage no existe en el servidor: por eso el splash se decide
+    // al montar y el primer render no pinta nada.
     // eslint-disable-next-line react-hooks/set-state-in-effect -- ver nota
-    setMostrar(true);
-    document.body.style.overflow = "hidden";
+    setMostrar(!visto);
+    if (!visto) {
+      document.body.style.overflow = "hidden";
+    }
     return () => {
       document.body.style.overflow = "";
     };
@@ -36,6 +51,11 @@ export default function SplashHomeLeon() {
 
   const cerrar = useCallback(() => {
     setSaliendo(true);
+    try {
+      sessionStorage.setItem(CLAVE, "1");
+    } catch {
+      /* sin almacenamiento: se mostrara de nuevo, no es grave */
+    }
     setTimeout(() => {
       setMostrar(false);
       document.body.style.overflow = "";
