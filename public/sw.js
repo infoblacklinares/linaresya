@@ -1,5 +1,5 @@
 // LinaresYa Service Worker — cache-first para assets, network-first para páginas
-const CACHE = "linaresya-v1";
+const CACHE = "linaresya-v2";
 const OFFLINE_URL = "/offline";
 
 const PRECACHE = [
@@ -8,6 +8,7 @@ const PRECACHE = [
   "/offline",
   "/web-app-manifest-192x192.png",
   "/web-app-manifest-512x512.png",
+  "/web-app-manifest-maskable-512x512.png",
   "/apple-touch-icon.png",
 ];
 
