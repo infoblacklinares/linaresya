@@ -84,9 +84,12 @@ function lleno(key: CoreKey, valor: string): boolean {
 export default function PublishForm({
   categorias,
   esAdmin = false,
+  origen = "formulario",
 }: {
   categorias: Categoria[];
   esAdmin?: boolean;
+  /** De donde llego el alta. "popup" cuando vino del aviso de la portada. */
+  origen?: "popup" | "formulario";
 }) {
   const [state, formAction, isPending] = useActionState(
     publicarNegocio,
@@ -195,8 +198,8 @@ export default function PublishForm({
 
   return (
     <form action={formAction} className="px-4 pb-10 pt-2">
-      {/* De donde vino el alta, para distinguirla de la del popup */}
-      <input type="hidden" name="origen" value="formulario" />
+      {/* De donde vino el alta, para poder medir si el popup sirve */}
+      <input type="hidden" name="origen" value={origen} />
       {state.error && (
         <div className="mb-4 rounded-2xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800">
           {state.error}

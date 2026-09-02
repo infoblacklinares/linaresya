@@ -23,6 +23,11 @@ PR #1 y PR #2, ambos mergeados.
 
 ---
 
+> **Nota del 29/08:** el popup dejó de traer el formulario adentro. Ahora es
+> una invitación con la figura del león que lleva a `/publicar?origen=popup`.
+> Lo de abajo describe la versión original; la atribución del alta y el embudo
+> se mantienen (ver "El popup, segunda versión" al final).
+
 ## 1. El popup (`components/PopupNegocio.tsx`)
 
 Invita a sumar el negocio y deja enviarlo ahí mismo con lo mínimo: nombre,
@@ -273,3 +278,36 @@ panel esconde la sección y el popup funciona idéntico.
 4. Si querés analytics, definir `NEXT_PUBLIC_GA_ID`. Ojo: GA no mide el popup
    por sí solo, esos son eventos personalizados (paso 2).
 5. Si el sitio crece, mover el rate limiting a Cloudflare.
+
+---
+
+## El popup, segunda versión (29/08)
+
+Pedir nombre, categoría, WhatsApp y consentimiento dentro de una ventana que
+aparece sola resultó mucho pedir de golpe: la ventana ya interrumpe, y el
+formulario es el compromiso. Ahora la ventana solo propone.
+
+- Muestra la figura del león —la misma del splash, vectorizada en
+  `lib/leon-paths.ts`— sobre el degradado de marca, el titular "Registra tu
+  negocio y ten más presencia digital", una línea de apoyo y un botón que
+  lleva a `/publicar?origen=popup`.
+- Del león se dibuja **solo la melena**: el grupo `body` de ese vector son las
+  letras de INFOBLACK, que no corresponden en un aviso de LinaresYa, y la cola
+  sin ellas queda suelta.
+- Con `?popup=1` espera a que termine el splash antes de abrirse; si no,
+  quedaba tapado.
+
+**La medición se mantiene, con una etapa distinta en el medio:**
+
+- `popup_visto` y `popup_cerrado` siguen igual.
+- `popup_enviado` se reemplaza por **`popup_click`** (ir al formulario). Hay
+  que volver a correr `supabase/eventos_sitio.sql` para sumarlo a la lista
+  blanca.
+- Lo que termina publicando sale de `negocios.origen = 'popup'`: el botón
+  lleva `?origen=popup`, `/publicar` lo lee en el server component y se lo
+  pasa al formulario como prop. Sin eso, todas las altas quedarían como
+  `formulario`.
+- El panel muestra: visitas → lo vieron → fueron al form → publicaron.
+
+Se borró `/api/categorias`, que solo existía para llenar el select del
+formulario dentro del popup.
