@@ -50,7 +50,16 @@ const PASOS = [
   { n: "3", txt: "Tu negocio aparece en el directorio y en las búsquedas locales de Linares." },
 ];
 
-export default async function PublicarPage() {
+export default async function PublicarPage({
+  searchParams,
+}: {
+  // El popup de la portada llega con ?origen=popup. Se lee aca, en el server
+  // component, y viaja como prop: asi la atribucion del alta se mantiene
+  // aunque el formulario ya no viva dentro del popup.
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const sp = await searchParams;
+  const origen = sp.origen === "popup" ? "popup" : "formulario";
   const [{ data, error }, { count }] = await Promise.all([
     supabase
       .from("categorias")
@@ -175,7 +184,7 @@ export default async function PublicarPage() {
         </div>
       )}
 
-      <PublishForm categorias={categorias} />
+      <PublishForm categorias={categorias} origen={origen} />
 
       {/* Salida al final: para quien llega abajo y decide no publicar ahora */}
       <div className="px-4 pb-10 -mt-4 text-center">

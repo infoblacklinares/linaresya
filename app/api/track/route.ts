@@ -11,6 +11,7 @@ const EVENTOS_SITIO = [
   "popup_visto",
   "popup_cerrado",
   "popup_enviado",
+  "popup_click",
   "visita_portada",
 ] as const;
 type EventoSitio = (typeof EVENTOS_SITIO)[number];

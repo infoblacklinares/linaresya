@@ -137,7 +137,7 @@ export default async function AdminPage() {
           visita_portada: 0,
           popup_visto: 0,
           popup_cerrado: 0,
-          popup_enviado: 0,
+          popup_click: 0,
         };
         for (const fila of (embudoRaw ?? []) as unknown[]) {
           const x = fila as { evento?: unknown; conteo?: unknown };
@@ -301,8 +301,8 @@ export default async function AdminPage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <MiniStat label="Visitas" value={embudo.visita_portada} />
             <MiniStat label="Lo vieron" value={embudo.popup_visto} />
-            <MiniStat label="Lo cerraron" value={embudo.popup_cerrado} />
-            <MiniStat label="Publicaron" value={embudo.popup_enviado} />
+            <MiniStat label="Fueron al form" value={embudo.popup_click} />
+            <MiniStat label="Publicaron" value={desdePopup7d ?? 0} />
           </div>
           <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
             Visitas cuenta una por sesion del navegador; el popup aparece una vez
@@ -310,11 +310,11 @@ export default async function AdminPage() {
             magnitud, no un porcentaje exacto.
             {embudo.popup_visto > 0 && (
               <>
-                {" "}De los que lo vieron, publicaron el{" "}
+                {" "}De los que lo vieron, fueron al formulario el{" "}
                 <strong>
-                  {Math.round((embudo.popup_enviado / embudo.popup_visto) * 100)}%
+                  {Math.round((embudo.popup_click / embudo.popup_visto) * 100)}%
                 </strong>
-                .
+                , y publicaron {desdePopup7d ?? 0}.
               </>
             )}
           </p>

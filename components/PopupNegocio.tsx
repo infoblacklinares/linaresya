@@ -1,27 +1,29 @@
 "use client";
 
-import Script from "next/script";
 import Link from "next/link";
-import LinkDueno from "@/components/LinkDueno";
 import { usePathname } from "next/navigation";
-import { useActionState, useCallback, useEffect, useRef, useState } from "react";
-import { publicarNegocio, type PublicarState } from "@/app/publicar/actions";
-
-type Categoria = { id: number; nombre: string; emoji: string };
+import { useCallback, useEffect, useRef, useState } from "react";
+import { LEON } from "@/lib/leon-paths";
 
 const CLAVE = "linaresya_popup_negocio";
 const DEMORA_MS = 5000; // deja respirar la visita antes de interrumpir
 const DIAS_ESPERA = 7; // si lo cierran, no vuelve a aparecer en 7 dias
 // Cuanto se espera, como maximo, a que respondan el banner de cookies.
-// Pasado ese rato el popup sale igual: la mayoria de la gente nunca toca el
-// banner, y antes eso lo dejaba sin aparecer nunca.
 const ESPERA_COOKIES_MS = 5000;
 
-// Rutas donde el popup sobra o estorba: el formulario completo, el panel,
+// Rutas donde el popup sobra o estorba: el formulario al que lleva, el panel,
 // la edicion del dueno, la ficha para imprimir QR y la pagina offline.
 const RUTAS_EXCLUIDAS = ["/publicar", "/admin", "/dueno", "/qr", "/offline"];
 
-const estadoInicial: PublicarState = { ok: false };
+// Clave que deja el splash del leon al terminar. Con ?popup=1 el popup abre
+// de inmediato y quedaria tapado por el splash, asi que en ese caso se espera
+// a que termine. En el camino normal no hace falta: a los 5s ya paso.
+const CLAVE_SPLASH = "linaresya_splash_leon_visto";
+const ESPERA_SPLASH_MS = 4000;
+
+// El alta se sigue atribuyendo al popup: el boton lleva el origen en la URL y
+// /publicar lo mete en el formulario.
+const DESTINO = "/publicar?origen=popup";
 
 type Marca = { estado: "cerrado" | "enviado"; ts: number };
 
@@ -38,16 +40,23 @@ function leerMarca(): Marca | null {
   }
 }
 
+function guardarMarca(estado: Marca["estado"]) {
+  try {
+    localStorage.setItem(CLAVE, JSON.stringify({ estado, ts: Date.now() }));
+  } catch {
+    /* sin almacenamiento: volvera a aparecer, no es grave */
+  }
+}
+
 /**
- * Marca un evento del embudo del popup: cuantos lo ven, cuantos lo cierran y
- * cuantos publican. Sin esto solo se sabe cuantas altas trae (columna
- * `origen`), que no alcanza para decidir si conviene tenerlo ni con cuanta
- * demora.
+ * Marca un evento del embudo: cuantos lo ven, cuantos lo cierran y cuantos
+ * van al formulario. La ultima etapa (cuantos terminan publicando) sale de la
+ * columna `origen` de negocios, no de aca.
  *
  * No espera respuesta ni rompe nada si falla: es una metrica, no parte del
- * flujo. sendBeacon sobrevive al cierre de la pestaña.
+ * flujo. sendBeacon sobrevive a la navegacion a /publicar.
  */
-function medir(evento: "popup_visto" | "popup_cerrado" | "popup_enviado") {
+function medir(evento: "popup_visto" | "popup_cerrado" | "popup_click") {
   try {
     const cuerpo = JSON.stringify({ evento });
     if (navigator.sendBeacon) {
@@ -65,45 +74,27 @@ function medir(evento: "popup_visto" | "popup_cerrado" | "popup_enviado") {
   }
 }
 
-function guardarMarca(estado: Marca["estado"]) {
-  try {
-    localStorage.setItem(CLAVE, JSON.stringify({ estado, ts: Date.now() }));
-  } catch {
-    /* sin almacenamiento: volvera a aparecer, no es grave */
-  }
-}
-
 /**
- * Popup de captacion: al entrar al sitio invita a sumar el negocio y deja
- * enviarlo ahi mismo con lo minimo (nombre, categoria y WhatsApp).
+ * Invitacion a sumar el negocio. No pide datos: muestra al leon, dice para
+ * que sirve y lleva al formulario de /publicar.
  *
- * Reglas para que no sea molesto:
- *  - Aparece a los ~5s de la visita, nunca de golpe al cargar (para entonces
- *    el splash de la portada ya termino).
- *  - Una sola vez: si lo cierran vuelve recien en 7 dias; si envian el
- *    negocio, no vuelve nunca.
+ * Antes traia el formulario adentro. Pedir nombre, categoria, WhatsApp y
+ * consentimiento en una ventana que aparece sola es mucho pedir de golpe: la
+ * ventana interrumpe, el formulario es el compromiso, y juntarlos hace que se
+ * cierre sin leer. Asi la ventana solo propone, y el compromiso vive en su
+ * propia pagina, donde el que llega ya decidio entrar.
+ *
+ * Reglas para que no moleste:
+ *  - Aparece a los ~5s de la visita, nunca de golpe al cargar.
+ *  - Espera a que respondan el banner de cookies, pero como maximo 5s.
+ *  - Una sola vez: si lo cierran vuelve recien en 7 dias.
  *  - No aparece en /publicar, /admin, /dueno, /qr ni /offline.
  *  - Se cierra con Esc, tocando el fondo o con "Ahora no".
- *  - Espera a que respondan el banner de cookies, pero como maximo 5s.
  *  - ?popup=1 lo fuerza, para poder revisarlo sin limpiar el navegador.
- *
- * Usa el mismo server action que el formulario completo, asi que el negocio
- * entra igual que siempre: inactivo hasta que el admin lo revise.
  */
 export default function PopupNegocio() {
   const pathname = usePathname();
   const [abierto, setAbierto] = useState(false);
-  const [categorias, setCategorias] = useState<Categoria[]>([]);
-  const [state, formAction, isPending] = useActionState(
-    publicarNegocio,
-    estadoInicial,
-  );
-
-  const [nombre, setNombre] = useState("");
-  const [categoriaId, setCategoriaId] = useState("");
-  const [acepta, setAcepta] = useState(false);
-
-  const [fallaronCategorias, setFallaronCategorias] = useState(false);
 
   const dialogoRef = useRef<HTMLDivElement>(null);
   const focoPrevio = useRef<HTMLElement | null>(null);
@@ -112,24 +103,25 @@ export default function PopupNegocio() {
     (r) => pathname === r || pathname.startsWith(`${r}/`),
   );
 
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-
   const cerrar = useCallback(() => {
     setAbierto(false);
-    // Si ya lo enviaron manda la marca "enviado" que grabo el efecto de exito.
-    if (!state.ok) {
-      guardarMarca("cerrado");
-      medir("popup_cerrado");
-    }
+    guardarMarca("cerrado");
+    medir("popup_cerrado");
     focoPrevio.current?.focus();
-  }, [state.ok]);
+  }, []);
+
+  // Ir al formulario cuenta como conversion del popup, no como cierre: se
+  // guarda la marca para que no vuelva a aparecer, pero sin marcarlo cerrado.
+  const irAlFormulario = useCallback(() => {
+    guardarMarca("enviado");
+    medir("popup_click");
+    setAbierto(false);
+  }, []);
 
   // ── Cuando corresponde abrirlo ──────────────────────────────────
   useEffect(() => {
     if (excluida) return;
 
-    // ?popup=1 lo fuerza al toque, ignorando marcas y esperas. Sirve para
-    // revisarlo sin tener que limpiar el navegador.
     const forzado = new URLSearchParams(window.location.search).get("popup") === "1";
 
     if (!forzado) {
@@ -177,9 +169,27 @@ export default function PopupNegocio() {
       return true;
     };
 
+    const splashTermino = () => {
+      try {
+        return sessionStorage.getItem(CLAVE_SPLASH) === "1";
+      } catch {
+        return true;
+      }
+    };
+
     const timer = setTimeout(() => {
       if (forzado) {
-        abrir();
+        if (splashTermino()) {
+          abrir();
+          return;
+        }
+        const limiteSplash = Date.now() + ESPERA_SPLASH_MS;
+        reintento = setInterval(() => {
+          if (splashTermino() || Date.now() >= limiteSplash) {
+            if (reintento) clearInterval(reintento);
+            abrir();
+          }
+        }, 200);
         return;
       }
       if (intentar(false)) return;
@@ -197,29 +207,6 @@ export default function PopupNegocio() {
     };
   }, [excluida]);
 
-  // ── Categorias: se piden recien al abrir ────────────────────────
-  useEffect(() => {
-    if (!abierto || categorias.length > 0) return;
-    let cancelado = false;
-
-    fetch("/api/categorias")
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("http"))))
-      .then((json: { categorias?: Categoria[] }) => {
-        if (cancelado) return;
-        const lista = json.categorias ?? [];
-        setCategorias(lista);
-        setFallaronCategorias(lista.length === 0);
-      })
-      .catch(() => {
-        // Sin categorias no se puede enviar desde aca: mandamos al formulario.
-        if (!cancelado) setFallaronCategorias(true);
-      });
-
-    return () => {
-      cancelado = true;
-    };
-  }, [abierto, categorias.length]);
-
   // ── Esc, bloqueo de scroll y foco inicial ───────────────────────
   useEffect(() => {
     if (!abierto) return;
@@ -233,7 +220,7 @@ export default function PopupNegocio() {
 
       // Trampa de foco: el tabulador no debe salirse del modal.
       const foco = dialogoRef.current?.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
       );
       if (!foco || foco.length === 0) return;
       const primero = foco[0];
@@ -252,8 +239,6 @@ export default function PopupNegocio() {
 
     const overflowPrevio = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    // Enfocamos el contenedor, no el input: en el celular abrir el teclado de
-    // golpe tapa el modal entero.
     dialogoRef.current?.focus();
 
     return () => {
@@ -262,18 +247,7 @@ export default function PopupNegocio() {
     };
   }, [abierto, cerrar]);
 
-  // Enviado: que no vuelva a aparecer en este navegador.
-  useEffect(() => {
-    if (state.ok) {
-      guardarMarca("enviado");
-      medir("popup_enviado");
-    }
-  }, [state.ok]);
-
   if (!abierto) return null;
-
-  const puedeEnviar =
-    nombre.trim().length >= 3 && categoriaId !== "" && acepta && !isPending;
 
   return (
     <div
@@ -298,235 +272,74 @@ export default function PopupNegocio() {
         // navegable con Tab, asi que no le corresponde el anillo global de
         // :focus-visible (que ademas pisa la sombra de la tarjeta).
         style={{ outline: "none", boxShadow: "0 18px 60px rgba(0,0,0,0.28)" }}
-        className="relative max-h-[92vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white"
+        className="relative w-full max-w-sm overflow-hidden rounded-3xl bg-white"
       >
         <button
           type="button"
           onClick={cerrar}
           aria-label="Cerrar"
-          className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/85 text-[#1A1410] transition hover:bg-white"
+          className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition hover:bg-white/35"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
             <path d="M18 6 6 18M6 6l12 12" />
           </svg>
         </button>
 
-        {state.ok ? (
-          <div className="px-6 py-10 text-center">
-            <div className="text-5xl">{"\u{2705}"}</div>
-            <h2
-              id="popup-negocio-titulo"
-              className="mt-3 text-2xl font-extrabold tracking-tight text-[#1A1410]"
-            >
-              ¡Listo! Solicitud enviada
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-[#6B5E57]">
-              Revisamos tu negocio y lo activamos en las próximas horas. Mientras
-              tanto, ya podés completar fotos y horarios vos mismo.
-            </p>
+        {/* Imagen: el leon de la marca, el mismo del splash */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#1a4a5a] via-[#2B6E80] to-[#1e3a4a] px-6 pb-4 pt-7">
+          <div className="pointer-events-none absolute -right-6 -top-8 h-32 w-32 rounded-full bg-[#F4B860]/15 blur-2xl" />
+          <svg
+            viewBox="555 0 410 300"
+            className="relative mx-auto h-24 w-auto drop-shadow-[0_4px_12px_rgba(0,0,0,0.25)]"
+            role="img"
+            aria-label="León de LinaresYa"
+          >
+            <defs>
+              <linearGradient id="popupLeonOro" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#F8D48A" />
+                <stop offset="55%" stopColor="#F4B860" />
+                <stop offset="100%" stopColor="#D99A3F" />
+              </linearGradient>
+            </defs>
+            {/* Solo la cabeza: el grupo "body" son las letras de INFOBLACK,
+                que no van en un aviso de LinaresYa, y la cola sin ellas queda
+                suelta. El viewBox recorta a la melena. */}
+            {LEON.draw
+              .filter((p) => p.g === "mane")
+              .map((p, i) => (
+                <path key={i} d={p.d} fill="url(#popupLeonOro)" />
+              ))}
+          </svg>
+        </div>
 
-            {state.editarUrl && <LinkDueno url={state.editarUrl} />}
-            <button
-              type="button"
-              onClick={cerrar}
-              className="mt-6 w-full rounded-full bg-[#1A1410] px-6 py-3.5 text-base font-bold text-white transition hover:bg-[#2B6E80]"
-            >
-              Seguir explorando
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="bg-gradient-to-br from-[#2B6E80] to-[#1f5268] px-6 pb-6 pt-7 text-white">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-white/60">
-                📍 Directorio local de Linares
-              </p>
-              <h2
-                id="popup-negocio-titulo"
-                className="mt-2 text-2xl font-black leading-tight tracking-tight"
-              >
-                ¿Tienes un negocio en Linares?
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-white/80">
-                Súmalo <strong className="text-white">gratis</strong> en 30
-                segundos y aparece frente a los vecinos que te buscan.
-              </p>
-            </div>
+        <div className="px-6 pb-6 pt-5 text-center">
+          <h2
+            id="popup-negocio-titulo"
+            className="text-[22px] font-black leading-tight tracking-tight text-[#1A1410]"
+          >
+            Registra tu negocio y ten más presencia digital
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-[#6B5E57]">
+            Gratis, sin registro y en 3 minutos. Apareces frente a los vecinos de
+            Linares que buscan lo que ofreces.
+          </p>
 
-            <form action={formAction} className="px-6 pb-6 pt-5">
-              {/* De donde vino el alta, para poder medir si el popup sirve */}
-              <input type="hidden" name="origen" value="popup" />
-              {state.error && (
-                <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-                  {state.error}
-                </div>
-              )}
+          <Link
+            href={DESTINO}
+            onClick={irAlFormulario}
+            className="mt-5 block w-full rounded-full bg-[#1A1410] px-6 py-4 text-base font-bold text-white transition hover:bg-[#2B6E80] active:scale-[0.98]"
+          >
+            Registrar mi negocio →
+          </Link>
 
-              <div className="space-y-3.5">
-                <div>
-                  <label
-                    htmlFor="popup-nombre"
-                    className="mb-1.5 block text-sm font-bold text-[#1A1410]"
-                  >
-                    ¿Cómo se llama tu negocio?
-                    <span className="ml-0.5 text-[#C05A46]">*</span>
-                  </label>
-                  <input
-                    id="popup-nombre"
-                    name="nombre"
-                    type="text"
-                    required
-                    minLength={3}
-                    maxLength={80}
-                    placeholder="Ej: Pizzería Don Vittorio"
-                    value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
-                    className="w-full rounded-2xl border border-[#E8E4DE] bg-[#F9F8F6] px-4 py-3 text-base text-[#1A1410] outline-none transition placeholder:text-[#A99F97] focus:border-[#2B6E80] focus:bg-white"
-                  />
-                  {state.fieldErrors?.nombre && (
-                    <p className="mt-1 text-[11px] font-medium text-red-600">
-                      {state.fieldErrors.nombre}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="popup-categoria"
-                    className="mb-1.5 block text-sm font-bold text-[#1A1410]"
-                  >
-                    ¿A qué se dedica?
-                    <span className="ml-0.5 text-[#C05A46]">*</span>
-                  </label>
-                  <select
-                    id="popup-categoria"
-                    name="categoria_id"
-                    required
-                    value={categoriaId}
-                    onChange={(e) => setCategoriaId(e.target.value)}
-                    disabled={categorias.length === 0}
-                    className="w-full rounded-2xl border border-[#E8E4DE] bg-[#F9F8F6] px-4 py-3 text-base text-[#1A1410] outline-none transition focus:border-[#2B6E80] focus:bg-white disabled:opacity-60"
-                  >
-                    <option value="">
-                      {categorias.length > 0
-                        ? "Selecciona una categoría"
-                        : fallaronCategorias
-                          ? "No pudimos cargar las categorías"
-                          : "Cargando categorías…"}
-                    </option>
-                    {categorias.map((cat) => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.emoji} {cat.nombre}
-                      </option>
-                    ))}
-                  </select>
-                  {state.fieldErrors?.categoria_id && (
-                    <p className="mt-1 text-[11px] font-medium text-red-600">
-                      {state.fieldErrors.categoria_id}
-                    </p>
-                  )}
-                  {fallaronCategorias && (
-                    <p className="mt-1 text-[11px] text-[#8E8279]">
-                      Sigue desde el{" "}
-                      <Link
-                        href="/publicar"
-                        onClick={cerrar}
-                        className="font-semibold text-[#2B6E80] underline"
-                      >
-                        formulario completo
-                      </Link>
-                      .
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="popup-whatsapp"
-                    className="mb-1.5 block text-sm font-bold text-[#1A1410]"
-                  >
-                    ¿Tu WhatsApp?
-                  </label>
-                  <input
-                    id="popup-whatsapp"
-                    name="whatsapp"
-                    type="tel"
-                    placeholder="9 1234 5678"
-                    className="w-full rounded-2xl border border-[#E8E4DE] bg-[#F9F8F6] px-4 py-3 text-base text-[#1A1410] outline-none transition placeholder:text-[#A99F97] focus:border-[#2B6E80] focus:bg-white"
-                  />
-                  <p className="mt-1 text-[11px] text-[#8E8279]">
-                    Es el botón que más usan los clientes
-                  </p>
-                </div>
-              </div>
-
-              {/* Turnstile: el script de Cloudflare renderiza el widget al
-                  cargar, por eso el div se monta junto con el script. */}
-              {turnstileSiteKey && (
-                <>
-                  <Script
-                    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-                    strategy="afterInteractive"
-                    async
-                    defer
-                  />
-                  <div
-                    className="cf-turnstile mt-4 flex justify-center"
-                    data-sitekey={turnstileSiteKey}
-                    data-theme="light"
-                  />
-                </>
-              )}
-
-              <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-2xl border border-[#E8E4DE] bg-[#F9F8F6] px-4 py-3">
-                <input
-                  type="checkbox"
-                  name="acepta_privacidad"
-                  required
-                  checked={acepta}
-                  onChange={(e) => setAcepta(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 shrink-0 accent-[#1A1410]"
-                />
-                <span className="text-xs leading-relaxed text-[#6B5E57]">
-                  Acepto la{" "}
-                  <Link
-                    href="/privacidad"
-                    target="_blank"
-                    className="font-semibold text-[#2B6E80] underline"
-                  >
-                    Política de Privacidad
-                  </Link>
-                  . Entiendo que los datos del negocio se publicarán en su ficha
-                  para que los vecinos puedan contactarme.
-                </span>
-              </label>
-
-              <button
-                type="submit"
-                disabled={!puedeEnviar}
-                className="mt-4 w-full rounded-full bg-[#1A1410] px-6 py-4 text-base font-bold text-white transition hover:bg-[#2B6E80] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[#1A1410]"
-              >
-                {isPending ? "Enviando…" : "Publicar mi negocio gratis"}
-              </button>
-
-              <div className="mt-3 flex items-center justify-between gap-3">
-                <button
-                  type="button"
-                  onClick={cerrar}
-                  className="text-[13px] font-semibold text-[#8E8279] transition hover:text-[#1A1410]"
-                >
-                  Ahora no
-                </button>
-                <Link
-                  href="/publicar"
-                  onClick={cerrar}
-                  className="text-[13px] font-semibold text-[#2B6E80] hover:underline"
-                >
-                  Formulario completo →
-                </Link>
-              </div>
-            </form>
-          </>
-        )}
+          <button
+            type="button"
+            onClick={cerrar}
+            className="mt-3 text-[13px] font-semibold text-[#8E8279] transition hover:text-[#1A1410]"
+          >
+            Ahora no
+          </button>
+        </div>
       </div>
     </div>
   );

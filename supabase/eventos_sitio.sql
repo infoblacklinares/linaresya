@@ -8,6 +8,12 @@
 -- exista ningun negocio. Sin esto solo sabiamos cuantas altas trae el popup
 -- (columna `origen`), no cuantos lo vieron ni cuantos lo cerraron.
 --
+-- ACTUALIZACION 29/08: se agrega `popup_click`. El popup ya no trae el
+-- formulario adentro: ahora invita y lleva a /publicar, asi que la etapa del
+-- medio del embudo pasa a ser el clic. Lo que termina publicando sale de la
+-- columna `origen` de negocios, no de aca. `popup_enviado` se deja en la
+-- lista para no invalidar las filas viejas.
+--
 -- ACTUALIZACION 28/08: se agrega `visita_portada`. Sin ese denominador, saber
 -- que 7 personas vieron el popup no dice nada: no se distingue "vino poca
 -- gente" de "vino mucha y el popup no aparece". Si ya corriste este archivo
@@ -41,7 +47,8 @@ SET search_path = public
 AS $$
 BEGIN
   IF p_evento NOT IN (
-    'popup_visto', 'popup_cerrado', 'popup_enviado', 'visita_portada'
+    'popup_visto', 'popup_cerrado', 'popup_enviado', 'popup_click',
+    'visita_portada'
   ) THEN
     RAISE EXCEPTION 'Evento de sitio invalido: %', p_evento;
   END IF;
