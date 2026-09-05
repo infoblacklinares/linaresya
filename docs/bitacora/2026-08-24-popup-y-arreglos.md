@@ -311,3 +311,44 @@ formulario es el compromiso. Ahora la ventana solo propone.
 
 Se borró `/api/categorias`, que solo existía para llenar el select del
 formulario dentro del popup.
+
+---
+
+## 05/09 — El denominador del embudo estaba mal
+
+**El sintoma.** La lectura del 28/08 dio 9 `popup_visto` contra 2
+`visita_portada`: mas gente viendo el popup que gente entrando al sitio. Eso
+no puede pasar, y lo anote como pregunta abierta.
+
+**La causa.** `ContadorVisita` estaba montado en `app/page.tsx`, o sea que
+contaba solo a quien entraba por la portada. El popup, en cambio, aparece en
+toda ruta que no este en su lista de excluidas: categorias, fichas de negocio
+y busquedas incluidas. Numerador y denominador median universos distintos, asi
+que el porcentaje de conversion no significaba nada.
+
+**El arreglo.**
+
+- `lib/popup-rutas.ts` (nuevo): la lista de rutas excluidas vive en un solo
+  lugar y la usan el popup y el contador. Si se separan, el embudo vuelve a
+  comparar cosas distintas sin que nadie se entere.
+- `ContadorVisita` pasa al layout raiz y cuenta el evento nuevo `visita_sitio`
+  en la primera ruta elegible de la sesion, no solo en la portada. Depende del
+  pathname, asi que tambien cuenta a quien entra por `/publicar` y despues
+  navega al sitio.
+- Respaldo por carga (`contadaEnEstaCarga`) para cuando `sessionStorage` esta
+  bloqueado: sin eso, al depender del pathname, habria contado una visita por
+  cada navegacion.
+- `visita_portada` queda en la lista blanca para no invalidar las filas
+  viejas, pero ya no se emite. El panel suma los dos: nunca convivieron, asi
+  que sumarlos da el total de sesiones sin contar ninguna dos veces.
+
+**Hay que correr `supabase/eventos_sitio.sql` de nuevo** (es idempotente). Ese
+archivo ya traia pendiente `popup_click`, que tampoco se estaba guardando.
+Mientras no se corra, `/api/track` responde ok igual y no se pierde nada del
+flujo, pero esas dos etapas del embudo se leen como cero.
+
+**Verificado local** (build, lint, tipos y Chromium contra el mock): entrar por
+una categoria cuenta 1; navegar por medio sitio cuenta 1; entrar por
+`/publicar` y despues ir a la portada cuenta 1; quedarse solo en `/publicar`
+cuenta 0. El popup sigue apareciendo en categorias y sigue sin aparecer en
+`/publicar`.

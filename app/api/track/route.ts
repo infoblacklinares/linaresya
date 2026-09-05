@@ -12,6 +12,8 @@ const EVENTOS_SITIO = [
   "popup_cerrado",
   "popup_enviado",
   "popup_click",
+  "visita_sitio",
+  // Se deja para no rechazar beacons de pestanas viejas todavia abiertas.
   "visita_portada",
 ] as const;
 type EventoSitio = (typeof EVENTOS_SITIO)[number];

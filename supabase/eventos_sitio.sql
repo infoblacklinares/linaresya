@@ -8,6 +8,14 @@
 -- exista ningun negocio. Sin esto solo sabiamos cuantas altas trae el popup
 -- (columna `origen`), no cuantos lo vieron ni cuantos lo cerraron.
 --
+-- ACTUALIZACION 05/09: se agrega `visita_sitio` y queda como el denominador
+-- del embudo. `visita_portada` contaba solo a quien entraba por la home,
+-- mientras el popup aparece tambien en categorias, fichas y busquedas: el
+-- denominador era mas chico que el numerador y la division no significaba
+-- nada (la semana del 28/08 dio 9 vistos contra 2 visitas). `visita_portada`
+-- se deja en la lista para no invalidar las filas viejas, pero ya no se
+-- emite. Si ya corriste este archivo, correlo de nuevo entero.
+--
 -- ACTUALIZACION 29/08: se agrega `popup_click`. El popup ya no trae el
 -- formulario adentro: ahora invita y lleva a /publicar, asi que la etapa del
 -- medio del embudo pasa a ser el clic. Lo que termina publicando sale de la
@@ -48,7 +56,7 @@ AS $$
 BEGIN
   IF p_evento NOT IN (
     'popup_visto', 'popup_cerrado', 'popup_enviado', 'popup_click',
-    'visita_portada'
+    'visita_sitio', 'visita_portada'
   ) THEN
     RAISE EXCEPTION 'Evento de sitio invalido: %', p_evento;
   END IF;
@@ -78,7 +86,7 @@ GRANT EXECUTE ON FUNCTION public.incrementar_evento_sitio(TEXT) TO authenticated
 -- El panel /admin muestra visitas, vistos, publicados y el % de conversion de
 -- la semana.
 --
--- Ojo al comparar: `visita_portada` se cuenta una vez por sesion del navegador
+-- Ojo al comparar: `visita_sitio` se cuenta una vez por sesion del navegador
 -- y el popup aparece una vez cada 7 dias por navegador, asi que vistos/visitas
 -- no es una division exacta. Sirve para el orden de magnitud, no para un
 -- porcentaje fino.

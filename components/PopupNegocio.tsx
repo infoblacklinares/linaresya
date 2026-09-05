@@ -4,16 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LEON } from "@/lib/leon-paths";
+import { rutaSinPopup } from "@/lib/popup-rutas";
 
 const CLAVE = "linaresya_popup_negocio";
 const DEMORA_MS = 5000; // deja respirar la visita antes de interrumpir
 const DIAS_ESPERA = 7; // si lo cierran, no vuelve a aparecer en 7 dias
 // Cuanto se espera, como maximo, a que respondan el banner de cookies.
 const ESPERA_COOKIES_MS = 5000;
-
-// Rutas donde el popup sobra o estorba: el formulario al que lleva, el panel,
-// la edicion del dueno, la ficha para imprimir QR y la pagina offline.
-const RUTAS_EXCLUIDAS = ["/publicar", "/admin", "/dueno", "/qr", "/offline"];
 
 // Clave que deja el splash del leon al terminar. Con ?popup=1 el popup abre
 // de inmediato y quedaria tapado por el splash, asi que en ese caso se espera
@@ -99,9 +96,9 @@ export default function PopupNegocio() {
   const dialogoRef = useRef<HTMLDivElement>(null);
   const focoPrevio = useRef<HTMLElement | null>(null);
 
-  const excluida = RUTAS_EXCLUIDAS.some(
-    (r) => pathname === r || pathname.startsWith(`${r}/`),
-  );
+  // La misma lista que usa ContadorVisita, para que el denominador del embudo
+  // sea exactamente el universo donde el popup podia aparecer.
+  const excluida = rutaSinPopup(pathname);
 
   const cerrar = useCallback(() => {
     setAbierto(false);

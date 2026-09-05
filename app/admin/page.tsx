@@ -134,6 +134,11 @@ export default async function AdminPage() {
     ? null
     : (() => {
         const suma = {
+          // `visita_portada` es el contador viejo, que solo miraba la home.
+          // Se suma con el nuevo porque nunca convivieron: cada sesion la
+          // conto uno u otro segun la version desplegada, asi que sumarlos da
+          // el total de sesiones sin contar ninguna dos veces.
+          visita_sitio: 0,
           visita_portada: 0,
           popup_visto: 0,
           popup_cerrado: 0,
@@ -146,7 +151,7 @@ export default async function AdminPage() {
             suma[evento as keyof typeof suma] += Number(x.conteo ?? 0);
           }
         }
-        return suma;
+        return { ...suma, visitas: suma.visita_sitio + suma.visita_portada };
       })();
   const resenas7d = nuevasResenas7d ?? 0;
   const catsMap = new Map<number, Categoria>(
@@ -293,13 +298,13 @@ export default async function AdminPage() {
         </div>
       </section>
 
-      {embudo && (embudo.visita_portada > 0 || embudo.popup_visto > 0) && (
+      {embudo && (embudo.visitas > 0 || embudo.popup_visto > 0) && (
         <section className="px-4 pt-6">
           <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
-            Popup de la portada
+            Popup para sumar negocios
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <MiniStat label="Visitas" value={embudo.visita_portada} />
+            <MiniStat label="Visitas" value={embudo.visitas} />
             <MiniStat label="Lo vieron" value={embudo.popup_visto} />
             <MiniStat label="Fueron al form" value={embudo.popup_click} />
             <MiniStat label="Publicaron" value={desdePopup7d ?? 0} />

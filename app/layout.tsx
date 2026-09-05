@@ -3,6 +3,7 @@ import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Footer from "@/components/Footer";
 import PwaInit from "@/components/PwaInit";
 import CookieConsent from "@/components/CookieConsent";
+import ContadorVisita from "@/components/ContadorVisita";
 import PopupNegocio from "@/components/PopupNegocio";
 import "./globals.css";
 
@@ -101,6 +102,7 @@ export default function RootLayout({
         <Footer />
         <CookieConsent />
         <PopupNegocio />
+        <ContadorVisita />
         <PwaInit />
       </body>
     </html>
