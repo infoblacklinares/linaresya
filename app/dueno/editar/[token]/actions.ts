@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendAdminEdicionDuenoNotification } from "@/lib/email";
 import { deleteFotosFromStorage } from "@/lib/storage";
+import { normalizarInstagram } from "@/lib/instagram";
 
 const SITE_URL_NOTIF =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
@@ -70,6 +71,7 @@ export async function updateNegocioDueno(
   const telefono = String(formData.get("telefono") ?? "").trim();
   const whatsappRaw = String(formData.get("whatsapp") ?? "").trim();
   const emailRaw = String(formData.get("email") ?? "").trim().toLowerCase();
+  const instagramRaw = String(formData.get("instagram") ?? "").trim();
   const direccion = String(formData.get("direccion") ?? "").trim();
   const aDomicilio = formData.get("a_domicilio") === "on";
   const zonaCobertura = String(formData.get("zona_cobertura") ?? "").trim();
@@ -101,6 +103,9 @@ export async function updateNegocioDueno(
     fieldErrors.foto_portada = "URL de foto invalida";
   }
 
+  const ig = normalizarInstagram(instagramRaw);
+  if (!ig.ok) fieldErrors.instagram = ig.error;
+
   if (Object.keys(fieldErrors).length > 0) {
     return { ok: false, fieldErrors, error: "Revisa los campos marcados" };
   }
@@ -128,6 +133,7 @@ export async function updateNegocioDueno(
     zona_cobertura: zonaCobertura || null,
     disponibilidad: disponibilidad || null,
     email: emailRaw || null,
+    instagram: ig.ok ? ig.usuario : null,
   };
   if (fotoPortada && isUrlBucket(fotoPortada)) {
     update.foto_portada = fotoPortada;

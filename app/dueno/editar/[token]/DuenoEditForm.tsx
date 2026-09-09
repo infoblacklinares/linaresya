@@ -22,6 +22,8 @@ type Negocio = {
   telefono: string | null;
   whatsapp: string | null;
   email: string | null;
+  /** Opcional: la columna se agrega a mano con supabase/instagram_negocios.sql */
+  instagram?: string | null;
   direccion: string | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;
@@ -155,6 +157,24 @@ export default function DuenoEditForm({
           defaultValue={negocio.email ?? ""}
           placeholder="tu@email.com"
           maxLength={120}
+          className="input-ue"
+        />
+      </Field>
+
+      <Field
+        label="Instagram"
+        hint="Tu usuario o el link de tu perfil"
+        error={fe.instagram}
+      >
+        <input
+          type="text"
+          name="instagram"
+          defaultValue={negocio.instagram ?? ""}
+          placeholder="@tu-negocio"
+          maxLength={200}
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
           className="input-ue"
         />
       </Field>

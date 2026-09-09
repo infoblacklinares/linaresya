@@ -34,6 +34,8 @@ type Negocio = {
   whatsapp: string | null;
   email: string | null;
   sitio_web: string | null;
+  /** Opcional: la columna se agrega a mano con supabase/instagram_negocios.sql */
+  instagram?: string | null;
   direccion: string | null;
   lat: number | null;
   lng: number | null;
@@ -201,6 +203,18 @@ export default function EditForm({
             defaultValue={negocio.sitio_web ?? ""}
             className="input-ue"
             placeholder="https://"
+          />
+        </Field>
+        <Field label="Instagram" error={fe.instagram}>
+          <input
+            name="instagram"
+            type="text"
+            defaultValue={negocio.instagram ?? ""}
+            className="input-ue"
+            placeholder="@tu-negocio"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
           />
         </Field>
       </section>

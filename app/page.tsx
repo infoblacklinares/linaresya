@@ -12,7 +12,6 @@ import AnimatedCard from "@/components/AnimatedCard";
 import NudgeArrow from "@/components/NudgeArrow";
 import StoriesBar, { type Historia } from "@/components/StoriesBar";
 import SplashHomeLeon from "@/components/SplashHomeLeon";
-import ContadorVisita from "@/components/ContadorVisita";
 import MarqueeRow from "@/components/MarqueeRow";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
@@ -405,7 +404,6 @@ export default async function Home() {
 
       {/* Splash de bienvenida: el león, cada vez que se abre la portada */}
       <SplashHomeLeon />
-      <ContadorVisita />
 
       {/* Hero — full-bleed en desktop, contenido centrado adentro */}
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} verificados={verificadosCount ?? 0} />

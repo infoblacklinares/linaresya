@@ -7,6 +7,7 @@ import { useActionState, useCallback, useState } from "react";
 import { publicarNegocio, type PublicarState } from "./actions";
 import ScheduleFields from "./ScheduleFields";
 import PhotoUpload from "./PhotoUpload";
+import { normalizarInstagram } from "@/lib/instagram";
 
 type Categoria = {
   id: number;
@@ -107,6 +108,7 @@ export default function PublishForm({
     email: "",
     telefono: "",
     sitio_web: "",
+    instagram: "",
     a_domicilio: false,
     acepta_privacidad: false,
   });
@@ -170,6 +172,12 @@ export default function PublishForm({
     errores.email = "Ese email no parece válido.";
   if (touched.sitio_web && values.sitio_web && !URL_RE.test(values.sitio_web))
     errores.sitio_web = "Usa una dirección válida, ej: tu-negocio.cl";
+  // Mismo normalizador que usa el server action, para que lo que se ve en
+  // pantalla y lo que se guarda no puedan discrepar.
+  if (touched.instagram && values.instagram) {
+    const ig = normalizarInstagram(values.instagram);
+    if (!ig.ok) errores.instagram = ig.error;
+  }
 
   const err = (key: string) => errores[key] || fe[key] || "";
 
@@ -448,6 +456,26 @@ export default function PublishForm({
                   value={values.sitio_web}
                   onChange={(e) => set("sitio_web", e.target.value)}
                   onBlur={() => tocar("sitio_web")}
+                />
+              </Field>
+
+              <Field
+                label="Instagram"
+                hint="Tu usuario o el link de tu perfil"
+                error={err("instagram")}
+              >
+                <input
+                  type="text"
+                  name="instagram"
+                  maxLength={200}
+                  placeholder="@tu-negocio"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  className="input-ue"
+                  value={values.instagram}
+                  onChange={(e) => set("instagram", e.target.value)}
+                  onBlur={() => tocar("instagram")}
                 />
               </Field>
 

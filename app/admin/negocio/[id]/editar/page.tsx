@@ -76,9 +76,8 @@ export default async function EditarNegocioPage({
   ] = await Promise.all([
     supabaseAdmin
       .from("negocios")
-      .select(
-        "id,nombre,slug,categoria_id,tipo,plan,descripcion,telefono,whatsapp,email,sitio_web,direccion,a_domicilio,zona_cobertura,disponibilidad,foto_portada,activo,verificado,premium_hasta,lat,lng",
-      )
+      // `*` a proposito: ver el comentario en app/dueno/editar/[token]/page.tsx.
+      .select("*")
       .eq("id", id)
       .single(),
     supabaseAdmin

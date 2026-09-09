@@ -311,3 +311,94 @@ formulario es el compromiso. Ahora la ventana solo propone.
 
 Se borró `/api/categorias`, que solo existía para llenar el select del
 formulario dentro del popup.
+
+---
+
+## 05/09 — El denominador del embudo estaba mal
+
+**El sintoma.** La lectura del 28/08 dio 9 `popup_visto` contra 2
+`visita_portada`: mas gente viendo el popup que gente entrando al sitio. Eso
+no puede pasar, y lo anote como pregunta abierta.
+
+**La causa.** `ContadorVisita` estaba montado en `app/page.tsx`, o sea que
+contaba solo a quien entraba por la portada. El popup, en cambio, aparece en
+toda ruta que no este en su lista de excluidas: categorias, fichas de negocio
+y busquedas incluidas. Numerador y denominador median universos distintos, asi
+que el porcentaje de conversion no significaba nada.
+
+**El arreglo.**
+
+- `lib/popup-rutas.ts` (nuevo): la lista de rutas excluidas vive en un solo
+  lugar y la usan el popup y el contador. Si se separan, el embudo vuelve a
+  comparar cosas distintas sin que nadie se entere.
+- `ContadorVisita` pasa al layout raiz y cuenta el evento nuevo `visita_sitio`
+  en la primera ruta elegible de la sesion, no solo en la portada. Depende del
+  pathname, asi que tambien cuenta a quien entra por `/publicar` y despues
+  navega al sitio.
+- Respaldo por carga (`contadaEnEstaCarga`) para cuando `sessionStorage` esta
+  bloqueado: sin eso, al depender del pathname, habria contado una visita por
+  cada navegacion.
+- `visita_portada` queda en la lista blanca para no invalidar las filas
+  viejas, pero ya no se emite. El panel suma los dos: nunca convivieron, asi
+  que sumarlos da el total de sesiones sin contar ninguna dos veces.
+
+**Hay que correr `supabase/eventos_sitio.sql` de nuevo** (es idempotente). Ese
+archivo ya traia pendiente `popup_click`, que tampoco se estaba guardando.
+Mientras no se corra, `/api/track` responde ok igual y no se pierde nada del
+flujo, pero esas dos etapas del embudo se leen como cero.
+
+**Verificado local** (build, lint, tipos y Chromium contra el mock): entrar por
+una categoria cuenta 1; navegar por medio sitio cuenta 1; entrar por
+`/publicar` y despues ir a la portada cuenta 1; quedarse solo en `/publicar`
+cuenta 0. El popup sigue apareciendo en categorias y sigue sin aparecer en
+`/publicar`.
+
+---
+
+## 09/09 — Instagram del negocio
+
+Pedido: un campo de redes, especificamente Instagram, y que al tocarlo lleve al
+perfil que el negocio cargo.
+
+**Que se guarda.** El nombre de usuario (`panaderia.laespiga`), no la URL. La
+gente escribe esto de cinco formas: con arroba, sin arroba, pegando el link del
+navegador, con el `?igshid=...` que Instagram agrega al compartir, con barra
+final. Guardar el usuario deja una sola forma canonica y el link se arma al
+mostrarlo (`lib/instagram.ts`).
+
+**Lo que rechaza, y por que importa.** Si alguien pega el link de una
+publicacion (`instagram.com/p/CxYz.../`), guardar el primer segmento daria "p"
+y el boton llevaria a una pagina de error. Se detectan esas rutas y se pide el
+link del perfil.
+
+**Un bug que casi entra.** La primera version decidia "esto es un link, no un
+usuario" si el texto tenia un punto. Pero hay usuarios con punto adentro
+—`panaderia.laespiga`— y escribirlo sin arroba es lo mas comun. Los habria
+rechazado a todos. Ahora la unica senal de que algo es un link es la barra.
+Lo encontro la tabla de 25 casos, no la lectura del codigo.
+
+**Donde aparece.** El campo esta en `/publicar` (dentro de "Agregar mas
+detalles"), en la edicion del dueno y en el panel de admin. En la ficha sale
+como boton `@usuario` al lado del de sitio web, y en el JSON-LD como `sameAs`,
+que es el campo donde Google espera los perfiles sociales.
+
+**Los `select` de las paginas de edicion pasaron a `*`.** Una lista explicita
+de columnas que nombre una que todavia no existe hace fallar la consulta
+entera: si se subia esto antes de correr el SQL, el dueno y el admin se
+quedaban sin poder editar. `lib/consultas.ts` ya usaba `*` por lo mismo.
+
+**El reintento por columna faltante ahora es general.** Antes solo cubria
+`origen`; ahora recorre las columnas opcionales y va sacando la que el error
+nombra. Publicar un negocio no puede quedar bloqueado porque falte una columna
+que se agrega a mano.
+
+**Hay que correr `supabase/instagram_negocios.sql`.** Mientras no se corra, el
+alta se guarda igual (sin el Instagram) y queda el aviso en el log del
+servidor.
+
+**Verificado local** (build, lint, tipos, 25 casos del normalizador y Chromium
+contra el mock): el link de la ficha apunta al perfil correcto y abre en
+pestana nueva con `rel=noopener`; el campo valida en vivo; escribir
+`  @Panaderia.LaEspiga/  ` guarda `panaderia.laespiga`; con la columna
+inexistente el alta se completa igual y la ficha sigue cargando; el panel de
+admin trae el valor guardado.

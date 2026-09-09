@@ -5,6 +5,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendAdminPublicacionNotification } from "@/lib/email";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { generarTokenDueno, HORAS_ALTA } from "@/lib/dueno-token";
+import { normalizarInstagram } from "@/lib/instagram";
 
 export type PublicarState = {
   ok: boolean;
@@ -109,6 +110,7 @@ export async function publicarNegocio(
   const emailRaw = String(formData.get("email") ?? "").trim().toLowerCase();
   const whatsappRaw = String(formData.get("whatsapp") ?? "").trim();
   const sitioWebRaw = String(formData.get("sitio_web") ?? "").trim();
+  const instagramRaw = String(formData.get("instagram") ?? "").trim();
   const direccion = String(formData.get("direccion") ?? "").trim();
   const aDomicilio = formData.get("a_domicilio") === "on";
   const zonaCobertura = String(formData.get("zona_cobertura") ?? "").trim();
@@ -173,6 +175,10 @@ export async function publicarNegocio(
     }
   }
 
+  const ig = normalizarInstagram(instagramRaw);
+  const instagram = ig.ok ? ig.usuario : null;
+  if (!ig.ok) fieldErrors.instagram = ig.error;
+
   if (Object.keys(fieldErrors).length > 0) {
     return { ok: false, fieldErrors, error: "Revisa los campos marcados" };
   }
@@ -218,25 +224,41 @@ export async function publicarNegocio(
       disponibilidad: disponibilidad || null,
   };
 
-  // La columna `origen` se agrega con supabase/origen_negocios.sql, que se
-  // corre a mano. Si el SQL todavia no se ejecuto, Supabase rechaza la fila
-  // entera por columna desconocida: en ese caso reintentamos sin ella, porque
-  // publicar un negocio nunca puede quedar bloqueado por una metrica.
-  let { data: insertado, error } = await supabaseAdmin
-    .from("negocios")
-    .insert({ ...fila, origen })
-    .select("id")
-    .single();
+  // Columnas que se agregan a mano con un SQL aparte. Si el archivo todavia
+  // no se corrio, Supabase rechaza la fila entera por columna desconocida: en
+  // ese caso la sacamos y reintentamos. Publicar un negocio nunca puede quedar
+  // bloqueado porque falte una columna opcional.
+  const OPCIONALES: Record<string, { valor: unknown; sql: string }> = {
+    origen: { valor: origen, sql: "supabase/origen_negocios.sql" },
+    instagram: { valor: instagram, sql: "supabase/instagram_negocios.sql" },
+  };
 
-  if (error && /origen/i.test(error.message)) {
-    console.warn(
-      "[publicar] Falta la columna `origen`: corre supabase/origen_negocios.sql. El negocio se guarda sin ella.",
-    );
+  const extras: Record<string, unknown> = {};
+  for (const [col, { valor }] of Object.entries(OPCIONALES)) extras[col] = valor;
+
+  let insertado: { id: string } | null = null;
+  let error: { message: string } | null = null;
+
+  // Una vuelta por columna opcional, mas la primera: en el peor caso faltan
+  // todas y se van cayendo de a una.
+  for (let intento = 0; intento <= Object.keys(OPCIONALES).length; intento++) {
     ({ data: insertado, error } = await supabaseAdmin
       .from("negocios")
-      .insert(fila)
+      .insert({ ...fila, ...extras })
       .select("id")
       .single());
+
+    if (!error) break;
+
+    const faltante = Object.keys(extras).find((col) =>
+      new RegExp(`\\b${col}\\b`, "i").test(error!.message),
+    );
+    if (!faltante) break;
+
+    console.warn(
+      `[publicar] Falta la columna \`${faltante}\`: corre ${OPCIONALES[faltante].sql}. El negocio se guarda sin ella.`,
+    );
+    delete extras[faltante];
   }
 
   if (error || !insertado) {

@@ -12,6 +12,7 @@ import FavoritoButton from "@/components/FavoritoButton";
 import MapaNegocio from "@/components/MapaNegocio";
 import { dentroDeRango } from "@/lib/horarios";
 import JsonLd from "@/components/JsonLd";
+import { urlInstagram } from "@/lib/instagram";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 // Regex permisivo para detectar bots/crawlers conocidos. No queremos
 // inflar las vistas con Googlebot, scrapers, link previews, etc.
@@ -55,6 +56,8 @@ type Negocio = {
   whatsapp: string | null;
   email: string | null;
   sitio_web: string | null;
+  /** Opcional: la columna se agrega a mano con supabase/instagram_negocios.sql */
+  instagram?: string | null;
   direccion: string | null;
   ciudad: string | null;
   lat: number | null;
@@ -324,6 +327,7 @@ export default async function NegocioDetalle({
       whatsapp: n.whatsapp,
       email: n.email,
       sitio_web: n.sitio_web,
+      instagram: n.instagram,
       direccion: n.direccion,
       ciudad: n.ciudad,
       lat: n.lat,
@@ -761,6 +765,19 @@ export default async function NegocioDetalle({
             </a>
           </div>
         )}
+        {n.instagram && (
+          <div className="mt-2">
+            <a
+              href={urlInstagram(n.instagram)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 rounded-2xl py-3 text-xs font-semibold bg-fuchsia-50 text-fuchsia-700 hover:bg-fuchsia-100 transition w-full"
+            >
+              <InstagramIcon />
+              @{n.instagram}
+            </a>
+          </div>
+        )}
         <div className="mt-2">
           <ShareButton
             url={`${SITE_URL}/${categoria.slug}/${n.slug}`}
@@ -910,6 +927,16 @@ function MapIcon() {
     </svg>
   );
 }
+function InstagramIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 function GlobeIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
