@@ -81,9 +81,11 @@ export default async function DuenoEditarPage({
     await Promise.all([
       supabaseAdmin
         .from("negocios")
-        .select(
-          "id, nombre, slug, descripcion, telefono, whatsapp, email, direccion, a_domicilio, zona_cobertura, disponibilidad, foto_portada, activo, categorias:categoria_id(slug)",
-        )
+        // `*` a proposito: las columnas opcionales se agregan a mano con un
+        // SQL aparte, y una lista explicita que nombre una que todavia no
+        // existe hace fallar la consulta entera. El dueno no puede quedarse
+        // sin editar su ficha porque falte una columna.
+        .select("*, categorias:categoria_id(slug)")
         .eq("id", negocioId)
         .single(),
       supabaseAdmin

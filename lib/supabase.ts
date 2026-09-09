@@ -31,6 +31,11 @@ export type Negocio = {
   whatsapp: string | null
   email: string | null
   sitio_web: string | null
+  /**
+   * Usuario de Instagram sin arroba. El link se arma con lib/instagram.ts.
+   * Opcional: la columna se agrega a mano con supabase/instagram_negocios.sql.
+   */
+  instagram?: string | null
   direccion: string | null
   ciudad: string
   lat: number | null

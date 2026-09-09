@@ -6,6 +6,7 @@ import { randomBytes } from "crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { deleteFotosFromStorage } from "@/lib/storage";
+import { normalizarInstagram } from "@/lib/instagram";
 
 export type UpdateState = {
   ok: boolean;
@@ -42,6 +43,7 @@ export async function updateNegocio(
   const whatsappRaw = String(formData.get("whatsapp") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const sitioWeb = String(formData.get("sitio_web") ?? "").trim();
+  const instagramRaw = String(formData.get("instagram") ?? "").trim();
   const direccion = String(formData.get("direccion") ?? "").trim();
   const aDomicilio = formData.get("a_domicilio") === "on";
   const zonaCobertura = String(formData.get("zona_cobertura") ?? "").trim();
@@ -115,6 +117,9 @@ export async function updateNegocio(
   if (sitioWeb && !/^https?:\/\//i.test(sitioWeb)) {
     fieldErrors.sitio_web = "Debe empezar con http:// o https://";
   }
+  const ig = normalizarInstagram(instagramRaw);
+  if (!ig.ok) fieldErrors.instagram = ig.error;
+
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     fieldErrors.email = "Email invalido";
   }
@@ -153,6 +158,7 @@ export async function updateNegocio(
     whatsapp,
     email: email || null,
     sitio_web: sitioWeb || null,
+    instagram: ig.ok ? ig.usuario : null,
     direccion: direccion || null,
     lat,
     lng,

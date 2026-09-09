@@ -3,6 +3,8 @@
 // etc. Cada funcion retorna un objeto plano; la inyeccion se hace con
 // <JsonLd data={...} /> en el componente.
 
+import { urlInstagram } from "@/lib/instagram";
+
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
 
@@ -42,6 +44,7 @@ export type NegocioJsonLd = {
   whatsapp: string | null;
   email: string | null;
   sitio_web: string | null;
+  instagram?: string | null;
   direccion: string | null;
   ciudad: string | null;
   lat: number | null;
@@ -150,6 +153,8 @@ export function localBusinessJsonLd(
   // sameAs: WhatsApp como canal oficial si lo tiene.
   const sameAs: string[] = [];
   if (negocio.sitio_web) sameAs.push(negocio.sitio_web);
+  // sameAs es justo el campo que Google espera para los perfiles sociales.
+  if (negocio.instagram) sameAs.push(urlInstagram(negocio.instagram));
   if (negocio.whatsapp) sameAs.push(`https://wa.me/${negocio.whatsapp}`);
 
   // Telefono en formato E.164 (requisito de Schema.org).
