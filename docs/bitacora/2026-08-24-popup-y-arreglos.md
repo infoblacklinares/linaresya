@@ -402,3 +402,35 @@ pestana nueva con `rel=noopener`; el campo valida en vivo; escribir
 `  @Panaderia.LaEspiga/  ` guarda `panaderia.laespiga`; con la columna
 inexistente el alta se completa igual y la ficha sigue cargando; el panel de
 admin trae el valor guardado.
+
+### 09/09 (mismo dia, tarde) — El contador verificado en produccion
+
+Queda cerrada la pregunta abierta del 05/09 sobre por que `visita_portada` daba
+menos que `popup_visto`.
+
+Lectura del dia, ya con el codigo nuevo desplegado (PR #9):
+
+    visita_sitio   3
+    popup_visto    1
+    popup_cerrado  1
+
+`visita_sitio` por encima de `popup_visto` es la relacion que tiene que darse
+si el contador esta sano: las visitas se cuentan una por sesion y el popup
+aparece una vez cada 7 dias por navegador, asi que el denominador tiene que
+quedar arriba. Antes daba al reves.
+
+`visita_portada` ya no aparece: el contador viejo quedo retirado sin ensuciar
+la cuenta.
+
+Tambien confirma la lectura de la mañana: los 12 `popup_visto` de esa consulta
+eran anteriores al deploy, no un contador roto.
+
+**Como se verifico.** Los dos intentos con la pestaña Red de DevTools no
+sirvieron: el simulador de red estaba en "Sin conexion", asi que la pagina se
+armaba desde la cache y ningun beacon salia (0 de 323 peticiones). Lo que si
+sirvio fue medir la cadena entera desde afuera: consultar `eventos_sitio`,
+visitar el sitio en una ventana de incognito nueva, y volver a consultar. Eso
+prueba navegador -> beacon -> /api/track -> Supabase de una sola vez, sin
+tocar ninguna configuracion del navegador.
+
+Queda pendiente probar el boton de Instagram en la ficha de un negocio real.
