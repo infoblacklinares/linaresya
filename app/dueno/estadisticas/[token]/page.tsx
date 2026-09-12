@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { planVigente } from "@/lib/planes";
 
 export const metadata = {
   title: "Mis estadísticas - LinaresYa",
@@ -79,7 +80,7 @@ export default async function DuenoEstadisticasPage({
     await Promise.all([
       supabaseAdmin
         .from("negocios")
-        .select("id, nombre, slug, plan, verificado, categorias:categoria_id(slug, emoji, nombre)")
+        .select("id, nombre, slug, plan, premium_hasta, verificado, categorias:categoria_id(slug, emoji, nombre)")
         .eq("id", negocioId)
         .single(),
       supabaseAdmin
@@ -105,7 +106,12 @@ export default async function DuenoEstadisticasPage({
 
   const nombre = String(neg.nombre ?? "");
   const slug = String(neg.slug ?? "");
-  const plan = String(neg.plan ?? "basico") as "basico" | "premium";
+  // Plan vigente, no el guardado: si el Premium ya vencio, el dueño ve Basico y
+  // le aparece la oferta de Premium (LY-024).
+  const plan = planVigente({
+    plan: String(neg.plan ?? "basico"),
+    premium_hasta: (neg.premium_hasta as string | null) ?? null,
+  });
   const categoriaSlug = cat ? String(cat.slug ?? "") : "";
   const categoriaEmoji = cat ? String(cat.emoji ?? "🏪") : "🏪";
   const fichaUrl = categoriaSlug ? `${SITE_URL}/${categoriaSlug}/${slug}` : SITE_URL;

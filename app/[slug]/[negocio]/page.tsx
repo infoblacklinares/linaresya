@@ -14,6 +14,7 @@ import { dentroDeRango } from "@/lib/horarios";
 import JsonLd from "@/components/JsonLd";
 import { urlInstagram } from "@/lib/instagram";
 import { telLink, whatsAppLink } from "@/lib/contacto";
+import { canUseFeature, esPremium as negocioEsPremium } from "@/lib/planes";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 // Regex permisivo para detectar bots/crawlers conocidos. No queremos
 // inflar las vistas con Googlebot, scrapers, link previews, etc.
@@ -270,9 +271,11 @@ export default async function NegocioDetalle({
 
   const { abierto, horarioHoy } = estaAbierto(horarios);
   const tieneHorariosEstructurados = horarios.length > 0;
-  const esPremium = n.plan === "premium";
+  // El plan sale de lib/planes.ts: un Premium vencido cuenta como Basico desde
+  // que vence, sin esperar al cron de las 07:00 (LY-024).
+  const esPremium = negocioEsPremium(n);
   // WhatsApp es de Premium. Cada boton sale solo si hay un dato valido (LY-003).
-  const wa = esPremium ? whatsAppLink(n.whatsapp) : null;
+  const wa = canUseFeature(n, "whatsapp") ? whatsAppLink(n.whatsapp) : null;
   const tel = telLink(n.telefono);
   const maps = mapsLink(n);
   const ctasPrincipales = [wa, tel, maps].filter(Boolean).length;

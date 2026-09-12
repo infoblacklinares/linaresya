@@ -11,6 +11,7 @@ import ScheduleInput, {
 } from "@/app/publicar/ScheduleInput";
 import PhotoUpload from "@/app/publicar/PhotoUpload";
 import GaleriaManager from "@/app/admin/negocio/[id]/editar/GaleriaManager";
+import { esPremium } from "@/lib/planes";
 
 const estadoInicial: DuenoUpdateState = { ok: false };
 
@@ -26,6 +27,7 @@ type Negocio = {
   instagram?: string | null;
   facebook?: string | null;
   plan: "basico" | "premium";
+  premium_hasta?: string | null;
   direccion: string | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;
@@ -141,7 +143,7 @@ export default function DuenoEditForm({
         <Field
           label="WhatsApp"
           hint={
-            negocio.plan === "premium"
+            esPremium(negocio)
               ? "Sale como botón WhatsApp en tu ficha"
               : "Se guarda, y aparece como botón en tu ficha con el Plan Premium"
           }

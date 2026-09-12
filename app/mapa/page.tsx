@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { supabase } from "@/lib/supabase";
 import MapaExplorar, { type NegocioMapa } from "@/components/MapaExplorar";
+import { esPremium } from "@/lib/planes";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
@@ -18,7 +19,7 @@ export default async function MapaPage() {
   const { data } = await supabase
     .from("negocios")
     .select(
-      "id, nombre, slug, lat, lng, plan, verificado, categorias:categoria_id(nombre, slug, emoji)",
+      "id, nombre, slug, lat, lng, plan, premium_hasta, verificado, categorias:categoria_id(nombre, slug, emoji)",
     )
     .eq("activo", true)
     .not("lat", "is", null)
@@ -42,7 +43,10 @@ export default async function MapaPage() {
         emoji: String(cat.emoji ?? "🏪"),
         categoriaSlug: String(cat.slug ?? ""),
         categoriaNombre: String(cat.nombre ?? ""),
-        premium: x.plan === "premium",
+        premium: esPremium({
+          plan: (x.plan as string | null) ?? null,
+          premium_hasta: (x.premium_hasta as string | null) ?? null,
+        }),
         verificado: Boolean(x.verificado),
       },
     ];

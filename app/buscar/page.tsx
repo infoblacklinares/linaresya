@@ -4,6 +4,7 @@ import { diaHoySantiago, horaAhoraSantiago, dentroDeRango } from "@/lib/horarios
 import AnimatedCard from "@/components/AnimatedCard";
 import CercaDeMi from "@/components/CercaDeMi";
 import { whatsAppLink } from "@/lib/contacto";
+import { canUseFeature, esPremium } from "@/lib/planes";
 
 const WA_SUGERIR = "56984272557";
 function waLinkSugerir(termino: string) {
@@ -155,9 +156,10 @@ export default async function BuscarPage({
       const avgA = ra && ra.count > 0 ? ra.sum / ra.count : 0;
       const avgB = rb && rb.count > 0 ? rb.sum / rb.count : 0;
       if (avgB !== avgA) return avgB - avgA;
-      // desempate: plan premium > verificado > nombre
-      if ((b.plan === "premium" ? 1 : 0) !== (a.plan === "premium" ? 1 : 0))
-        return (b.plan === "premium" ? 1 : 0) - (a.plan === "premium" ? 1 : 0);
+      // desempate: destacado (Premium vigente) > verificado > nombre
+      const da = canUseFeature(a, "destacado") ? 1 : 0;
+      const db = canUseFeature(b, "destacado") ? 1 : 0;
+      if (db !== da) return db - da;
       return a.nombre.localeCompare(b.nombre, "es");
     });
   }
@@ -460,8 +462,8 @@ function ChipQuitar({ label, href }: { label: string; href: string }) {
 }
 
 function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; rating?: { avg: number; count: number } | null }) {
-  const esPremium = n.plan === "premium";
-  const waUrl = esPremium ? whatsAppLink(n.whatsapp) : null;
+  const premium = esPremium(n);
+  const waUrl = canUseFeature(n, "whatsapp") ? whatsAppLink(n.whatsapp) : null;
   const categoriaSlug = n.categorias?.slug ?? "sin-categoria";
   const href = `/${categoriaSlug}/${n.slug}`;
 
@@ -485,7 +487,7 @@ function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; r
             {isOpen ? "● Abierto" : "● Cerrado"}
           </span>
         </div>
-        {esPremium && (
+        {premium && (
           <div className="absolute top-2 right-2">
             <span className="text-[9px] font-bold bg-[#F4B860] text-[#1A1410] px-1.5 py-0.5 rounded-full">⭐ Premium</span>
           </div>

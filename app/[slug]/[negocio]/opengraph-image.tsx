@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { supabase } from "@/lib/supabase";
+import { esPremium } from "@/lib/planes";
 
 // Imagen Open Graph dinamica para /[slug]/[negocio].
 // Next la usa automaticamente como fallback si generateMetadata no define
@@ -35,7 +36,7 @@ export default async function Image({
       .limit(1),
     supabase
       .from("negocios")
-      .select("nombre, descripcion, verificado, plan, categoria_id")
+      .select("nombre, descripcion, verificado, plan, premium_hasta, categoria_id")
       .eq("slug", negocioSlug)
       .eq("activo", true)
       .limit(5),
@@ -51,6 +52,7 @@ export default async function Image({
           descripcion: string | null;
           verificado: boolean;
           plan: "basico" | "premium";
+          premium_hasta: string | null;
           categoria_id: number | null;
         }>
       | null
@@ -60,7 +62,7 @@ export default async function Image({
   const categoriaNombre = categoria?.nombre ?? "Directorio";
   const emoji = categoria?.emoji ?? "📍";
   const verificado = negocio?.verificado ?? false;
-  const premium = negocio?.plan === "premium";
+  const premium = negocio ? esPremium(negocio) : false;
 
   return new ImageResponse(
     (

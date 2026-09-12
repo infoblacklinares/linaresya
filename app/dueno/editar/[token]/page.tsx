@@ -29,6 +29,7 @@ type Negocio = {
   instagram: string | null;
   facebook: string | null;
   plan: "basico" | "premium";
+  premium_hasta: string | null;
   direccion: string | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;

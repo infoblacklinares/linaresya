@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { getFavoritos, onFavoritosChanged } from "@/lib/favoritos";
 import FavoritoButton from "@/components/FavoritoButton";
+import { esPremium } from "@/lib/planes";
 
 type NegocioFavorito = {
   id: string;
@@ -152,7 +153,7 @@ export default function FavoritosList() {
                       ✓
                     </span>
                   )}
-                  {d.plan === "premium" && (
+                  {esPremium(d) && (
                     <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded-full shrink-0">
                       Premium
                     </span>

@@ -15,6 +15,7 @@ import SplashHomeLeon from "@/components/SplashHomeLeon";
 import MarqueeRow from "@/components/MarqueeRow";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { telLink } from "@/lib/contacto";
+import { esPremium } from "@/lib/planes";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
 import { getRecentPosts } from "@/lib/blog-posts";
 
@@ -332,7 +333,7 @@ export default async function Home() {
     }
   }
 
-  const primerPremium = destacados.find(d => d.plan === "premium");
+  const primerPremium = destacados.find(d => esPremium(d));
   const bannerNegocio = primerPremium ? {
     nombre:        primerPremium.nombre,
     slug:          primerPremium.slug,
@@ -683,7 +684,7 @@ export default async function Home() {
                       ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                       : <span className="transition-transform duration-500 group-hover:scale-110">{d.categorias?.emoji ?? "📍"}</span>}
                     {/* Badge premium sobre imagen */}
-                    {d.plan === "premium" && (
+                    {esPremium(d) && (
                       <span className="absolute left-2 top-2 rounded-full bg-[#F4B860] px-2 py-0.5 text-[9px] font-extrabold text-[#1A1410] shadow-sm">⭐ Premium</span>
                     )}
                     {/* Badge abierto/cerrado */}

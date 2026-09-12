@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/jsonld";
 import { whatsAppLink } from "@/lib/contacto";
+import { canUseFeature, esPremium } from "@/lib/planes";
 import { getOpenIds, estaAbierto } from "@/lib/horarios";
 import AnimatedCard from "@/components/AnimatedCard";
 
@@ -182,8 +183,8 @@ function NegocioCard({
 }: {
   n: Negocio; categoriaSlug: string; isOpen: boolean; rating?: { avg: number; count: number } | null;
 }) {
-  const esPremium = n.plan === "premium";
-  const waUrl = esPremium ? whatsAppLink(n.whatsapp) : null;
+  const premium = esPremium(n);
+  const waUrl = canUseFeature(n, "whatsapp") ? whatsAppLink(n.whatsapp) : null;
 
   return (
     <div className="relative rounded-2xl bg-white/80 backdrop-blur-sm border border-white shadow-[0_2px_12px_rgba(0,0,0,0.07)] overflow-hidden hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 transition-all group">
@@ -215,7 +216,7 @@ function NegocioCard({
         </div>
 
         {/* Premium badge */}
-        {esPremium && (
+        {premium && (
           <div className="absolute top-2 right-2">
             <span className="text-[9px] font-bold bg-[#F4B860] text-[#1A1410] px-1.5 py-0.5 rounded-full">⭐ Premium</span>
           </div>
