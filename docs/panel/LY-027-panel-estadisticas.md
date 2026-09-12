@@ -86,3 +86,41 @@ Todo eso es LY-005 y LY-008. La pantalla lo dice en su propio aviso, para que ni
 
 - Un rango personalizado muy grande trae muchas filas. Se acotó a 180 días y a 20.000 filas por consulta; con 164 negocios eso da de sobra.
 - La consulta trae las filas y agrega en el servidor. Si algún día el directorio crece mucho, esto pasa a ser una vista agregada en Postgres. Hoy no hace falta.
+
+---
+
+# Anexo — Mejoras al panel principal (`/admin`), 2026-09-12
+
+Pedido de Willson: que el panel muestre información que sirva y que se pueda **encontrar un negocio rápido para editarlo**.
+
+## 1. Buscador de negocios
+
+Con 164 fichas, editar una implicaba abrir la categoría correcta y scrollear. Ahora hay un buscador arriba del listado que filtra por **nombre, slug, teléfono o dirección**, sin tildes ni mayúsculas (`normalizarTexto`, probado).
+
+Cuando hay búsqueda, el listado deja de estar agrupado por categoría y muestra una lista plana con las acciones de cada negocio (editar, Premium 30 días, verificar, desactivar). Es la diferencia entre tres clics y diez.
+
+## 2. Filtros de calidad, que además son la lista de trabajo
+
+Bloque nuevo "Fichas a las que les falta algo", con el conteo de fichas activas **sin teléfono, sin dirección, sin descripción o sin categoría**. Cada número es un enlace que filtra el listado.
+
+No es una métrica para mirar: es una cola de trabajo. Una ficha sin teléfono no puede generar llamadas, y una sin dirección no genera "cómo llegar" — o sea, no puede producir las acciones que después se le muestran al negocio. **Solo aparecen los filtros con al menos una ficha**, así que cuando el directorio esté limpio, el bloque desaparece solo.
+
+## 3. Bloque "Hoy", con los eventos
+
+Cuatro números del día: **visitantes** (sesiones distintas), vistas, acciones y eventos totales; más de dónde llegaron. Es el dato más fresco que existe: el resto del panel habla de los últimos 7 días.
+
+Aparece **solo si hay eventos hoy**. Sin datos no se muestra una fila de ceros, que es exactamente lo que hacía parecer que el panel estaba roto.
+
+## 4. Premium a la vista
+
+Línea fija bajo los accesos rápidos: "Premium activos: 0 de 164. Ninguno está pagando todavía". Es el número que importa del negocio, y estaba escondido.
+
+## Criterio que se siguió
+
+**Ningún bloque se muestra vacío.** El popup, el Top 5, los filtros de calidad y el bloque de hoy aparecen solo cuando tienen algo que decir. Un panel con cuatro bloques en cero enseña a ignorarlo.
+
+## Verificación
+
+- `npm test` 50/50, `tsc` y `eslint` limpios.
+- Las 6 variantes de la ruta responden bien en local, incluido un valor de filtro inventado (`?falta=inventado`), que se ignora sin romper la página.
+- **Sin verificar:** cómo se ve con sesión de admin. Lo revisa Willson.

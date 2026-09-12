@@ -12,6 +12,13 @@ import {
   quitarPremium,
 } from "./actions";
 import ConfirmDeleteButton from "./ConfirmDeleteButton";
+import { fechaCL, normalizarTexto } from "@/lib/estadisticas";
+import {
+  filtrarPorFechas,
+  porFuente,
+  resumenEventos,
+  type FilaEvento,
+} from "@/lib/eventos";
 
 export const metadata = {
   title: "Admin - LinaresYa",
@@ -40,10 +47,35 @@ type NegocioRow = {
 
 type Categoria = { id: number; nombre: string; emoji: string; slug: string };
 
-export default async function AdminPage() {
+/**
+ * Lo que le falta a una ficha para servir. Son los filtros del listado: sirven
+ * para trabajar la lista, no para mirarla (LY-033).
+ */
+const FALTANTES = {
+  telefono: { etiqueta: "Sin telefono", test: (n: NegocioRow) => !n.telefono },
+  direccion: { etiqueta: "Sin direccion", test: (n: NegocioRow) => !n.direccion },
+  descripcion: { etiqueta: "Sin descripcion", test: (n: NegocioRow) => !n.descripcion },
+  categoria: { etiqueta: "Sin categoria", test: (n: NegocioRow) => !n.categoria_id },
+} as const;
+
+type Faltante = keyof typeof FALTANTES;
+
+function faltanteValido(valor: string | undefined): Faltante | null {
+  return valor && valor in FALTANTES ? (valor as Faltante) : null;
+}
+
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; falta?: string }>;
+}) {
   if (!(await isAdminAuthenticated())) {
     redirect("/admin/login");
   }
+
+  const sp = await searchParams;
+  const consulta = (sp.q ?? "").trim();
+  const falta = faltanteValido(sp.falta);
 
   // Fecha hace 7 dias en formato YYYY-MM-DD para queries de "ultima semana"
   // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
@@ -62,6 +94,7 @@ export default async function AdminPage() {
     { count: reportesPendientes },
     { count: popup7d, error: popupError },
     { data: embudoRaw, error: embudoError },
+    { data: eventosHoyRaw, error: eventosHoyError },
   ] = await Promise.all([
     supabaseAdmin
       .from("negocios")
@@ -120,6 +153,15 @@ export default async function AdminPage() {
       .from("eventos_sitio")
       .select("evento, conteo")
       .gte("fecha", haceSieteDias),
+
+    // Eventos de hoy (LY-005). Es el dato mas fresco que existe: dice si el
+    // directorio esta vivo ahora, no hace una semana. Tabla que se crea a
+    // mano: si no existe, esta consulta falla sola y el bloque no aparece.
+    supabaseAdmin
+      .from("eventos_negocio")
+      .select("evento, sesion, fuente, campana, negocio_id, creado_en")
+      .gte("creado_en", `${fechaCL(0)}T00:00:00-05:00`)
+      .limit(20000),
   ]);
 
   const pend = (pendientes ?? []) as NegocioRow[];
@@ -211,6 +253,45 @@ export default async function AdminPage() {
     .sort((a, b) => b.vistas - a.vistas)
     .slice(0, 5);
 
+  // Lo de hoy, desde los eventos: vistas, personas distintas y de donde vienen.
+  const eventosHoy = eventosHoyError
+    ? []
+    : filtrarPorFechas(
+        ((eventosHoyRaw ?? []) as unknown[]).map((f) => f as FilaEvento),
+        fechaCL(0),
+        fechaCL(0),
+      );
+  const hoy = resumenEventos(eventosHoy);
+  const fuentesHoy = porFuente(eventosHoy).slice(0, 4);
+
+  // Calidad del directorio: cuantas fichas activas les falta algo. Cada numero
+  // es un enlace que filtra el listado, para poder arreglarlas de una.
+  const calidad = (Object.keys(FALTANTES) as Faltante[])
+    .map((clave) => ({
+      clave,
+      etiqueta: FALTANTES[clave].etiqueta,
+      total: act.filter(FALTANTES[clave].test).length,
+    }))
+    .filter((c) => c.total > 0);
+
+  const premiumActivos = act.filter((n) => n.plan === "premium").length;
+
+  // Busqueda y filtro del listado de activos.
+  const hayFiltro = Boolean(consulta || falta);
+  const actFiltrados = (() => {
+    let lista = act;
+    if (falta) lista = lista.filter(FALTANTES[falta].test);
+    if (consulta) {
+      const q = normalizarTexto(consulta);
+      lista = lista.filter((n) =>
+        [n.nombre, n.slug, n.telefono ?? "", n.direccion ?? ""].some((campo) =>
+          normalizarTexto(campo).includes(q),
+        ),
+      );
+    }
+    return lista;
+  })();
+
   return (
     <main className="flex-1 mx-auto w-full max-w-3xl pb-10">
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-border">
@@ -290,6 +371,12 @@ export default async function AdminPage() {
           <span className="text-sm font-bold">🗓️ Eventos de Linares</span>
           <span className="text-xs font-semibold text-muted-foreground">Gestionar →</span>
         </Link>
+        <p className="mt-3 text-[11px] text-muted-foreground">
+          Premium activos: <strong>{premiumActivos}</strong> de {act.length}.{" "}
+          {premiumActivos === 0
+            ? "Ninguno esta pagando todavia."
+            : "Se cambian con el boton de cada negocio."}
+        </p>
       </section>
 
       <section className="px-4 pt-6">
@@ -306,6 +393,72 @@ export default async function AdminPage() {
           <MiniStat label="Clicks" value={totalClicks7d} />
         </div>
       </section>
+
+      {/* Hoy, desde los eventos. Es el dato mas fresco que existe: dice si el
+          directorio esta vivo ahora, no hace una semana. Solo aparece si hay
+          algo, para no mostrar una fila de ceros. */}
+      {!eventosHoyError && hoy.total > 0 && (
+        <section className="px-4 pt-6">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+            Hoy
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <MiniStat label="Visitantes" value={hoy.unicos} />
+            <MiniStat label="Vistas" value={hoy.vistas} />
+            <MiniStat label="Acciones" value={hoy.acciones} />
+            <MiniStat label="Eventos" value={hoy.total} />
+          </div>
+          {fuentesHoy.length > 0 && (
+            <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
+              Llegaron desde:{" "}
+              {fuentesHoy.map((f, i) => (
+                <span key={f.clave}>
+                  {i > 0 ? " · " : ""}
+                  <strong>{f.clave}</strong> {f.vistas}
+                </span>
+              ))}
+            </p>
+          )}
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            Visitantes son sesiones distintas de navegador, no personas identificadas.
+          </p>
+          <Link
+            href="/admin/estadisticas?periodo=hoy"
+            className="mt-2 inline-block text-[11px] font-bold text-[#2B6E80] hover:underline"
+          >
+            Ver el detalle de hoy →
+          </Link>
+        </section>
+      )}
+
+      {/* Calidad del directorio: cada numero filtra el listado de abajo, para
+          poder arreglar las fichas de corrido en vez de buscarlas una por una. */}
+      {calidad.length > 0 && (
+        <section className="px-4 pt-6">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+            Fichas a las que les falta algo
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {calidad.map((c) => (
+              <Link
+                key={c.clave}
+                href={`/admin?falta=${c.clave}`}
+                className={`rounded-full px-3 py-1.5 text-xs font-bold transition ${
+                  falta === c.clave
+                    ? "bg-foreground text-background"
+                    : "bg-white border border-border hover:bg-secondary"
+                }`}
+              >
+                {c.etiqueta}: {c.total}
+              </Link>
+            ))}
+          </div>
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            Una ficha sin telefono no genera llamadas, y sin direccion no genera
+            &quot;como llegar&quot;. Toca un filtro y aparecen abajo para editarlas.
+          </p>
+        </section>
+      )}
 
       {embudo && (embudo.visitas > 0 || embudo.popup_visto > 0) && (
         <section className="px-4 pt-6">
@@ -399,14 +552,62 @@ export default async function AdminPage() {
 
       <section className="px-4 pt-10">
         <h2 className="text-xl font-extrabold tracking-tight mb-1">Activos</h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          {act.length} negocios publicados, agrupados por categoría.
+        <p className="text-sm text-muted-foreground mb-3">
+          {hayFiltro
+            ? `${actFiltrados.length} de ${act.length} negocios publicados.`
+            : `${act.length} negocios publicados, agrupados por categoría.`}
         </p>
+
+        {/* Buscador. Con 164 fichas, encontrar una a mano era el cuello de
+            botella para editar: habia que abrir la categoria y scrollear.
+            Busca por nombre, slug, telefono o direccion, sin tildes. */}
+        <form action="/admin" className="flex flex-wrap items-center gap-2 mb-4">
+          {falta && <input type="hidden" name="falta" value={falta} />}
+          <input
+            type="search"
+            name="q"
+            defaultValue={consulta}
+            placeholder="Buscar por nombre, telefono o direccion"
+            className="flex-1 min-w-[12rem] rounded-full border border-border bg-white px-4 py-2 text-sm"
+          />
+          <button
+            type="submit"
+            className="rounded-full bg-foreground text-background text-xs font-bold px-4 py-2"
+          >
+            Buscar
+          </button>
+          {hayFiltro && (
+            <Link
+              href="/admin"
+              className="rounded-full bg-white border border-border text-xs font-bold px-4 py-2 hover:bg-secondary"
+            >
+              Limpiar
+            </Link>
+          )}
+        </form>
+
+        {falta && (
+          <p className="mb-3 text-xs font-semibold text-[#8B5E0A]">
+            Filtrando: {FALTANTES[falta].etiqueta.toLowerCase()}
+          </p>
+        )}
 
         {act.length === 0 ? (
           <div className="rounded-2xl border-2 border-dashed border-border p-6 text-center text-sm text-muted-foreground">
             Todavia no hay negocios activos.
           </div>
+        ) : hayFiltro ? (
+          actFiltrados.length === 0 ? (
+            <div className="rounded-2xl border-2 border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+              Ningun negocio coincide. Prueba con menos letras.
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-border bg-white divide-y divide-border overflow-hidden">
+              {actFiltrados.map((n) => (
+                <NegocioRowAdmin key={n.id} negocio={n} />
+              ))}
+            </div>
+          )
         ) : (() => {
           // Agrupar por categoria_id
           const grupos = new Map<number | null, NegocioRow[]>();

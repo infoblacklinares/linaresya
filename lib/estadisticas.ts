@@ -261,10 +261,18 @@ export function filtrarPorNombre(
   return lista.filter((n) => normalizar(n.nombre).includes(q));
 }
 
-function normalizar(texto: string): string {
+/**
+ * Texto comparable: sin tildes, sin mayusculas, sin espacios de sobra. Se usa
+ * para buscar negocios escribiendo "panaderia" y que aparezca "Panadería".
+ */
+export function normalizarTexto(texto: string): string {
   return texto
     .trim()
     .toLowerCase()
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "");
+}
+
+function normalizar(texto: string): string {
+  return normalizarTexto(texto);
 }
