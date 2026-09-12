@@ -66,7 +66,24 @@ La pantalla lo dice en su propio aviso. Mezclarlos en un solo número sería la 
 - [ ] Revisión con sesión de admin (la hace Willson).
 - [ ] Deploy.
 
+## La pantalla del dueño (misma tarde)
+
+Es la pantalla que Willson le muestra a un negocio para venderle Premium, así que ahí importa más el lenguaje que el número.
+
+Qué se agregó a `/dueno/estadisticas/<token>`:
+
+- **Personas distintas** y **Acciones generadas**, en grande. Son las dos cifras que contestan "¿esto me sirve?".
+- **La frase que vende, dicha sin exagerar:** "De cada 100 personas que vieron tu ficha, N hicieron algo: llamarte, escribirte, pedir cómo llegar, ver tus redes o compartir tu ficha". Sale de la tasa real; si no hay acciones, no se muestra.
+- **Desglose de lo que antes no se medía:** Instagram, Facebook, sitio web, compartidos y escaneos de QR. Solo los que tienen al menos uno.
+- **De dónde llegaron**, con vistas y acciones por origen. Es lo que le dice al dueño si su Instagram funciona o si la gente lo encuentra buscando.
+- **Aclaración de privacidad en su idioma:** "una persona distinta es una visita desde un navegador; si alguien vuelve otro día, cuenta de nuevo. No guardamos datos personales de quien te visita".
+- "Clicks totales" pasó a llamarse **Acciones**, igual que en el panel del admin y que el plan.
+
+También se eliminaron las copias locales de `fechaCL` y `diaCorto` de esa pantalla: ahora usa las de `lib/estadisticas.ts`, que están probadas. Y la tabla de nombres de eventos (`ETIQUETA_EVENTO`) se movió a `lib/eventos.ts` para que el admin y el dueño muestren siempre lo mismo.
+
+Igual que en el panel: si la tabla de eventos no existe o no hay eventos, esos bloques no se muestran. El dueño nunca ve una pantalla de ceros.
+
 ## Lo que falta para cerrar el prompt de analítica
 
 1. **Resultados reportados por el negocio:** consultas y clientes que el negocio dice haber recibido, en tabla aparte y claramente separados de lo automático. Es lo último que queda del prompt.
-2. **Estadísticas por negocio para el dueño** con lo nuevo: hoy el dueño sigue viendo los contadores diarios de 30 días. Es el mismo trabajo, aplicado a su pantalla.
+2. ~~Estadísticas del dueño con lo nuevo~~ — hecho el 2026-09-12.

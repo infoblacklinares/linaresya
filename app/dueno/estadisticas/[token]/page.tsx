@@ -2,6 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { planVigente } from "@/lib/planes";
+import { diaCorto, fechaCL } from "@/lib/estadisticas";
+import {
+  ETIQUETA_EVENTO,
+  filtrarPorFechas,
+  porFuente,
+  resumenEventos,
+  type FilaEvento,
+} from "@/lib/eventos";
 
 export const metadata = {
   title: "Mis estadísticas - LinaresYa",
@@ -26,26 +34,6 @@ type Resena = {
 };
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://linaresya.cl";
-
-function fechaCL(offsetDias: number): string {
-  const d = new Date(Date.now() - offsetDias * 24 * 60 * 60 * 1000);
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "America/Santiago",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(d);
-}
-
-function diaCorto(fechaIso: string): string {
-  const [y, m, d] = fechaIso.split("-").map(Number);
-  const date = new Date(Date.UTC(y, m - 1, d));
-  return new Intl.DateTimeFormat("es-CL", {
-    day: "2-digit",
-    month: "2-digit",
-    timeZone: "UTC",
-  }).format(date);
-}
 
 export default async function DuenoEstadisticasPage({
   params,
@@ -76,8 +64,12 @@ export default async function DuenoEstadisticasPage({
   const desde30 = fechaCL(29);
   const hoy = fechaCL(0);
 
-  const [{ data: negocioData }, { data: statsData }, { data: resenasData }] =
-    await Promise.all([
+  const [
+    { data: negocioData },
+    { data: statsData },
+    { data: resenasData },
+    { data: eventosRaw, error: eventosError },
+  ] = await Promise.all([
       supabaseAdmin
         .from("negocios")
         .select("id, nombre, slug, plan, premium_hasta, verificado, categorias:categoria_id(slug, emoji, nombre)")
@@ -96,6 +88,16 @@ export default async function DuenoEstadisticasPage({
         .eq("negocio_id", negocioId)
         .order("creado_en", { ascending: false })
         .limit(10),
+
+      // Eventos individuales (LY-005): es lo unico que puede decir cuantas
+      // personas distintas entraron y de donde venian. Tabla que se crea a
+      // mano: si no existe, esta consulta falla sola y los bloques no salen.
+      supabaseAdmin
+        .from("eventos_negocio")
+        .select("evento, sesion, fuente, campana, creado_en")
+        .eq("negocio_id", negocioId)
+        .gte("creado_en", `${desde30}T00:00:00-05:00`)
+        .limit(20000),
     ]);
 
   if (!negocioData) notFound();
@@ -126,6 +128,20 @@ export default async function DuenoEstadisticasPage({
   const totalTel = stats.reduce((s, r) => s + r.clicks_telefono, 0);
   const totalMaps = stats.reduce((s, r) => s + r.clicks_maps, 0);
   const totalClicks = totalWA + totalTel + totalMaps;
+
+  // Eventos: personas distintas, acciones y origen. Cubren desde el 12-sep-2026.
+  const hayEventos = !eventosError;
+  const eventos = filtrarPorFechas(
+    ((eventosRaw ?? []) as unknown[]).map((f) => f as FilaEvento),
+    desde30,
+    hoy,
+  );
+  const resumen = resumenEventos(eventos);
+  const fuentes = porFuente(eventos).slice(0, 5);
+  // Lo que los contadores diarios nunca midieron.
+  const extras = (["instagram", "facebook", "web", "compartir", "qr"] as const)
+    .map((evento) => ({ evento, total: resumen.porEvento[evento] ?? 0 }))
+    .filter((e) => e.total > 0);
 
   // Rating de reseñas aprobadas
   const aprobadas = resenas.filter(r => r.aprobada);
@@ -180,7 +196,7 @@ export default async function DuenoEstadisticasPage({
         </h2>
         <div className="grid grid-cols-2 gap-3">
           <StatCard label="Vistas" value={totalVistas} icon="👁️" accent />
-          <StatCard label="Clicks totales" value={totalClicks} icon="👆" />
+          <StatCard label="Acciones" value={totalClicks} icon="👆" />
           <StatCard label="WhatsApp" value={totalWA} icon="💬" green />
           <StatCard label="Llamadas" value={totalTel} icon="📞" />
         </div>
@@ -190,6 +206,74 @@ export default async function DuenoEstadisticasPage({
           </div>
         )}
       </section>
+
+      {/* Personas y acciones. Es lo que el dueño necesita para decidir si
+          LinaresYa le sirve, y lo que antes no se podia responder: los
+          contadores diarios no distinguen una persona de diez recargas. */}
+      {hayEventos && resumen.total > 0 && (
+        <section className="px-4 pt-8">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+            Personas y acciones
+          </h2>
+          <p className="text-[11px] text-muted-foreground mb-3">
+            Medido desde el 12 de septiembre de 2026.
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <StatCard label="Personas distintas" value={resumen.unicos} icon="🧑" accent />
+            <StatCard label="Acciones generadas" value={resumen.acciones} icon="⚡" green />
+          </div>
+          {resumen.tasaAccion !== null && resumen.acciones > 0 && (
+            <p className="mt-3 text-[13px] text-foreground/75 leading-relaxed">
+              De cada 100 personas que vieron tu ficha,{" "}
+              <strong>{Math.round(resumen.tasaAccion)}</strong> hicieron algo: llamarte,
+              escribirte, pedir cómo llegar, ver tus redes o compartir tu ficha.
+            </p>
+          )}
+          {extras.length > 0 && (
+            <ul className="mt-3 rounded-2xl bg-secondary/40 divide-y divide-border/60 overflow-hidden">
+              {extras.map((e) => (
+                <li
+                  key={e.evento}
+                  className="flex items-center justify-between px-4 py-2.5 text-sm"
+                >
+                  <span className="font-medium">{ETIQUETA_EVENTO[e.evento] ?? e.evento}</span>
+                  <span className="font-extrabold tabular-nums">{e.total}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
+            Una persona distinta es una visita desde un navegador. Si alguien vuelve otro
+            día, cuenta de nuevo. No guardamos datos personales de quien te visita.
+          </p>
+        </section>
+      )}
+
+      {/* De donde llegaron: el dato que le dice al dueño si su Instagram
+          funciona, o si la gente lo encuentra buscando. */}
+      {hayEventos && fuentes.length > 0 && (
+        <section className="px-4 pt-8">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
+            De dónde llegaron
+          </h2>
+          <ul className="rounded-2xl bg-white border border-border divide-y divide-border overflow-hidden">
+            {fuentes.map((f) => (
+              <li
+                key={f.clave}
+                className="flex items-center justify-between px-4 py-2.5 text-sm"
+              >
+                <span className="font-medium capitalize">{f.clave}</span>
+                <span className="text-xs text-muted-foreground">
+                  {f.vistas} {f.vistas === 1 ? "vista" : "vistas"}
+                  {f.acciones > 0
+                    ? ` · ${f.acciones} ${f.acciones === 1 ? "acción" : "acciones"}`
+                    : ""}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Gráfico de barras — últimos 14 días */}
       {ultimos14.length > 0 && (

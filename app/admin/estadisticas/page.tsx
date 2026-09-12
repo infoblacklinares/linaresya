@@ -16,6 +16,7 @@ import {
   type FilaConNegocio,
 } from "@/lib/estadisticas";
 import {
+  ETIQUETA_EVENTO,
   filtrarPorFechas,
   porCampana,
   porFuente,
@@ -27,19 +28,6 @@ import {
 export const metadata = {
   title: "Estadisticas - Admin LinaresYa",
   robots: { index: false, follow: false },
-};
-
-/** Nombres legibles de los eventos, para no mostrarle claves al admin. */
-const ETIQUETA_EVENTO: Record<string, string> = {
-  vista: "Vistas de ficha",
-  telefono: "Llamadas",
-  whatsapp: "WhatsApp",
-  maps: "Como llegar",
-  instagram: "Instagram",
-  facebook: "Facebook",
-  web: "Sitio web",
-  compartir: "Compartidos",
-  qr: "Escaneos de QR",
 };
 
 type SearchParams = {

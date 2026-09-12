@@ -59,6 +59,22 @@ export function esAccion(evento: EventoNegocio): boolean {
   return EVENTOS_ACCION.includes(evento);
 }
 
+/**
+ * Nombres legibles. Se comparten entre el panel del admin y la pantalla del
+ * dueño: un negocio no tiene por que leer "maps" ni "web".
+ */
+export const ETIQUETA_EVENTO: Record<string, string> = {
+  vista: "Vistas de ficha",
+  telefono: "Llamadas",
+  whatsapp: "WhatsApp",
+  maps: "Como llegar",
+  instagram: "Instagram",
+  facebook: "Facebook",
+  web: "Sitio web",
+  compartir: "Compartidos",
+  qr: "Escaneos de QR",
+};
+
 // --- UTM -------------------------------------------------------------------
 
 export type Utm = {
