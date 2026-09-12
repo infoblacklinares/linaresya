@@ -24,11 +24,26 @@ export type PublicarState = {
   editarUrl?: string;
 };
 
-// Verifica el token de Cloudflare Turnstile. Si no hay TURNSTILE_SECRET_KEY
-// configurada devuelve true (modo dev sin captcha).
+/**
+ * Verifica el token de Cloudflare Turnstile.
+ *
+ * Sin clave configurada: en desarrollo se salta el captcha, para poder probar
+ * el formulario sin configurar nada. **En produccion se rechaza la
+ * publicacion**, porque un captcha apagado en silencio es peor que un
+ * formulario que falla: nadie se entera hasta que llega la basura. Si alguna
+ * vez se rota la clave y se olvida actualizarla en Vercel, esto lo grita.
+ */
 async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) return true;
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      console.error(
+        "[publicar] Falta TURNSTILE_SECRET_KEY en produccion: se rechaza la publicacion.",
+      );
+      return false;
+    }
+    return true;
+  }
   if (!token) return false;
 
   try {
