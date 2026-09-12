@@ -190,3 +190,155 @@ export function nuevaSesion(azar?: () => number): string {
 export function esSesionValida(valor: unknown): boolean {
   return typeof valor === "string" && /^[a-z0-9]{24}$/.test(valor);
 }
+
+// --- Resumenes para el panel (LY-006 / LY-008) -----------------------------
+
+export type FilaEvento = {
+  evento: string;
+  sesion: string | null;
+  fuente: string | null;
+  campana: string | null;
+  negocio_id?: string | null;
+  creado_en: string;
+};
+
+/**
+ * La fecha (YYYY-MM-DD) en hora de Chile de un timestamp.
+ *
+ * Se filtra en codigo y no en la consulta porque el desfase de Chile cambia con
+ * el horario de verano: pedirle a Postgres un rango con offset fijo dejaria
+ * fuera, o de mas, un par de horas dos veces al año.
+ */
+export function fechaSantiagoDe(iso: string): string {
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return "";
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Santiago",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(t));
+}
+
+/** Solo los eventos que caen dentro del rango, contados en dias de Chile. */
+export function filtrarPorFechas<T extends { creado_en: string }>(
+  filas: T[],
+  desde: string,
+  hasta: string,
+): T[] {
+  return filas.filter((f) => {
+    const dia = fechaSantiagoDe(f.creado_en);
+    return dia !== "" && dia >= desde && dia <= hasta;
+  });
+}
+
+export type ResumenEventos = {
+  total: number;
+  porEvento: Record<string, number>;
+  vistas: number;
+  /** Sesiones distintas que vieron una ficha. Es lo que llamamos "unicos". */
+  unicos: number;
+  acciones: number;
+  /** Sesiones distintas que hicieron al menos una accion. */
+  sesionesConAccion: number;
+  /** acciones / unicos en %. Null si no hay unicos: no se inventan tasas. */
+  tasaAccion: number | null;
+};
+
+export function resumenEventos(filas: FilaEvento[]): ResumenEventos {
+  const porEvento: Record<string, number> = {};
+  const sesionesVista = new Set<string>();
+  const sesionesAccion = new Set<string>();
+  let vistas = 0;
+  let acciones = 0;
+
+  for (const f of filas) {
+    porEvento[f.evento] = (porEvento[f.evento] ?? 0) + 1;
+    if (f.evento === "vista") {
+      vistas++;
+      if (f.sesion) sesionesVista.add(f.sesion);
+    }
+    if (esEventoNegocio(f.evento) && esAccion(f.evento)) {
+      acciones++;
+      if (f.sesion) sesionesAccion.add(f.sesion);
+    }
+  }
+
+  const unicos = sesionesVista.size;
+  return {
+    total: filas.length,
+    porEvento,
+    vistas,
+    unicos,
+    acciones,
+    sesionesConAccion: sesionesAccion.size,
+    tasaAccion: unicos > 0 ? (acciones / unicos) * 100 : null,
+  };
+}
+
+export type CorteOrigen = {
+  clave: string;
+  vistas: number;
+  unicos: number;
+  acciones: number;
+};
+
+function agrupar(
+  filas: FilaEvento[],
+  clavePara: (f: FilaEvento) => string | null,
+): CorteOrigen[] {
+  const mapa = new Map<
+    string,
+    { vistas: number; acciones: number; sesiones: Set<string> }
+  >();
+  for (const f of filas) {
+    const clave = clavePara(f);
+    if (!clave) continue;
+    const actual = mapa.get(clave) ?? {
+      vistas: 0,
+      acciones: 0,
+      sesiones: new Set<string>(),
+    };
+    if (f.evento === "vista") {
+      actual.vistas++;
+      if (f.sesion) actual.sesiones.add(f.sesion);
+    }
+    if (esEventoNegocio(f.evento) && esAccion(f.evento)) actual.acciones++;
+    mapa.set(clave, actual);
+  }
+  return Array.from(mapa.entries())
+    .map(([clave, v]) => ({
+      clave,
+      vistas: v.vistas,
+      unicos: v.sesiones.size,
+      acciones: v.acciones,
+    }))
+    .sort(
+      (a, b) =>
+        b.vistas - a.vistas ||
+        b.acciones - a.acciones ||
+        a.clave.localeCompare(b.clave, "es"),
+    );
+}
+
+/** De donde llegaron: instagram, google, qr, directo... (LY-008) */
+export function porFuente(filas: FilaEvento[]): CorteOrigen[] {
+  return agrupar(filas, (f) => f.fuente ?? "sin dato");
+}
+
+/** Por campania interna: C001, C002... Solo las que tienen una (LY-008). */
+export function porCampana(filas: FilaEvento[]): CorteOrigen[] {
+  return agrupar(filas, (f) => f.campana);
+}
+
+/** Sesiones distintas por negocio, para la tabla del panel. */
+export function unicosPorNegocio(filas: FilaEvento[]): Map<string, number> {
+  const mapa = new Map<string, Set<string>>();
+  for (const f of filas) {
+    if (f.evento !== "vista" || !f.negocio_id || !f.sesion) continue;
+    const set = mapa.get(f.negocio_id) ?? new Set<string>();
+    set.add(f.sesion);
+    mapa.set(f.negocio_id, set);
+  }
+  return new Map(Array.from(mapa.entries()).map(([id, set]) => [id, set.size]));
+}

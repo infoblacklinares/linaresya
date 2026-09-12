@@ -46,7 +46,7 @@ Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y 
 
 ### 3. La analítica no puede responder lo que se le va a preguntar — RESUELTO 2026-09-12 (migración corrida y desplegado)
 
-**Cómo quedó:** tabla `eventos_negocio`, una fila por evento con hora, sesión anónima, fuente y UTM. Es la fuente de verdad, y ella misma mantiene los contadores diarios para no romper los paneles que ya funcionan. Se agregaron los eventos que no existían: Instagram, Facebook, sitio web, compartir y QR. Ver `docs/analitica/LY-005-sistema-de-eventos.md`. Migración corrida y desplegada el 2026-09-12, verificada con un evento real (`contado:true` = fila insertada). **Sigue pendiente:** mostrar lo nuevo en el panel (LY-006 y LY-008).
+**Cómo quedó:** tabla `eventos_negocio`, una fila por evento con hora, sesión anónima, fuente y UTM. Es la fuente de verdad, y ella misma mantiene los contadores diarios para no romper los paneles que ya funcionan. Se agregaron los eventos que no existían: Instagram, Facebook, sitio web, compartir y QR. Ver `docs/analitica/LY-005-sistema-de-eventos.md`. Migración corrida y desplegada el 2026-09-12, verificada con un evento real (`contado:true` = fila insertada). El panel ya muestra visitantes únicos, los eventos nuevos, el origen del tráfico y las campañas (LY-006 y LY-008, `docs/analitica/LY-006-LY-008-panel-de-eventos.md`). **Sigue pendiente:** los resultados que reporta el propio negocio, en tabla aparte, y llevar lo nuevo a la pantalla del dueño.
 
 **Lo que decía cuando se abrió:**
 **Qué pasa:** hoy se guarda 1 fila por negocio por día con 4 contadores. No hay hora, ni sesión, ni origen.

@@ -15,10 +15,31 @@ import {
   totalesDelRango,
   type FilaConNegocio,
 } from "@/lib/estadisticas";
+import {
+  filtrarPorFechas,
+  porCampana,
+  porFuente,
+  resumenEventos,
+  unicosPorNegocio,
+  type FilaEvento,
+} from "@/lib/eventos";
 
 export const metadata = {
   title: "Estadisticas - Admin LinaresYa",
   robots: { index: false, follow: false },
+};
+
+/** Nombres legibles de los eventos, para no mostrarle claves al admin. */
+const ETIQUETA_EVENTO: Record<string, string> = {
+  vista: "Vistas de ficha",
+  telefono: "Llamadas",
+  whatsapp: "WhatsApp",
+  maps: "Como llegar",
+  instagram: "Instagram",
+  facebook: "Facebook",
+  web: "Sitio web",
+  compartir: "Compartidos",
+  qr: "Escaneos de QR",
 };
 
 type SearchParams = {
@@ -72,7 +93,11 @@ export default async function AdminEstadisticasPage({
   const orden = ordenValido(sp.orden);
   const consulta = (sp.q ?? "").trim();
 
-  const [{ data: filasRaw }, { data: sitioRaw, error: sitioError }] = await Promise.all([
+  const [
+    { data: filasRaw },
+    { data: sitioRaw, error: sitioError },
+    { data: eventosRaw, error: eventosError },
+  ] = await Promise.all([
     supabaseAdmin
       .from("estadisticas_diarias")
       .select(
@@ -89,6 +114,16 @@ export default async function AdminEstadisticasPage({
       .select("evento, conteo")
       .gte("fecha", rango.desde)
       .lte("fecha", rango.hasta),
+    // Eventos individuales (LY-005). Se piden con margen a cada lado y se
+    // filtran por dia chileno en codigo: el desfase de Chile cambia con el
+    // horario de verano, asi que un rango con offset fijo dejaria fuera un par
+    // de horas dos veces al año. Si la tabla no existe, falla sola.
+    supabaseAdmin
+      .from("eventos_negocio")
+      .select("evento, sesion, fuente, campana, negocio_id, creado_en")
+      .gte("creado_en", `${rango.desde}T00:00:00-05:00`)
+      .lte("creado_en", `${rango.hasta}T23:59:59-02:00`)
+      .limit(50000),
   ]);
 
   const filas = ((filasRaw ?? []) as unknown[])
@@ -102,6 +137,19 @@ export default async function AdminEstadisticasPage({
     orden,
   );
   const conActividad = agregados.filter((n) => n.vistas + n.acciones > 0);
+
+  // Eventos individuales: es lo que permite hablar de personas distintas, de
+  // Instagram o compartidos, y de campanias. Solo existen desde el 2026-09-12.
+  const hayEventos = !eventosError;
+  const eventos = filtrarPorFechas(
+    ((eventosRaw ?? []) as unknown[]).map((f) => f as FilaEvento),
+    rango.desde,
+    rango.hasta,
+  );
+  const resumen = resumenEventos(eventos);
+  const fuentes = porFuente(eventos);
+  const campanas = porCampana(eventos);
+  const unicosPorId = unicosPorNegocio(eventos);
 
   // Sesiones del sitio: `visita_sitio` es el contador actual y `visita_portada`
   // el viejo, que solo miraba la home. Nunca convivieron, asi que sumarlos no
@@ -226,10 +274,158 @@ export default async function AdminEstadisticasPage({
       )}
 
       <p className="mt-2 rounded-2xl bg-secondary/50 px-4 py-3 text-[11px] text-muted-foreground leading-relaxed">
-        Estos numeros salen de los contadores diarios por ficha. Todavia <strong>no</strong> se
-        miden visitantes unicos por negocio, clicks de Instagram, compartidos ni el origen de
-        la visita: eso llega con el sistema de eventos (LY-005).
+        Los totales de arriba salen de los contadores diarios, que existen desde siempre. El
+        detalle de abajo sale de los eventos individuales, que se guardan <strong>desde el 12
+        de septiembre de 2026</strong>: antes de esa fecha no hay hora, ni sesion, ni origen,
+        y no se puede reconstruir.
       </p>
+
+      {/* Eventos: lo que los contadores diarios no podian responder */}
+      {hayEventos && (
+        <section className="mt-6">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">
+              Detalle de eventos
+            </h2>
+            <span className="text-[11px] text-muted-foreground">
+              {resumen.total.toLocaleString("es-CL")} eventos
+            </span>
+          </div>
+
+          {resumen.total === 0 ? (
+            <div className="rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+              Sin eventos en este periodo. Si el rango es anterior al 12 de septiembre, es
+              esperable: la medicion por evento empezo ese dia.
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <Metrica
+                  label="Visitantes unicos"
+                  valor={resumen.unicos}
+                  destacada
+                  hint="sesiones distintas de navegador"
+                />
+                <Metrica label="Vistas (eventos)" valor={resumen.vistas} />
+                <Metrica
+                  label="Tasa de accion"
+                  valor={
+                    resumen.tasaAccion === null
+                      ? "—"
+                      : `${resumen.tasaAccion.toFixed(1)}%`
+                  }
+                  hint={
+                    resumen.tasaAccion === null
+                      ? "sin visitantes en el periodo"
+                      : "acciones / visitantes unicos"
+                  }
+                />
+              </div>
+
+              <div className="mt-3 rounded-2xl border border-border overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead className="bg-secondary text-[11px] uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th className="text-left px-3 py-2 font-semibold">Evento</th>
+                      <th className="text-right px-3 py-2 font-semibold">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(resumen.porEvento)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([evento, total]) => (
+                        <tr key={evento} className="border-t border-border">
+                          <td className="px-3 py-2 font-medium">{ETIQUETA_EVENTO[evento] ?? evento}</td>
+                          <td className="px-3 py-2 text-right tabular-nums">{total}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
+                Un visitante unico es <strong>una sesion de navegador</strong>, no una persona:
+                si alguien vuelve manana, son dos. No hay cookie permanente ni IP.
+              </p>
+            </>
+          )}
+        </section>
+      )}
+
+      {/* Origen del trafico (LY-008) */}
+      {hayEventos && fuentes.length > 0 && (
+        <section className="mt-8">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-muted-foreground mb-2">
+            Como llegaron
+          </h2>
+          <div className="rounded-2xl border border-border overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-secondary text-[11px] uppercase tracking-wide text-muted-foreground">
+                <tr>
+                  <th className="text-left px-3 py-2 font-semibold">Origen</th>
+                  <th className="text-right px-3 py-2 font-semibold">Vistas</th>
+                  <th className="text-right px-3 py-2 font-semibold">Unicos</th>
+                  <th className="text-right px-3 py-2 font-semibold">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {fuentes.map((f) => (
+                  <tr key={f.clave} className="border-t border-border">
+                    <td className="px-3 py-2 font-medium">{f.clave}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{f.vistas}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{f.unicos}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{f.acciones}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
+            &quot;directo&quot; es quien escribio la direccion, la tenia guardada o llego sin
+            que el navegador diga de donde. &quot;interno&quot; es navegacion dentro del
+            propio sitio. Esto mide trafico, no ventas.
+          </p>
+        </section>
+      )}
+
+      {/* Campanias (LY-008) */}
+      {hayEventos && campanas.length > 0 && (
+        <section className="mt-8">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-muted-foreground mb-2">
+            Campanias
+          </h2>
+          <div className="rounded-2xl border border-border overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-secondary text-[11px] uppercase tracking-wide text-muted-foreground">
+                <tr>
+                  <th className="text-left px-3 py-2 font-semibold">Campania</th>
+                  <th className="text-right px-3 py-2 font-semibold">Vistas</th>
+                  <th className="text-right px-3 py-2 font-semibold">Unicos</th>
+                  <th className="text-right px-3 py-2 font-semibold">Acciones</th>
+                  <th className="text-right px-3 py-2 font-semibold">Tasa</th>
+                </tr>
+              </thead>
+              <tbody>
+                {campanas.map((c) => (
+                  <tr key={c.clave} className="border-t border-border">
+                    <td className="px-3 py-2 font-medium uppercase">{c.clave}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{c.vistas}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{c.unicos}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{c.acciones}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">
+                      {c.unicos > 0 ? `${((c.acciones / c.unicos) * 100).toFixed(0)}%` : "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
+            La campania sale del <code>utm_campaign</code> del link que se publico. El alcance
+            de Instagram o Facebook no aparece aca: LinaresYa no lo puede medir, y se anota a
+            mano desde las estadisticas de Meta.
+          </p>
+        </section>
+      )}
 
       {/* Evolucion */}
       <section className="mt-6">
@@ -299,6 +495,12 @@ export default async function AdminEstadisticasPage({
                       Acciones{orden === "acciones" ? " ↓" : ""}
                     </Link>
                   </th>
+                  <th
+                    className="text-right px-3 py-2 font-semibold"
+                    title="Sesiones distintas que vieron la ficha. Desde el 12-09-2026"
+                  >
+                    Unicos
+                  </th>
                   <th className="text-right px-3 py-2 font-semibold">Tel</th>
                   <th className="text-right px-3 py-2 font-semibold">WA</th>
                   <th className="text-right px-3 py-2 font-semibold">Mapa</th>
@@ -316,6 +518,9 @@ export default async function AdminEstadisticasPage({
                     </td>
                     <td className="px-3 py-2 text-right tabular-nums font-semibold">{n.vistas}</td>
                     <td className="px-3 py-2 text-right tabular-nums">{n.acciones}</td>
+                    <td className="px-3 py-2 text-right tabular-nums font-medium">
+                      {hayEventos ? (unicosPorId.get(n.negocio_id) ?? 0) : "—"}
+                    </td>
                     <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{n.llamadas}</td>
                     <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{n.whatsapp}</td>
                     <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{n.maps}</td>
