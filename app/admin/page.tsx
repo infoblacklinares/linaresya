@@ -261,6 +261,13 @@ export default async function AdminPage() {
           </Link>
         </div>
         <Link
+          href="/admin/estadisticas"
+          className="mt-3 flex items-center justify-between rounded-2xl bg-[#2B6E80] text-white px-4 py-3.5 hover:opacity-90 transition"
+        >
+          <span className="text-sm font-bold">📊 Estadisticas</span>
+          <span className="text-xs font-semibold opacity-80">Hoy, 7, 30 dias o rango →</span>
+        </Link>
+        <Link
           href="/admin/negocio/nuevo"
           className="mt-3 flex items-center justify-between rounded-2xl bg-foreground text-background px-4 py-3.5 hover:opacity-90 transition"
         >
