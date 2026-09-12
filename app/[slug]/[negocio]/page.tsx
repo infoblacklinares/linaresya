@@ -2,7 +2,6 @@ import { supabase, type Negocio } from "@/lib/supabase";
 import { getCategoriaPorSlug, getNegocioPorSlug } from "@/lib/consultas";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { headers } from "next/headers";
 import type { Metadata } from "next";
 import TrackedActionButton from "./TrackedActionButton";
 import LeaveReviewForm from "./LeaveReviewForm";
@@ -14,41 +13,10 @@ import { dentroDeRango } from "@/lib/horarios";
 import JsonLd from "@/components/JsonLd";
 import { urlInstagram } from "@/lib/instagram";
 import { telLink, whatsAppLink } from "@/lib/contacto";
-import { claveLimite, esBot, ipDeCabeceras } from "@/lib/peticion";
+import RegistrarVista from "@/components/RegistrarVista";
+import EnlaceMedido from "@/components/EnlaceMedido";
 import { canUseFeature, esPremium as negocioEsPremium } from "@/lib/planes";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
-async function trackVista(negocioId: string) {
-  try {
-    const h = await headers();
-    // El filtro de bots vive en lib/peticion.ts y lo comparte /api/track.
-    // Antes esta lista no incluia `curl` ni scripts, y los barridos de
-    // auditoria del 2026-09-11 sumaron 346 visitas que nadie hizo.
-    if (esBot(h.get("user-agent"))) return;
-    const clave = claveLimite(
-      ipDeCabeceras({
-        xForwardedFor: h.get("x-forwarded-for"),
-        xRealIp: h.get("x-real-ip"),
-      }),
-      process.env.TRACK_SALT ?? "linaresya-track-v1",
-    );
-    // Version con limite (supabase/rate_limite_eventos.sql). Si la migracion
-    // todavia no se corrio, se cuenta como antes.
-    const { error } = await supabase.rpc("incrementar_estadistica_limitado", {
-      p_negocio_id: negocioId,
-      p_evento: "vista",
-      p_clave: clave,
-    });
-    if (error) {
-      await supabase.rpc("incrementar_estadistica", {
-        p_negocio_id: negocioId,
-        p_evento: "vista",
-      });
-    }
-  } catch {
-    // El tracking nunca debe tirar la pagina.
-  }
-}
-
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
 
@@ -301,9 +269,6 @@ export default async function NegocioDetalle({
         ).toFixed(1)
       : null;
 
-  // Fire-and-forget: no bloqueamos el render si tarda.
-  void trackVista(n.id);
-
   // JSON-LD structured data: LocalBusiness + BreadcrumbList. Google los usa
   // para rich results, knowledge panel, y mejor ranking en "cerca de mi".
   const negocioJsonLdData = localBusinessJsonLd(
@@ -347,6 +312,9 @@ export default async function NegocioDetalle({
     <main className="flex-1 w-full">
       <JsonLd id="ld-negocio" data={negocioJsonLdData} />
       <JsonLd id="ld-breadcrumb" data={breadcrumbData} />
+      {/* La vista se registra desde el navegador: en el servidor no existe la
+          sesion, asi que no se podia distinguir una persona de diez recargas. */}
+      <RegistrarVista negocioId={n.id} />
       <section className="relative">
         {/* Foto de portada full-bleed */}
         <div className="relative h-72 sm:h-80 lg:h-[26rem] w-full overflow-hidden bg-secondary">
@@ -749,41 +717,41 @@ export default async function NegocioDetalle({
         )}
         {n.sitio_web && (
           <div className="mt-2">
-            <a
+            <EnlaceMedido
               href={n.sitio_web}
-              target="_blank"
-              rel="noopener noreferrer"
+              negocioId={n.id}
+              evento="web"
               className="flex items-center justify-center gap-2 rounded-2xl py-3 text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 transition w-full"
             >
               <GlobeIcon />
               Visitar sitio web
-            </a>
+            </EnlaceMedido>
           </div>
         )}
         {n.instagram && (
           <div className="mt-2">
-            <a
+            <EnlaceMedido
               href={urlInstagram(n.instagram)}
-              target="_blank"
-              rel="noopener noreferrer"
+              negocioId={n.id}
+              evento="instagram"
               className="flex items-center justify-center gap-2 rounded-2xl py-3 text-xs font-semibold bg-fuchsia-50 text-fuchsia-700 hover:bg-fuchsia-100 transition w-full"
             >
               <InstagramIcon />
               @{n.instagram}
-            </a>
+            </EnlaceMedido>
           </div>
         )}
         {n.facebook && (
           <div className="mt-2">
-            <a
+            <EnlaceMedido
               href={n.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
+              negocioId={n.id}
+              evento="facebook"
               className="flex items-center justify-center gap-2 rounded-2xl py-3 text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition w-full"
             >
               <FacebookIcon />
               Facebook
-            </a>
+            </EnlaceMedido>
           </div>
         )}
         <div className="mt-2">
@@ -791,6 +759,7 @@ export default async function NegocioDetalle({
             url={`${SITE_URL}/${categoria.slug}/${n.slug}`}
             title={n.nombre}
             text={`${n.nombre} en LinaresYa - ${categoria.nombre}`}
+            negocioId={n.id}
           />
         </div>
       </section>

@@ -44,7 +44,11 @@ Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y 
 **Decisión pendiente:** mover a Cloudflare Rate Limiting o a un almacén compartido. Está escrito en el propio código (`proxy.ts` lo admite en un comentario).
 **Avance 2026-09-12:** el tracking ya no depende de memoria, usa un límite en Postgres (punto 1). El mismo patrón sirve para búsqueda, reseñas y reportes, que siguen pendientes.
 
-### 3. La analítica no puede responder lo que se le va a preguntar
+### 3. La analítica no puede responder lo que se le va a preguntar — RESUELTO 2026-09-12 (falta la migración en producción)
+
+**Cómo quedó:** tabla `eventos_negocio`, una fila por evento con hora, sesión anónima, fuente y UTM. Es la fuente de verdad, y ella misma mantiene los contadores diarios para no romper los paneles que ya funcionan. Se agregaron los eventos que no existían: Instagram, Facebook, sitio web, compartir y QR. Ver `docs/analitica/LY-005-sistema-de-eventos.md`. **Pendiente:** correr `supabase/eventos_negocio.sql`, y mostrar lo nuevo en el panel (LY-006 y LY-008).
+
+**Lo que decía cuando se abrió:**
 **Qué pasa:** hoy se guarda 1 fila por negocio por día con 4 contadores. No hay hora, ni sesión, ni origen.
 **Consecuencia:** no existen visitantes únicos, ni campañas, ni embudo por publicación. Y el histórico no se puede convertir: lo que no se guardó, no se recupera.
 **Decisión de arquitectura propuesta:** la **tabla de eventos pasa a ser la fuente de verdad**, y los contadores diarios quedan como resumen derivado de ella. Dos fuentes de verdad para el mismo número es cómo se llega a un dashboard que se contradice.
@@ -144,3 +148,6 @@ El popup "Registra tu negocio" aparece también sobre las fichas y tapa la panta
 | 2026-09-12 | La IP de quien reporta **no se guarda**. El límite antispam no la necesita almacenada |
 | 2026-09-12 | Se guarda `premium_desde`, escrito solo cuando el plan sube. Paso previo a cobrar por periodo |
 | 2026-09-12 | El popup de altas **se queda** en las fichas hasta tener datos del piloto (cuántos lo ven contra cuántas acciones se pierden) |
+| 2026-09-12 | `eventos_negocio` es la fuente de verdad de la analítica; los contadores diarios pasan a ser un resumen derivado de ella |
+| 2026-09-12 | "Visitante único" significa **una sesión de navegador**, no una persona. Sin cookie persistente ni IP |
+| 2026-09-12 | La vista se cuenta en el navegador, no en el servidor. Hay menos vistas que antes y son más reales: no se comparan con agosto |

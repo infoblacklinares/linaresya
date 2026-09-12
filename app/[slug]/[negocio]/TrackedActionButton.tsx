@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback } from "react";
-
-type Evento = "whatsapp" | "telefono" | "maps";
+import { enviarEvento } from "@/lib/tracking-cliente";
+import type { EventoNegocio } from "@/lib/eventos";
 
 type Props = {
   href: string;
   negocioId: string;
-  evento: Evento;
+  evento: EventoNegocio;
   external?: boolean;
   primary?: boolean;
   icon: React.ReactNode;
@@ -23,27 +23,11 @@ export default function TrackedActionButton({
   icon,
   label,
 }: Props) {
+  // El envio vive en lib/tracking-cliente.ts: agrega la sesion y el origen, y
+  // usa sendBeacon para que el evento salga aunque la pagina se este yendo.
+  // Si falla, el click sigue: nunca se bloquea una llamada por una metrica.
   const handleClick = useCallback(() => {
-    // sendBeacon es fire-and-forget: no bloquea la navegacion, no arroja errores
-    // si el usuario cambia de pagina, y se entrega aunque sea ultima request.
-    try {
-      const payload = JSON.stringify({ negocio_id: negocioId, evento });
-      const blob = new Blob([payload], { type: "application/json" });
-
-      if (typeof navigator !== "undefined" && "sendBeacon" in navigator) {
-        navigator.sendBeacon("/api/track", blob);
-      } else {
-        // Fallback para navegadores muy viejos.
-        fetch("/api/track", {
-          method: "POST",
-          body: payload,
-          keepalive: true,
-          headers: { "Content-Type": "application/json" },
-        }).catch(() => {});
-      }
-    } catch {
-      // El tracking nunca debe romper el click. Si falla, seguimos.
-    }
+    enviarEvento(negocioId, evento);
   }, [negocioId, evento]);
 
   const cls = `flex flex-col items-center justify-center gap-1 rounded-2xl py-3 text-xs font-semibold transition ${

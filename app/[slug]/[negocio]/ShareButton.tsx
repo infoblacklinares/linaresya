@@ -1,17 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { enviarEvento } from "@/lib/tracking-cliente";
 
 // Boton compartir con Web Share API si esta disponible (mobile principalmente),
 // fallback a un menu con WhatsApp / Copiar link en desktop.
+//
+// El evento "compartir" se registra cuando la persona comparte de verdad: al
+// abrir el menu nativo, al elegir WhatsApp o al copiar el link. Abrir el menu
+// de respaldo y arrepentirse no cuenta como compartido (LY-005).
 export default function ShareButton({
   url,
   title,
   text,
+  negocioId,
 }: {
   url: string;
   title: string;
   text: string;
+  negocioId: string;
 }) {
   const [open, setOpen] = useState(false);
   const [copiado, setCopiado] = useState(false);
@@ -23,6 +30,7 @@ export default function ShareButton({
       typeof navigator !== "undefined" &&
       typeof navigator.share === "function";
     if (canShare) {
+      enviarEvento(negocioId, "compartir");
       try {
         await navigator.share({ url, title, text });
       } catch {
@@ -35,6 +43,7 @@ export default function ShareButton({
   }
 
   async function copiarLink() {
+    enviarEvento(negocioId, "compartir");
     try {
       await navigator.clipboard.writeText(url);
       setCopiado(true);
@@ -74,7 +83,10 @@ export default function ShareButton({
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 px-4 py-3 hover:bg-secondary/60 transition text-sm font-medium"
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                enviarEvento(negocioId, "compartir");
+                setOpen(false);
+              }}
             >
               <span className="text-emerald-600 text-lg">{"💬"}</span>
               Compartir por WhatsApp

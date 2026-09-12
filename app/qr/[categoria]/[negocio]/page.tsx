@@ -54,7 +54,10 @@ export default async function QRPage({ params }: Props) {
   const fichaUrl = `${SITE_URL}/${c.slug}/${n.slug}`;
   // Generamos el QR localmente (sin llamadas a terceros). El data URL PNG
   // funciona con la CSP (img-src data:) y no envía la URL a ningún servidor externo.
-  const qrUrl = await QRCode.toDataURL(fichaUrl, {
+  // El QR apunta a la misma ficha, pero con UTM: asi un escaneo se distingue
+  // de una visita cualquiera y se puede medir el cartel o la tarjeta (LY-019).
+  const urlParaQR = `${fichaUrl}?utm_source=qr&utm_medium=impreso&utm_campaign=qr-ficha`;
+  const qrUrl = await QRCode.toDataURL(urlParaQR, {
     width: 280,
     margin: 2,
     errorCorrectionLevel: "M",

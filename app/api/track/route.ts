@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { claveLimite, esBot, ipDeCabeceras, mismoOrigen } from "@/lib/peticion";
-
-// Eventos de negocio. Mantener sincronizado con el CHECK en estadisticas.sql.
-const EVENTOS_VALIDOS = ["vista", "whatsapp", "telefono", "maps"] as const;
-type Evento = (typeof EVENTOS_VALIDOS)[number];
+import { esEventoNegocio, esSesionValida, EVENTOS_HISTORICOS } from "@/lib/eventos";
 
 // Eventos del sitio: no cuelgan de ningun negocio (el popup de la portada se
 // ve antes de que exista uno). Sincronizado con eventos_sitio.sql.
@@ -27,21 +24,27 @@ const SALT = process.env.TRACK_SALT ?? "linaresya-track-v1";
 
 export const runtime = "nodejs";
 
+/** Texto corto y sin sorpresas, venga lo que venga en el cuerpo. */
+function texto(valor: unknown, max: number): string | null {
+  if (typeof valor !== "string") return null;
+  const limpio = valor.trim().slice(0, max);
+  return limpio || null;
+}
+
 /**
  * Registro de eventos.
  *
- * Antes esto era publico y sin limite: cualquiera podia inflar las metricas de
- * cualquier negocio, y los scripts de linea de comandos contaban como visitas.
- * Ahora hay tres puertas antes de contar:
+ * Tres puertas antes de contar: user-agent de navegador real, misma
+ * procedencia, y un limite por minuto que vive en Postgres (lo unico
+ * compartido entre instancias de Vercel).
  *
- *   1. user-agent de navegador de verdad (lib/peticion.ts);
- *   2. la peticion viene de nuestro propio sitio (Origin o Referer);
- *   3. limite por origen y por evento en la base, que es lo unico compartido
- *      entre instancias de Vercel (supabase/rate_limite_eventos.sql).
+ * Desde LY-005 el evento se guarda con su hora, su sesion anonima y su origen
+ * en `eventos_negocio`, y esa funcion mantiene al dia los contadores diarios
+ * de siempre. Si la migracion todavia no se corrio, se cae a las funciones
+ * anteriores para no perder nada.
  *
- * Al que no pasa se le responde ok igual: una metrica no tiene por que
- * explicarle a un script como esquivarla, y tampoco puede ensuciar la consola
- * de quien esta navegando.
+ * Al que no pasa una puerta se le responde ok igual: una metrica no tiene por
+ * que explicarle a un script como esquivarla.
  */
 export async function POST(req: Request) {
   const ua = req.headers.get("user-agent");
@@ -61,7 +64,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "origen no permitido" }, { status: 403 });
   }
 
-  let body: { negocio_id?: unknown; evento?: unknown } = {};
+  let body: {
+    negocio_id?: unknown;
+    evento?: unknown;
+    sesion?: unknown;
+    fuente?: unknown;
+    datos?: unknown;
+  } = {};
 
   // sendBeacon manda Blob con type "text/plain" o el cliente puede mandar JSON.
   // Soportamos ambos.
@@ -91,8 +100,7 @@ export async function POST(req: Request) {
     });
     if (error) {
       // La tabla se crea a mano con supabase/eventos_sitio.sql. Si todavia no
-      // se corrio, esto falla: lo logueamos y respondemos ok igual, porque una
-      // metrica no puede ensuciar la consola de quien esta navegando.
+      // se corrio, esto falla: lo logueamos y respondemos ok igual.
       console.error("[track] rpc evento_sitio:", error.message);
     }
     return NextResponse.json({ ok: true });
@@ -101,53 +109,80 @@ export async function POST(req: Request) {
   if (!UUID_RE.test(negocioId)) {
     return NextResponse.json({ ok: false, error: "negocio_id invalido" }, { status: 400 });
   }
-  if (!EVENTOS_VALIDOS.includes(evento as Evento)) {
+  if (!esEventoNegocio(evento)) {
     return NextResponse.json({ ok: false, error: "evento invalido" }, { status: 400 });
   }
 
-  // Funcion con limite. Si la migracion todavia no se corrio, se cae a la
-  // version sin limite para no perder los eventos de estos dias.
+  // Lo que manda el navegador se acota antes de llegar a la base.
+  const sesion = esSesionValida(body.sesion) ? (body.sesion as string) : null;
+  const fuente = texto(body.fuente, 40);
+  const datosCrudos = (body.datos ?? {}) as Record<string, unknown>;
+  const datos = {
+    utm_source: texto(datosCrudos.utm_source, 40),
+    utm_medium: texto(datosCrudos.utm_medium, 40),
+    utm_campaign: texto(datosCrudos.utm_campaign, 40),
+    utm_content: texto(datosCrudos.utm_content, 40),
+    campana: texto(datosCrudos.campana, 40),
+    referer_host: texto(datosCrudos.referer_host, 80),
+  };
+
+  const registrado = await supabase.rpc("registrar_evento", {
+    p_negocio_id: negocioId,
+    p_evento: evento,
+    p_sesion: sesion,
+    p_fuente: fuente,
+    p_datos: datos,
+    p_clave: clave,
+  });
+
+  if (!registrado.error) {
+    return NextResponse.json({ ok: true, contado: registrado.data === true });
+  }
+
+  const faltaLaTabla = /registrar_evento|does not exist|not find|schema cache/i.test(
+    registrado.error.message,
+  );
+  if (!faltaLaTabla) {
+    console.error("[track] rpc registrar_evento:", registrado.error.message);
+    return NextResponse.json({ ok: true, contado: false });
+  }
+
+  console.warn(
+    "[track] Falta registrar_evento: corre supabase/eventos_negocio.sql. " +
+      "Mientras tanto solo se cuentan los 4 eventos historicos.",
+  );
+
+  // Sin la tabla nueva, los eventos que no existian antes no tienen donde ir.
+  if (!EVENTOS_HISTORICOS.includes(evento)) {
+    return NextResponse.json({ ok: true, contado: false });
+  }
+
   const limitado = await supabase.rpc("incrementar_estadistica_limitado", {
     p_negocio_id: negocioId,
     p_evento: evento,
     p_clave: clave,
   });
-
-  if (limitado.error) {
-    const falta = /incrementar_estadistica_limitado|does not exist|not find/i.test(
-      limitado.error.message,
-    );
-    if (!falta) {
-      console.error("[track] rpc limitado:", limitado.error.message);
-      return NextResponse.json({ ok: false, error: "rpc fallo" }, { status: 500 });
-    }
-    console.warn(
-      "[track] Falta la funcion con limite: corre supabase/rate_limite_eventos.sql. " +
-        "Mientras tanto se cuenta sin limite.",
-    );
-    const { error } = await supabase.rpc("incrementar_estadistica", {
-      p_negocio_id: negocioId,
-      p_evento: evento,
-    });
-    if (error) {
-      // Pasa, por ejemplo, con un negocio que ya no existe: la clave foranea
-      // lo rechaza. Se loguea, pero no se devuelve un 500: esto lo llama un
-      // beacon del navegador y un error aca solo agrega ruido a Sentry.
-      console.error("[track] rpc error:", error.message);
-      return NextResponse.json({ ok: true, contado: false });
-    }
-    return NextResponse.json({ ok: true, contado: true });
+  if (!limitado.error) {
+    return NextResponse.json({ ok: true, contado: limitado.data === true });
   }
 
-  // `false` = quedo fuera por limite, o el negocio no existe o esta inactivo.
-  return NextResponse.json({ ok: true, contado: limitado.data === true });
+  const { error } = await supabase.rpc("incrementar_estadistica", {
+    p_negocio_id: negocioId,
+    p_evento: evento,
+  });
+  if (error) {
+    // Pasa, por ejemplo, con un negocio que ya no existe: la clave foranea lo
+    // rechaza. Se loguea y no se devuelve un 500: esto lo llama un beacon.
+    console.error("[track] rpc error:", error.message);
+    return NextResponse.json({ ok: true, contado: false });
+  }
+  return NextResponse.json({ ok: true, contado: true });
 }
 
 // Health check rapido para debug. GET /api/track devuelve los eventos validos.
 export async function GET() {
   return NextResponse.json({
     ok: true,
-    eventos: EVENTOS_VALIDOS,
     eventos_sitio: EVENTOS_SITIO,
   });
 }
