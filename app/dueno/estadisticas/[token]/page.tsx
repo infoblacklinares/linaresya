@@ -326,7 +326,7 @@ export default async function DuenoEstadisticasPage({
 
         {resenas.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-            Todavía no hay reseñas. Pedile a tus clientes que te dejen una en tu ficha.
+            Todavía no hay reseñas. Pídele a tus clientes que te dejen una en tu ficha.
           </div>
         ) : (
           <ul className="space-y-2">
@@ -369,9 +369,9 @@ export default async function DuenoEstadisticasPage({
       {/* Cómo conseguir más reseñas */}
       <section className="px-4 pt-6">
         <div className="rounded-2xl bg-[#2B6E80]/8 border border-[#2B6E80]/20 p-4">
-          <p className="text-sm font-bold text-[#2B6E80] mb-1">💡 Tip: conseguí más reseñas</p>
+          <p className="text-sm font-bold text-[#2B6E80] mb-1">💡 Tip: consigue más reseñas</p>
           <p className="text-[13px] text-foreground/70 leading-relaxed">
-            Mostrá el código QR de tu negocio en el mostrador — los clientes lo escanean y llegan directo a tu ficha para dejar una reseña.
+            Muestra el código QR de tu negocio en el mostrador — los clientes lo escanean y llegan directo a tu ficha para dejar una reseña.
           </p>
           {categoriaSlug && (
             <Link
@@ -451,8 +451,8 @@ function TokenInvalidoView({ expirado = false }: { expirado?: boolean }) {
         </h1>
         <p className="text-sm text-muted-foreground mb-6">
           {expirado
-            ? "Este link de acceso ya expiró. Solicitá uno nuevo desde la página de tu negocio."
-            : "Este link no existe o ya fue usado. Solicitá uno nuevo."}
+            ? "Este link de acceso ya expiró. Solicita uno nuevo desde la página de tu negocio."
+            : "Este link no existe o ya fue usado. Solicita uno nuevo."}
         </p>
         <Link
           href="/dueno/solicitar"

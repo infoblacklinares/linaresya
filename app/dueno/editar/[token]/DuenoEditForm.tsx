@@ -160,7 +160,7 @@ export default function DuenoEditForm({
 
       <Field
         label="Tu email"
-        hint="Con esto podés pedir un link nuevo solo, en /dueno/solicitar, si perdés este. Sin email dependés de que te lo generemos a mano."
+        hint="Con esto puedes pedir un link nuevo tú mismo, en /dueno/solicitar, si pierdes este. Sin email dependes de que te lo generemos a mano."
         error={fe.email}
       >
         <input

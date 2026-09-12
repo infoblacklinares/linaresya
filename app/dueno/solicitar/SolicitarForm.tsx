@@ -68,7 +68,7 @@ export default function SolicitarForm() {
       </button>
 
       <p className="text-[11px] text-muted-foreground text-center leading-relaxed">
-        Si no recordas con que email publicaste, escribinos a{" "}
+        Si no recuerdas con qué email publicaste, escríbenos a{" "}
         <a
           href="mailto:infoblack.linares@gmail.com"
           className="font-semibold underline"

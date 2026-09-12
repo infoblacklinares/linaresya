@@ -24,7 +24,7 @@ export default function LinkDueno({ url }: { url: string }) {
     }
   };
 
-  const mensaje = `Completá la ficha de tu negocio en LinaresYa: ${url}`;
+  const mensaje = `Completa la ficha de tu negocio en LinaresYa: ${url}`;
 
   return (
     <div className="mt-6 rounded-2xl border border-[#2B6E80]/30 bg-[#2B6E80]/5 p-4 text-left">

@@ -13,7 +13,12 @@ const BANCO       = "Banco Estado";
 const TIPO_CUENTA = "Cuenta RUT / Vista";
 const NRO_CUENTA  = "186537866";
 const RUT_TITULAR = "18.653.786-6";
-const NOMBRE_TITULAR = "Infoblack SpA";      // ← actualiza si el nombre difiere
+// Nombre legal del titular de la cuenta. Antes decia "Infoblack SpA", una
+// sociedad que no existe: LinaresYa opera como persona natural con boletas de
+// honorarios, y esta es la Cuenta RUT personal. Poner una empresa inexistente
+// en la pantalla donde se pide una transferencia es un problema legal, no de
+// redaccion.
+const NOMBRE_TITULAR = "Willson Huenchulao Valdés";
 
 // Precio mensual y anual
 const PRECIO_MES  = 4990;
@@ -29,12 +34,12 @@ const WA_LINK = `https://wa.me/${WA_NUMERO}?text=${WA_MSG_PREMIUM}`;
 export const metadata: Metadata = {
   title: "Plan Premium para negocios en Linares - LinaresYa",
   description:
-    "Destacá tu negocio en Linares con LinaresYa Premium. WhatsApp directo, fotos, posición destacada y estadísticas. Desde $5.990/mes. Sin contratos.",
+    "Destaca tu negocio en Linares con LinaresYa Premium. WhatsApp directo, fotos, posición destacada y estadísticas. $4.990 al mes, sin contratos.",
   alternates: { canonical: `${SITE_URL}/premium` },
   openGraph: {
     title: "Plan Premium - LinaresYa",
     description:
-      "WhatsApp directo, fotos, destacado en búsquedas y estadísticas para tu negocio en Linares. Desde $5.990/mes.",
+      "WhatsApp directo, fotos, destacado en búsquedas y estadísticas para tu negocio en Linares. $4.990 al mes.",
     url: `${SITE_URL}/premium`,
     type: "website",
   },
@@ -52,14 +57,14 @@ const FEATURES = [
 
 const PASOS_PAGO = [
   { n: "1", txt: "Haz la transferencia con los datos de abajo." },
-  { n: "2", txt: "Mandá el comprobante por WhatsApp o al email." },
+  { n: "2", txt: "Manda el comprobante por WhatsApp o al email." },
   { n: "3", txt: "En menos de 24 horas activamos tu plan Premium." },
 ];
 
 const FAQ = [
   {
     q: "¿Hay contrato o permanencia mínima?",
-    a: "No. Puedes cancelar cuando querás. Si pagas mensual, el plan corre hasta el próximo mes. Si pagaste anual y quieres cancelar antes, te devolvemos los meses restantes.",
+    a: "No. Puedes cancelar cuando quieras. Si pagas mensual, el plan corre hasta el próximo mes. Si pagaste anual y quieres cancelar antes, te devolvemos los meses restantes.",
   },
   {
     q: "¿Cómo activan mi Premium después de pagar?",
@@ -71,11 +76,11 @@ const FAQ = [
   },
   {
     q: "¿Puedo probar Premium antes de pagar?",
-    a: "Sí. Escribinos por WhatsApp y lo hablamos. Para negocios nuevos en LinaresYa solemos dar unos días de prueba sin costo.",
+    a: "Sí. Escríbenos por WhatsApp y lo hablamos. Para negocios nuevos en LinaresYa solemos dar unos días de prueba sin costo.",
   },
   {
-    q: "¿El precio incluye IVA?",
-    a: "Sí, el precio es final con IVA incluido. Emitimos boleta o factura según necesites.",
+    q: "¿El precio lleva IVA? ¿Me dan boleta?",
+    a: "El precio es final: no se suma IVA ni ningún costo extra. Por cada pago te emito una boleta de honorarios.",
   },
 ];
 
@@ -143,7 +148,7 @@ export default function PremiumPage() {
             </p>
             <p className="text-xs text-muted-foreground">por mes</p>
             <p className="mt-3 text-[12px] text-foreground/60 leading-snug">
-              Pagas cada mes. Cancelas cuando querás.
+              Pagas cada mes. Cancelas cuando quieras.
             </p>
           </div>
 
@@ -162,7 +167,7 @@ export default function PremiumPage() {
               /mes · ${PRECIO_ANIO.toLocaleString("es-CL")} al año
             </p>
             <p className="mt-3 text-[12px] text-foreground/60 leading-snug">
-              Un pago anual. Ahorrás ${(PRECIO_MES * 12 - PRECIO_ANIO).toLocaleString("es-CL")}.
+              Un pago anual. Ahorras ${(PRECIO_MES * 12 - PRECIO_ANIO).toLocaleString("es-CL")}.
             </p>
           </div>
         </div>
@@ -273,7 +278,7 @@ export default function PremiumPage() {
         <div className="rounded-3xl bg-[#0f172a] text-white p-6 text-center">
           <p className="text-lg font-extrabold tracking-tight">¿Dudas antes de contratar?</p>
           <p className="mt-1 text-sm text-white/70">
-            Escribinos y te explicamos todo sin compromiso.
+            Escríbenos y te explicamos todo sin compromiso.
           </p>
           <a
             href={WA_LINK}
@@ -285,7 +290,7 @@ export default function PremiumPage() {
             Hablar por WhatsApp
           </a>
           <p className="mt-4 text-[11px] text-white/40">
-            Sin contratos · Cancelas cuando querás · IVA incluido
+            Sin contratos · Cancelas cuando quieras · Con boleta de honorarios
           </p>
         </div>
 

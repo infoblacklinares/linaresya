@@ -277,7 +277,7 @@ function EmptyState({ emoji, nombre }: { emoji: string; nombre: string }) {
     <div className="col-span-2 rounded-3xl border border-dashed border-border p-8 text-center">
       <div className="text-5xl mb-3">{emoji}</div>
       <h2 className="text-lg font-bold">Aún no hay negocios en {nombre}</h2>
-      <p className="mt-1.5 text-sm text-muted-foreground max-w-sm mx-auto">¿Sos el primero? Publicá gratis y aparecés acá en pocas horas.</p>
+      <p className="mt-1.5 text-sm text-muted-foreground max-w-sm mx-auto">¿Eres el primero? Publica gratis y apareces acá en pocas horas.</p>
       <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-2">
         <Link href="/publicar" className="inline-flex items-center gap-1.5 rounded-full bg-foreground text-background text-sm font-semibold px-5 py-2.5">
           Publicar mi negocio →

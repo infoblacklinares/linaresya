@@ -25,7 +25,7 @@ export default function Footer() {
           </div>
           <div>
             <h3 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-2">
-              Sumate
+              Súmate
             </h3>
             <ul className="space-y-1.5">
               <li>

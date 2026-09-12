@@ -136,7 +136,7 @@ export default function PublishForm({
         <p className="mt-2 text-sm text-[#6B5E57]">
           {esAdmin
             ? "El negocio quedó activo y ya aparece en el sitio."
-            : "Revisamos tu negocio y lo activamos en las próximas horas. Mientras tanto, ya podés completar fotos y horarios vos mismo."}
+            : "Revisamos tu negocio y lo activamos en las próximas horas. Mientras tanto, ya puedes completar fotos y horarios tú mismo."}
         </p>
 
         {state.editarUrl && <LinkDueno url={state.editarUrl} />}
