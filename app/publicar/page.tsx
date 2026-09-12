@@ -98,32 +98,38 @@ export default async function PublicarPage({
         </div>
       </header>
 
-      {/* ── Hero ───────────────────────────────────────────────────── */}
-      <section className="bg-gradient-to-br from-[#2B6E80] to-[#1f5268] px-6 py-10 text-white">
-        <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-2">
-          📍 Directorio local de Linares
-        </p>
-        <h2 className="text-3xl font-black leading-tight tracking-tight">
-          Tu negocio, visible<br />para todo Linares.
+      {/* ── Hero minimo ────────────────────────────────────────────
+          Quien llega a esta pagina ya decidio: la venta ocurrio antes, en la
+          portada, el popup o Instagram. Antes habia tres pantallas de scroll
+          (hero largo, como funciona, beneficios y una oferta de Premium) entre
+          el visitante y el primer campo. Ahora el formulario empieza de una, y
+          lo que convence quedo abajo para quien dude. */}
+      <section className="bg-gradient-to-br from-[#2B6E80] to-[#1f5268] px-6 pt-7 pb-6 text-white">
+        <h2 className="text-2xl font-black leading-tight tracking-tight">
+          Publica tu negocio gratis
         </h2>
-        <p className="mt-3 text-sm text-white/80 leading-relaxed">
-          Publicar es <strong className="text-white">gratis y sin registro</strong>.
-          Solo completas el formulario y te activamos en pocas horas.
+        <p className="mt-2 text-[13px] font-semibold text-white/85">
+          Gratis · Sin registro · Activo en pocas horas
         </p>
-
-        {/* Stat bar */}
         {totalNegocios > 0 && (
-          <div className="mt-5 inline-flex items-center gap-2 bg-white/15 rounded-full px-4 py-2 text-sm font-semibold">
-            <span className="text-lg">🏪</span>
-            <span>
-              {totalNegocios} negocios ya están en LinaresYa
-            </span>
-          </div>
+          <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-[12px] font-semibold">
+            <span>🏪</span>
+            {totalNegocios} negocios ya están en LinaresYa
+          </p>
         )}
       </section>
 
-      {/* ── Cómo funciona ──────────────────────────────────────────── */}
-      <section className="px-4 pt-7 pb-1">
+      {/* ── Formulario, de inmediato ───────────────────────────────── */}
+      {error && (
+        <div className="mx-4 mt-4 rounded-2xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800">
+          No pudimos cargar las categorías. Intentá recargar la página.
+        </div>
+      )}
+
+      <PublishForm categorias={categorias} origen={origen} />
+
+      {/* ── Lo que convence, para quien baja a mirarlo ─────────────── */}
+      <section className="px-4 pt-8">
         <h3 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-4">
           Cómo funciona
         </h3>
@@ -139,8 +145,7 @@ export default async function PublicarPage({
         </ol>
       </section>
 
-      {/* ── Beneficios ─────────────────────────────────────────────── */}
-      <section className="px-4 pt-6 pb-1">
+      <section className="px-4 pt-6">
         <h3 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-4">
           Qué incluye el plan gratuito
         </h3>
@@ -154,7 +159,9 @@ export default async function PublicarPage({
           ))}
         </div>
 
-        {/* Premium CTA */}
+        {/* Premium al final a proposito: ofrecer el plan pagado antes de que
+            complete el gratis es pedir dos decisiones a la vez, y la segunda
+            hace dudar de la primera. */}
         <div className="mt-3 rounded-2xl border border-[#2B6E80]/30 bg-[#2B6E80]/5 px-4 py-4 flex items-center justify-between gap-3">
           <div>
             <p className="text-sm font-bold">¿Quieres más? → Plan Premium</p>
@@ -171,23 +178,8 @@ export default async function PublicarPage({
         </div>
       </section>
 
-      {/* ── Separador ──────────────────────────────────────────────── */}
-      <div className="mx-4 mt-7 border-t border-border" />
-      <p className="text-center text-[11px] text-muted-foreground mt-3 mb-1">
-        Completa el formulario — tarda unos 3 minutos
-      </p>
-
-      {/* ── Formulario ─────────────────────────────────────────────── */}
-      {error && (
-        <div className="mx-4 mt-4 rounded-2xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800">
-          No pudimos cargar las categorías. Intentá recargar la página.
-        </div>
-      )}
-
-      <PublishForm categorias={categorias} origen={origen} />
-
       {/* Salida al final: para quien llega abajo y decide no publicar ahora */}
-      <div className="px-4 pb-10 -mt-4 text-center">
+      <div className="px-4 pb-10 pt-8 text-center">
         <Link
           href="/"
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2B6E80] hover:underline"
