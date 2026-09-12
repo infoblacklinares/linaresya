@@ -11,7 +11,7 @@ import ScheduleInput, {
 } from "@/app/publicar/ScheduleInput";
 import PhotoUpload from "@/app/publicar/PhotoUpload";
 import GaleriaManager from "@/app/admin/negocio/[id]/editar/GaleriaManager";
-import { esPremium } from "@/lib/planes";
+import { esPremium, limiteFotos } from "@/lib/planes";
 
 const estadoInicial: DuenoUpdateState = { ok: false };
 
@@ -62,6 +62,11 @@ export default function DuenoEditForm({
     estadoInicial,
   );
   const fe = state.fieldErrors ?? {};
+
+  // Cuantas fotos permite su plan y cuantas le quedan. El servidor vuelve a
+  // aplicar el limite: esto es para que no suba una foto que se va a ignorar.
+  const tope = limiteFotos(negocio);
+  const espacio = Math.max(0, tope - fotosGaleria.length);
 
   return (
     <form action={formAction} className="space-y-6 pb-8">
@@ -280,15 +285,30 @@ export default function DuenoEditForm({
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
           Galeria
         </h2>
+        <p className="text-[12px] text-muted-foreground">
+          Tu plan permite <strong>{tope} fotos</strong> en la galería. Llevas{" "}
+          {fotosGaleria.length}.
+          {!esPremium(negocio) && " Con el Plan Premium son 8."}
+        </p>
         <p className="text-[12px] font-semibold mb-1">Fotos actuales</p>
         <GaleriaManager fotos={fotosGaleria} />
-        <p className="text-[12px] font-semibold mb-1 mt-3">Agregar nuevas</p>
-        <div className="grid grid-cols-2 gap-3">
-          <PhotoUpload name="foto_galeria_1" label="" />
-          <PhotoUpload name="foto_galeria_2" label="" />
-          <PhotoUpload name="foto_galeria_3" label="" />
-          <PhotoUpload name="foto_galeria_4" label="" />
-        </div>
+        {espacio > 0 ? (
+          <>
+            <p className="text-[12px] font-semibold mb-1 mt-3">
+              Agregar nuevas {espacio < 4 && `(te quedan ${espacio})`}
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              {Array.from({ length: Math.min(4, espacio) }, (_, i) => (
+                <PhotoUpload key={i} name={`foto_galeria_${i + 1}`} label="" />
+              ))}
+            </div>
+          </>
+        ) : (
+          <p className="mt-3 rounded-2xl bg-secondary/60 px-4 py-3 text-[12px] text-muted-foreground">
+            Llegaste al máximo de tu plan. Borra alguna de arriba para subir otra
+            {!esPremium(negocio) && ", o pásate a Premium para tener 8"}.
+          </p>
+        )}
       </section>
 
       <section className="space-y-3">

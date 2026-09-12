@@ -209,7 +209,7 @@ export default async function Home() {
     // Historias vigentes de negocios premium (RLS filtra expiradas igual)
     supabase
       .from("historias")
-      .select("id, imagen_url, texto, negocio_id, negocios:negocio_id(nombre, foto_portada, plan, activo, slug, categorias:categoria_id(slug, emoji))")
+      .select("id, imagen_url, texto, negocio_id, negocios:negocio_id(nombre, foto_portada, plan, premium_hasta, activo, slug, categorias:categoria_id(slug, emoji))")
       .gt("expira_en", new Date().toISOString())
       .order("creada_en", { ascending: false })
       .limit(30),
@@ -303,6 +303,12 @@ export default async function Home() {
     if (!neg || typeof neg !== "object") return [];
     const n = neg as Record<string, unknown>;
     if (!n.activo) return [];
+    // Las historias son un beneficio Premium y hasta ahora eso dependia de que
+    // el admin se acordara: la consulta traia las de cualquier negocio. Si el
+    // plan vence, la historia deja de mostrarse, igual que el resto.
+    if (!esPremium({ plan: (n.plan as string | null) ?? null, premium_hasta: (n.premium_hasta as string | null) ?? null })) {
+      return [];
+    }
     const catRaw = Array.isArray(n.categorias) ? (n.categorias as unknown[])[0] : n.categorias;
     const cat = catRaw && typeof catRaw === "object" ? catRaw as Record<string, unknown> : null;
     return [{

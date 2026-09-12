@@ -11,6 +11,7 @@ import {
   normalizarTelefono,
   normalizarWhatsApp,
 } from "@/lib/contacto";
+import { LIMITE_FOTOS } from "@/lib/planes";
 
 export type PublicarState = {
   ok: boolean;
@@ -371,10 +372,14 @@ export async function publicarNegocio(
       .eq("id", insertado.id as string);
   }
 
+  // Un negocio recien publicado siempre entra en el plan gratis, asi que su
+  // galeria se acota al limite de ese plan (LY-025).
   const galeriaUrls: string[] = [];
   for (let i = 1; i <= 4; i++) {
     const url = String(formData.get(`foto_galeria_${i}`) ?? "").trim();
-    if (isUrlValida(url)) galeriaUrls.push(url);
+    if (isUrlValida(url) && galeriaUrls.length < LIMITE_FOTOS.basico) {
+      galeriaUrls.push(url);
+    }
   }
   if (galeriaUrls.length > 0) {
     const filasFotos = galeriaUrls.map((url, idx) => ({

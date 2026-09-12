@@ -45,14 +45,17 @@ export const metadata: Metadata = {
   },
 };
 
+// Solo lo que Premium hace de verdad hoy. Antes esta lista tenia siete puntos
+// y cuatro no se sostenian: las estadisticas y la edicion autonoma las tiene
+// tambien el plan gratis, el limite de fotos no existia en el codigo, y las
+// historias no podia publicarlas el dueño. Prometer de menos y cumplir vende
+// mejor que prometer siete cosas y que el cliente descubra la diferencia.
 const FEATURES = [
-  { emoji: "📲", titulo: "Historias 24h", desc: "Publica historias tipo Instagram que aparecen arriba de todo en la portada. Ideales para ofertas del día." },
-  { emoji: "💬", titulo: "WhatsApp directo", desc: "Tus clientes te escriben en un clic desde tu ficha, sin intermediarios." },
-  { emoji: "🔝", titulo: "Posición destacada", desc: "Apareces antes que los negocios básicos en búsquedas y categorías, y entras al 'Negocio del día'." },
-  { emoji: "📸", titulo: "Fotos del negocio", desc: "Galería de hasta 8 fotos de tu local, productos o servicios." },
-  { emoji: "📊", titulo: "Estadísticas reales", desc: "Vistas, clics en WhatsApp, llamadas y cómo llegar — semana a semana." },
-  { emoji: "✏️", titulo: "Edición autónoma", desc: "Link mágico para actualizar tus datos cuando quieras, sin depender de nadie." },
-  { emoji: "⭐", titulo: "Badge Premium", desc: "Marca visual que genera confianza frente a negocios sin verificar." },
+  { emoji: "💬", titulo: "WhatsApp directo", desc: "Tus clientes te escriben en un clic desde tu ficha. Es lo que el plan gratis no tiene." },
+  { emoji: "🔝", titulo: "Posición destacada", desc: "Apareces antes que los negocios del plan gratis en las búsquedas y en tu categoría." },
+  { emoji: "📸", titulo: "Hasta 8 fotos", desc: "El plan gratis permite 3. Con Premium muestras tu local, tus productos o tu trabajo con 8." },
+  { emoji: "📲", titulo: "Historias en la portada", desc: "Mándanos la foto y la publicamos por ti arriba de todo en la portada, por 24, 48 o 72 horas. Ideal para la oferta del día." },
+  { emoji: "⭐", titulo: "Sello Premium", desc: "Marca visual en tu ficha y en los listados." },
 ];
 
 const PASOS_PAGO = [
@@ -77,6 +80,10 @@ const FAQ = [
   {
     q: "¿Puedo probar Premium antes de pagar?",
     a: "Sí. Escríbenos por WhatsApp y lo hablamos. Para negocios nuevos en LinaresYa solemos dar unos días de prueba sin costo.",
+  },
+  {
+    q: "¿Las estadísticas son solo de Premium?",
+    a: "No. Todos los negocios de LinaresYa ven sus estadísticas y pueden editar su ficha, paguen o no. Premium agrega el botón de WhatsApp, más fotos, las historias en la portada y la posición destacada.",
   },
   {
     q: "¿El precio lleva IVA? ¿Me dan boleta?",

@@ -85,6 +85,23 @@ export function canUseFeature(negocio: NegocioConPlan, feature: Feature): boolea
 }
 
 /**
+ * Cuantas fotos de galeria puede tener una ficha, segun su plan.
+ *
+ * Es el diferenciador mas barato y concreto de Premium: la pagina ya prometia
+ * "galeria de hasta 8 fotos" y no habia ningun limite en el codigo, asi que un
+ * negocio Basico subia las mismas que uno que pagaba. La portada de la ficha
+ * no cuenta: este es el limite de la galeria.
+ */
+export const LIMITE_FOTOS: Record<Plan, number> = {
+  basico: 3,
+  premium: 8,
+};
+
+export function limiteFotos(negocio: NegocioConPlan): number {
+  return LIMITE_FOTOS[planVigente(negocio)];
+}
+
+/**
  * Fecha (ISO) para vencer un Premium dentro de N dias. La usa el boton de
  * "Premium 30 dias" del panel, para no tener que escribir la fecha a mano.
  */

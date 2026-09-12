@@ -11,6 +11,7 @@ import {
   normalizarTelefono,
   normalizarWhatsApp,
 } from "@/lib/contacto";
+import { limiteFotos } from "@/lib/planes";
 
 const SITE_URL_NOTIF =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
@@ -121,7 +122,7 @@ export async function updateNegocioDueno(
   const { data: antes } = await supabaseAdmin
     .from("negocios")
     .select(
-      "nombre, descripcion, telefono, whatsapp, direccion, a_domicilio, zona_cobertura, disponibilidad, foto_portada, email, instagram, sitio_web, facebook",
+      "nombre, descripcion, telefono, whatsapp, direccion, a_domicilio, zona_cobertura, disponibilidad, foto_portada, email, instagram, sitio_web, facebook, plan, premium_hasta",
     )
     .eq("id", id)
     .single();
@@ -264,6 +265,31 @@ export async function updateNegocioDueno(
     const url = String(formData.get(`foto_galeria_${i}`) ?? "").trim();
     if (url && isUrlBucket(url)) nuevasUrls.push(url);
   }
+
+  // Limite de galeria segun el plan (LY-025). Antes no habia ninguno: un
+  // negocio Basico subia las mismas fotos que uno que pagaba, mientras la
+  // pagina de Premium prometia "hasta 8". Las que sobran se ignoran en
+  // silencio: el resto de los cambios del formulario se guarda igual.
+  if (nuevasUrls.length > 0) {
+    const anteriores = antes as Record<string, unknown> | null;
+    const tope = limiteFotos({
+      plan: (anteriores?.plan as string | null) ?? null,
+      premium_hasta: (anteriores?.premium_hasta as string | null) ?? null,
+    });
+    const { count } = await supabaseAdmin
+      .from("fotos")
+      .select("id", { count: "exact", head: true })
+      .eq("negocio_id", id);
+    const yaTiene = Math.max(0, (count ?? 0) - idsAEliminar.length);
+    const espacio = Math.max(0, tope - yaTiene);
+    if (nuevasUrls.length > espacio) {
+      console.warn(
+        `[updateNegocioDueno] ${nuevasUrls.length - espacio} foto(s) ignorada(s): el plan permite ${tope}.`,
+      );
+      nuevasUrls.length = espacio;
+    }
+  }
+
   if (nuevasUrls.length > 0) {
     const { data: maxRow } = await supabaseAdmin
       .from("fotos")

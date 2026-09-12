@@ -34,7 +34,7 @@ Tabla de capacidades, que es lo único que hay que tocar para cambiar la oferta:
 | `whatsapp` | — | Sí |
 | `destacado` | — | Sí |
 | `estadisticas` | Sí | Sí |
-| `galeria` | Sí | Sí |
+| `galeria` | Sí, hasta **3 fotos** | Sí, hasta **8 fotos** |
 | `ofertas` | Sí | Sí |
 
 **La tabla refleja cómo funciona el sitio hoy, no la lista de deseos.** El plan comercial dice que las estadísticas deberían ser de Premium, pero hoy las tiene cualquier negocio: quitárselas a 164 negocios es una decisión de Willson, no técnica. Cuando la tome, se cambia esa tabla y nada más.
