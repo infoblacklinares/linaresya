@@ -14,22 +14,36 @@ import { dentroDeRango } from "@/lib/horarios";
 import JsonLd from "@/components/JsonLd";
 import { urlInstagram } from "@/lib/instagram";
 import { telLink, whatsAppLink } from "@/lib/contacto";
+import { claveLimite, esBot, ipDeCabeceras } from "@/lib/peticion";
 import { canUseFeature, esPremium as negocioEsPremium } from "@/lib/planes";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
-// Regex permisivo para detectar bots/crawlers conocidos. No queremos
-// inflar las vistas con Googlebot, scrapers, link previews, etc.
-const BOT_UA_RE =
-  /bot|crawler|spider|crawl|googlebot|bingbot|yandex|baidu|duckduck|slurp|facebookexternalhit|twitterbot|linkedinbot|whatsapp|telegram|discord|preview|fetch/i;
-
 async function trackVista(negocioId: string) {
   try {
     const h = await headers();
-    const ua = h.get("user-agent") ?? "";
-    if (BOT_UA_RE.test(ua)) return; // skip bots
-    await supabase.rpc("incrementar_estadistica", {
+    // El filtro de bots vive en lib/peticion.ts y lo comparte /api/track.
+    // Antes esta lista no incluia `curl` ni scripts, y los barridos de
+    // auditoria del 2026-09-11 sumaron 346 visitas que nadie hizo.
+    if (esBot(h.get("user-agent"))) return;
+    const clave = claveLimite(
+      ipDeCabeceras({
+        xForwardedFor: h.get("x-forwarded-for"),
+        xRealIp: h.get("x-real-ip"),
+      }),
+      process.env.TRACK_SALT ?? "linaresya-track-v1",
+    );
+    // Version con limite (supabase/rate_limite_eventos.sql). Si la migracion
+    // todavia no se corrio, se cuenta como antes.
+    const { error } = await supabase.rpc("incrementar_estadistica_limitado", {
       p_negocio_id: negocioId,
       p_evento: "vista",
+      p_clave: clave,
     });
+    if (error) {
+      await supabase.rpc("incrementar_estadistica", {
+        p_negocio_id: negocioId,
+        p_evento: "vista",
+      });
+    }
   } catch {
     // El tracking nunca debe tirar la pagina.
   }

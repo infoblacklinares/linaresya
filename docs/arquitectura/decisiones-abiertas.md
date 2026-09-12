@@ -17,7 +17,11 @@ Registro vivo. Cada punto es algo **verificado en el código o en producción**,
 
 ## P0 — Antes de cobrar
 
-### 1. `/api/track` es público y sin límite
+### 1. `/api/track` es público y sin límite — RESUELTO 2026-09-12 (falta la migración en producción)
+
+**Cómo quedó:** tres puertas antes de contar — user-agent de navegador real, mismo origen, y límite por minuto en Postgres (no en memoria, que en Vercel no sirve). La clave del límite es un hash con sal, no la IP. Ver `docs/seguridad/proteger-tracking.md`. **Pendiente:** correr `supabase/rate_limite_eventos.sql`.
+
+**Lo que decía cuando se abrió:**
 **Qué pasa:** cualquiera puede inflar las métricas de cualquier negocio desde la consola del navegador. Ya hay evidencia real: los barridos de auditoría con `curl` del 11-sep sumaron 346 visitas falsas, porque el filtro de bots mira el user-agent y no reconoce `curl`.
 **Por qué importa:** esas cifras son el argumento de venta del Plan Estrella. Un número que no se puede defender no sirve para cobrar.
 **Decisión pendiente:** límite por IP real (Cloudflare, no en memoria), filtro de bots ampliado, y validar que el evento venga de una ficha existente.
@@ -25,6 +29,7 @@ Registro vivo. Cada punto es algo **verificado en el código o en producción**,
 ### 2. Los límites por IP no funcionan en producción
 **Qué pasa:** búsqueda, reseñas y reportes limitan con un `Map` en memoria. En Vercel cada instancia tiene su propio mapa, así que el límite real es "el que toque".
 **Decisión pendiente:** mover a Cloudflare Rate Limiting o a un almacén compartido. Está escrito en el propio código (`proxy.ts` lo admite en un comentario).
+**Avance 2026-09-12:** el tracking ya no depende de memoria, usa un límite en Postgres (punto 1). El mismo patrón sirve para búsqueda, reseñas y reportes, que siguen pendientes.
 
 ### 3. La analítica no puede responder lo que se le va a preguntar
 **Qué pasa:** hoy se guarda 1 fila por negocio por día con 4 contadores. No hay hora, ni sesión, ni origen.
