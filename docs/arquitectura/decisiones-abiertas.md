@@ -5,6 +5,19 @@ Registro vivo. Cada punto es algo **verificado en el código o en producción**,
 - **Creado:** 2026-09-12, al cerrar la Fase 1 del plan (LY-001 a LY-024) más LY-026 y LY-027.
 - **Regla:** ninguna de estas decisiones se toma sola mientras se programa. Las de negocio las toma Willson; las técnicas se proponen acá antes de tocar código.
 
+## Regla de migraciones (aprendida a golpes el 2026-09-12)
+
+Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y por qué:
+
+| Tipo de migración | Orden | Motivo |
+|---|---|---|
+| **Agrega** una columna, tabla o función | **Antes** del deploy, o en cualquier momento | El código viejo la ignora; el nuevo la encuentra lista |
+| **Borra** o **renombra** algo que el código usa | **Después** del deploy | Si se corre antes, el código que está en producción se rompe |
+
+**Qué pasó:** se entregó `quitar_ip_reportes.sql` sin decir que iba después del deploy. Willson la corrió, y el código en producción seguía escribiendo y leyendo esa columna: reportar un dato incorrecto falló y el panel de reportes se veía vacío durante unos minutos, hasta desplegar el código que ya no la usaba.
+
+**Además:** todo código que dependa de una columna nueva se escribe tolerando que no exista todavía (reintentar sin ese campo y avisar en el log). Eso ya se hace con `origen`, `instagram`, `facebook`, `premium_desde` y la función del límite de eventos. Esa tolerancia es lo que permite desplegar y migrar en distinto momento sin romper nada.
+
 ## Cómo leer las prioridades
 
 | Nivel | Significado |
