@@ -30,9 +30,9 @@ Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y 
 
 ## P0 — Antes de cobrar
 
-### 1. `/api/track` es público y sin límite — RESUELTO 2026-09-12 (falta la migración en producción)
+### 1. `/api/track` es público y sin límite — RESUELTO 2026-09-12 (migración corrida y desplegado)
 
-**Cómo quedó:** tres puertas antes de contar — user-agent de navegador real, mismo origen, y límite por minuto en Postgres (no en memoria, que en Vercel no sirve). La clave del límite es un hash con sal, no la IP. Ver `docs/seguridad/proteger-tracking.md`. **Pendiente:** correr `supabase/rate_limite_eventos.sql`.
+**Cómo quedó:** tres puertas antes de contar — user-agent de navegador real, mismo origen, y límite por minuto en Postgres (no en memoria, que en Vercel no sirve). La clave del límite es un hash con sal, no la IP. Ver `docs/seguridad/proteger-tracking.md`. Migración corrida el 2026-09-12 y verificada en producción: a partir del evento 30 en un minuto la respuesta es `contado:false`.
 
 **Lo que decía cuando se abrió:**
 **Qué pasa:** cualquiera puede inflar las métricas de cualquier negocio desde la consola del navegador. Ya hay evidencia real: los barridos de auditoría con `curl` del 11-sep sumaron 346 visitas falsas, porque el filtro de bots mira el user-agent y no reconoce `curl`.
@@ -44,9 +44,9 @@ Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y 
 **Decisión pendiente:** mover a Cloudflare Rate Limiting o a un almacén compartido. Está escrito en el propio código (`proxy.ts` lo admite en un comentario).
 **Avance 2026-09-12:** el tracking ya no depende de memoria, usa un límite en Postgres (punto 1). El mismo patrón sirve para búsqueda, reseñas y reportes, que siguen pendientes.
 
-### 3. La analítica no puede responder lo que se le va a preguntar — RESUELTO 2026-09-12 (falta la migración en producción)
+### 3. La analítica no puede responder lo que se le va a preguntar — RESUELTO 2026-09-12 (migración corrida y desplegado)
 
-**Cómo quedó:** tabla `eventos_negocio`, una fila por evento con hora, sesión anónima, fuente y UTM. Es la fuente de verdad, y ella misma mantiene los contadores diarios para no romper los paneles que ya funcionan. Se agregaron los eventos que no existían: Instagram, Facebook, sitio web, compartir y QR. Ver `docs/analitica/LY-005-sistema-de-eventos.md`. **Pendiente:** correr `supabase/eventos_negocio.sql`, y mostrar lo nuevo en el panel (LY-006 y LY-008).
+**Cómo quedó:** tabla `eventos_negocio`, una fila por evento con hora, sesión anónima, fuente y UTM. Es la fuente de verdad, y ella misma mantiene los contadores diarios para no romper los paneles que ya funcionan. Se agregaron los eventos que no existían: Instagram, Facebook, sitio web, compartir y QR. Ver `docs/analitica/LY-005-sistema-de-eventos.md`. Migración corrida y desplegada el 2026-09-12, verificada con un evento real (`contado:true` = fila insertada). **Sigue pendiente:** mostrar lo nuevo en el panel (LY-006 y LY-008).
 
 **Lo que decía cuando se abrió:**
 **Qué pasa:** hoy se guarda 1 fila por negocio por día con 4 contadores. No hay hora, ni sesión, ni origen.
@@ -62,7 +62,7 @@ Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y 
 **Riesgo:** el código asume columnas que pueden no existir. Ya hay parches que lo demuestran: `/publicar` reintenta el alta sacando columnas opcionales de a una si Supabase las rechaza.
 **Decisión pendiente:** volcar el esquema real al repo y adoptar migraciones numeradas. Requiere un `pg_dump` o acceso de lectura al catálogo.
 
-### 5. No se guarda desde cuándo un negocio es Premium — RESUELTO 2026-09-12 (falta la migración en producción)
+### 5. No se guarda desde cuándo un negocio es Premium — RESUELTO 2026-09-12 (migración corrida y desplegado)
 
 **Cómo quedó:** se agrega `premium_desde`, que el panel escribe **solo cuando el plan sube** (no en cada guardado) y limpia al volver a Básico. Migración: `supabase/premium_desde.sql`. El código funciona con o sin la columna: si no existe, reintenta el cambio de plan sin ella y lo avisa en el log. **Sigue abierto:** decidir si la tabla `pagos` se usa o se borra.
 
@@ -84,7 +84,7 @@ Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y 
 **Qué pasa:** el caché `linaresya-v2` devolvió páginas anteriores durante las pruebas locales. Tras un deploy, un visitante que ya entró puede seguir viendo la ficha vieja.
 **Decisión pendiente:** estrategia *network-first* para el HTML, dejando el caché solo para lo estático.
 
-### 9. Privacidad: hay una IP guardada — RESUELTO 2026-09-12 (falta la migración en producción)
+### 9. Privacidad: hay una IP guardada — RESUELTO 2026-09-12 (migración corrida y desplegado)
 
 **Cómo quedó:** el código dejó de escribirla y de leerla; el panel ya no la muestra y la consulta ya no la pide. El límite por IP para frenar spam sigue funcionando en memoria, sin almacenar nada. Para borrar las IPs ya guardadas hay que correr `supabase/quitar_ip_reportes.sql`, que **elimina la columna y su contenido de forma permanente**.
 
