@@ -2,7 +2,7 @@
 
 - **Prioridad:** P2
 - **Fecha:** 2026-09-12
-- **Estado:** Verificado por tests, pendiente de revisión en producción
+- **Estado:** Verificado por tests y en producción
 
 ## Por qué ahora
 
@@ -73,11 +73,20 @@ worker espera encontrar.
 | Tracking | `/api/track` no se cachea nunca |
 | Activación | Las caches de versiones anteriores se borran |
 
-**Sin probar en un navegador:** el panel de esta sesión no permite registrar un
-service worker en `localhost` (falla al buscar el script). Hay que revisar en
-producción después del deploy: que aparezcan `linaresya-estaticos-v3` y
-`linaresya-paginas-v3`, que `linaresya-v2` ya no esté, y que entrar a una ficha
-con dos UTM distintos deje una sola entrada.
+### Revisión en producción (2026-09-12, después del deploy)
+
+El panel de esta sesión no permite registrar un service worker en `localhost`
+(falla al buscar el script), así que la revisión en navegador se hizo sobre
+producción:
+
+| Se visitó | Quedó en el cache |
+|---|---|
+| ficha con `utm_source=instagram&utm_campaign=c001&utm_content=historia` | `/eventos/volantines-juan` |
+| la misma ficha con `utm_source=facebook&utm_content=publicacion` | *(la misma entrada, no se duplicó)* |
+| `/buscar?q=pizza` | `/buscar?q=pizza` |
+
+`linaresya-v2` desapareció sola en la primera visita. El total del origen bajó
+de 3,54 MB a 2,55 MB, y ahora tiene techo.
 
 ## Riesgos
 
