@@ -24,6 +24,7 @@ type Negocio = {
   activo: boolean;
   verificado: boolean;
   premium_hasta: string | null;
+  premium_desde?: string | null;
   lat: number | null;
   lng: number | null;
 };

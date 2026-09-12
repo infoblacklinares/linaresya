@@ -35,7 +35,6 @@ type ReporteRow = {
   negocio_id: string;
   motivo: string;
   descripcion: string | null;
-  ip: string | null;
   resuelto: boolean;
   creado_en: string;
   resuelto_en: string | null;
@@ -73,7 +72,7 @@ export default async function ModerarReportes() {
   }
 
   const SELECT =
-    "id, negocio_id, motivo, descripcion, ip, resuelto, creado_en, resuelto_en, negocios:negocio_id(nombre, slug, activo, categorias:categoria_id(nombre, slug, emoji))";
+    "id, negocio_id, motivo, descripcion, resuelto, creado_en, resuelto_en, negocios:negocio_id(nombre, slug, activo, categorias:categoria_id(nombre, slug, emoji))";
 
   const [{ data: pendientes }, { data: resueltos }] = await Promise.all([
     supabaseAdmin
@@ -218,7 +217,6 @@ function ReporteCard({ r, pendiente = false }: { r: ReporteRow; pendiente?: bool
             )}
             <p className="text-[11px] text-muted-foreground mt-0.5">
               {fecha}
-              {r.ip && ` · IP: ${r.ip}`}
             </p>
           </div>
         </div>

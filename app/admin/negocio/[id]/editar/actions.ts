@@ -144,9 +144,12 @@ export async function updateNegocio(
   // Snapshot de foto_portada actual para comparar y limpiar Storage si cambia
   const { data: antesNeg } = await supabaseAdmin
     .from("negocios")
-    .select("foto_portada")
+    .select("foto_portada, plan")
     .eq("id", id)
     .maybeSingle();
+  const planAnterior = String(
+    (antesNeg as { plan?: unknown } | null)?.plan ?? "",
+  );
   const portadaAnterior =
     (antesNeg as { foto_portada?: string | null } | null)?.foto_portada ?? null;
 
@@ -174,10 +177,28 @@ export async function updateNegocio(
   };
   if (categoriaId) update.categoria_id = categoriaId;
 
-  const { error } = await supabaseAdmin
+  // Fecha de inicio del Premium: solo cuando el plan sube, para no reiniciarla
+  // en cada guardado; se limpia al volver a Basico.
+  if (plan === "premium" && planAnterior !== "premium") {
+    update.premium_desde = new Date().toISOString();
+  } else if (plan === "basico") {
+    update.premium_desde = null;
+  }
+
+  let { error } = await supabaseAdmin
     .from("negocios")
     .update(update)
     .eq("id", id);
+
+  // La columna se agrega a mano con supabase/premium_desde.sql. Sin ella
+  // Supabase rechaza la fila entera, asi que se reintenta sin ese campo.
+  if (error && /premium_desde/i.test(error.message)) {
+    console.warn(
+      "[updateNegocio] Falta la columna premium_desde: corre supabase/premium_desde.sql. Se guarda sin ella.",
+    );
+    delete update.premium_desde;
+    ({ error } = await supabaseAdmin.from("negocios").update(update).eq("id", id));
+  }
 
   if (error) {
     return {

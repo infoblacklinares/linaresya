@@ -46,6 +46,8 @@ type Negocio = {
   activo: boolean;
   verificado: boolean;
   premium_hasta: string | null;
+  /** Opcional: la columna se agrega con supabase/premium_desde.sql */
+  premium_desde?: string | null;
 };
 
 const estadoInicial: UpdateState = { ok: false };
@@ -141,6 +143,17 @@ export default function EditForm({
             className="input-ue"
           />
         </Field>
+        {negocio.premium_desde && (
+          <p className="text-[11px] font-medium text-[#8B5E0A]">
+            Premium desde el{" "}
+            {new Date(negocio.premium_desde).toLocaleDateString("es-CL", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+              timeZone: "America/Santiago",
+            })}
+          </p>
+        )}
         <p className="text-[11px] text-muted-foreground leading-relaxed">
           Premium activa el boton de WhatsApp y el destacado en la busqueda. Sin fecha, no
           vence. Con fecha vencida, el negocio vuelve a Basico al instante, sin esperar al

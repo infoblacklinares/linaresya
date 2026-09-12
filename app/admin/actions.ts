@@ -150,10 +150,33 @@ async function cambiarPlanNegocio(
     .eq("id", id)
     .maybeSingle();
 
-  const { error } = await supabaseAdmin
+  const eraPremiumPrevio =
+    String((antesRaw as Record<string, unknown> | null)?.plan ?? "") === "premium";
+
+  const cambios: Record<string, unknown> = { plan, premium_hasta: premiumHasta };
+  // Fecha de inicio del Premium: se escribe solo cuando el plan sube, para no
+  // reiniciarla en cada guardado, y se limpia al volver a Basico.
+  if (plan === "premium" && !eraPremiumPrevio) {
+    cambios.premium_desde = new Date().toISOString();
+  } else if (plan === "basico") {
+    cambios.premium_desde = null;
+  }
+
+  let { error } = await supabaseAdmin
     .from("negocios")
-    .update({ plan, premium_hasta: premiumHasta })
+    .update(cambios)
     .eq("id", id);
+
+  // La columna se agrega a mano con supabase/premium_desde.sql. Si todavia no
+  // se corrio, Supabase rechaza la fila entera: se reintenta sin ella, porque
+  // cambiar el plan no puede quedar bloqueado por una columna opcional.
+  if (error && /premium_desde/i.test(error.message)) {
+    console.warn(
+      "[cambiarPlanNegocio] Falta la columna premium_desde: corre supabase/premium_desde.sql. El plan se cambia igual.",
+    );
+    delete cambios.premium_desde;
+    ({ error } = await supabaseAdmin.from("negocios").update(cambios).eq("id", id));
+  }
   if (error) {
     console.error("[cambiarPlanNegocio] error:", error.message);
     return;
@@ -182,9 +205,8 @@ async function cambiarPlanNegocio(
 
   // El aviso al dueño va solo cuando el plan realmente sube, no en cada
   // reactivacion, y solo si dejo correo. Nunca voltea el cambio de plan.
-  const eraPremium = String(antes?.plan ?? "") === "premium";
   const email = (antes?.email as string | null) ?? null;
-  if (plan === "premium" && !eraPremium && email && categoria) {
+  if (plan === "premium" && !eraPremiumPrevio && email && categoria) {
     try {
       const links = await generarTokenDueno(id, { email, ip: "admin-premium" });
       await sendOwnerPremiumNotification({

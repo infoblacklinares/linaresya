@@ -45,7 +45,11 @@ Registro vivo. Cada punto es algo **verificado en el código o en producción**,
 **Riesgo:** el código asume columnas que pueden no existir. Ya hay parches que lo demuestran: `/publicar` reintenta el alta sacando columnas opcionales de a una si Supabase las rechaza.
 **Decisión pendiente:** volcar el esquema real al repo y adoptar migraciones numeradas. Requiere un `pg_dump` o acceso de lectura al catálogo.
 
-### 5. No se guarda desde cuándo un negocio es Premium
+### 5. No se guarda desde cuándo un negocio es Premium — RESUELTO 2026-09-12 (falta la migración en producción)
+
+**Cómo quedó:** se agrega `premium_desde`, que el panel escribe **solo cuando el plan sube** (no en cada guardado) y limpia al volver a Básico. Migración: `supabase/premium_desde.sql`. El código funciona con o sin la columna: si no existe, reintenta el cambio de plan sin ella y lo avisa en el log. **Sigue abierto:** decidir si la tabla `pagos` se usa o se borra.
+
+**Lo que decía cuando se abrió:**
 **Qué pasa:** solo existe `premium_hasta`. La tabla `pagos` (con campos de Flow) existe y **nadie la usa**.
 **Consecuencia:** no se puede calcular un periodo cobrado, ni saber cuántos meses lleva un cliente, ni conciliar un pago.
 **Decisión pendiente, antes del primer cobro:** agregar `premium_desde` o una tabla de historial de plan, y decidir si `pagos` se usa o se elimina.
@@ -63,7 +67,11 @@ Registro vivo. Cada punto es algo **verificado en el código o en producción**,
 **Qué pasa:** el caché `linaresya-v2` devolvió páginas anteriores durante las pruebas locales. Tras un deploy, un visitante que ya entró puede seguir viendo la ficha vieja.
 **Decisión pendiente:** estrategia *network-first* para el HTML, dejando el caché solo para lo estático.
 
-### 9. Privacidad: hay una IP guardada
+### 9. Privacidad: hay una IP guardada — RESUELTO 2026-09-12 (falta la migración en producción)
+
+**Cómo quedó:** el código dejó de escribirla y de leerla; el panel ya no la muestra y la consulta ya no la pide. El límite por IP para frenar spam sigue funcionando en memoria, sin almacenar nada. Para borrar las IPs ya guardadas hay que correr `supabase/quitar_ip_reportes.sql`, que **elimina la columna y su contenido de forma permanente**.
+
+**Lo que decía cuando se abrió:**
 **Qué pasa:** la analítica no guarda IP (bien), pero la tabla `reportes` sí guarda la del que reporta. Con la Ley 21.719 encima, eso es dato personal con finalidad y plazo que hay que justificar.
 **Decisión pendiente:** decidir si se necesita, y si sí, por cuánto tiempo se conserva. Si no, se borra la columna.
 
@@ -119,3 +127,7 @@ El popup "Registra tu negocio" aparece también sobre las fichas y tapa la panta
 | 2026-09-12 | El plan vigente se decide en un solo archivo, y un Premium vencido baja al instante sin esperar al cron |
 | 2026-09-12 | Las estadísticas quedan gratis para los dos planes, y WhatsApp no se regala al Básico |
 | 2026-09-12 | El panel muestra el plan **guardado**; el resto del sitio usa el **vigente** |
+| 2026-09-12 | El tracking exige navegador real, mismo origen y un tope por minuto en Postgres. La clave del límite es un hash con sal, no la IP |
+| 2026-09-12 | La IP de quien reporta **no se guarda**. El límite antispam no la necesita almacenada |
+| 2026-09-12 | Se guarda `premium_desde`, escrito solo cuando el plan sube. Paso previo a cobrar por periodo |
+| 2026-09-12 | El popup de altas **se queda** en las fichas hasta tener datos del piloto (cuántos lo ven contra cuántas acciones se pierden) |

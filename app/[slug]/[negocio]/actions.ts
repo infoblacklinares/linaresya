@@ -226,7 +226,6 @@ export async function reportarNegocio(
     negocio_id: negocioId,
     motivo: motivoRaw,
     descripcion: descripcion || null,
-    ip,
   });
   if (error) {
     console.error("[reportarNegocio] Insert error:", error);
