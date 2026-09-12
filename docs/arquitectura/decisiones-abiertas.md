@@ -107,7 +107,17 @@ Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y 
 ### 12. Admin de un solo factor, y esa clave firma otras cosas
 La contraseña del panel también firma los links de aprobación por correo. Cambiarla invalida todos los links viejos: es correcto, pero hay que saberlo.
 
-### 13. Tipos duplicados
+### 13. El color de los títulos está clavado en el CSS global
+
+**Qué pasa:** `app/globals.css` fija `color: #1A1410` en todos los `h1`–`h4`. Esa regla **pisa el `text-white` del contenedor**, así que cualquier título dentro de un bloque oscuro sale casi negro sobre negro, salvo que lleve su propia clase de color.
+
+**Cómo apareció:** Willson vio el título del hero de `/premium` ilegible (2026-09-12). Un barrido encontró otros dos casos reales: el hero de `/publicar` y el de `/para-negocios`. Los tres se arreglaron con `text-white` explícito.
+
+**Qué se intentó y no funcionó:** cambiar la regla global a `color: inherit`. Tras limpiar la caché de build y reiniciar el servidor, el título seguía saliendo oscuro y no se encontró qué otra regla lo estaba pisando. Se revirtió: **una regla que afecta a todo el sitio no se cambia sin poder verificarla**.
+
+**Qué falta:** entender por qué `inherit` no ganó, y recién ahí sacar el color fijo. Mientras tanto, todo título nuevo sobre fondo oscuro necesita su `text-white`, y quedó un comentario en `globals.css` avisándolo.
+
+### 14. Tipos duplicados
 El tipo `Negocio` estaba redefinido en 8 páginas. Se van unificando a medida que cada tarea toca su archivo (ya se hizo en la ficha). Quedan las del panel.
 
 ### 14. `SITE_URL` con destino equivocado por defecto

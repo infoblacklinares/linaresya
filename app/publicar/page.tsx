@@ -105,7 +105,9 @@ export default async function PublicarPage({
           el visitante y el primer campo. Ahora el formulario empieza de una, y
           lo que convence quedo abajo para quien dude. */}
       <section className="bg-gradient-to-br from-[#2B6E80] to-[#1f5268] px-6 pt-7 pb-6 text-white">
-        <h2 className="text-2xl font-black leading-tight tracking-tight">
+        {/* text-white explicito: globals.css fija el color de todos los h1-h4,
+            asi que sin esto el titulo sale casi negro sobre el fondo oscuro. */}
+        <h2 className="text-2xl font-black leading-tight tracking-tight text-white">
           Publica tu negocio gratis
         </h2>
         <p className="mt-2 text-[13px] font-semibold text-white/85">

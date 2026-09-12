@@ -99,7 +99,9 @@ export default function PremiumPage() {
         <p className="text-xs font-bold uppercase tracking-widest text-white/50 mb-2">
           LinaresYa · Plan Premium
         </p>
-        <h2 className="text-3xl font-black leading-tight tracking-tight">
+        {/* text-white explicito: globals.css fuerza color #1A1410 en todos los
+            h1-h4, asi que sobre fondo oscuro el titulo salia casi negro. */}
+        <h2 className="text-3xl font-black leading-tight tracking-tight text-white">
           Más clientes.<br />Más contactos.<br />Menos trabajo.
         </h2>
         <p className="mt-3 text-sm text-white/70 leading-relaxed max-w-sm">

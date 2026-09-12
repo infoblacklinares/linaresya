@@ -108,6 +108,11 @@
     font-family: var(--font-sans);
     letter-spacing: -0.01em;
   }
+  /* OJO: este color fijo pisa el `text-white` del contenedor, asi que todo
+     titulo que vaya sobre fondo oscuro necesita su propia clase `text-white`.
+     Se intento cambiarlo por `inherit` el 2026-09-12 y no basto: hay que
+     revisarlo con calma antes de tocarlo, porque afecta a todo el sitio.
+     Anotado en docs/arquitectura/decisiones-abiertas.md. */
   h1, h2, h3, h4 {
     font-family: var(--font-heading);
     letter-spacing: -0.025em;

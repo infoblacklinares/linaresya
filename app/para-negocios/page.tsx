@@ -122,7 +122,9 @@ export default async function ParaNegociosPage() {
           <p className="text-xs font-bold uppercase tracking-widest text-white/50 mb-2">
             LinaresYa · Directorio local
           </p>
-          <h2 className="text-2xl font-extrabold leading-tight tracking-tight">
+          {/* text-white explicito: globals.css fija el color de los h1-h4, asi
+              que sin esto el titulo sale casi negro sobre el bloque oscuro. */}
+          <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-white">
             Que los vecinos de<br />Linares te encuentren
           </h2>
           <p className="mt-2 text-sm text-white/70 leading-relaxed">
