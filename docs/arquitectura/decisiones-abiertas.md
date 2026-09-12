@@ -175,3 +175,4 @@ El popup "Registra tu negocio" aparece también sobre las fichas y tapa la panta
 | 2026-09-12 | `eventos_negocio` es la fuente de verdad de la analítica; los contadores diarios pasan a ser un resumen derivado de ella |
 | 2026-09-12 | "Visitante único" significa **una sesión de navegador**, no una persona. Sin cookie persistente ni IP |
 | 2026-09-12 | La vista se cuenta en el navegador, no en el servidor. Hay menos vistas que antes y son más reales: no se comparan con agosto |
+| 2026-09-12 | La cadena de medición UTM queda verificada de punta a punta. El `vista` que no salía era artefacto de probar con la pestaña oculta: los datos reales muestran 7 vistas de 5 sesiones el mismo día |
