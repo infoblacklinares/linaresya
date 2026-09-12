@@ -64,7 +64,7 @@ Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y 
 
 ### 5. No se guarda desde cuándo un negocio es Premium — RESUELTO 2026-09-12 (migración corrida y desplegado)
 
-**Cómo quedó:** se agrega `premium_desde`, que el panel escribe **solo cuando el plan sube** (no en cada guardado) y limpia al volver a Básico. Migración: `supabase/premium_desde.sql`. El código funciona con o sin la columna: si no existe, reintenta el cambio de plan sin ella y lo avisa en el log. **Sigue abierto:** decidir si la tabla `pagos` se usa o se borra.
+**Cómo quedó:** se agrega `premium_desde`, que el panel escribe **solo cuando el plan sube** (no en cada guardado) y limpia al volver a Básico. Migración: `supabase/premium_desde.sql`. El código funciona con o sin la columna: si no existe, reintenta el cambio de plan sin ella y lo avisa en el log. **Sobre la tabla `pagos`, decidido el 2026-09-12:** no se borra y **no se usa todavía**. Ver abajo, "Decisión sobre `pagos`".
 
 **Lo que decía cuando se abrió:**
 **Qué pasa:** solo existe `premium_hasta`. La tabla `pagos` (con campos de Flow) existe y **nadie la usa**.
@@ -123,6 +123,20 @@ Todo se renderiza en el servidor. Sirve hoy; el día que haya una app, un inform
 Verificado en producción: 2 teléfonos con un dígito de menos, 1 negocio que no aparece en el sitemap por no tener categoría válida, 60 fichas sin teléfono y solo 1 con Instagram. Es LY-033, y es lo que hace que una ficha se vea abandonada.
 
 ---
+
+## Decisión sobre `pagos` (2026-09-12)
+
+**La tabla no se borra y no se usa todavía. No se construye módulo de pagos hasta que exista el primer pago real.**
+
+Por qué, en orden de peso:
+
+1. **Hay 0 clientes pagando.** Construir el módulo de cobros antes de cobrarle al primero es expandir sin cerrar, que es justo el patrón que este proyecto tiene que evitar. Lo que falta para cobrar no es una tabla: es un negocio que diga sí.
+2. **La tabla está diseñada para Flow** (`flow_order_id`, `flow_token`), y hoy el cobro es transferencia a una Cuenta RUT con boleta de honorarios. Usarla como está sería guardar datos de un medio de pago que no se usa.
+3. **El diseño correcto se conoce recién con el primer cobro.** ¿Mensual o anual? ¿Se guarda el comprobante? ¿Se emite boleta por cada uno? Adivinar eso ahora garantiza rehacerlo después.
+
+**Qué se hace mientras tanto:** el primer pago se registra donde ya vive la plata del negocio, en `crm/pipeline.md` y en la bitácora. Con `premium_desde` y `premium_hasta` ya se sabe desde y hasta cuándo está pagado un plan, que es lo que la ficha necesita.
+
+**Cuándo se retoma:** cuando entre el primer pago. Ahí la tabla se adapta al cobro real — `pagado_en`, `medio`, `nota`, y fuera los campos de Flow — y se agrega la pantalla para registrarlo.
 
 ## Decisiones de producto que condicionan la arquitectura
 
