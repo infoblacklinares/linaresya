@@ -3,6 +3,7 @@ import Link from "next/link";
 import { diaHoySantiago, horaAhoraSantiago, dentroDeRango } from "@/lib/horarios";
 import AnimatedCard from "@/components/AnimatedCard";
 import CercaDeMi from "@/components/CercaDeMi";
+import { whatsAppLink } from "@/lib/contacto";
 
 const WA_SUGERIR = "56984272557";
 function waLinkSugerir(termino: string) {
@@ -460,7 +461,7 @@ function ChipQuitar({ label, href }: { label: string; href: string }) {
 
 function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; rating?: { avg: number; count: number } | null }) {
   const esPremium = n.plan === "premium";
-  const waNumber = n.whatsapp?.replace(/\D/g, "");
+  const waUrl = esPremium ? whatsAppLink(n.whatsapp) : null;
   const categoriaSlug = n.categorias?.slug ?? "sin-categoria";
   const href = `/${categoriaSlug}/${n.slug}`;
 
@@ -516,8 +517,8 @@ function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; r
             {rating && <span className="text-[11px] font-bold text-amber-600">★ {rating.avg.toFixed(1)}</span>}
             {n.a_domicilio && <span className="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded-full font-medium">🛵</span>}
           </div>
-          {waNumber && esPremium ? (
-            <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener noreferrer"
+          {waUrl ? (
+            <a href={waUrl} target="_blank" rel="noopener noreferrer"
               className="relative z-20 h-7 w-7 rounded-full bg-[#25D366] flex items-center justify-center hover:bg-[#1ebe5d] transition shrink-0 shadow-sm">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
                 <path d="M20.5 3.5A11 11 0 0 0 3 17l-1 5 5.2-1.4A11 11 0 1 0 20.5 3.5Zm-8.5 17a9 9 0 0 1-4.6-1.3l-.3-.2-3.1.8.8-3-.2-.3A9 9 0 1 1 12 20.5Z" />

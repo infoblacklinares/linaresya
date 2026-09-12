@@ -25,6 +25,10 @@ type Negocio = {
   telefono: string | null;
   whatsapp: string | null;
   email: string | null;
+  sitio_web: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  plan: "basico" | "premium";
   direccion: string | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;

@@ -4,6 +4,7 @@
 // <JsonLd data={...} /> en el componente.
 
 import { urlInstagram } from "@/lib/instagram";
+import { normalizarWhatsApp, telefonoInternacional } from "@/lib/contacto";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
@@ -45,6 +46,7 @@ export type NegocioJsonLd = {
   email: string | null;
   sitio_web: string | null;
   instagram?: string | null;
+  facebook?: string | null;
   direccion: string | null;
   ciudad: string | null;
   lat: number | null;
@@ -155,20 +157,14 @@ export function localBusinessJsonLd(
   if (negocio.sitio_web) sameAs.push(negocio.sitio_web);
   // sameAs es justo el campo que Google espera para los perfiles sociales.
   if (negocio.instagram) sameAs.push(urlInstagram(negocio.instagram));
-  if (negocio.whatsapp) sameAs.push(`https://wa.me/${negocio.whatsapp}`);
+  if (negocio.facebook) sameAs.push(negocio.facebook);
+  // El que llama decide si pasa el WhatsApp: solo Premium lo publica.
+  const wa = normalizarWhatsApp(negocio.whatsapp ?? "");
+  if (wa.ok && wa.valor) sameAs.push(`https://wa.me/${wa.valor}`);
 
-  // Telefono en formato E.164 (requisito de Schema.org).
-  // Chile: +56 + 9 digitos (movil) o +56 + 8 digitos (fijo).
-  // Si el numero ya viene con + lo respetamos; si viene con 56 al inicio
-  // agregamos +; si es un numero local (empieza con 9 u otro digito) le
-  // prefijamos +56.
-  const telephone = (() => {
-    if (!negocio.telefono) return undefined;
-    const digits = negocio.telefono.replace(/\D/g, "");
-    if (negocio.telefono.startsWith("+")) return negocio.telefono.replace(/\s/g, "");
-    if (digits.startsWith("56") && digits.length >= 10) return `+${digits}`;
-    return `+56${digits}`;
-  })();
+  // Telefono en formato E.164 (requisito de Schema.org). Si no calza con un
+  // formato chileno conocido se omite: mejor sin telefono que uno mal armado.
+  const telephone = telefonoInternacional(negocio.telefono) ?? undefined;
 
   return {
     "@context": "https://schema.org",

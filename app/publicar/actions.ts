@@ -6,6 +6,11 @@ import { sendAdminPublicacionNotification } from "@/lib/email";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { generarTokenDueno, HORAS_ALTA } from "@/lib/dueno-token";
 import { normalizarInstagram } from "@/lib/instagram";
+import {
+  normalizarSitioWeb,
+  normalizarTelefono,
+  normalizarWhatsApp,
+} from "@/lib/contacto";
 
 export type PublicarState = {
   ok: boolean;
@@ -58,15 +63,6 @@ function toSlug(texto: string): string {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .slice(0, 60);
-}
-
-// Normaliza numero de WhatsApp a formato internacional sin +.
-function normalizarWhatsApp(raw: string): string {
-  const soloDigitos = raw.replace(/\D/g, "");
-  if (!soloDigitos) return "";
-  if (soloDigitos.startsWith("56")) return soloDigitos;
-  if (soloDigitos.startsWith("9") && soloDigitos.length === 9) return "56" + soloDigitos;
-  return soloDigitos;
 }
 
 export async function publicarNegocio(
@@ -153,27 +149,15 @@ export async function publicarNegocio(
     }
   }
 
-  // Sitio web: opcional. Si se proveio debe ser una URL https:// o http://.
-  // Le agregamos http:// automatico si el usuario solo puso "minegocio.cl".
-  let sitioWeb: string | null = null;
-  if (sitioWebRaw) {
-    let s = sitioWebRaw;
-    if (!/^https?:\/\//i.test(s)) s = `https://${s}`;
-    if (s.length > 200) {
-      fieldErrors.sitio_web = "Maximo 200 caracteres";
-    } else {
-      try {
-        const u = new URL(s);
-        if (u.protocol !== "http:" && u.protocol !== "https:") {
-          fieldErrors.sitio_web = "Solo http:// o https://";
-        } else {
-          sitioWeb = u.toString();
-        }
-      } catch {
-        fieldErrors.sitio_web = "URL no parece valida";
-      }
-    }
-  }
+  // Telefono, WhatsApp y sitio web: mismas reglas que el admin y el dueño
+  // (lib/contacto.ts). Al sitio web se le agrega https:// si falta.
+  const tel = normalizarTelefono(telefono);
+  if (!tel.ok) fieldErrors.telefono = tel.error;
+  const wa = normalizarWhatsApp(whatsappRaw);
+  if (!wa.ok) fieldErrors.whatsapp = wa.error;
+  const web = normalizarSitioWeb(sitioWebRaw);
+  const sitioWeb = web.ok ? web.valor : null;
+  if (!web.ok) fieldErrors.sitio_web = web.error;
 
   const ig = normalizarInstagram(instagramRaw);
   const instagram = ig.ok ? ig.usuario : null;
@@ -183,7 +167,8 @@ export async function publicarNegocio(
     return { ok: false, fieldErrors, error: "Revisa los campos marcados" };
   }
 
-  const whatsapp = whatsappRaw ? normalizarWhatsApp(whatsappRaw) : null;
+  const whatsapp = wa.ok ? wa.valor : null;
+  const telefonoNormalizado = tel.ok ? tel.valor : null;
   const slugBase = toSlug(nombre);
 
   // Chequea si el slug ya existe y agrega sufijo si es necesario
@@ -211,7 +196,7 @@ export async function publicarNegocio(
       plan: "basico",
       activo: esAdmin, // admin publica activo; público queda pendiente
       verificado: false,
-      telefono: telefono || null,
+      telefono: telefonoNormalizado,
       whatsapp,
       email,
       sitio_web: sitioWeb,
@@ -404,7 +389,7 @@ export async function publicarNegocio(
       nombre,
       tipo,
       descripcion: descripcion || null,
-      telefono: telefono || null,
+      telefono: telefonoNormalizado,
       whatsapp,
       direccion: direccion || null,
       categoria_nombre: (cat?.nombre as string | undefined) ?? null,

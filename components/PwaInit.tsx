@@ -46,6 +46,12 @@ export default function PwaInit() {
     // No mostrar si el usuario ya la descartó permanentemente
     if (getStorage("pwa-no-show")) return;
 
+    // Solo en la portada, y solo si ya decidió sobre cookies (LY-022). Antes
+    // salía en cualquier página: en una ficha se comía la primera pantalla
+    // junto al banner de cookies, justo donde van los botones de contacto.
+    if (window.location.pathname !== "/") return;
+    if (!getStorage("cookie-consent")) return;
+
     // Capturar prompt nativo (Android Chrome)
     const handler = (e: Event) => {
       e.preventDefault();
@@ -53,7 +59,7 @@ export default function PwaInit() {
     };
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Mostrar el banner inmediatamente (sin esperar evento del navegador).
+    // Mostrar el banner (sin esperar evento del navegador).
     // Solo se puede decidir en el navegador: depende de standalone y storage,
     // que no existen en el render del servidor.
     // eslint-disable-next-line react-hooks/set-state-in-effect -- ver nota

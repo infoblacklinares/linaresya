@@ -14,6 +14,7 @@ import StoriesBar, { type Historia } from "@/components/StoriesBar";
 import SplashHomeLeon from "@/components/SplashHomeLeon";
 import MarqueeRow from "@/components/MarqueeRow";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
+import { telLink } from "@/lib/contacto";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
 import { getRecentPosts } from "@/lib/blog-posts";
 
@@ -520,7 +521,7 @@ export default async function Home() {
                   </Link>
                   {n.telefono ? (
                     <a
-                      href={`tel:${n.telefono}`}
+                      href={telLink(n.telefono) ?? undefined}
                       className="flex items-center justify-center gap-1.5 border-t border-[#F5F2EE] py-2.5 text-[11px] font-bold text-[#2B6E80] hover:bg-[#F5F2EE] transition"
                     >
                       📞 Llamar

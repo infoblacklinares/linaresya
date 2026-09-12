@@ -8,6 +8,11 @@ import { publicarNegocio, type PublicarState } from "./actions";
 import ScheduleFields from "./ScheduleFields";
 import PhotoUpload from "./PhotoUpload";
 import { normalizarInstagram } from "@/lib/instagram";
+import {
+  normalizarSitioWeb,
+  normalizarTelefono,
+  normalizarWhatsApp,
+} from "@/lib/contacto";
 
 type Categoria = {
   id: number;
@@ -19,9 +24,6 @@ type Categoria = {
 const estadoInicial: PublicarState = { ok: false };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_RE = /^[+\d][\d\s()-]{7,15}$/;
-// Acepta "minegocio.cl" igual que el server action, que le antepone https://
-const URL_RE = /^(https?:\/\/)?[^\s./]+\.[^\s/]{2,}(\/.*)?$/;
 
 type CoreKey = "nombre" | "categoria_id" | "whatsapp" | "direccion";
 
@@ -164,14 +166,22 @@ export default function PublishForm({
     errores.nombre = "Ingresa al menos 3 caracteres.";
   if (touched.categoria_id && !values.categoria_id)
     errores.categoria_id = "Elige una categoría.";
-  if (touched.whatsapp && values.whatsapp && !PHONE_RE.test(values.whatsapp))
-    errores.whatsapp = "Ese WhatsApp no parece válido.";
-  if (touched.telefono && values.telefono && !PHONE_RE.test(values.telefono))
-    errores.telefono = "Ese teléfono no parece válido.";
+  // Telefono, WhatsApp y sitio web: mismas reglas que el server action
+  // (lib/contacto.ts), para que la pantalla no acepte algo que despues se rechaza.
+  if (touched.whatsapp && values.whatsapp) {
+    const wa = normalizarWhatsApp(values.whatsapp);
+    if (!wa.ok) errores.whatsapp = wa.error;
+  }
+  if (touched.telefono && values.telefono) {
+    const tel = normalizarTelefono(values.telefono);
+    if (!tel.ok) errores.telefono = tel.error;
+  }
   if (touched.email && values.email && !EMAIL_RE.test(values.email))
     errores.email = "Ese email no parece válido.";
-  if (touched.sitio_web && values.sitio_web && !URL_RE.test(values.sitio_web))
-    errores.sitio_web = "Usa una dirección válida, ej: tu-negocio.cl";
+  if (touched.sitio_web && values.sitio_web) {
+    const web = normalizarSitioWeb(values.sitio_web);
+    if (!web.ok) errores.sitio_web = web.error;
+  }
   // Mismo normalizador que usa el server action, para que lo que se ve en
   // pantalla y lo que se guarda no puedan discrepar.
   if (touched.instagram && values.instagram) {

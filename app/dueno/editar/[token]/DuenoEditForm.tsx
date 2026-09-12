@@ -22,8 +22,10 @@ type Negocio = {
   telefono: string | null;
   whatsapp: string | null;
   email: string | null;
-  /** Opcional: la columna se agrega a mano con supabase/instagram_negocios.sql */
+  sitio_web: string | null;
   instagram?: string | null;
+  facebook?: string | null;
+  plan: "basico" | "premium";
   direccion: string | null;
   a_domicilio: boolean;
   zona_cobertura: string | null;
@@ -127,7 +129,7 @@ export default function DuenoEditForm({
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
           Contacto
         </h2>
-        <Field label="Telefono">
+        <Field label="Telefono" error={fe.telefono}>
           <input
             name="telefono"
             type="tel"
@@ -136,7 +138,15 @@ export default function DuenoEditForm({
             placeholder="+56 9 1234 5678"
           />
         </Field>
-        <Field label="WhatsApp" hint="Solo numero, se usa para el boton WhatsApp">
+        <Field
+          label="WhatsApp"
+          hint={
+            negocio.plan === "premium"
+              ? "Sale como botón WhatsApp en tu ficha"
+              : "Se guarda, y aparece como botón en tu ficha con el Plan Premium"
+          }
+          error={fe.whatsapp}
+        >
           <input
             name="whatsapp"
             type="tel"
@@ -171,6 +181,40 @@ export default function DuenoEditForm({
           name="instagram"
           defaultValue={negocio.instagram ?? ""}
           placeholder="@tu-negocio"
+          maxLength={200}
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          className="input-ue"
+        />
+      </Field>
+
+      <Field
+        label="Facebook"
+        hint="El link de la página de tu negocio"
+        error={fe.facebook}
+      >
+        <input
+          type="text"
+          inputMode="url"
+          name="facebook"
+          defaultValue={negocio.facebook ?? ""}
+          placeholder="facebook.com/tu-negocio"
+          maxLength={200}
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          className="input-ue"
+        />
+      </Field>
+
+      <Field label="Sitio web" hint="Solo si tienes página propia" error={fe.sitio_web}>
+        <input
+          type="text"
+          inputMode="url"
+          name="sitio_web"
+          defaultValue={negocio.sitio_web ?? ""}
+          placeholder="tu-negocio.cl"
           maxLength={200}
           autoCapitalize="none"
           autoCorrect="off"

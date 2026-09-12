@@ -34,8 +34,8 @@ type Negocio = {
   whatsapp: string | null;
   email: string | null;
   sitio_web: string | null;
-  /** Opcional: la columna se agrega a mano con supabase/instagram_negocios.sql */
   instagram?: string | null;
+  facebook?: string | null;
   direccion: string | null;
   lat: number | null;
   lng: number | null;
@@ -171,21 +171,22 @@ export default function EditForm({
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
           Contacto
         </h2>
-        <Field label="Telefono">
+        <Field label="Telefono" error={fe.telefono}>
           <input
             name="telefono"
             defaultValue={negocio.telefono ?? ""}
             className="input-ue"
             inputMode="tel"
+            placeholder="+56 9 1234 5678"
           />
         </Field>
-        <Field label="WhatsApp">
+        <Field label="WhatsApp" error={fe.whatsapp}>
           <input
             name="whatsapp"
             defaultValue={negocio.whatsapp ?? ""}
             className="input-ue"
             inputMode="tel"
-            placeholder="569..."
+            placeholder="9 1234 5678"
           />
         </Field>
         <Field label="Email" error={fe.email}>
@@ -199,10 +200,11 @@ export default function EditForm({
         <Field label="Sitio web" error={fe.sitio_web}>
           <input
             name="sitio_web"
-            type="url"
+            type="text"
+            inputMode="url"
             defaultValue={negocio.sitio_web ?? ""}
             className="input-ue"
-            placeholder="https://"
+            placeholder="tu-negocio.cl"
           />
         </Field>
         <Field label="Instagram" error={fe.instagram}>
@@ -212,6 +214,19 @@ export default function EditForm({
             defaultValue={negocio.instagram ?? ""}
             className="input-ue"
             placeholder="@tu-negocio"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+          />
+        </Field>
+        <Field label="Facebook" error={fe.facebook}>
+          <input
+            name="facebook"
+            type="text"
+            inputMode="url"
+            defaultValue={negocio.facebook ?? ""}
+            className="input-ue"
+            placeholder="facebook.com/tu-negocio"
             autoCapitalize="none"
             autoCorrect="off"
             spellCheck={false}

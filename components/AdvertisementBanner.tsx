@@ -7,6 +7,7 @@
  *   <AdvertisementBanner />  ← fallback genérico para publicitar el plan
  */
 import Link from "next/link";
+import { whatsAppLink } from "@/lib/contacto";
 
 interface AdvertisementBannerProps {
   negocio?: {
@@ -65,9 +66,8 @@ export default function AdvertisementBanner({
 
   // ── Negocio premium destacado ──────────────────────────────────────────────
   const url = `/${negocio.categoria_slug}/${negocio.slug}`;
-  const waUrl = negocio.whatsapp
-    ? `https://wa.me/56${negocio.whatsapp}?text=Hola, vi tu negocio en LinaresYa`
-    : null;
+  // El numero ya viene guardado con 56: antes aca se le volvia a anteponer.
+  const waUrl = whatsAppLink(negocio.whatsapp);
 
   return (
     <section className="px-4 pt-6">

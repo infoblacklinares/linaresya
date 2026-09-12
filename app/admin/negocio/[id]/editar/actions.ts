@@ -7,21 +7,18 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { deleteFotosFromStorage } from "@/lib/storage";
 import { normalizarInstagram } from "@/lib/instagram";
+import {
+  normalizarFacebook,
+  normalizarSitioWeb,
+  normalizarTelefono,
+  normalizarWhatsApp,
+} from "@/lib/contacto";
 
 export type UpdateState = {
   ok: boolean;
   error?: string;
   fieldErrors?: Record<string, string>;
 };
-
-function normalizarWhatsApp(raw: string): string | null {
-  if (!raw) return null;
-  const soloDigitos = raw.replace(/\D/g, "");
-  if (!soloDigitos) return null;
-  if (soloDigitos.startsWith("56")) return soloDigitos;
-  if (soloDigitos.startsWith("9") && soloDigitos.length === 9) return "56" + soloDigitos;
-  return soloDigitos;
-}
 
 export async function updateNegocio(
   _prev: UpdateState,
@@ -44,6 +41,7 @@ export async function updateNegocio(
   const email = String(formData.get("email") ?? "").trim();
   const sitioWeb = String(formData.get("sitio_web") ?? "").trim();
   const instagramRaw = String(formData.get("instagram") ?? "").trim();
+  const facebookRaw = String(formData.get("facebook") ?? "").trim();
   const direccion = String(formData.get("direccion") ?? "").trim();
   const aDomicilio = formData.get("a_domicilio") === "on";
   const zonaCobertura = String(formData.get("zona_cobertura") ?? "").trim();
@@ -114,9 +112,14 @@ export async function updateNegocio(
     }
   }
 
-  if (sitioWeb && !/^https?:\/\//i.test(sitioWeb)) {
-    fieldErrors.sitio_web = "Debe empezar con http:// o https://";
-  }
+  const tel = normalizarTelefono(telefono);
+  if (!tel.ok) fieldErrors.telefono = tel.error;
+  const wa = normalizarWhatsApp(whatsappRaw);
+  if (!wa.ok) fieldErrors.whatsapp = wa.error;
+  const web = normalizarSitioWeb(sitioWeb);
+  if (!web.ok) fieldErrors.sitio_web = web.error;
+  const fb = normalizarFacebook(facebookRaw);
+  if (!fb.ok) fieldErrors.facebook = fb.error;
   const ig = normalizarInstagram(instagramRaw);
   if (!ig.ok) fieldErrors.instagram = ig.error;
 
@@ -138,8 +141,6 @@ export async function updateNegocio(
     return { ok: false, fieldErrors, error: "Revisa los campos marcados" };
   }
 
-  const whatsapp = normalizarWhatsApp(whatsappRaw);
-
   // Snapshot de foto_portada actual para comparar y limpiar Storage si cambia
   const { data: antesNeg } = await supabaseAdmin
     .from("negocios")
@@ -154,11 +155,12 @@ export async function updateNegocio(
     tipo,
     plan,
     descripcion: descripcion || null,
-    telefono: telefono || null,
-    whatsapp,
+    telefono: tel.ok ? tel.valor : null,
+    whatsapp: wa.ok ? wa.valor : null,
     email: email || null,
-    sitio_web: sitioWeb || null,
+    sitio_web: web.ok ? web.valor : null,
     instagram: ig.ok ? ig.usuario : null,
+    facebook: fb.ok ? fb.valor : null,
     direccion: direccion || null,
     lat,
     lng,

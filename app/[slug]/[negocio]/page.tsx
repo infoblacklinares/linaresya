@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase, type Negocio } from "@/lib/supabase";
 import { getCategoriaPorSlug, getNegocioPorSlug } from "@/lib/consultas";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -13,6 +13,7 @@ import MapaNegocio from "@/components/MapaNegocio";
 import { dentroDeRango } from "@/lib/horarios";
 import JsonLd from "@/components/JsonLd";
 import { urlInstagram } from "@/lib/instagram";
+import { telLink, whatsAppLink } from "@/lib/contacto";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 // Regex permisivo para detectar bots/crawlers conocidos. No queremos
 // inflar las vistas con Googlebot, scrapers, link previews, etc.
@@ -41,33 +42,6 @@ type Categoria = {
   nombre: string;
   slug: string;
   emoji: string;
-};
-
-type Negocio = {
-  id: string;
-  nombre: string;
-  slug: string;
-  descripcion: string | null;
-  categoria_id: number;
-  tipo: "negocio" | "independiente";
-  plan: "basico" | "premium";
-  verificado: boolean;
-  telefono: string | null;
-  whatsapp: string | null;
-  email: string | null;
-  sitio_web: string | null;
-  /** Opcional: la columna se agrega a mano con supabase/instagram_negocios.sql */
-  instagram?: string | null;
-  direccion: string | null;
-  ciudad: string | null;
-  lat: number | null;
-  lng: number | null;
-  a_domicilio: boolean;
-  zona_cobertura: string | null;
-  disponibilidad: string | null;
-  foto_portada: string | null;
-  creado_en: string;
-  actualizado_en: string | null;
 };
 
 type Dia =
@@ -153,15 +127,12 @@ function fmtHora(h: string | null): string {
   return h.slice(0, 5);
 }
 
-function whatsAppLink(waRaw: string, nombre: string): string {
-  const num = waRaw.replace(/\D/g, "");
-  const msg = encodeURIComponent(`Hola! Te contacto desde LinaresYa por ${nombre}.`);
-  return `https://wa.me/${num}?text=${msg}`;
-}
-
-function telLink(tel: string): string {
-  return `tel:${tel.replace(/\s/g, "")}`;
-}
+// Clases estaticas para que Tailwind las genere: 1, 2 o 3 botones principales.
+const GRID_COLS: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+};
 
 function mapsLink(n: Negocio): string | null {
   if (n.lat != null && n.lng != null) return `https://www.google.com/maps/search/?api=1&query=${n.lat},${n.lng}`;
@@ -300,9 +271,11 @@ export default async function NegocioDetalle({
   const { abierto, horarioHoy } = estaAbierto(horarios);
   const tieneHorariosEstructurados = horarios.length > 0;
   const esPremium = n.plan === "premium";
-  const wa = esPremium && n.whatsapp ? whatsAppLink(n.whatsapp, n.nombre) : null;
-  const tel = n.telefono ? telLink(n.telefono) : null;
+  // WhatsApp es de Premium. Cada boton sale solo si hay un dato valido (LY-003).
+  const wa = esPremium ? whatsAppLink(n.whatsapp) : null;
+  const tel = telLink(n.telefono);
   const maps = mapsLink(n);
+  const ctasPrincipales = [wa, tel, maps].filter(Boolean).length;
 
   const ratingPromedio =
     resenas.length > 0
@@ -324,10 +297,12 @@ export default async function NegocioDetalle({
       descripcion: n.descripcion,
       tipo: n.tipo,
       telefono: n.telefono,
-      whatsapp: n.whatsapp,
+      // Solo Premium publica su WhatsApp, tambien en los datos estructurados.
+      whatsapp: esPremium ? n.whatsapp : null,
       email: n.email,
       sitio_web: n.sitio_web,
       instagram: n.instagram,
+      facebook: n.facebook,
       direccion: n.direccion,
       ciudad: n.ciudad,
       lat: n.lat,
@@ -467,10 +442,14 @@ export default async function NegocioDetalle({
       </section>
 
 
-      {/* Contenido: 1 columna en movil, 2 columnas en escritorio */}
+      {/* Contenido: 1 columna en movil, 2 columnas en escritorio.
+          En movil el <aside> (botones de contacto + ubicacion) va primero:
+          antes quedaba al fondo, despues de horarios y resenas, a dos
+          pantallas de scroll del visitante (LY-022). En escritorio no cambia:
+          cada bloque tiene su columna y su fila fijas. */}
       <div className="mx-auto w-full max-w-2xl lg:max-w-full lg:px-8 xl:px-14">
-        <div className="lg:grid lg:grid-cols-4 lg:gap-8 lg:items-start lg:pt-6">
-          <div className="lg:col-span-3 lg:min-w-0">
+        <div className="flex flex-col lg:grid lg:grid-cols-4 lg:gap-8 lg:items-start lg:pt-6">
+          <div className="lg:col-start-1 lg:col-span-3 lg:row-start-1 lg:min-w-0">
       {n.descripcion && (
         <section className="px-4 mt-6">
           <h2 className="text-base font-bold mb-2">Acerca de</h2>
@@ -714,44 +693,43 @@ export default async function NegocioDetalle({
         )}
       </section>
           </div>
-          <aside className="lg:sticky lg:top-4 lg:space-y-2">
+          <aside className="order-first lg:order-none lg:col-start-4 lg:row-start-1 lg:sticky lg:top-4 lg:space-y-2">
       <section className="px-4 mt-5">
-        <div className={`grid gap-2 ${wa ? "grid-cols-3" : "grid-cols-2"}`}>
-          {wa && (
-            <TrackedActionButton
-              href={wa}
-              negocioId={n.id}
-              evento="whatsapp"
-              external
-              icon={<WhatsAppIcon />}
-              label="WhatsApp"
-              primary
-            />
-          )}
-          {tel ? (
-            <TrackedActionButton
-              href={tel}
-              negocioId={n.id}
-              evento="telefono"
-              icon={<PhoneIcon />}
-              label="Llamar"
-            />
-          ) : (
-            <ActionButton disabled icon={<PhoneIcon />} label="Llamar" />
-          )}
-          {maps ? (
-            <TrackedActionButton
-              href={maps}
-              negocioId={n.id}
-              evento="maps"
-              external
-              icon={<MapIcon />}
-              label="Llegar"
-            />
-          ) : (
-            <ActionButton disabled icon={<MapIcon />} label="Sin dirección" />
-          )}
-        </div>
+        {/* Solo botones con dato: nada de "Llamar" deshabilitado (LY-003). */}
+        {ctasPrincipales > 0 && (
+          <div className={`grid gap-2 ${GRID_COLS[ctasPrincipales]}`}>
+            {wa && (
+              <TrackedActionButton
+                href={wa}
+                negocioId={n.id}
+                evento="whatsapp"
+                external
+                icon={<WhatsAppIcon />}
+                label="WhatsApp"
+                primary
+              />
+            )}
+            {tel && (
+              <TrackedActionButton
+                href={tel}
+                negocioId={n.id}
+                evento="telefono"
+                icon={<PhoneIcon />}
+                label="Llamar"
+              />
+            )}
+            {maps && (
+              <TrackedActionButton
+                href={maps}
+                negocioId={n.id}
+                evento="maps"
+                external
+                icon={<MapIcon />}
+                label="Llegar"
+              />
+            )}
+          </div>
+        )}
         {n.sitio_web && (
           <div className="mt-2">
             <a
@@ -775,6 +753,19 @@ export default async function NegocioDetalle({
             >
               <InstagramIcon />
               @{n.instagram}
+            </a>
+          </div>
+        )}
+        {n.facebook && (
+          <div className="mt-2">
+            <a
+              href={n.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 rounded-2xl py-3 text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition w-full"
+            >
+              <FacebookIcon />
+              Facebook
             </a>
           </div>
         )}
@@ -855,39 +846,11 @@ export default async function NegocioDetalle({
   );
 }
 
-function ActionButton({
-  href,
-  icon,
-  label,
-  external = false,
-  primary = false,
-  disabled = false,
-}: {
-  href?: string;
-  icon: React.ReactNode;
-  label: string;
-  external?: boolean;
-  primary?: boolean;
-  disabled?: boolean;
-}) {
-  const cls = `flex flex-col items-center justify-center gap-1 rounded-2xl py-3 text-xs font-semibold transition ${
-    disabled
-      ? "bg-secondary text-muted-foreground cursor-not-allowed"
-      : primary
-        ? "bg-emerald-500 text-white hover:bg-emerald-600"
-        : "bg-foreground text-background hover:opacity-90"
-  }`;
-  if (disabled || !href) return <span className={cls}>{icon}{label}</span>;
+function FacebookIcon() {
   return (
-    <a
-      href={href}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noopener noreferrer" : undefined}
-      className={cls}
-    >
-      {icon}
-      {label}
-    </a>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.5V21h3Z" />
+    </svg>
   );
 }
 

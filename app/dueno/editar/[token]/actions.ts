@@ -5,6 +5,12 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendAdminEdicionDuenoNotification } from "@/lib/email";
 import { deleteFotosFromStorage } from "@/lib/storage";
 import { normalizarInstagram } from "@/lib/instagram";
+import {
+  normalizarFacebook,
+  normalizarSitioWeb,
+  normalizarTelefono,
+  normalizarWhatsApp,
+} from "@/lib/contacto";
 
 const SITE_URL_NOTIF =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
@@ -39,15 +45,6 @@ async function validarToken(token: string): Promise<{
   return { ok: true, negocioId: (data as { negocio_id: string }).negocio_id };
 }
 
-function normalizarWhatsApp(raw: string): string | null {
-  if (!raw) return null;
-  const d = raw.replace(/\D/g, "");
-  if (!d) return null;
-  if (d.startsWith("56")) return d;
-  if (d.startsWith("9") && d.length === 9) return "56" + d;
-  return d;
-}
-
 export async function updateNegocioDueno(
   _prev: DuenoUpdateState,
   formData: FormData,
@@ -72,6 +69,8 @@ export async function updateNegocioDueno(
   const whatsappRaw = String(formData.get("whatsapp") ?? "").trim();
   const emailRaw = String(formData.get("email") ?? "").trim().toLowerCase();
   const instagramRaw = String(formData.get("instagram") ?? "").trim();
+  const sitioWebRaw = String(formData.get("sitio_web") ?? "").trim();
+  const facebookRaw = String(formData.get("facebook") ?? "").trim();
   const direccion = String(formData.get("direccion") ?? "").trim();
   const aDomicilio = formData.get("a_domicilio") === "on";
   const zonaCobertura = String(formData.get("zona_cobertura") ?? "").trim();
@@ -105,18 +104,24 @@ export async function updateNegocioDueno(
 
   const ig = normalizarInstagram(instagramRaw);
   if (!ig.ok) fieldErrors.instagram = ig.error;
+  const tel = normalizarTelefono(telefono);
+  if (!tel.ok) fieldErrors.telefono = tel.error;
+  const wa = normalizarWhatsApp(whatsappRaw);
+  if (!wa.ok) fieldErrors.whatsapp = wa.error;
+  const web = normalizarSitioWeb(sitioWebRaw);
+  if (!web.ok) fieldErrors.sitio_web = web.error;
+  const fb = normalizarFacebook(facebookRaw);
+  if (!fb.ok) fieldErrors.facebook = fb.error;
 
   if (Object.keys(fieldErrors).length > 0) {
     return { ok: false, fieldErrors, error: "Revisa los campos marcados" };
   }
 
-  const whatsapp = normalizarWhatsApp(whatsappRaw);
-
   // Snapshot ANTES de actualizar, para detectar campos cambiados y notificar al admin.
   const { data: antes } = await supabaseAdmin
     .from("negocios")
     .select(
-      "nombre, descripcion, telefono, whatsapp, direccion, a_domicilio, zona_cobertura, disponibilidad, foto_portada, email",
+      "nombre, descripcion, telefono, whatsapp, direccion, a_domicilio, zona_cobertura, disponibilidad, foto_portada, email, instagram, sitio_web, facebook",
     )
     .eq("id", id)
     .single();
@@ -126,14 +131,16 @@ export async function updateNegocioDueno(
   const update: Record<string, unknown> = {
     nombre,
     descripcion: descripcion || null,
-    telefono: telefono || null,
-    whatsapp,
+    telefono: tel.ok ? tel.valor : null,
+    whatsapp: wa.ok ? wa.valor : null,
     direccion: direccion || null,
     a_domicilio: aDomicilio,
     zona_cobertura: zonaCobertura || null,
     disponibilidad: disponibilidad || null,
     email: emailRaw || null,
     instagram: ig.ok ? ig.usuario : null,
+    sitio_web: web.ok ? web.valor : null,
+    facebook: fb.ok ? fb.valor : null,
   };
   if (fotoPortada && isUrlBucket(fotoPortada)) {
     update.foto_portada = fotoPortada;
@@ -170,6 +177,10 @@ export async function updateNegocioDueno(
     zona_cobertura: "Zona de cobertura",
     disponibilidad: "Nota de horario",
     foto_portada: "Foto de portada",
+    email: "Email",
+    instagram: "Instagram",
+    sitio_web: "Sitio web",
+    facebook: "Facebook",
   };
   const cambios: string[] = [];
   if (antes) {
