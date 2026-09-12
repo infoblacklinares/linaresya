@@ -270,6 +270,120 @@ export async function sendOwnerAprobacionNotification(
   }
 }
 
+// Aviso al dueño de que su ficha quedo Premium. Se manda cuando el admin
+// activa el plan desde el panel. Fire-and-forget: nunca lanza.
+export type PremiumActivado = {
+  nombre: string;
+  slug: string;
+  email: string | null;
+  categoria: { nombre: string; slug: string; emoji: string };
+  /** ISO o null si el Premium no tiene vencimiento. */
+  premiumHasta: string | null;
+  tieneWhatsApp: boolean;
+  statsUrl?: string;
+  editarUrl?: string;
+};
+
+export async function sendOwnerPremiumNotification(
+  datos: PremiumActivado,
+): Promise<void> {
+  try {
+    const c = getClient();
+    if (!c) {
+      console.warn("[email] Salto aviso de Premium: falta RESEND_API_KEY.");
+      return;
+    }
+    if (!datos.email) {
+      console.warn("[email] Salto aviso de Premium: el negocio no tiene email cargado.");
+      return;
+    }
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://linaresya.cl";
+    const fichaUrl = `${siteUrl}/${datos.categoria.slug}/${datos.slug}`;
+    const statsUrl = datos.statsUrl ? escapeHtml(datos.statsUrl) : null;
+    const editarUrl = datos.editarUrl ? escapeHtml(datos.editarUrl) : null;
+
+    const hasta = datos.premiumHasta
+      ? new Date(datos.premiumHasta).toLocaleDateString("es-CL", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+          timeZone: "America/Santiago",
+        })
+      : null;
+
+    // Si no cargo WhatsApp, el beneficio principal no se ve: hay que pedirselo.
+    const bloqueWhatsApp = datos.tieneWhatsApp
+      ? `<li><strong>Boton de WhatsApp</strong> en tu ficha: los clientes te escriben directo.</li>`
+      : `<li><strong>Falta tu WhatsApp.</strong> Cargalo en "Editar mi negocio" y el boton aparece al instante.</li>`;
+
+    const html = `<!doctype html>
+<html>
+<body style="margin:0;padding:24px;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+    <div style="padding:24px;background:#1A1410;color:#fff;">
+      <p style="margin:0;font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:0.7;">LinaresYa · Plan Premium</p>
+      <h1 style="margin:6px 0 0;font-size:22px;font-weight:800;">Tu ficha ahora es Premium ⭐</h1>
+    </div>
+    <div style="padding:24px;">
+      <p style="margin:0 0 16px;color:#334155;font-size:15px;line-height:1.5;">
+        Activamos el Plan Premium en <strong>${escapeHtml(datos.nombre)}</strong>${
+          hasta ? `, hasta el <strong>${escapeHtml(hasta)}</strong>` : ""
+        }.
+      </p>
+      <div style="margin:20px 0;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;">
+        <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#0f172a;">Que cambia en tu ficha</p>
+        <ul style="margin:0;padding-left:20px;color:#475569;font-size:14px;line-height:1.7;">
+          ${bloqueWhatsApp}
+          <li>Apareces <strong>destacado</strong> en los resultados de busqueda.</li>
+          <li>Sello ⭐ Premium visible para quien visite tu ficha.</li>
+        </ul>
+      </div>
+      <div style="margin:24px 0;">
+        <a href="${escapeHtml(fichaUrl)}" style="display:inline-block;background:#1A1410;color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:15px;font-weight:600;">
+          Ver mi ficha →
+        </a>
+        ${statsUrl ? `<a href="${statsUrl}" style="display:inline-block;margin-left:8px;background:#fff;color:#0f172a;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid #e2e8f0;">
+          📊 Mis estadisticas
+        </a>` : ""}
+        ${editarUrl ? `<a href="${editarUrl}" style="display:inline-block;margin-left:8px;background:#f8fafc;color:#0f172a;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid #e2e8f0;">
+          ✏️ Editar mi negocio
+        </a>` : ""}
+      </div>
+      ${hasta ? `<p style="margin:0;color:#64748b;font-size:13px;line-height:1.6;">
+        Cuando llegue el ${escapeHtml(hasta)}, tu ficha vuelve al plan gratis y sigue publicada: solo dejan de verse el boton de WhatsApp y el destacado.
+      </p>` : ""}
+    </div>
+    <div style="padding:16px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+      <p style="margin:0;color:#94a3b8;font-size:12px;">
+        Recibiste este correo porque tu negocio esta publicado en LinaresYa.cl
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const text = `Tu ficha "${datos.nombre}" ahora es Premium${hasta ? ` hasta el ${hasta}` : ""}.\n\n${
+      datos.tieneWhatsApp
+        ? "Ya tienes boton de WhatsApp en tu ficha."
+        : "Falta cargar tu WhatsApp para que aparezca el boton."
+    }\n\nTu ficha: ${fichaUrl}`;
+
+    const { error } = await c.emails.send({
+      from: FROM,
+      to: datos.email,
+      subject: "Tu ficha en LinaresYa ahora es Premium",
+      html,
+      text,
+    });
+    if (error) {
+      console.error("[email] Resend error (premium):", error);
+    }
+  } catch (err) {
+    console.error("[email] Aviso de Premium fallo:", err);
+  }
+}
+
 // Resumen semanal automatico al admin (vercel cron job).
 export type WeeklyDigestData = {
   semanaInicio: string; // ISO date

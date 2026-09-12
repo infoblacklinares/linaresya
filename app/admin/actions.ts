@@ -5,8 +5,13 @@ import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { generarTokenDueno } from "@/lib/dueno-token";
 import { clearAdminCookie, isAdminAuthenticated } from "@/lib/admin-auth";
-import { sendOwnerAprobacionNotification, sendOwnerResenaAprobadaNotification } from "@/lib/email";
+import {
+  sendOwnerAprobacionNotification,
+  sendOwnerPremiumNotification,
+  sendOwnerResenaAprobadaNotification,
+} from "@/lib/email";
 import { deleteFotosFromStorage } from "@/lib/storage";
+import { vencimientoEnDias } from "@/lib/planes";
 
 async function requireAdmin() {
   if (!(await isAdminAuthenticated())) {
@@ -121,6 +126,97 @@ export async function desactivarNegocio(formData: FormData): Promise<void> {
   await supabaseAdmin.from("negocios").update({ activo: false }).eq("id", id);
   revalidatePath("/admin");
   revalidatePath("/");
+}
+
+// ===== PLAN =====
+
+/**
+ * Cambia el plan de un negocio y revalida donde se ve.
+ *
+ * La ficha se re-renderiza en cada visita, pero el listado de la categoria, la
+ * portada y el mapa quedan cacheados: sin revalidarlos, el sello Premium y el
+ * boton de WhatsApp no aparecian "enseguida" como uno espera.
+ */
+async function cambiarPlanNegocio(
+  id: string,
+  plan: "basico" | "premium",
+  premiumHasta: string | null,
+): Promise<void> {
+  const { data: antesRaw } = await supabaseAdmin
+    .from("negocios")
+    .select(
+      "nombre, slug, email, whatsapp, plan, categorias:categoria_id(nombre, slug, emoji)",
+    )
+    .eq("id", id)
+    .maybeSingle();
+
+  const { error } = await supabaseAdmin
+    .from("negocios")
+    .update({ plan, premium_hasta: premiumHasta })
+    .eq("id", id);
+  if (error) {
+    console.error("[cambiarPlanNegocio] error:", error.message);
+    return;
+  }
+
+  const antes = (antesRaw ?? null) as Record<string, unknown> | null;
+  const catRaw = antes?.categorias;
+  const cat = Array.isArray(catRaw) ? catRaw[0] : catRaw;
+  const categoria =
+    cat && typeof cat === "object"
+      ? {
+          nombre: String((cat as { nombre?: unknown }).nombre ?? ""),
+          slug: String((cat as { slug?: unknown }).slug ?? ""),
+          emoji: String((cat as { emoji?: unknown }).emoji ?? "🏪"),
+        }
+      : null;
+  const slug = String(antes?.slug ?? "");
+
+  if (categoria?.slug && slug) {
+    revalidatePath(`/${categoria.slug}/${slug}`);
+    revalidatePath(`/${categoria.slug}`);
+  }
+  revalidatePath("/admin");
+  revalidatePath("/");
+  revalidatePath("/mapa");
+
+  // El aviso al dueño va solo cuando el plan realmente sube, no en cada
+  // reactivacion, y solo si dejo correo. Nunca voltea el cambio de plan.
+  const eraPremium = String(antes?.plan ?? "") === "premium";
+  const email = (antes?.email as string | null) ?? null;
+  if (plan === "premium" && !eraPremium && email && categoria) {
+    try {
+      const links = await generarTokenDueno(id, { email, ip: "admin-premium" });
+      await sendOwnerPremiumNotification({
+        nombre: String(antes?.nombre ?? ""),
+        slug,
+        email,
+        categoria,
+        premiumHasta,
+        tieneWhatsApp: Boolean(antes?.whatsapp),
+        statsUrl: links?.statsUrl,
+        editarUrl: links?.editarUrl,
+      });
+    } catch (err) {
+      console.error("[cambiarPlanNegocio] aviso de premium fallo:", err);
+    }
+  }
+}
+
+/** Premium por 30 dias, en un clic, sin escribir la fecha a mano. */
+export async function activarPremium30Dias(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  await cambiarPlanNegocio(id, "premium", vencimientoEnDias(30));
+}
+
+/** Vuelve el negocio al plan gratis. La ficha sigue publicada. */
+export async function quitarPremium(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  await cambiarPlanNegocio(id, "basico", null);
 }
 
 export async function eliminarNegocio(formData: FormData): Promise<void> {

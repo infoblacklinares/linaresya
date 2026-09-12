@@ -3,11 +3,13 @@ import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import {
+  activarPremium30Dias,
   aprobarNegocio,
   verificarNegocio,
   desactivarNegocio,
   eliminarNegocio,
   logoutAction,
+  quitarPremium,
 } from "./actions";
 import ConfirmDeleteButton from "./ConfirmDeleteButton";
 
@@ -520,6 +522,21 @@ function NegocioRowAdmin({ negocio }: { negocio: NegocioRow }) {
         >
           Editar
         </Link>
+        {negocio.plan === "premium" ? (
+          <form action={quitarPremium}>
+            <input type="hidden" name="id" value={negocio.id} />
+            <button type="submit" className="text-[11px] font-semibold text-amber-700 hover:underline px-1">
+              Quitar Premium
+            </button>
+          </form>
+        ) : (
+          <form action={activarPremium30Dias}>
+            <input type="hidden" name="id" value={negocio.id} />
+            <button type="submit" className="text-[11px] font-semibold text-amber-700 hover:underline px-1">
+              ⭐ Premium 30d
+            </button>
+          </form>
+        )}
         {!negocio.verificado && (
           <form action={verificarNegocio}>
             <input type="hidden" name="id" value={negocio.id} />
@@ -686,6 +703,27 @@ function NegocioCardAdmin({
             >
               Editar
             </Link>
+            {negocio.plan === "premium" ? (
+              <form action={quitarPremium}>
+                <input type="hidden" name="id" value={negocio.id} />
+                <button
+                  type="submit"
+                  className="rounded-full bg-white border border-amber-300 text-amber-800 text-xs font-semibold px-4 py-2 hover:bg-amber-50"
+                >
+                  Quitar Premium
+                </button>
+              </form>
+            ) : (
+              <form action={activarPremium30Dias}>
+                <input type="hidden" name="id" value={negocio.id} />
+                <button
+                  type="submit"
+                  className="rounded-full bg-amber-500 text-white text-xs font-semibold px-4 py-2 hover:bg-amber-600"
+                >
+                  ⭐ Premium 30 dias
+                </button>
+              </form>
+            )}
             <Link
               href={`/admin/negocio/${negocio.id}/estadisticas`}
               className="rounded-full bg-sky-600 text-white text-xs font-semibold px-4 py-2 hover:bg-sky-700"

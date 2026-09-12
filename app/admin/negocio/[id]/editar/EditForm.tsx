@@ -99,6 +99,73 @@ export default function EditForm({
         </div>
       )}
 
+      {/* PLAN Y ESTADO — arriba a proposito: es lo que mas se busca y antes
+          quedaba al fondo, despues de fotos, QR y el link del dueño. */}
+      <section className="space-y-3 rounded-2xl border border-[#F4B860]/40 bg-[#F4B860]/5 p-4">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+          Plan y estado
+        </h2>
+        <Field label="Plan">
+          <div className="flex gap-2">
+            <label className="flex-1 cursor-pointer">
+              <input
+                type="radio"
+                name="plan"
+                value="basico"
+                defaultChecked={negocio.plan === "basico"}
+                className="peer sr-only"
+              />
+              <span className="block text-center py-2.5 rounded-lg border border-border bg-white text-sm font-medium peer-checked:bg-foreground peer-checked:text-background peer-checked:border-foreground">
+                Basico
+              </span>
+            </label>
+            <label className="flex-1 cursor-pointer">
+              <input
+                type="radio"
+                name="plan"
+                value="premium"
+                defaultChecked={negocio.plan === "premium"}
+                className="peer sr-only"
+              />
+              <span className="block text-center py-2.5 rounded-lg border border-border bg-white text-sm font-medium peer-checked:bg-amber-500 peer-checked:text-white peer-checked:border-amber-500">
+                ⭐ Premium
+              </span>
+            </label>
+          </div>
+        </Field>
+        <Field label="Premium hasta" error={fe.premium_hasta}>
+          <input
+            name="premium_hasta"
+            type="date"
+            defaultValue={toDateInput(negocio.premium_hasta)}
+            className="input-ue"
+          />
+        </Field>
+        <p className="text-[11px] text-muted-foreground leading-relaxed">
+          Premium activa el boton de WhatsApp y el destacado en la busqueda. Sin fecha, no
+          vence. Con fecha vencida, el negocio vuelve a Basico al instante, sin esperar al
+          cron de las 07:00. Si el negocio tiene correo cargado, al activarlo se le avisa.
+        </p>
+        <label className="flex items-center gap-2 py-2">
+          <input
+            type="checkbox"
+            name="activo"
+            defaultChecked={negocio.activo}
+            className="h-4 w-4"
+          />
+          <span className="text-sm font-medium">Activo (visible en el sitio)</span>
+        </label>
+        <label className="flex items-center gap-2 py-2">
+          <input
+            type="checkbox"
+            name="verificado"
+            defaultChecked={negocio.verificado}
+            className="h-4 w-4"
+          />
+          <span className="text-sm font-medium">Verificado (badge azul)</span>
+        </label>
+      </section>
+
       {/* BASICO */}
       <section className="space-y-3">
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
@@ -344,67 +411,6 @@ export default function EditForm({
 
       {/* MAGIC LINK PARA EL DUENO */}
       <GenerarLinkDueno negocioId={negocio.id} />
-
-      {/* PLAN / ESTADO */}
-      <section className="space-y-3">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
-          Plan y estado
-        </h2>
-        <Field label="Plan">
-          <div className="flex gap-2">
-            <label className="flex-1 cursor-pointer">
-              <input
-                type="radio"
-                name="plan"
-                value="basico"
-                defaultChecked={negocio.plan === "basico"}
-                className="peer sr-only"
-              />
-              <span className="block text-center py-2 rounded-lg border border-border text-sm font-medium peer-checked:bg-foreground peer-checked:text-background peer-checked:border-foreground">
-                Basico
-              </span>
-            </label>
-            <label className="flex-1 cursor-pointer">
-              <input
-                type="radio"
-                name="plan"
-                value="premium"
-                defaultChecked={negocio.plan === "premium"}
-                className="peer sr-only"
-              />
-              <span className="block text-center py-2 rounded-lg border border-border text-sm font-medium peer-checked:bg-amber-500 peer-checked:text-white peer-checked:border-amber-500">
-                Premium
-              </span>
-            </label>
-          </div>
-        </Field>
-        <Field label="Premium hasta" error={fe.premium_hasta}>
-          <input
-            name="premium_hasta"
-            type="date"
-            defaultValue={toDateInput(negocio.premium_hasta)}
-            className="input-ue"
-          />
-        </Field>
-        <label className="flex items-center gap-2 py-2">
-          <input
-            type="checkbox"
-            name="activo"
-            defaultChecked={negocio.activo}
-            className="h-4 w-4"
-          />
-          <span className="text-sm font-medium">Activo (visible en el sitio)</span>
-        </label>
-        <label className="flex items-center gap-2 py-2">
-          <input
-            type="checkbox"
-            name="verificado"
-            defaultChecked={negocio.verificado}
-            className="h-4 w-4"
-          />
-          <span className="text-sm font-medium">Verificado (badge azul)</span>
-        </label>
-      </section>
 
       <div className="sticky bottom-0 bg-white/95 backdrop-blur border-t border-border -mx-4 px-4 py-3 flex gap-2">
         <Link

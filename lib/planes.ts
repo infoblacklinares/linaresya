@@ -83,3 +83,11 @@ export function esPremium(negocio: NegocioConPlan): boolean {
 export function canUseFeature(negocio: NegocioConPlan, feature: Feature): boolean {
   return FEATURES[feature].includes(planVigente(negocio));
 }
+
+/**
+ * Fecha (ISO) para vencer un Premium dentro de N dias. La usa el boton de
+ * "Premium 30 dias" del panel, para no tener que escribir la fecha a mano.
+ */
+export function vencimientoEnDias(dias: number): string {
+  return new Date(Date.now() + dias * 86_400_000).toISOString();
+}

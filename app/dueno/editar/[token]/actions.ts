@@ -298,6 +298,9 @@ export async function updateNegocioDueno(
         : "";
     if (slug && catSlug) {
       revalidatePath(`/${catSlug}/${slug}`);
+      // El listado de la categoria queda cacheado y muestra nombre, foto y
+      // badges: si no se revalida, ahi siguen los datos viejos.
+      revalidatePath(`/${catSlug}`);
       fichaUrl = `${SITE_URL_NOTIF}/${catSlug}/${slug}`;
     }
 

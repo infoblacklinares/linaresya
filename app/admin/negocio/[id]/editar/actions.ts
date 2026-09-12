@@ -333,8 +333,29 @@ export async function updateNegocio(
     }
   }
 
+  // La ficha se re-renderiza en cada visita, pero el listado de la categoria y
+  // el mapa quedan cacheados: sin esto, un negocio recien pasado a Premium
+  // seguia apareciendo como Basico en /su-categoria hasta el proximo deploy.
+  const { data: rutas } = await supabaseAdmin
+    .from("negocios")
+    .select("slug, categorias:categoria_id(slug)")
+    .eq("id", id)
+    .maybeSingle();
+  const slugNegocio = String((rutas as { slug?: unknown } | null)?.slug ?? "");
+  const catRutaRaw = (rutas as { categorias?: unknown } | null)?.categorias;
+  const catRuta = Array.isArray(catRutaRaw) ? catRutaRaw[0] : catRutaRaw;
+  const slugCategoria =
+    catRuta && typeof catRuta === "object"
+      ? String((catRuta as { slug?: unknown }).slug ?? "")
+      : "";
+  if (slugCategoria && slugNegocio) {
+    revalidatePath(`/${slugCategoria}/${slugNegocio}`);
+    revalidatePath(`/${slugCategoria}`);
+  }
+
   revalidatePath("/admin");
   revalidatePath("/");
+  revalidatePath("/mapa");
   revalidatePath(`/admin/negocio/${id}/editar`);
 
   return { ok: true };
