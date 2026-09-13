@@ -7,7 +7,7 @@ import { EVENTOS_ACCION, fechaSantiagoDe, type FilaEvento } from "@/lib/eventos"
 import {
   avisoDeCoherencia,
   esPeriodoValido,
-  periodoAnterior,
+  mesesRecientes,
   periodoDe,
   periodoLegible,
   tasaDeCierre,
@@ -49,12 +49,14 @@ export default async function AdminResultadosPage({
   if (!(await isAdminAuthenticated())) redirect("/admin/login");
 
   const sp = await searchParams;
-  const hoy = periodoDe();
-  // Por defecto el mes pasado: es el unico que el negocio puede responder
-  // completo. Preguntar por el mes en curso da un numero a medias que despues
-  // nadie corrige.
-  const pedido = sp.periodo ?? periodoAnterior(hoy);
-  const periodo = esPeriodoValido(pedido) ? pedido : periodoAnterior(hoy);
+  const enCurso = periodoDe();
+  // Por defecto el mes en curso. La primera version abria en el mes pasado,
+  // razonando que es el unico que el negocio puede responder completo; con la
+  // medicion recien empezada eso dejaba la pantalla en un mes sin un solo dato,
+  // y el mes actual ni siquiera se podia elegir. Un mes a medias se corrige
+  // despues: el reporte se pisa, no se duplica.
+  const pedido = sp.periodo ?? enCurso;
+  const periodo = esPeriodoValido(pedido) ? pedido : enCurso;
   const fin = finDePeriodo(periodo);
 
   const [negociosRes, resultadosRes, eventosRes] = await Promise.all([
@@ -128,12 +130,7 @@ export default async function AdminResultadosPage({
 
   const totales = totalesReportados([...reportados.values()]);
 
-  const mesesAtras: string[] = [];
-  let cursor = periodoAnterior(hoy);
-  for (let i = 0; i < 4; i++) {
-    mesesAtras.push(cursor);
-    cursor = periodoAnterior(cursor);
-  }
+  const meses = mesesRecientes(4);
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-6">
@@ -151,7 +148,7 @@ export default async function AdminResultadosPage({
       </p>
 
       <section className="mt-4 flex flex-wrap items-center gap-2">
-        {mesesAtras.map((p) => (
+        {meses.map((p) => (
           <Link
             key={p}
             href={`/admin/resultados?periodo=${p}`}
@@ -162,6 +159,7 @@ export default async function AdminResultadosPage({
             }`}
           >
             {periodoLegible(p)}
+            {p === enCurso && " (en curso)"}
           </Link>
         ))}
       </section>
@@ -215,7 +213,8 @@ function Tabla({
   if (negocios.length === 0) {
     return (
       <p className="mt-6 text-sm text-muted-foreground">
-        Ningún negocio tuvo movimiento ni reporte este mes.
+        Todavía nadie tuvo movimiento ni reporte este mes. Los negocios están más
+        abajo: se puede anotar igual, aunque el sitio no haya medido nada.
       </p>
     );
   }

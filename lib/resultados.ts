@@ -54,7 +54,28 @@ export function periodoLegible(periodo: Periodo): string {
   return `${MESES[Number(periodo.slice(5, 7)) - 1]} ${periodo.slice(0, 4)}`;
 }
 
-/** El mes anterior a uno dado. Sirve para el "mes pasado" del formulario. */
+/**
+ * Los meses que se pueden elegir en el panel, del mas nuevo al mas viejo,
+ * **empezando por el mes en curso**.
+ *
+ * El mes en curso tiene que estar. Willson anota lo que el negocio le dice
+ * cuando se lo dice, no a fin de mes; y ofrecer solo meses cerrados dejaba la
+ * pantalla sin ningun mes con datos, porque la medicion empezo el 12 de
+ * septiembre de 2026. Un mes a medias se corrige despues: el reporte se pisa,
+ * no se duplica.
+ */
+export function mesesRecientes(cuantos = 4, hoy: Date | string = new Date()): Periodo[] {
+  const salida: Periodo[] = [];
+  let cursor = periodoDe(hoy);
+  if (!esPeriodoValido(cursor)) return salida;
+  for (let i = 0; i < cuantos; i++) {
+    salida.push(cursor);
+    cursor = periodoAnterior(cursor);
+  }
+  return salida;
+}
+
+/** El mes anterior a uno dado. Sirve para comparar contra el mes pasado. */
 export function periodoAnterior(periodo: Periodo): Periodo {
   if (!esPeriodoValido(periodo)) return periodo;
   const anio = Number(periodo.slice(0, 4));

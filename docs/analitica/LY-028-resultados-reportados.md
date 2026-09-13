@@ -60,8 +60,15 @@ después. El formulario deja el campo vacío a propósito.
 
 `/admin/resultados`, enlazada desde el panel.
 
-- Un mes por vez, con los últimos cuatro a un clic. **Por defecto el mes
-  pasado**, que es el único que el negocio puede responder completo.
+- Un mes por vez, con cuatro a un clic. **Por defecto el mes en curso**, marcado
+  como tal.
+
+  La primera versión abría en el mes pasado, razonando que es el único que el
+  negocio puede responder completo. Al verla con datos reales quedó claro que
+  estaba mal: la medición empezó el 12 de septiembre de 2026, así que los cuatro
+  meses ofrecidos (agosto a mayo) estaban todos vacíos, y el mes actual **no se
+  podía elegir**. Un mes a medias se corrige después: el reporte se pisa, no se
+  duplica.
 - Cada negocio muestra en una línea lo que midió el sitio y, al lado, los campos
   para anotar lo que reportó.
 - Dos tasas, cuando hay con qué calcularlas:
