@@ -351,6 +351,15 @@ export default async function AdminPage({
           <span className="text-xs font-semibold opacity-80">Hoy, 7, 30 dias o rango →</span>
         </Link>
         <Link
+          href="/admin/resultados"
+          className="mt-2 flex items-center justify-between rounded-2xl bg-secondary px-4 py-3 hover:opacity-90 transition"
+        >
+          <span className="text-sm font-bold">🧾 Resultados del negocio</span>
+          <span className="text-xs font-semibold text-muted-foreground">
+            Lo que dice que le llego →
+          </span>
+        </Link>
+        <Link
           href="/admin/negocio/nuevo"
           className="mt-3 flex items-center justify-between rounded-2xl bg-foreground text-background px-4 py-3.5 hover:opacity-90 transition"
         >

@@ -12,6 +12,11 @@ import {
 } from "@/lib/email";
 import { deleteFotosFromStorage } from "@/lib/storage";
 import { vencimientoEnDias } from "@/lib/planes";
+import {
+  contarReportado,
+  esPeriodoValido,
+  limpiarNota,
+} from "@/lib/resultados";
 
 async function requireAdmin() {
   if (!(await isAdminAuthenticated())) {
@@ -411,4 +416,70 @@ export async function toggleVecinoVerificado(formData: FormData): Promise<void> 
       if (slug && catSlug) revalidatePath(`/${catSlug}/${slug}`);
     }
   }
+}
+
+// =============================================================================
+// Resultados reportados por el negocio (LY-028)
+// =============================================================================
+
+/**
+ * Guarda lo que el negocio dijo que le llego ese mes.
+ *
+ * Es un dato **reportado**: lo cuenta el duenno, no lo mide el sitio. Se guarda
+ * aparte de las estadisticas justamente para que nadie los mezcle. Un solo
+ * reporte por negocio y mes: volver a preguntar corrige el anterior.
+ *
+ * Dejar un campo vacio guarda `null`, que significa "no supo decirme", y no es
+ * lo mismo que cero. Con cero se puede promediar; con null hay que preguntar.
+ */
+export async function guardarResultadoNegocio(formData: FormData): Promise<void> {
+  await requireAdmin();
+
+  const negocioId = String(formData.get("negocio_id") ?? "");
+  const periodo = String(formData.get("periodo") ?? "");
+  if (!negocioId || !esPeriodoValido(periodo)) return;
+
+  const consultas = contarReportado(formData.get("consultas"));
+  const clientes = contarReportado(formData.get("clientes"));
+  const nota = limpiarNota(formData.get("nota"));
+
+  // Un reporte sin ningun dato no es un reporte: seria una fila vacia que
+  // despues se lee como "le fue mal".
+  if (consultas === null && clientes === null && nota === null) return;
+
+  const { error } = await supabaseAdmin
+    .from("resultados_negocio")
+    .upsert(
+      { negocio_id: negocioId, periodo, consultas, clientes, nota },
+      { onConflict: "negocio_id,periodo" }
+    );
+
+  if (error) {
+    console.error("[guardarResultadoNegocio] error:", error.message);
+    return;
+  }
+
+  revalidatePath("/admin/resultados");
+}
+
+/** Borra un reporte mal tomado. No toca ninguna estadistica del sitio. */
+export async function borrarResultadoNegocio(formData: FormData): Promise<void> {
+  await requireAdmin();
+
+  const negocioId = String(formData.get("negocio_id") ?? "");
+  const periodo = String(formData.get("periodo") ?? "");
+  if (!negocioId || !esPeriodoValido(periodo)) return;
+
+  const { error } = await supabaseAdmin
+    .from("resultados_negocio")
+    .delete()
+    .eq("negocio_id", negocioId)
+    .eq("periodo", periodo);
+
+  if (error) {
+    console.error("[borrarResultadoNegocio] error:", error.message);
+    return;
+  }
+
+  revalidatePath("/admin/resultados");
 }
