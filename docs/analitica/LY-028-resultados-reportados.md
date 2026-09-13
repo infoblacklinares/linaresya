@@ -2,7 +2,7 @@
 
 - **Prioridad:** P1
 - **Fecha:** 2026-09-13
-- **Estado:** Listo, pendiente correr la migración y revisar en el panel
+- **Estado:** Desplegado. Migración corrida el 2026-09-13. Falta la revisión visual de Willson en el panel
 
 ## El agujero que tapa
 
@@ -94,8 +94,12 @@ después. El formulario deja el campo vacío a propósito.
 `npm test` 67/67, `tsc` y `eslint` limpios.
 
 **Sin probar en el panel:** entrar requiere la contraseña de administrador, que
-no manejo. Se verificó que la ruta compila y que sin sesión redirige al login en
-vez de reventar. Falta que Willson corra la migración y la mire.
+no manejo. Lo verificado en producción después del deploy:
+
+- `/admin/resultados` responde 307 al login en vez de reventar.
+- La portada y una ficha siguen en 200: el cambio no rompió nada del sitio.
+
+Falta que Willson abra la pantalla y la mire.
 
 ## Lo que queda para después
 
