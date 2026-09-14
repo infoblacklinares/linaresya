@@ -34,9 +34,24 @@ export const metadata = {
 };
 
 
-// Sin esto, Next.js cachea la página estáticamente y "Destacados" muestra
-// siempre el mismo resultado del build en vez de una selección al azar.
-export const revalidate = 0;
+/**
+ * La portada se cachea 5 minutos.
+ *
+ * Estaba en `revalidate = 0`, o sea que **cada visita** obligaba a renderizarla
+ * entera de nuevo contra la base: 742 KB de HTML, entre 1,4 y 2,2 segundos hasta
+ * el primer byte, y hasta 6 en frio. Era, por lejos, la pagina mas lenta del
+ * sitio; una pagina de rubro, que si se cachea, responde en 0,2.
+ *
+ * El motivo del 0 era que "Destacados" se baraja al azar y con cache quedaba
+ * congelado desde el build. Con 5 minutos se sigue barajando —varias veces por
+ * hora— y a cambio la portada se sirve cacheada. Nadie nota la diferencia entre
+ * un orden que cambia a cada recarga y uno que cambia cada 5 minutos; todos
+ * notan dos segundos de espera.
+ *
+ * Un negocio nuevo tarda como mucho 5 minutos en salir en la portada. Su ficha
+ * y su categoria aparecen al instante, como siempre.
+ */
+export const revalidate = 300;
 
 // ── Tipos ─────────────────────────────────────────────────────────────────────
 type Categoria = {
@@ -175,14 +190,17 @@ export default async function Home() {
       .order("plan",      { ascending: false })
       .order("verificado",{ ascending: false })
       .order("creado_en", { ascending: false })
-      .limit(60),
+      // 24 y no 60: son carruseles horizontales que nadie recorre entero, y
+      // cada tarjeta de mas es una imagen mas que el telefono tiene que pedir.
+      // Entre los dos carruseles se renderizaban 120 tarjetas.
+      .limit(24),
 
     supabase
       .from("negocios")
       .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, telefono, categorias:categoria_id(nombre, slug, emoji)")
       .eq("activo", true)
       .order("creado_en", { ascending: false })
-      .limit(60),
+      .limit(24),
 
     supabase
       .from("ofertas")

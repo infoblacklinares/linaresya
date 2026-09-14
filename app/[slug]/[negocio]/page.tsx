@@ -14,6 +14,7 @@ import JsonLd from "@/components/JsonLd";
 import { urlInstagram } from "@/lib/instagram";
 import { telLink, whatsAppLink } from "@/lib/contacto";
 import RegistrarVista from "@/components/RegistrarVista";
+import GaleriaFotos from "@/components/GaleriaFotos";
 import EnlaceMedido from "@/components/EnlaceMedido";
 import { canUseFeature, esPremium as negocioEsPremium } from "@/lib/planes";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
@@ -320,7 +321,12 @@ export default async function NegocioDetalle({
         <div className="relative h-72 sm:h-80 lg:h-[26rem] w-full overflow-hidden bg-secondary">
           {n.foto_portada ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
+            <img
+              src={n.foto_portada}
+              alt={n.nombre}
+              fetchPriority="high"
+              className="h-full w-full object-cover"
+            />
           ) : (
             <div className={`h-full w-full flex items-center justify-center text-8xl bg-gradient-to-br ${esPremium ? "from-[#2B6E80] to-[#163d4e]" : "from-[#F9F8F6] to-[#E8E4DE]"}`}>
               {categoria.emoji}
@@ -363,7 +369,12 @@ export default async function NegocioDetalle({
             <div className="h-24 w-24 rounded-full ring-4 ring-white shadow-lg overflow-hidden bg-secondary flex items-center justify-center text-4xl">
               {n.foto_portada ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
+                <img
+                  src={n.foto_portada}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full w-full object-cover"
+                />
               ) : (
                 <span>{categoria.emoji}</span>
               )}
@@ -564,17 +575,7 @@ export default async function NegocioDetalle({
       {fotos.length > 0 && (
         <section className="mt-6">
           <h2 className="px-4 text-base font-bold mb-2">Galeria</h2>
-          <div className="px-4 flex gap-2 overflow-x-auto no-scrollbar">
-            {fotos.map((f) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={f.id}
-                src={f.url}
-                alt=""
-                className="h-32 w-40 sm:h-40 sm:w-52 lg:h-56 lg:w-72 rounded-2xl object-cover shrink-0"
-              />
-            ))}
-          </div>
+          <GaleriaFotos fotos={fotos} nombreNegocio={n.nombre} />
         </section>
       )}
 

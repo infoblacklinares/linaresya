@@ -506,7 +506,7 @@ function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; r
       <div className="relative aspect-[4/3] overflow-hidden bg-[#F0EDE8]">
         {n.foto_portada ? (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
+          <img src={n.foto_portada} alt={n.nombre} loading="lazy" decoding="async" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
         ) : (
           <div className="h-full w-full flex items-center justify-center text-4xl opacity-30">🏪</div>
         )}
