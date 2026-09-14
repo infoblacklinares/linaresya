@@ -108,9 +108,70 @@ no manejo. Lo verificado en producción después del deploy:
 
 Falta que Willson abra la pantalla y la mire.
 
+## Segunda parte: que se pregunte solo (2026-09-13)
+
+Willson planteó el problema correcto: preguntar uno por uno no escala. **Pero el
+número clave era otro: de 164 negocios activos, 13 tienen correo.** Los otros 151
+los cargó él desde datos públicos y no hay dueño al otro lado.
+
+Eso cambia la conclusión. Un cron por correo hoy alcanza a 13 negocios; con una
+tasa de respuesta normal (20-40%) son unas 4 respuestas al mes. **El cuello de
+botella real no es cómo se pregunta: es que 151 negocios no saben que están en el
+sitio.** Así que se construyó el automatismo armado para crecer solo a medida que
+los dueños reclaman su ficha, con una salida usable hoy para los que no tienen
+correo.
+
+### 1. Pantalla del dueño — `/dueno/resultados/[token]`
+
+Dos campos y una nota. Funciona con link, tenga correo el negocio o no.
+
+Primero le muestra **sus** números del mes y después pregunta. El orden no es
+cosmético: sin él es una encuesta más; con él es un reporte de lo que el
+directorio le dio, y la pregunta se gana el derecho a estar ahí.
+
+**Autorización:** el `negocio_id` sale del token, nunca del formulario. Si se
+confiara en un campo oculto, cualquier dueño con un link válido podría escribir
+sobre la ficha de otro. El token dura 45 días: el correo sale el día 1 y tiene
+que seguir sirviendo tres semanas después.
+
+Le pregunta por el **mes pasado**, al revés que el panel. El panel lo usa Willson
+para anotar lo que le acaban de decir; este link llega por correo el día 1 y
+pregunta por el mes que cerró, que es el que se responde de memoria.
+
+### 2. Cron mensual — `/api/cron/pedir-resultados`, día 1 a las 13:00 UTC
+
+Le escribe solo a quien cumple las tres condiciones:
+
+| Regla | Por qué |
+|---|---|
+| Tiene correo | Hoy 13 de 164. La lista crece sola cuando reclaman su ficha |
+| Tuvo movimiento | Escribirle a alguien con cero visitas es pedirle que confirme que no le sirvió. Ese correo hace daño |
+| No respondió aún | Nadie recibe dos veces lo mismo |
+
+La regla vive en `negociosAPreguntar()`, en `lib/resultados.ts`, con test propio:
+es la decisión que, mal hecha, manda correos no deseados.
+
+### 3. Botón de WhatsApp en el panel
+
+Para los 151 sin correo. Genera el link al apretar y abre WhatsApp con el mensaje
+escrito: un toque, sin redactar ni copiar. Solo aparece en los negocios con
+movimiento y sin reporte todavía.
+
+El token se crea recién al apretar, no para los 164 de antemano: un link que
+nadie va a usar es un link de más dando vueltas.
+
+### Verificado
+
+- Token inválido muestra "Este link ya no sirve"; token válido abre la pantalla
+  con los datos reales del negocio.
+- Se llenó y envió el formulario: la fila quedó en `resultados_negocio` con
+  `consultas: 7, clientes: 2`. **Los datos de prueba se borraron**, y también el
+  token de prueba.
+- El cron sin el secreto responde 401.
+
 ## Lo que queda para después
 
-- Pantalla para que el dueño reporte solo, cuando haya dueños entrando.
-- Recordatorio automático a principio de mes con la lista de a quién preguntar.
+- **Lo que de verdad desbloquea todo esto:** que los 151 negocios sin dueño
+  reclamen su ficha. Mientras no pase, el automatismo le habla a 13.
 - Cruzar lo reportado con el plan: si los Premium reconocen más clientes que los
   Básicos, ese número es el argumento de venta.

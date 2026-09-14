@@ -903,3 +903,110 @@ export async function sendOwnerResenaAprobadaNotification(opts: {
     console.error("[email] sendOwnerResenaAprobadaNotification fallo:", err);
   }
 }
+
+// =============================================================================
+// Pedido mensual de resultados (LY-028)
+// =============================================================================
+
+export type PedidoResultados = {
+  nombre: string;
+  email: string;
+  mes: string;
+  vistas: number;
+  contactos: number;
+  linkUrl: string;
+};
+
+/**
+ * Le pregunta al negocio como le fue el mes pasado.
+ *
+ * El correo muestra primero **sus** numeros y despues pregunta. Ese orden no es
+ * cosmetico: sin el, es una encuesta mas y nadie la responde; con el, es un
+ * reporte de lo que el directorio le dio, y la pregunta se gana el derecho a
+ * estar ahi. De paso, el mismo correo es lo unico que muchos negocios van a
+ * leer del sitio en todo el mes.
+ *
+ * Fire-and-forget: nunca lanza. Si falla, el cron sigue con el siguiente.
+ */
+export async function sendPedidoResultados(datos: PedidoResultados): Promise<boolean> {
+  try {
+    const c = getClient();
+    if (!c) {
+      console.warn("[email] Salto pedido de resultados: falta RESEND_API_KEY.");
+      return false;
+    }
+    if (!datos.email) return false;
+
+    const link = escapeHtml(datos.linkUrl);
+    const nombre = escapeHtml(datos.nombre);
+    const mes = escapeHtml(datos.mes);
+
+    const html = `<!doctype html>
+<html>
+<body style="margin:0;padding:24px;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+    <div style="padding:24px;background:#2B6E80;color:#fff;">
+      <p style="margin:0;font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:0.8;">LinaresYa</p>
+      <h1 style="margin:6px 0 0;font-size:22px;font-weight:800;">Como te fue en ${mes}</h1>
+    </div>
+    <div style="padding:24px;">
+      <p style="margin:0 0 16px;color:#334155;font-size:15px;line-height:1.5;">
+        Hola, <strong>${nombre}</strong>. Esto es lo que pasó con tu ficha en ${mes}:
+      </p>
+      <table style="width:100%;border-collapse:collapse;margin:0 0 20px;">
+        <tr>
+          <td style="padding:12px;background:#f1f5f9;border-radius:12px;text-align:center;">
+            <p style="margin:0;font-size:28px;font-weight:800;color:#1A1410;">${datos.vistas}</p>
+            <p style="margin:2px 0 0;font-size:12px;color:#64748b;">vieron tu ficha</p>
+          </td>
+          <td style="width:12px;"></td>
+          <td style="padding:12px;background:#f1f5f9;border-radius:12px;text-align:center;">
+            <p style="margin:0;font-size:28px;font-weight:800;color:#1A1410;">${datos.contactos}</p>
+            <p style="margin:2px 0 0;font-size:12px;color:#64748b;">tocaron tus botones</p>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:0 0 16px;color:#334155;font-size:15px;line-height:1.5;">
+        Lo que no podemos ver es qué pasó después. <strong>¿Cuántas de esas personas
+        te llegaron de verdad, y cuántas compraron?</strong> Son dos preguntas y nos
+        ayuda a mejorar el directorio para todos.
+      </p>
+      <p style="margin:0 0 8px;">
+        <a href="${link}" style="display:inline-block;background:#2B6E80;color:#fff;text-decoration:none;padding:12px 20px;border-radius:12px;font-weight:700;font-size:15px;">Responder (30 segundos)</a>
+      </p>
+      <p style="margin:16px 0 0;color:#94a3b8;font-size:12px;line-height:1.5;">
+        Si no quieres responder, no pasa nada: tu ficha sigue igual.
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const texto = `Hola ${datos.nombre}.
+
+En ${datos.mes}, ${datos.vistas} personas vieron tu ficha en LinaresYa y ${datos.contactos} tocaron tus botones de contacto.
+
+Lo que no podemos ver es que paso despues. Cuantas te llegaron de verdad, y cuantas compraron?
+
+Responde aca (30 segundos): ${datos.linkUrl}
+
+Si no quieres responder, no pasa nada: tu ficha sigue igual.`;
+
+    const { error } = await c.emails.send({
+      from: FROM,
+      to: datos.email,
+      subject: `${datos.nombre}: como te fue en ${datos.mes}`,
+      html,
+      text: texto,
+    });
+
+    if (error) {
+      console.error("[email] pedido de resultados fallo:", error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("[email] pedido de resultados fallo:", err);
+    return false;
+  }
+}

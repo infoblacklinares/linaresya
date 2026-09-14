@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { generarTokenDueno } from "@/lib/dueno-token";
+import { generarTokenDueno, generarLinkResultados } from "@/lib/dueno-token";
 import { clearAdminCookie, isAdminAuthenticated } from "@/lib/admin-auth";
 import {
   sendOwnerAprobacionNotification,
@@ -12,6 +12,7 @@ import {
 } from "@/lib/email";
 import { deleteFotosFromStorage } from "@/lib/storage";
 import { vencimientoEnDias } from "@/lib/planes";
+import { whatsAppLink } from "@/lib/contacto";
 import {
   contarReportado,
   esPeriodoValido,
@@ -482,4 +483,52 @@ export async function borrarResultadoNegocio(formData: FormData): Promise<void> 
   }
 
   revalidatePath("/admin/resultados");
+}
+
+/**
+ * Abre WhatsApp con el pedido de resultados ya escrito (LY-028).
+ *
+ * De 164 negocios, 13 tienen correo: el resto los cargo Willson desde datos
+ * publicos y no hay a quien escribirle por mail. Para esos, el cron no sirve y
+ * la alternativa real es WhatsApp. Este boton genera el link de una vez y
+ * entrega la conversacion lista: un toque, sin redactar y sin copiar nada.
+ *
+ * El token se crea recien al apretar, no para los 164 de antemano: un link que
+ * nadie va a usar es un link de mas dando vueltas.
+ */
+export async function pedirResultadoPorWhatsApp(formData: FormData): Promise<void> {
+  await requireAdmin();
+
+  const id = String(formData.get("negocio_id") ?? "");
+  const mes = String(formData.get("mes") ?? "");
+  if (!id) return;
+
+  const { data } = await supabaseAdmin
+    .from("negocios")
+    .select("nombre, whatsapp, telefono")
+    .eq("id", id)
+    .single();
+
+  const negocio = (data ?? null) as {
+    nombre?: string;
+    whatsapp?: string | null;
+    telefono?: string | null;
+  } | null;
+  if (!negocio) return;
+
+  const linkUrl = await generarLinkResultados(id);
+  if (!linkUrl) return;
+
+  const mensaje =
+    `Hola${negocio.nombre ? ` ${negocio.nombre}` : ""}! Soy de LinaresYa. ` +
+    `Queria saber como te fue${mes ? ` en ${mes}` : ""} con la gente que llego por el ` +
+    `directorio. Son dos preguntas, te tomas 30 segundos: ${linkUrl}`;
+
+  // El WhatsApp cargado manda; si no hay, se intenta con el telefono, que en
+  // muchas fichas es el mismo celular.
+  const destino =
+    whatsAppLink(negocio.whatsapp, mensaje) ?? whatsAppLink(negocio.telefono, mensaje);
+  if (!destino) return;
+
+  redirect(destino);
 }

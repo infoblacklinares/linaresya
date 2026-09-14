@@ -16,7 +16,11 @@ import {
   type Medido,
   type Resultado,
 } from "@/lib/resultados";
-import { guardarResultadoNegocio, borrarResultadoNegocio } from "../actions";
+import {
+  guardarResultadoNegocio,
+  borrarResultadoNegocio,
+  pedirResultadoPorWhatsApp,
+} from "../actions";
 
 export const metadata = {
   title: "Resultados reportados - Admin LinaresYa",
@@ -32,6 +36,8 @@ type Negocio = {
   plan: string | null;
   premium_hasta: string | null;
   categoriaSlug: string;
+  tieneEmail: boolean;
+  tieneNumero: boolean;
 };
 
 /** El primer dia del mes siguiente. Acota la consulta de eventos al periodo. */
@@ -62,7 +68,9 @@ export default async function AdminResultadosPage({
   const [negociosRes, resultadosRes, eventosRes] = await Promise.all([
     supabaseAdmin
       .from("negocios")
-      .select("id, nombre, slug, plan, premium_hasta, categorias:categoria_id(slug)")
+      .select(
+        "id, nombre, slug, plan, premium_hasta, email, whatsapp, telefono, categorias:categoria_id(slug)"
+      )
       .eq("activo", true)
       .order("nombre"),
     supabaseAdmin
@@ -88,6 +96,8 @@ export default async function AdminResultadosPage({
       premium_hasta: (x.premium_hasta as string | null) ?? null,
       categoriaSlug:
         cat && typeof cat === "object" ? String((cat as { slug?: unknown }).slug ?? "") : "",
+      tieneEmail: Boolean(x.email),
+      tieneNumero: Boolean(x.whatsapp || x.telefono),
     };
   });
 
@@ -316,15 +326,34 @@ function Fila({
         </button>
       </form>
 
-      {reportado && (
-        <form action={borrarResultadoNegocio} className="mt-1">
-          <input type="hidden" name="negocio_id" value={negocio.id} />
-          <input type="hidden" name="periodo" value={periodo} />
-          <button type="submit" className="text-xs text-muted-foreground hover:underline">
-            Borrar este reporte
-          </button>
-        </form>
-      )}
+      <div className="mt-1 flex flex-wrap items-center gap-3">
+        {!reportado && negocio.tieneNumero && (
+          <form action={pedirResultadoPorWhatsApp}>
+            <input type="hidden" name="negocio_id" value={negocio.id} />
+            <input type="hidden" name="mes" value={periodoLegible(periodo)} />
+            <button
+              type="submit"
+              className="text-xs font-semibold text-[#25D366] hover:underline"
+            >
+              Pedírselo por WhatsApp
+            </button>
+          </form>
+        )}
+        {!reportado && negocio.tieneEmail && (
+          <span className="text-xs text-muted-foreground">
+            Tiene correo: el día 1 se le pregunta solo
+          </span>
+        )}
+        {reportado && (
+          <form action={borrarResultadoNegocio}>
+            <input type="hidden" name="negocio_id" value={negocio.id} />
+            <input type="hidden" name="periodo" value={periodo} />
+            <button type="submit" className="text-xs text-muted-foreground hover:underline">
+              Borrar este reporte
+            </button>
+          </form>
+        )}
+      </div>
     </div>
   );
 }

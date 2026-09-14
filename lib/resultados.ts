@@ -174,3 +174,28 @@ export function totalesReportados(filas: Resultado[]): {
   }
   return { negocios: filas.length, consultas, clientes, sinDato };
 }
+
+/** Lo minimo que el cron necesita saber de un negocio para decidir. */
+export type CandidatoPregunta = {
+  id: string;
+  email: string | null;
+  vistas: number;
+  yaReporto: boolean;
+};
+
+/**
+ * A quien le pregunta el cron mensual, y a quien no.
+ *
+ * Las tres reglas, en orden de importancia:
+ *
+ *   1. **Tiene correo.** De 164 negocios, 13 lo tienen: el resto los cargo
+ *      Willson desde datos publicos y no hay duenno al otro lado. La lista
+ *      crece sola a medida que reclaman su ficha.
+ *   2. **Tuvo movimiento.** Escribirle a alguien que tuvo cero visitas es
+ *      pedirle que confirme que el directorio no le sirvio. Ese correo hace
+ *      dano, no informa.
+ *   3. **No respondio todavia** ese mes. Nadie recibe dos veces lo mismo.
+ */
+export function negociosAPreguntar<T extends CandidatoPregunta>(candidatos: T[]): T[] {
+  return candidatos.filter((c) => Boolean(c.email) && c.vistas > 0 && !c.yaReporto);
+}
