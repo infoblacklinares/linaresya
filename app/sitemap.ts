@@ -4,7 +4,7 @@ import { posts as blogPosts } from "@/lib/blog-posts";
 import { RUBROS } from "@/lib/rubros";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
 // Revalida cada 6 horas - balance entre frescura y evitar pegarle a supabase en cada hit del bot
 export const revalidate = 21600;

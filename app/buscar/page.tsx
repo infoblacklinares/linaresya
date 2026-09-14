@@ -14,10 +14,41 @@ function waLinkSugerir(termino: string) {
   return `https://wa.me/${WA_SUGERIR}?text=${encodeURIComponent(msg)}`;
 }
 
-export const metadata = {
-  title: "Buscar - LinaresYa",
-  description: "Busca negocios, oficios y servicios en Linares.",
-};
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
+
+/**
+ * `/buscar` se indexa; `/buscar?...` no.
+ *
+ * La pantalla combina siete filtros (texto, categoria, tipo, premium,
+ * verificado, domicilio, abierto ahora). Cada combinacion es una URL distinta,
+ * asi que hay miles de paginas casi iguales, casi todas con dos o tres
+ * resultados. Google gasta su presupuesto de rastreo ahi en vez de en las
+ * fichas, y esas paginas flacas compiten con las de rubro, que si estan hechas
+ * para posicionar.
+ *
+ * Sigue siendo `follow`: los enlaces a las fichas se aprovechan igual. Lo que
+ * se evita es que la busqueda misma entre al indice.
+ */
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  // `searchParams` llega como promesa: leerlo sin await devuelve el objeto
+  // Promise, cuyas claves estan vacias, y entonces TODA busqueda se declararia
+  // indexable sin que nada falle a la vista.
+  const params = (await searchParams) ?? {};
+  const conFiltros = Object.values(params).some((v) => v !== undefined && v !== "");
+
+  return {
+    title: "Buscar - LinaresYa",
+    description: "Busca negocios, oficios y servicios en Linares.",
+    alternates: { canonical: `${SITE_URL}/buscar` },
+    robots: conFiltros
+      ? { index: false, follow: true }
+      : { index: true, follow: true },
+  };
+}
 
 type NegocioRow = {
   id: string;

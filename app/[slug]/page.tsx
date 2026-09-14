@@ -10,7 +10,7 @@ import { canUseFeature, esPremium } from "@/lib/planes";
 import { getOpenIds, estaAbierto } from "@/lib/horarios";
 import AnimatedCard from "@/components/AnimatedCard";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
 type Categoria = { id: number; nombre: string; slug: string; emoji: string; descripcion: string | null };
 type Negocio = {
@@ -196,7 +196,7 @@ function NegocioCard({
       <div className="relative aspect-[4/3] overflow-hidden bg-[#F0EDE8]">
         {n.foto_portada ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
+          <img loading="lazy" decoding="async" src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
         ) : (
           <div className="h-full w-full flex items-center justify-center text-4xl opacity-30">🏪</div>
         )}

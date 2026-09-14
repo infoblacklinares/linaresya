@@ -21,7 +21,12 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
+// El dominio real como valor por defecto, no el de Vercel. Si la variable
+// llegara a faltar en un deploy, cada canonical y cada URL de Open Graph del
+// sitio apuntaria a linaresya.vercel.app, o sea que el sitio entero se
+// declararia copia de otro dominio. Un olvido de configuracion no puede costar
+// el posicionamiento.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

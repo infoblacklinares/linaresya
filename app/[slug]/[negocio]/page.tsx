@@ -18,7 +18,7 @@ import EnlaceMedido from "@/components/EnlaceMedido";
 import { canUseFeature, esPremium as negocioEsPremium } from "@/lib/planes";
 import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
 type Categoria = {
   id: number;

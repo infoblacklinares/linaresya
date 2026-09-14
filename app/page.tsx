@@ -18,6 +18,21 @@ import { telLink } from "@/lib/contacto";
 import { esPremium } from "@/lib/planes";
 import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
 import { getRecentPosts } from "@/lib/blog-posts";
+import { RUBROS } from "@/lib/rubros";
+
+/**
+ * La portada no tenia canonical. Sin el, `linaresya.cl/?utm_source=instagram`
+ * —justo el link que se publica en una campana— se le puede presentar a Google
+ * como una pagina distinta de `linaresya.cl/`, y la fuerza queda repartida.
+ *
+ * Va aca y no en el layout a proposito: en el layout lo heredarian /buscar,
+ * /blog y todas las demas, que quedarian declarandose copias de la portada.
+ * Eso es peor que no tener canonical.
+ */
+export const metadata = {
+  alternates: { canonical: "/" },
+};
+
 
 // Sin esto, Next.js cachea la página estáticamente y "Destacados" muestra
 // siempre el mismo resultado del build en vez de una selección al azar.
@@ -506,6 +521,8 @@ export default async function Home() {
                     {n.foto_portada ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
+                        loading="lazy"
+                        decoding="async"
                         src={n.foto_portada}
                         alt={n.nombre}
                         className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -560,7 +577,7 @@ export default async function Home() {
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-white/10 flex items-center justify-center text-3xl">
                   {negocioDelDia.foto_portada
                     // eslint-disable-next-line @next/next/no-img-element
-                    ? <img src={negocioDelDia.foto_portada} alt={negocioDelDia.nombre} className="h-full w-full object-cover" />
+                    ? <img loading="lazy" decoding="async" src={negocioDelDia.foto_portada} alt={negocioDelDia.nombre} className="h-full w-full object-cover" />
                     : <span>{negocioDelDia.categorias?.emoji ?? "🏪"}</span>}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -630,7 +647,7 @@ export default async function Home() {
                   <div className="relative flex h-28 items-center justify-center bg-gradient-to-br from-[#F9F8F6] to-[#E8E4DE]">
                     {o.imagen_url
                       // eslint-disable-next-line @next/next/no-img-element
-                      ? <img src={o.imagen_url} alt={o.titulo} className="h-full w-full object-cover" />
+                      ? <img loading="lazy" decoding="async" src={o.imagen_url} alt={o.titulo} className="h-full w-full object-cover" />
                       : <span className="text-4xl">{o.negocio?.emoji ?? "🏪"}</span>}
                     {o.descuento_pct && (
                       <span className="absolute right-2 top-2 rounded-full bg-[#C05A46] px-2 py-0.5 text-[10px] font-extrabold text-white">-{o.descuento_pct}%</span>
@@ -687,7 +704,7 @@ export default async function Home() {
                   <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
-                      ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                      ? <img loading="lazy" decoding="async" src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                       : <span className="transition-transform duration-500 group-hover:scale-110">{d.categorias?.emoji ?? "📍"}</span>}
                     {/* Badge premium sobre imagen */}
                     {esPremium(d) && (
@@ -747,7 +764,7 @@ export default async function Home() {
                   <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i + 4)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
-                      ? <img src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                      ? <img loading="lazy" decoding="async" src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                       : <span className="transition-transform duration-500 group-hover:scale-110">{d.categorias?.emoji ?? "📍"}</span>}
                     {esNuevo(d.creado_en) && (
                       <span className="absolute left-2 top-2 rounded-full bg-[#1A1410] px-2 py-0.5 text-[9px] font-bold text-white">Nuevo</span>
@@ -829,7 +846,7 @@ export default async function Home() {
                   <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-[#F0EDE8] flex items-center justify-center text-xl">
                     {n.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
-                      ? <img src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
+                      ? <img loading="lazy" decoding="async" src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
                       : <span>{n.categorias?.emoji ?? "🏪"}</span>}
                   </div>
                   <div className="min-w-0 flex-1">
@@ -903,6 +920,33 @@ export default async function Home() {
           </p>
           <NewsletterForm />
         </FadeInSection>
+      </section>
+
+      {/* Lo que la gente busca en Google (LY-034).
+          Las categorias de mas abajo son baldes anchos —"gastronomia",
+          "servicios y oficios"— y nadie los escribe en un buscador. Estos son
+          los terminos reales, y enlazarlos desde la portada, que es la pagina
+          con mas fuerza del sitio, es lo que hace que Google los encuentre y
+          los tome en serio. */}
+      <section className="px-4 pt-8">
+        <h2 className="text-xl font-black tracking-tight text-[#1A1410]">
+          Lo mas buscado en Linares
+        </h2>
+        <p className="text-xs text-[#8E8279]">
+          Los rubros que la gente pregunta, con telefono y direccion.
+        </p>
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {RUBROS.map((r) => (
+            <li key={r.slug}>
+              <Link
+                href={`/en-linares/${r.slug}`}
+                className="inline-block rounded-full bg-[#F0EDE8] px-3.5 py-1.5 text-sm font-semibold text-[#1A1410] hover:bg-[#E8E4DE] transition"
+              >
+                {r.titulo.replace(" en Linares", "")}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* Grid completo de categorías */}
