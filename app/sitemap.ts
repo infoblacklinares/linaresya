@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { supabase } from "@/lib/supabase";
 import { posts as blogPosts } from "@/lib/blog-posts";
+import { RUBROS } from "@/lib/rubros";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.vercel.app";
@@ -99,5 +100,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
     .filter((x): x is NonNullable<typeof x> => x !== null);
 
-  return [...urlsEstaticas, ...urlsBlog, ...urlsCategorias, ...urlsNegocios];
+  // Paginas por rubro (LY-034). Van con prioridad alta: son las que apuntan a
+  // lo que la gente escribe en Google ("restaurantes en Linares"), al reves que
+  // las categorias, que son baldes anchos que nadie busca. Se listan todas: la
+  // que no tenga negocios suficientes responde 404 y Google la descarta sola.
+  const urlsRubros: MetadataRoute.Sitemap = RUBROS.map((r) => ({
+    url: `${SITE_URL}/en-linares/${r.slug}`,
+    lastModified: now,
+    changeFrequency: "daily" as const,
+    priority: 0.9,
+  }));
+
+  return [
+    ...urlsEstaticas,
+    ...urlsBlog,
+    ...urlsCategorias,
+    ...urlsRubros,
+    ...urlsNegocios,
+  ];
 }

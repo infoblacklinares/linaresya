@@ -62,6 +62,14 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                {/* Enlace real, no adorno: sin un link desde el sitio, las
+                    paginas por rubro (LY-034) quedan huerfanas y Google tarda
+                    mucho mas en encontrarlas. */}
+                <Link href="/en-linares" className="hover:underline font-medium">
+                  Negocios por rubro
+                </Link>
+              </li>
+              <li>
                 <Link href="/blog" className="hover:underline font-medium">
                   Blog
                 </Link>
