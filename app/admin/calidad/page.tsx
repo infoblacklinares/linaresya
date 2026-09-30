@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
 
 type Negocio = {
   id: string;
@@ -32,11 +33,11 @@ function ubicacionGenerica(direccion: string | null): boolean {
   return ["linares", "centro", "centro de linares", "linares centro"].includes(value);
 }
 
-function construirProblemas(negocios: Negocio[]): Problema[] {
+function construirProblemas(negocios: Negocio[], includeLocationChecks = true): Problema[] {
   const problemas: Problema[] = [];
 
   for (const negocio of negocios) {
-    if (!negocio.direccion && !negocio.a_domicilio) {
+    if (includeLocationChecks && !negocio.direccion && !negocio.a_domicilio) {
       problemas.push({
         id: negocio.id,
         nombre: negocio.nombre,
@@ -44,7 +45,7 @@ function construirProblemas(negocios: Negocio[]): Problema[] {
         prioridad: "ALTA",
         detalle: "No tiene una dirección verificable y la ficha no indica atención a domicilio.",
       });
-    } else if (ubicacionGenerica(negocio.direccion)) {
+    } else if (includeLocationChecks && ubicacionGenerica(negocio.direccion)) {
       problemas.push({
         id: negocio.id,
         nombre: negocio.nombre,
@@ -116,9 +117,12 @@ export default async function CalidadPage() {
     throw new Error(`No se pudo cargar la cola de calidad: ${error.message}`);
   }
 
-  const problemas = construirProblemas((data ?? []) as Negocio[]);
-  const altas = problemas.filter((p) => p.prioridad === "ALTA").length;
-  const medias = problemas.length - altas;
+  const auditorReport = await fetchDataAuditorFindings();
+  const problemas = construirProblemas((data ?? []) as Negocio[], !auditorReport);
+  const auditorFindings = auditorReport?.findings ?? [];
+  const altas = problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity === "HIGH").length;
+  const medias = problemas.length - problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity !== "HIGH").length;
+  const totalAcciones = problemas.length + auditorFindings.length;
 
   return (
     <main className="flex-1 mx-auto w-full max-w-3xl pb-10">
@@ -145,7 +149,7 @@ export default async function CalidadPage() {
           <p className="text-xs font-semibold uppercase tracking-wider opacity-70">
             Acción pendiente
           </p>
-          <p className="text-3xl font-extrabold mt-1">{problemas.length}</p>
+          <p className="text-3xl font-extrabold mt-1">{totalAcciones}</p>
           <p className="text-sm opacity-80 mt-1">
             problemas accionables en fichas activas
           </p>
@@ -159,6 +163,13 @@ export default async function CalidadPage() {
           </div>
         </div>
 
+        {auditorReport && (
+          <div className="mt-4 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-xs text-sky-900">
+            <strong>Data Auditor conectado:</strong> {auditorFindings.length} hallazgo{auditorFindings.length === 1 ? "" : "s"} recibidos. La cola conserva la regla, severidad y mensaje del auditor; la corrección sigue siendo manual.
+            <span className="block mt-1 opacity-75">Reporte generado: {new Date(auditorReport.generated_at).toLocaleString("es-CL")}</span>
+          </div>
+        )}
+
         <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900">
           <strong>Regla de operación:</strong> esta cola detecta problemas; no
           inventa datos ni los corrige automáticamente. Abre la ficha, verifica
@@ -167,7 +178,33 @@ export default async function CalidadPage() {
       </section>
 
       <section className="px-4 pt-6">
-        {problemas.length === 0 ? (
+        {auditorFindings.length > 0 && (
+          <div className="mb-6">
+            <div className="mb-3">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Fuente externa</p>
+              <h2 className="text-sm font-bold">Hallazgos del Data Auditor</h2>
+            </div>
+            <div className="space-y-3">
+              {auditorFindings.map((finding) => (
+                <article key={`${finding.business_id}-${finding.rule}`} className="rounded-2xl border border-sky-200 bg-sky-50/40 p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="font-bold text-sm">{finding.business_name ?? finding.business_id}</h3>
+                        <span className="text-[9px] font-bold rounded-full bg-sky-100 text-sky-800 px-2 py-0.5">{finding.severity}</span>
+                      </div>
+                      <p className="text-[10px] font-mono text-muted-foreground mt-1">{finding.rule}</p>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{finding.message}</p>
+                    </div>
+                    <Link href={`/admin/negocio/${finding.business_id}/editar`} className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90">Corregir →</Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {problemas.length === 0 && auditorFindings.length === 0 ? (
           <div className="rounded-2xl border-2 border-dashed border-border p-8 text-center">
             <p className="font-bold">No hay problemas accionables.</p>
             <p className="text-sm text-muted-foreground mt-1">
