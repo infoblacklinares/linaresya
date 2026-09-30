@@ -117,9 +117,16 @@ export default async function CalidadPage() {
     throw new Error(`No se pudo cargar la cola de calidad: ${error.message}`);
   }
 
+  const negocios = (data ?? []) as Negocio[];
   const auditorReport = await fetchDataAuditorFindings();
-  const problemas = construirProblemas((data ?? []) as Negocio[], !auditorReport);
+  const problemas = construirProblemas(negocios, !auditorReport);
   const auditorFindings = auditorReport?.findings ?? [];
+  const negocioIdByExternalId = new Map<string, string>(
+    negocios.flatMap((negocio) => [
+      [negocio.id, negocio.id],
+      [negocio.slug, negocio.id],
+    ]),
+  );
   const altas = problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity === "HIGH").length;
   const medias = problemas.length - problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity !== "HIGH").length;
   const totalAcciones = problemas.length + auditorFindings.length;
@@ -196,7 +203,11 @@ export default async function CalidadPage() {
                       <p className="text-[10px] font-mono text-muted-foreground mt-1">{finding.rule}</p>
                       <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{finding.message}</p>
                     </div>
-                    <Link href={`/admin/negocio/${finding.business_id}/editar`} className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90">Corregir →</Link>
+                    {negocioIdByExternalId.get(finding.business_id) ? (
+                      <Link href={`/admin/negocio/${negocioIdByExternalId.get(finding.business_id)}/editar`} className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90">Corregir →</Link>
+                    ) : (
+                      <span className="shrink-0 rounded-full border border-amber-200 bg-amber-50 text-amber-900 text-[10px] font-semibold px-3 py-2">Sin ficha vinculada</span>
+                    )}
                   </div>
                 </article>
               ))}
