@@ -13,6 +13,7 @@ import {
 import ConfirmDeleteButton from "./ConfirmDeleteButton";
 import { fechaCL, normalizarTexto } from "@/lib/estadisticas";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
+import { calcularEstadoFicha } from "@/lib/estado-ficha";
 import {
   filtrarPorFechas,
   porFuente,
@@ -277,6 +278,12 @@ export default async function AdminPage({
 
   const premiumActivos = act.filter((n) => n.plan === "premium").length;
   const auditorFindings = auditorReport?.findings ?? [];
+  const auditorByNegocio = new Map<string, typeof auditorFindings>();
+  for (const finding of auditorFindings) {
+    const actual = auditorByNegocio.get(finding.business_id) ?? [];
+    actual.push(finding);
+    auditorByNegocio.set(finding.business_id, actual);
+  }
 
   // Fotos y horarios viven en tablas separadas. Se consultan una sola vez para
   // todas las fichas activas y se reutilizan para la cola y los filtros.
@@ -371,11 +378,28 @@ export default async function AdminPage({
   }
 
   for (const negocio of act) {
-    const faltantesFicha = (Object.keys(FALTANTES) as Faltante[]).filter((clave) => {
-      if (clave === "fotografias") return !tieneFotografias(negocio);
-      if (clave === "horarios") return !tieneHorariosCompletos(negocio);
-      return FALTANTES[clave].test(negocio);
-    });
+    const hallazgosNegocio =
+      auditorByNegocio.get(negocio.id) ??
+      auditorByNegocio.get(negocio.slug) ??
+      [];
+    const estadoNegocio = calcularEstadoFicha(
+      {
+        activo: negocio.activo,
+        verificado: negocio.verificado,
+        descripcion: negocio.descripcion,
+        telefono: negocio.telefono,
+        whatsapp: negocio.whatsapp,
+        direccion: negocio.direccion,
+        lat: negocio.lat,
+        lng: negocio.lng,
+        a_domicilio: negocio.a_domicilio,
+        categoriaId: negocio.categoria_id,
+        tieneFotografias: tieneFotografias(negocio),
+        tieneHorariosCompletos: tieneHorariosCompletos(negocio),
+      },
+      hallazgosNegocio,
+    );
+    const faltantesFicha = estadoNegocio.faltantes.filter((item) => item !== "Verificación pendiente");
     if (faltantesFicha.length === 0) continue;
 
     const ubicacionCritica =
