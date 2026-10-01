@@ -374,7 +374,9 @@ export async function updateNegocio(
     revalidatePath(`/${slugCategoria}`);
   }
 
+  // El cierre de una corrección debe dejar actualizadas de inmediato la cola y la ficha operativa.
   revalidatePath("/admin");
+  revalidatePath(`/admin/negocio/${id}`);
   revalidatePath("/");
   revalidatePath("/mapa");
   revalidatePath(`/admin/negocio/${id}/editar`);
