@@ -156,18 +156,75 @@ export default async function VerificacionPage() {
                   </div>
                 </div>
 
-                <div className="mt-4 flex flex-wrap gap-2 pl-8">
-                  <Link
-                    href={`/admin/negocio/${negocio.id}/editar`}
-                    className="rounded-full bg-foreground text-background text-xs font-bold px-4 py-2"
-                  >
-                    Revisar ficha
-                  </Link>
-                  <form action={verificarNegocio}>
-                    <input type="hidden" name="id" value={negocio.id} />
+                <form
+                  action={verificarNegocio}
+                  className="mt-4 ml-8 rounded-xl border border-emerald-200 bg-emerald-50 p-3 space-y-3"
+                >
+                  <input type="hidden" name="id" value={negocio.id} />
+                  <p className="text-xs font-bold text-emerald-950">Registrar verificación</p>
+
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <select
+                      name="fuente"
+                      required
+                      defaultValue=""
+                      className="rounded-lg border border-emerald-200 bg-white px-3 py-2 text-xs"
+                    >
+                      <option value="" disabled>Fuente usada</option>
+                      <option value="google_maps">Google Maps</option>
+                      <option value="sitio_web">Sitio web</option>
+                      <option value="instagram">Instagram</option>
+                      <option value="facebook">Facebook</option>
+                      <option value="directorio_empresarial">Directorio empresarial</option>
+                      <option value="otra_fuente_publica">Otra fuente pública</option>
+                    </select>
+                    <input
+                      name="url_fuente"
+                      type="url"
+                      placeholder="URL de la fuente (opcional)"
+                      className="rounded-lg border border-emerald-200 bg-white px-3 py-2 text-xs"
+                    />
+                  </div>
+
+                  <textarea
+                    name="evidencia"
+                    required
+                    rows={2}
+                    placeholder="¿Qué comprobaste? Ej.: nombre y dirección coinciden con el negocio encontrado."
+                    className="w-full rounded-lg border border-emerald-200 bg-white px-3 py-2 text-xs resize-none"
+                  />
+
+                  <div className="flex flex-wrap gap-3 text-[11px] text-emerald-950">
+                    <label className="flex items-center gap-1.5">
+                      <input type="checkbox" name="coincide_nombre" className="h-3.5 w-3.5" />
+                      Nombre coincide
+                    </label>
+                    <label className="flex items-center gap-1.5">
+                      <input type="checkbox" name="coincide_direccion" className="h-3.5 w-3.5" />
+                      Dirección coincide
+                    </label>
+                    <label className="flex items-center gap-1.5">
+                      <input type="checkbox" name="coincide_telefono" className="h-3.5 w-3.5" />
+                      Teléfono coincide
+                    </label>
+                  </div>
+
+                  <input
+                    name="observacion"
+                    placeholder="Observación adicional (opcional)"
+                    className="w-full rounded-lg border border-emerald-200 bg-white px-3 py-2 text-xs"
+                  />
+
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <Link
+                      href={`/admin/negocio/${negocio.id}/editar`}
+                      className="rounded-full bg-foreground text-background text-xs font-bold px-4 py-2"
+                    >
+                      Revisar ficha
+                    </Link>
                     <VerificarButton />
-                  </form>
-                </div>
+                  </div>
+                </form>
               </article>
             ))}
           </div>
