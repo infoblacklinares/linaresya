@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
+import { calcularEstadoFicha } from "@/lib/estado-ficha";
 
 type Negocio = {
   id: string;
@@ -33,55 +34,44 @@ function ubicacionGenerica(direccion: string | null): boolean {
   return ["linares", "centro", "centro de linares", "linares centro"].includes(value);
 }
 
-function construirProblemas(negocios: Negocio[], includeLocationChecks = true): Problema[] {
+function construirProblemas(
+  negocios: Negocio[],
+  fotosPorNegocio: Set<string>,
+  horariosPorNegocio: Map<string, Set<string>>,
+  auditorFindings: Awaited<ReturnType<typeof fetchDataAuditorFindings>>["findings"],
+): Problema[] {
   const problemas: Problema[] = [];
 
   for (const negocio of negocios) {
-    if (includeLocationChecks && !negocio.direccion && !negocio.a_domicilio) {
-      problemas.push({
-        id: negocio.id,
-        nombre: negocio.nombre,
-        tipo: "UBICACION",
-        prioridad: "ALTA",
-        detalle: "No tiene una dirección verificable y la ficha no indica atención a domicilio.",
-      });
-    } else if (includeLocationChecks && ubicacionGenerica(negocio.direccion)) {
-      problemas.push({
-        id: negocio.id,
-        nombre: negocio.nombre,
-        tipo: "UBICACION",
-        prioridad: "ALTA",
-        detalle: "La ubicación publicada es demasiado genérica para localizar el negocio.",
-      });
-    }
+    const hallazgos = auditorFindings.filter(
+      (finding) => finding.business_id === negocio.id || finding.business_id === negocio.slug,
+    );
+    const estado = calcularEstadoFicha(
+      {
+        activo: negocio.activo,
+        verificado: negocio.verificado,
+        descripcion: negocio.descripcion,
+        telefono: negocio.telefono,
+        whatsapp: negocio.whatsapp,
+        direccion: negocio.direccion,
+        lat: negocio.lat,
+        lng: negocio.lng,
+        a_domicilio: negocio.a_domicilio,
+        categoriaId: negocio.categoria_id,
+        tieneFotografias: fotosPorNegocio.has(negocio.id),
+        tieneHorariosCompletos: (horariosPorNegocio.get(negocio.id)?.size ?? 0) === 7,
+      },
+      hallazgos,
+    );
 
-    if (!negocio.telefono) {
+    for (const faltante of estado.faltantes.filter((item) => item !== "Verificación pendiente")) {
+      const esUbicacion = faltante === "Falta dirección" || faltante === "Faltan coordenadas";
       problemas.push({
         id: negocio.id,
         nombre: negocio.nombre,
-        tipo: "TELEFONO",
-        prioridad: "MEDIA",
-        detalle: "La ficha no tiene teléfono.",
-      });
-    }
-
-    if (!negocio.descripcion) {
-      problemas.push({
-        id: negocio.id,
-        nombre: negocio.nombre,
-        tipo: "DESCRIPCION",
-        prioridad: "MEDIA",
-        detalle: "La ficha no tiene descripción.",
-      });
-    }
-
-    if (!negocio.categoria_id) {
-      problemas.push({
-        id: negocio.id,
-        nombre: negocio.nombre,
-        tipo: "CATEGORIA",
-        prioridad: "MEDIA",
-        detalle: "La ficha no tiene categoría asignada.",
+        tipo: esUbicacion ? "UBICACION" : faltante === "Falta teléfono/WhatsApp" ? "TELEFONO" : faltante === "Falta descripción" ? "DESCRIPCION" : "CATEGORIA",
+        prioridad: esUbicacion ? "ALTA" : "MEDIA",
+        detalle: faltante,
       });
     }
   }
@@ -121,7 +111,26 @@ export default async function CalidadPage() {
   const pendientesVerificacion = negocios.filter((negocio) => !negocio.verificado);
   const negociosVerificados = negocios.filter((negocio) => negocio.verificado);
   const auditorReport = await fetchDataAuditorFindings();
-  const problemas = construirProblemas(negociosVerificados, !auditorReport);
+
+  const negocioIds = negociosActivos.map((negocio) => negocio.id);
+  const [{ data: fotos }, { data: horarios }] =
+    negocioIds.length > 0
+      ? await Promise.all([
+          supabaseAdmin.from("fotos").select("negocio_id").in("negocio_id", negocioIds),
+          supabaseAdmin.from("horarios").select("negocio_id,dia").in("negocio_id", negocioIds),
+        ])
+      : [{ data: [] }, { data: [] }];
+
+  const fotosPorNegocio = new Set(
+    ((fotos ?? []) as Array<{ negocio_id: string }>).map((fila) => fila.negocio_id),
+  );
+  const horariosPorNegocio = new Map<string, Set<string>>();
+  for (const fila of (horarios ?? []) as Array<{ negocio_id: string; dia: string }>) {
+    const dias = horariosPorNegocio.get(fila.negocio_id) ?? new Set<string>();
+    dias.add(fila.dia);
+    horariosPorNegocio.set(fila.negocio_id, dias);
+  }
+  const problemas = construirProblemas(negociosVerificados, fotosPorNegocio, horariosPorNegocio, auditorReport?.findings ?? []);
   const auditorFindings = (auditorReport?.findings ?? []).filter((finding) =>
     negociosVerificados.some(
       (negocio) => negocio.id === finding.business_id || negocio.slug === finding.business_id,
