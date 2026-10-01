@@ -156,6 +156,7 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
       : accion === "completar"
         ? { titulo: "Completar ficha", detalle: "Esta ficha llegó desde Trabajo pendiente porque tiene información básica pendiente." }
         : null;
+  const pendientesCompletables = faltantes.filter((x) => x !== "Verificación pendiente");
   const publicUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
   return (
@@ -179,6 +180,21 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
             <p className="text-[10px] font-bold uppercase tracking-wider text-sky-700">⚡ Trabajo pendiente</p>
             <h2 className="text-sm font-extrabold text-sky-950 mt-1">{contexto.titulo}</h2>
             <p className="text-xs text-sky-900 mt-1">{contexto.detalle}</p>
+            {accion === "completar" && pendientesCompletables.length > 0 && (
+              <div className="mt-3 rounded-xl border border-sky-200 bg-white/70 p-3">
+                <p className="text-[11px] font-extrabold text-sky-950">Falta completar:</p>
+                <ul className="mt-1.5 space-y-1">
+                  {pendientesCompletables.map((item) => (
+                    <li key={item} className="text-xs font-medium text-sky-900">• {item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {accion === "calidad" && (
+              <div className="mt-3 rounded-xl border border-sky-200 bg-white/70 p-3 text-xs text-sky-900">
+                El siguiente paso es revisar el hallazgo de calidad antes de corregir la ficha.
+              </div>
+            )}
           </div>
         </section>
       )}
