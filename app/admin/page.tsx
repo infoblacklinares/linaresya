@@ -370,12 +370,22 @@ export default async function AdminPage({
       return FALTANTES[clave].test(negocio);
     });
     if (faltantesFicha.length === 0) continue;
+
+    const ubicacionCritica =
+      (!negocio.direccion && !negocio.a_domicilio) ||
+      negocio.lat == null ||
+      negocio.lng == null;
+
     trabajo.push({
       id: `completar-${negocio.id}`,
       negocioId: negocio.id,
-      prioridad: "MEDIA",
-      titulo: `Completar ficha — ${negocio.nombre}`,
-      detalle: `${faltantesFicha.length} punto${faltantesFicha.length === 1 ? "" : "s"} pendiente${faltantesFicha.length === 1 ? "" : "s"}`,
+      prioridad: ubicacionCritica ? "ALTA" : "MEDIA",
+      titulo: ubicacionCritica
+        ? `Corregir ubicación — ${negocio.nombre}`
+        : `Completar ficha — ${negocio.nombre}`,
+      detalle: ubicacionCritica
+        ? "Ubicación crítica pendiente"
+        : `${faltantesFicha.length} punto${faltantesFicha.length === 1 ? "" : "s"} pendiente${faltantesFicha.length === 1 ? "" : "s"}`,
       href: `/admin/negocio/${negocio.id}`,
     });
   }
@@ -405,7 +415,11 @@ export default async function AdminPage({
   const prioridadValor = { ALTA: 0, MEDIA: 1 } as const;
   const trabajoUnico = Array.from(
     trabajo
-      .sort((a, b) => prioridadValor[a.prioridad] - prioridadValor[b.prioridad])
+      .sort((a, b) => {
+        const prioridad = prioridadValor[a.prioridad] - prioridadValor[b.prioridad];
+        if (prioridad !== 0) return prioridad;
+        return a.titulo.localeCompare(b.titulo, "es");
+      })
       .reduce((mapa, item) => {
         const key = item.negocioId ? item.negocioId : item.id;
         if (!mapa.has(key)) mapa.set(key, item);
