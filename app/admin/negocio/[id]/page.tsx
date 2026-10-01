@@ -86,7 +86,6 @@ export default async function FichaNegocioPage({
 
   const [
     { data: negocio },
-    { data: categoria },
     { data: fotos },
     { data: horarios },
     { data: verificaciones },
