@@ -118,9 +118,15 @@ export default async function CalidadPage() {
   }
 
   const negocios = (data ?? []) as Negocio[];
+  const pendientesVerificacion = negocios.filter((negocio) => !negocio.verificado);
+  const negociosVerificados = negocios.filter((negocio) => negocio.verificado);
   const auditorReport = await fetchDataAuditorFindings();
-  const problemas = construirProblemas(negocios, !auditorReport);
-  const auditorFindings = auditorReport?.findings ?? [];
+  const problemas = construirProblemas(negociosVerificados, !auditorReport);
+  const auditorFindings = (auditorReport?.findings ?? []).filter((finding) =>
+    negociosVerificados.some(
+      (negocio) => negocio.id === finding.business_id || negocio.slug === finding.business_id,
+    ),
+  );
   const negocioIdByExternalId = new Map<string, string>(
     negocios.flatMap((negocio) => [
       [negocio.id, negocio.id],
@@ -176,6 +182,25 @@ export default async function CalidadPage() {
             <span className="block mt-1 opacity-75">Reporte generado: {new Date(auditorReport.generated_at).toLocaleString("es-CL")}</span>
           </div>
         )}
+
+        <div className="mt-4 rounded-2xl border border-border bg-white p-4">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                Verificación
+              </p>
+              <p className="text-sm font-bold mt-1">
+                {pendientesVerificacion.length} ficha{pendientesVerificacion.length === 1 ? "" : "s"} pendiente{pendientesVerificacion.length === 1 ? "" : "s"} de verificación
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Las fichas no verificadas se conservan en el directorio, pero no se consideran problemas de calidad todavía.
+              </p>
+            </div>
+            <span className="shrink-0 rounded-full bg-secondary px-3 py-1.5 text-xs font-bold">
+              {pendientesVerificacion.length}
+            </span>
+          </div>
+        </div>
 
         <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900">
           <strong>Regla de operación:</strong> esta cola detecta problemas; no
