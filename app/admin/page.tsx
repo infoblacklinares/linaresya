@@ -998,12 +998,12 @@ function NegocioRowAdmin({ negocio }: { negocio: NegocioRow }) {
           </form>
         )}
         {!negocio.verificado && (
-          <form action={verificarNegocio}>
-            <input type="hidden" name="id" value={negocio.id} />
-            <button type="submit" className="text-[11px] font-semibold text-emerald-700 hover:underline px-1">
-              Verificar
-            </button>
-          </form>
+          <Link
+            href={`/admin/verificacion?negocio=${negocio.id}`}
+            className="text-[11px] font-semibold text-emerald-700 hover:underline px-1"
+          >
+            Verificar
+          </Link>
         )}
         <form action={desactivarNegocio}>
           <input type="hidden" name="id" value={negocio.id} />
