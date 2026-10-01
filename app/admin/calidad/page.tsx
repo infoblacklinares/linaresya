@@ -24,7 +24,7 @@ type Negocio = {
 type Problema = {
   id: string;
   nombre: string;
-  tipo: "UBICACION" | "TELEFONO" | "DESCRIPCION" | "CATEGORIA";
+  tipo: "UBICACION" | "TELEFONO" | "DESCRIPCION" | "CATEGORIA" | "FOTOGRAFIAS" | "HORARIOS";
   prioridad: "ALTA" | "MEDIA";
   detalle: string;
 };
@@ -69,11 +69,11 @@ function construirProblemas(
     );
 
     for (const faltante of estado.faltantes.filter((item) => item !== "Verificación pendiente")) {
-      const esUbicacion = faltante === "Falta dirección" || faltante === "Faltan coordenadas";
+      const esUbicacion = faltante === "Falta dirección" || faltante === "Faltan coordenadas" || faltante === "Ubicación demasiado genérica";
       problemas.push({
         id: negocio.id,
         nombre: negocio.nombre,
-        tipo: esUbicacion ? "UBICACION" : faltante === "Falta teléfono/WhatsApp" ? "TELEFONO" : faltante === "Falta descripción" ? "DESCRIPCION" : "CATEGORIA",
+        tipo: esUbicacion ? "UBICACION" : faltante === "Falta teléfono/WhatsApp" ? "TELEFONO" : faltante === "Falta descripción" ? "DESCRIPCION" : faltante === "No tiene fotografías" ? "FOTOGRAFIAS" : faltante === "Faltan horarios" ? "HORARIOS" : "CATEGORIA",
         prioridad: esUbicacion ? "ALTA" : "MEDIA",
         detalle: faltante,
       });
@@ -92,6 +92,8 @@ const etiquetas: Record<Problema["tipo"], string> = {
   TELEFONO: "Teléfono",
   DESCRIPCION: "Descripción",
   CATEGORIA: "Categoría",
+  FOTOGRAFIAS: "Fotografías",
+  HORARIOS: "Horarios",
 };
 
 export default async function CalidadPage() {
