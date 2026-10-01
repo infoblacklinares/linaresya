@@ -1116,10 +1116,10 @@ function NegocioCardAdmin({
               </button>
             </form>
             <Link
-              href={`/admin/negocio/${negocio.id}`}
+              href={`/admin/verificacion?negocio=${negocio.id}`}
               className="rounded-full bg-emerald-600 text-white text-xs font-semibold px-4 py-2"
             >
-              Aprobar + verificar
+              Ir a verificar
             </Link>
             <ConfirmDeleteButton
               action={eliminarNegocio}
