@@ -131,16 +131,35 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
   const diasConHorario = new Set(horariosList.map((h) => h.dia));
   const horariosCompleto = diasConHorario.size === 7;
 
-  const faltantes = [
-    !n.descripcion && "Falta descripción",
-    !n.telefono && !n.whatsapp && "Falta teléfono/WhatsApp",
-    !n.direccion && !n.a_domicilio && "Falta dirección",
-    (n.lat == null || n.lng == null) && "Faltan coordenadas",
-    !cat && "Falta categoría",
-    fotosList.length === 0 && "No tiene fotografías",
-    !horariosCompleto && "Faltan horarios",
-    !n.verificado && "Verificación pendiente",
-  ].filter(Boolean) as string[];
+  const auditorReport = await fetchDataAuditorFindings();
+  const auditorFindings = (auditorReport?.findings ?? []).filter(
+    (finding) => finding.business_id === n.id || finding.business_id === n.slug,
+  );
+  const estadoFicha = calcularEstadoFicha(
+    {
+      activo: n.activo,
+      verificado: n.verificado,
+      descripcion: n.descripcion,
+      telefono: n.telefono,
+      whatsapp: n.whatsapp,
+      direccion: n.direccion,
+      lat: n.lat,
+      lng: n.lng,
+      a_domicilio: n.a_domicilio,
+      direccionGenerica: Boolean(
+        n.direccion &&
+          ["linares", "centro", "centro de linares", "linares centro"].includes(
+            n.direccion.trim().toLowerCase().replace(/\s+/g, " "),
+          ),
+      ),
+      categoriaId: n.categoria_id,
+      tieneFotografias: fotosList.length > 0,
+      tieneHorariosCompletos: horariosCompleto,
+    },
+    auditorFindings,
+  );
+  const faltantes = estadoFicha.faltantes;
+
 
   const estados = [
     ["Información básica", Boolean(n.nombre && cat && n.descripcion)],
@@ -161,17 +180,9 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
         ? { titulo: "Completar ficha", detalle: "Esta ficha llegó desde Trabajo pendiente porque tiene información básica pendiente." }
         : null;
   const pendientesCompletables = faltantes.filter((x) => x !== "Verificación pendiente");
-  const auditorReport = await fetchDataAuditorFindings();
-  const auditorFindings = (auditorReport?.findings ?? []).filter(
-    (finding) => finding.business_id === n.id || finding.business_id === n.slug,
-  );
-  const auditorHigh = auditorFindings.filter((finding) => finding.severity === "HIGH");
-  const pendientesBasicos = faltantes.filter((item) => item !== "Verificación pendiente");
-  const saludFicha = !n.activo || !n.verificado || auditorHigh.length > 0
-    ? "ROJO"
-    : pendientesBasicos.length > 0 || auditorFindings.length > 0
-      ? "AMARILLO"
-      : "VERDE";
+  const auditorHigh = estadoFicha.hallazgosHigh;
+  const pendientesBasicos = estadoFicha.faltantes.filter((item) => item !== "Verificación pendiente");
+  const saludFicha = estadoFicha.estado;
   const saludTitulo = saludFicha === "VERDE" ? "Lista" : saludFicha === "AMARILLO" ? "Observaciones" : "Requiere atención";
   const saludDetalle = saludFicha === "VERDE"
     ? "La ficha cumple las comprobaciones operativas actuales."
