@@ -25,6 +25,10 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
+// Trabajo pendiente se calcula desde el estado actual del directorio.
+// No debe quedar servido desde una página estática/cacheada.
+export const dynamic = "force-dynamic";
+
 type NegocioRow = {
   id: string;
   nombre: string;
