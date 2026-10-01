@@ -320,6 +320,7 @@ export default async function AdminPage({
     prioridad: "ALTA" | "MEDIA";
     titulo: string;
     detalle: string;
+    accion: string;
     href: string;
   };
 
@@ -331,7 +332,8 @@ export default async function AdminPage({
       negocioId: negocio.id,
       prioridad: "ALTA",
       titulo: `Aprobar ficha — ${negocio.nombre}`,
-      detalle: "Negocio pendiente de revisión",
+      detalle: "Solicitud nueva pendiente de aprobación.",
+      accion: "Abrir ficha",
       href: `/admin/negocio/${negocio.id}`,
     });
   }
@@ -342,8 +344,9 @@ export default async function AdminPage({
       negocioId: negocio.id,
       prioridad: "ALTA",
       titulo: `Verificar ficha — ${negocio.nombre}`,
-      detalle: "Ficha activa pendiente de verificación",
-      href: `/admin/negocio/${negocio.id}`,
+      detalle: "La ficha está publicada, pero aún falta comprobar su identidad y evidencia pública.",
+      accion: "Verificar",
+      href: `/admin/verificacion?negocio=${negocio.id}`,
     });
   }
 
@@ -357,7 +360,8 @@ export default async function AdminPage({
       negocioId: negocio.id,
       prioridad: "ALTA",
       titulo: `Revisar calidad — ${negocio.nombre}`,
-      detalle: "Hallazgo HIGH del Data Auditor",
+      detalle: "Hallazgo HIGH del Data Auditor requiere revisión.",
+      accion: "Revisar calidad",
       href: `/admin/negocio/${negocio.id}`,
     });
   }
@@ -383,8 +387,9 @@ export default async function AdminPage({
         ? `Corregir ubicación — ${negocio.nombre}`
         : `Completar ficha — ${negocio.nombre}`,
       detalle: ubicacionCritica
-        ? "Ubicación crítica pendiente"
-        : `${faltantesFicha.length} punto${faltantesFicha.length === 1 ? "" : "s"} pendiente${faltantesFicha.length === 1 ? "" : "s"}`,
+        ? "Falta dirección o coordenadas; la ubicación afecta la utilidad de la ficha."
+        : `Faltan: ${faltantesFicha.map((clave) => FALTANTES[clave].etiqueta.toLowerCase()).join(", ")}.`,
+      accion: "Editar ficha",
       href: `/admin/negocio/${negocio.id}`,
     });
   }
@@ -395,7 +400,8 @@ export default async function AdminPage({
       negocioId: null,
       prioridad: "MEDIA",
       titulo: "Revisar reseñas pendientes",
-      detalle: resCount + (resCount === 1 ? " reseña esperando moderación" : " reseñas esperando moderación"),
+      detalle: resCount + (resCount === 1 ? " reseña esperando moderación." : " reseñas esperando moderación."),
+      accion: "Abrir reseñas",
       href: "/admin/resenas",
     });
   }
@@ -406,7 +412,8 @@ export default async function AdminPage({
       negocioId: null,
       prioridad: "MEDIA",
       titulo: "Resolver reportes pendientes",
-      detalle: reportesCount + (reportesCount === 1 ? " reporte sin resolver" : " reportes sin resolver"),
+      detalle: reportesCount + (reportesCount === 1 ? " reporte sin resolver." : " reportes sin resolver."),
+      accion: "Abrir reportes",
       href: "/admin/reportes",
     });
   }
@@ -512,7 +519,7 @@ export default async function AdminPage({
                         <p className="text-sm font-bold truncate">{item.titulo}</p>
                         <p className="text-[11px] text-muted-foreground">{item.detalle}</p>
                       </div>
-                      <span className="text-xs font-bold shrink-0">{item.negocioId ? "Abrir ficha →" : "Abrir cola →"}</span>
+                      <span className="text-xs font-bold shrink-0">{item.accion} →</span>
                     </Link>
                   ))}
                 </div>
