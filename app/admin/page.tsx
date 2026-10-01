@@ -13,6 +13,7 @@ import {
 } from "./actions";
 import ConfirmDeleteButton from "./ConfirmDeleteButton";
 import { fechaCL, normalizarTexto } from "@/lib/estadisticas";
+import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
 import {
   filtrarPorFechas,
   porFuente,
@@ -95,6 +96,7 @@ export default async function AdminPage({
     { count: popup7d, error: popupError },
     { data: embudoRaw, error: embudoError },
     { data: eventosHoyRaw, error: eventosHoyError },
+    auditorReport,
   ] = await Promise.all([
     supabaseAdmin
       .from("negocios")
@@ -162,6 +164,7 @@ export default async function AdminPage({
       .select("evento, sesion, fuente, campana, negocio_id, creado_en")
       .gte("creado_en", `${fechaCL(0)}T00:00:00-05:00`)
       .limit(20000),
+    fetchDataAuditorFindings(),
   ]);
 
   const pend = (pendientes ?? []) as NegocioRow[];
@@ -275,6 +278,10 @@ export default async function AdminPage({
     .filter((c) => c.total > 0);
 
   const premiumActivos = act.filter((n) => n.plan === "premium").length;
+  const pendientesVerificacion = act.filter((n) => !n.verificado).length;
+  const verificadosActivos = act.length - pendientesVerificacion;
+  const auditorFindings = auditorReport?.findings ?? [];
+  const auditorHigh = auditorFindings.filter((finding) => finding.severity === "HIGH" && act.some((negocio) => negocio.verificado && (negocio.id === finding.business_id || negocio.slug === finding.business_id))).length;
 
   // Busqueda y filtro del listado de activos.
   const hayFiltro = Boolean(consulta || falta);
@@ -393,6 +400,35 @@ export default async function AdminPage({
             ? "Ninguno esta pagando todavia."
             : "Se cambian con el boton de cada negocio."}
         </p>
+      </section>
+
+      <section className="px-4 pt-6">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+          Qué requiere atención
+        </h2>
+        <div className="space-y-2">
+          <Link href="/admin/verificacion" className={`flex items-center justify-between rounded-2xl border px-4 py-3 transition hover:bg-secondary ${pendientesVerificacion > 0 ? "border-amber-200 bg-amber-50" : "border-border bg-white"}`}>
+            <div>
+              <p className="text-sm font-bold">1. Verificar fichas</p>
+              <p className="text-[11px] text-muted-foreground">{pendientesVerificacion} pendientes · {verificadosActivos} activas verificadas</p>
+            </div>
+            <span className="text-xs font-bold">Revisar →</span>
+          </Link>
+          <Link href="/admin/calidad" className={`flex items-center justify-between rounded-2xl border px-4 py-3 transition hover:bg-secondary ${auditorHigh > 0 ? "border-rose-200 bg-rose-50" : "border-border bg-white"}`}>
+            <div>
+              <p className="text-sm font-bold">2. Resolver calidad</p>
+              <p className="text-[11px] text-muted-foreground">{auditorHigh} hallazgo{auditorHigh === 1 ? "" : "s"} de alta prioridad del Data Auditor</p>
+            </div>
+            <span className="text-xs font-bold">Revisar →</span>
+          </Link>
+          <Link href="/admin/calidad" className="flex items-center justify-between rounded-2xl border border-border bg-white px-4 py-3 transition hover:bg-secondary">
+            <div>
+              <p className="text-sm font-bold">3. Completar fichas</p>
+              <p className="text-[11px] text-muted-foreground">Teléfono, dirección, descripción y categoría se trabajan desde la cola de calidad</p>
+            </div>
+            <span className="text-xs font-bold">Ver cola →</span>
+          </Link>
+        </div>
       </section>
 
       <section className="px-4 pt-6">
