@@ -33,6 +33,7 @@ type Negocio = {
 };
 
 type Foto = { id: number; url: string };
+type Horario = { dia: string; abre: string | null; cierra: string | null; cerrado: boolean };
 type Stat = {
   vistas: number;
   clicks_whatsapp: number;
@@ -64,11 +65,12 @@ export default async function FichaNegocioPage({
     { data: negocio },
     { data: categoria },
     { data: fotos },
+    { data: horarios },
     { data: stats },
   ] = await Promise.all([
     supabaseAdmin.from("negocios").select("*").eq("id", id).single(),
-    supabaseAdmin.from("negocios").select("categoria_id").eq("id", id).single(),
     supabaseAdmin.from("fotos").select("id,url").eq("negocio_id", id).order("orden", { ascending: true }),
+    supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id", id),
     supabaseAdmin.from("estadisticas_diarias")
       .select("vistas,clicks_whatsapp,clicks_telefono,clicks_maps")
       .eq("negocio_id", id)
@@ -78,18 +80,22 @@ export default async function FichaNegocioPage({
   if (!negocio) notFound();
 
   const n = negocio as Negocio;
-  const categoriaId = (categoria as { categoria_id?: number | null } | null)?.categoria_id ?? n.categoria_id;
+  const categoriaId = n.categoria_id;
 
   const { data: cat } = categoriaId
     ? await supabaseAdmin.from("categorias").select("slug,nombre,emoji").eq("id", categoriaId).single()
     : { data: null };
 
   const fotosList = (fotos ?? []) as Foto[];
+  const horariosList = (horarios ?? []) as Horario[];
   const filas = (stats ?? []) as Stat[];
   const vistas = filas.reduce((s, x) => s + Number(x.vistas ?? 0), 0);
   const whatsapp = filas.reduce((s, x) => s + Number(x.clicks_whatsapp ?? 0), 0);
   const telefono = filas.reduce((s, x) => s + Number(x.clicks_telefono ?? 0), 0);
   const maps = filas.reduce((s, x) => s + Number(x.clicks_maps ?? 0), 0);
+
+  const diasConHorario = new Set(horariosList.map((h) => h.dia));
+  const horariosCompleto = diasConHorario.size === 7;
 
   const faltantes = [
     !n.descripcion && "Falta descripción",
@@ -98,6 +104,7 @@ export default async function FichaNegocioPage({
     (n.lat == null || n.lng == null) && "Faltan coordenadas",
     !cat && "Falta categoría",
     fotosList.length === 0 && "No tiene fotografías",
+    !horariosCompleto && "Faltan horarios",
     !n.verificado && "Verificación pendiente",
   ].filter(Boolean) as string[];
 
@@ -105,6 +112,7 @@ export default async function FichaNegocioPage({
     ["Información básica", Boolean(n.nombre && cat && n.descripcion)],
     ["Contacto", Boolean(n.telefono || n.whatsapp || n.email)],
     ["Ubicación", Boolean(n.direccion || n.a_domicilio) && n.lat != null && n.lng != null],
+    ["Horarios", horariosCompleto],
     ["Fotografías", fotosList.length > 0],
     ["Verificación", n.verificado],
   ] as const;
@@ -138,6 +146,11 @@ export default async function FichaNegocioPage({
                 <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${n.plan === "premium" ? "bg-amber-100 text-amber-900" : "bg-secondary"}`}>
                   {n.plan === "premium" ? "⭐ Premium" : "Básico"}
                 </span>
+                {n.plan === "premium" && n.premium_hasta && (
+                  <span className="rounded-full bg-amber-50 text-amber-800 px-2.5 py-1 text-[11px] font-medium">
+                    Hasta {new Intl.DateTimeFormat("es-CL", { timeZone: "America/Santiago", day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(n.premium_hasta))}
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex gap-2">
