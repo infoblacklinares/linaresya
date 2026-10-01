@@ -531,9 +531,6 @@ export default async function AdminPage({
           href="/admin/calidad"
           className="mt-2 flex items-center justify-between rounded-2xl bg-rose-50 border border-rose-200 px-4 py-3 hover:bg-rose-100 transition"
         >
-          <span className="text-sm font-bold">🛠️ Cola de calidad</span>
-          <span className="text-xs font-semibold text-rose-800">Corregir fichas →</span>
-        </Link>
         <Link
           href="/admin/historias"
           className="mt-2 flex items-center justify-between rounded-2xl bg-gradient-to-r from-[#F4B860]/20 to-[#C05A46]/10 border border-[#F4B860]/40 px-4 py-3 hover:opacity-90 transition"
@@ -596,7 +593,7 @@ export default async function AdminPage({
                         <p className="text-sm font-bold truncate">{item.titulo}</p>
                         <p className="text-[11px] text-muted-foreground">{item.detalle}</p>
                       </div>
-                      <span className="text-xs font-bold shrink-0">Abrir ficha →</span>
+                      <span className="text-xs font-bold shrink-0">{item.negocioId ? "Abrir ficha →" : "Abrir cola →"}</span>
                     </Link>
                   ))}
                 </div>
