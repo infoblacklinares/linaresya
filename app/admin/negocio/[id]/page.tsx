@@ -69,12 +69,15 @@ function fechaCL(offsetDias: number): string {
 
 export default async function FichaNegocioPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ origen?: string; accion?: string }>;
 }) {
   if (!(await isAdminAuthenticated())) redirect("/admin/login");
 
   const { id } = await params;
+  const { origen, accion } = await searchParams;
   const desde = fechaCL(29);
 
   const [
@@ -145,6 +148,14 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
   ] as const;
 
   const fichaUrl = cat ? `/${cat.slug}/${n.slug}` : "/";
+  const contextoTrabajo = origen === "trabajo" && ["aprobacion", "calidad", "completar"].includes(accion ?? "");
+  const contexto = accion === "aprobacion"
+    ? { titulo: "Aprobación pendiente", detalle: "Esta ficha llegó desde Trabajo pendiente porque necesita revisión antes de quedar publicada." }
+    : accion === "calidad"
+      ? { titulo: "Revisión de calidad", detalle: "Esta ficha llegó desde Trabajo pendiente por un hallazgo de calidad que requiere atención." }
+      : accion === "completar"
+        ? { titulo: "Completar ficha", detalle: "Esta ficha llegó desde Trabajo pendiente porque tiene información básica pendiente." }
+        : null;
   const publicUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
   return (
@@ -161,6 +172,16 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
           </span>
         </div>
       </header>
+
+      {contextoTrabajo && contexto && (
+        <section className="px-4 pt-4">
+          <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-sky-700">⚡ Trabajo pendiente</p>
+            <h2 className="text-sm font-extrabold text-sky-950 mt-1">{contexto.titulo}</h2>
+            <p className="text-xs text-sky-900 mt-1">{contexto.detalle}</p>
+          </div>
+        </section>
+      )}
 
       <section className="px-4 pt-5">
         <div className="rounded-2xl bg-white border border-border p-5">
@@ -187,7 +208,7 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
                     <input type="hidden" name="id" value={n.id} />
                     <button type="submit" className="rounded-full bg-foreground text-background px-3 py-2 text-xs font-bold">Aprobar</button>
                   </form>
-                  <Link href={`/admin/verificacion?negocio=undefined`} className="rounded-full bg-emerald-600 text-white px-3 py-2 text-xs font-bold">Ir a verificar</Link>
+                  <Link href={`/admin/verificacion?negocio=${n.id}`} className="rounded-full bg-emerald-600 text-white px-3 py-2 text-xs font-bold">Ir a verificar</Link>
                   <form action={eliminarNegocio}>
                     <input type="hidden" name="id" value={n.id} />
                     <button type="submit" className="rounded-full border border-rose-200 bg-rose-50 text-rose-700 px-3 py-2 text-xs font-bold">Rechazar</button>
