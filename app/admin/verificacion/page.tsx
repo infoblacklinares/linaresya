@@ -25,7 +25,6 @@ export default async function VerificacionPage({ searchParams }: { searchParams:
   const { negocio: negocioId } = await searchParams;
   let query = supabaseAdmin
     .from("negocios")
-    .from("negocios")
     .select("id,nombre,slug,telefono,direccion,descripcion,categoria_id,a_domicilio,creado_en")
     .eq("activo", true)
     .eq("verificado", false)
