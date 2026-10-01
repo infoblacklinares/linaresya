@@ -47,6 +47,7 @@ type NegocioRow = {
 };
 
 type Categoria = { id: number; nombre: string; emoji: string; slug: string };
+type ActividadAdmin = { tipo: "cambio" | "verificacion"; titulo: string; detalle: string; fecha: string };
 
 /**
  * Lo que le falta a una ficha para servir. Son los filtros del listado: sirven
@@ -97,6 +98,8 @@ export default async function AdminPage({
     { data: embudoRaw, error: embudoError },
     { data: eventosHoyRaw, error: eventosHoyError },
     auditorReport,
+    { data: auditLogsRaw, error: auditLogsError },
+    { data: verificacionesRaw, error: verificacionesError },
   ] = await Promise.all([
     supabaseAdmin
       .from("negocios")
@@ -165,6 +168,8 @@ export default async function AdminPage({
       .gte("creado_en", `${fechaCL(0)}T00:00:00-05:00`)
       .limit(20000),
     fetchDataAuditorFindings(),
+    supabaseAdmin.from("audit_logs").select("action,entity_type,entity_id,changes,reason,created_at").order("created_at", { ascending: false }).limit(8),
+    supabaseAdmin.from("verificaciones_negocio").select("negocio_id,estado,fuente,evidencia,observacion,verificado_en,negocios:negocio_id(nombre)").order("verificado_en", { ascending: false }).limit(8),
   ]);
 
   const pend = (pendientes ?? []) as NegocioRow[];
@@ -196,8 +201,7 @@ export default async function AdminPage({
           const evento = String(x.evento ?? "");
           if (evento in suma) {
             suma[evento as keyof typeof suma] += Number(x.conteo ?? 0);
-          }
-        }
+          }        }
         return { ...suma, visitas: suma.visita_sitio + suma.visita_portada };
       })();
   const resenas7d = nuevasResenas7d ?? 0;
@@ -282,6 +286,37 @@ export default async function AdminPage({
   const verificadosActivos = act.length - pendientesVerificacion;
   const auditorFindings = auditorReport?.findings ?? [];
   const auditorHigh = auditorFindings.filter((finding) => finding.severity === "HIGH" && act.some((negocio) => negocio.verificado && (negocio.id === finding.business_id || negocio.slug === finding.business_id))).length;
+  const activosVerificados = act.filter((n) => n.verificado);
+  const salud = {
+    ubicacion: activosVerificados.filter((n) => Boolean(n.direccion) || n.a_domicilio).length,
+    telefono: activosVerificados.filter((n) => Boolean(n.telefono)).length,
+    categoria: activosVerificados.filter((n) => Boolean(n.categoria_id)).length,
+    completas: activosVerificados.filter((n) => Boolean(n.telefono) && (Boolean(n.direccion) || n.a_domicilio) && Boolean(n.descripcion) && Boolean(n.categoria_id)).length,
+  };
+  const actividades: ActividadAdmin[] = [
+    ...((verificacionesError ? [] : (verificacionesRaw ?? [])) as unknown[]).map((row) => {
+      const x = row as Record<string, unknown>;
+      const raw = x.negocios;
+      const negocio = Array.isArray(raw) ? raw[0] : raw;
+      const nombre = negocio && typeof negocio === "object" ? String((negocio as { nombre?: unknown }).nombre ?? "Ficha") : "Ficha";
+      return {
+        tipo: "verificacion" as const,
+        titulo: String(x.estado ?? "Verificación") === "verificado" ? `Verificada: ${nombre}` : `Verificación: ${nombre}`,
+        detalle: `Fuente: ${String(x.fuente ?? "fuente pública").replaceAll("_", " ")}`,
+        fecha: String(x.verificado_en ?? ""),
+      };
+    }),
+    ...((auditLogsError ? [] : (auditLogsRaw ?? [])) as unknown[]).map((row) => {
+      const x = row as Record<string, unknown>;
+      return {
+        tipo: "cambio" as const,
+        titulo: String(x.action ?? "Cambio").replaceAll("_", " "),
+        detalle: String(x.reason ?? "").trim() || `Cambio en ${String(x.entity_type ?? "registro")}`,
+        fecha: String(x.created_at ?? ""),
+      };
+    }),
+  ].filter((a) => Boolean(a.fecha)).sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime()).slice(0, 6);
+
 
   // Busqueda y filtro del listado de activos.
   const hayFiltro = Boolean(consulta || falta);
@@ -396,8 +431,7 @@ export default async function AdminPage({
         </Link>
         <p className="mt-3 text-[11px] text-muted-foreground">
           Premium activos: <strong>{premiumActivos}</strong> de {act.length}.{" "}
-          {premiumActivos === 0
-            ? "Ninguno esta pagando todavia."
+          {premiumActivos === 0            ? "Ninguno esta pagando todavia."
             : "Se cambian con el boton de cada negocio."}
         </p>
       </section>
@@ -429,6 +463,46 @@ export default async function AdminPage({
             <span className="text-xs font-bold">Ver cola →</span>
           </Link>
         </div>
+      </section>
+
+      <section className="px-4 pt-6">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Salud del directorio</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+          <HealthStat label="Verificadas" value={verificadosActivos} total={act.length} />
+          <HealthStat label="Ubicación" value={salud.ubicacion} total={activosVerificados.length} />
+          <HealthStat label="Teléfono" value={salud.telefono} total={activosVerificados.length} />
+          <HealthStat label="Categoría" value={salud.categoria} total={activosVerificados.length} />
+          <HealthStat label="Completas" value={salud.completas} total={activosVerificados.length} />
+        </div>
+        <p className="mt-2 text-[11px] text-muted-foreground">Métricas sobre fichas activas verificadas; no se corrigen automáticamente.</p>
+      </section>
+
+      <section className="px-4 pt-6">
+        <div className="flex items-end justify-between gap-3 mb-2">
+          <div>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Actividad reciente</h2>
+            <p className="text-[11px] text-muted-foreground mt-1">Cambios administrativos y verificaciones registradas.</p>
+          </div>
+          <Link href="/admin/verificacion" className="text-[11px] font-bold text-[#2B6E80] hover:underline">Verificación →</Link>
+        </div>
+        {actividades.length > 0 ? (
+          <ul className="rounded-2xl border border-border bg-white divide-y divide-border overflow-hidden">
+            {actividades.map((actividad, index) => (
+              <li key={`${actividad.tipo}-${actividad.fecha}-${index}`} className="px-4 py-3">
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 text-xs font-bold text-muted-foreground">{actividad.tipo === "verificacion" ? "✓" : "•"}</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-bold capitalize">{actividad.titulo}</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">{actividad.detalle}</p>
+                  </div>
+                  <time className="text-[10px] text-muted-foreground whitespace-nowrap">{new Date(actividad.fecha).toLocaleString("es-CL", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</time>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-border bg-white p-4 text-xs text-muted-foreground">Todavía no hay actividad histórica disponible.</div>
+        )}
       </section>
 
       <section className="px-4 pt-6">
@@ -721,6 +795,11 @@ function StatCard({ label, value, accent = false }: { label: string; value: numb
   );
 }
 
+function HealthStat({ label, value, total }: { label: string; value: number; total: number }) {
+  const percent = total > 0 ? Math.round((value / total) * 100) : 0;
+  return <div className="rounded-xl bg-white border border-border p-3"><p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">{label}</p><p className="text-xl font-extrabold mt-0.5">{value}<span className="text-xs font-semibold text-muted-foreground">/{total}</span></p><p className="text-[10px] text-muted-foreground mt-0.5">{percent}%</p></div>;
+}
+
 function MiniStat({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-xl bg-white border border-border p-3">
@@ -798,200 +877,3 @@ function NegocioRowAdmin({ negocio }: { negocio: NegocioRow }) {
             </button>
           </form>
         )}
-        <form action={desactivarNegocio}>
-          <input type="hidden" name="id" value={negocio.id} />
-          <button type="submit" className="text-[11px] font-semibold text-muted-foreground hover:text-rose-600 px-1">
-            Desactivar
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-function NegocioCardAdmin({
-  negocio,
-  categoria,
-  pendiente = false,
-}: {
-  negocio: NegocioRow;
-  categoria?: Categoria;
-  pendiente?: boolean;
-}) {
-  const fecha = new Date(negocio.creado_en).toLocaleDateString("es-CL", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-
-  return (
-    <li className="rounded-2xl bg-white border border-border p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-bold text-[15px] truncate">{negocio.nombre}</h3>
-            {negocio.verificado && (
-              <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
-                Verificado
-              </span>
-            )}
-            {negocio.plan === "premium" && (
-              <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full">
-                Premium
-              </span>
-            )}
-            {!negocio.activo && (
-              <span className="text-[10px] font-bold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full">
-                Pendiente
-              </span>
-            )}
-          </div>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            {categoria ? `${categoria.emoji} ${categoria.nombre}` : "Sin categoria"}
-            {" - "}
-            {negocio.tipo === "independiente" ? "Independiente" : "Negocio"}
-            {" - "}
-            {fecha}
-          </p>
-        </div>
-      </div>
-
-      {negocio.descripcion && (
-        <p className="text-sm text-foreground/80 mt-2 line-clamp-2">{negocio.descripcion}</p>
-      )}
-
-      <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
-        {negocio.telefono && (
-          <>
-            <dt className="text-muted-foreground">Telefono</dt>
-            <dd className="font-medium truncate">{negocio.telefono}</dd>
-          </>
-        )}
-        {negocio.whatsapp && (
-          <>
-            <dt className="text-muted-foreground">WhatsApp</dt>
-            <dd className="font-medium truncate">+{negocio.whatsapp}</dd>
-          </>
-        )}
-        {negocio.direccion && (
-          <>
-            <dt className="text-muted-foreground">Direccion</dt>
-            <dd className="font-medium truncate">{negocio.direccion}</dd>
-          </>
-        )}
-        {negocio.a_domicilio && (
-          <>
-            <dt className="text-muted-foreground">Domicilio</dt>
-            <dd className="font-medium">Si</dd>
-          </>
-        )}
-        {negocio.zona_cobertura && (
-          <>
-            <dt className="text-muted-foreground">Cobertura</dt>
-            <dd className="font-medium truncate">{negocio.zona_cobertura}</dd>
-          </>
-        )}
-        {negocio.disponibilidad && (
-          <>
-            <dt className="text-muted-foreground">Disponibilidad</dt>
-            <dd className="font-medium truncate">{negocio.disponibilidad}</dd>
-          </>
-        )}
-      </dl>
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        {pendiente ? (
-          <>
-            <form action={aprobarNegocio}>
-              <input type="hidden" name="id" value={negocio.id} />
-              <button type="submit" className="rounded-full bg-foreground text-background text-xs font-semibold px-4 py-2">
-                Aprobar
-              </button>
-            </form>
-            <form action={verificarNegocio}>
-              <input type="hidden" name="id" value={negocio.id} />
-              <button type="submit" className="rounded-full bg-emerald-600 text-white text-xs font-semibold px-4 py-2">
-                Aprobar + Verificar
-              </button>
-            </form>
-            <ConfirmDeleteButton
-              action={eliminarNegocio}
-              id={negocio.id}
-              label="Rechazar"
-              mensaje={`¿Rechazar y eliminar "${negocio.nombre}"? Esta acción es irreversible.`}
-              className="rounded-full bg-secondary text-foreground text-xs font-semibold px-4 py-2 hover:bg-rose-100 hover:text-rose-800"
-            />
-            <Link
-              href={`/admin/negocio/${negocio.id}/editar`}
-              className="rounded-full bg-white border border-border text-foreground text-xs font-semibold px-4 py-2 hover:bg-secondary"
-            >
-              Editar
-            </Link>
-          </>
-        ) : (
-          <>
-            {!negocio.verificado && (
-              <form action={verificarNegocio}>
-                <input type="hidden" name="id" value={negocio.id} />
-                <button type="submit" className="rounded-full bg-emerald-600 text-white text-xs font-semibold px-4 py-2">
-                  Marcar verificado
-                </button>
-              </form>
-            )}
-            <form action={desactivarNegocio}>
-              <input type="hidden" name="id" value={negocio.id} />
-              <button type="submit" className="rounded-full bg-secondary text-foreground text-xs font-semibold px-4 py-2">
-                Desactivar
-              </button>
-            </form>
-            <ConfirmDeleteButton
-              action={eliminarNegocio}
-              id={negocio.id}
-              label="Eliminar"
-              mensaje={`¿Eliminar "${negocio.nombre}" permanentemente? Se borrarán también sus fotos. Esta acción es irreversible.`}
-            />
-            <Link
-              href={`/admin/negocio/${negocio.id}/editar`}
-              className="rounded-full bg-foreground text-background text-xs font-semibold px-4 py-2 hover:opacity-90"
-            >
-              Editar
-            </Link>
-            {negocio.plan === "premium" ? (
-              <form action={quitarPremium}>
-                <input type="hidden" name="id" value={negocio.id} />
-                <button
-                  type="submit"
-                  className="rounded-full bg-white border border-amber-300 text-amber-800 text-xs font-semibold px-4 py-2 hover:bg-amber-50"
-                >
-                  Quitar Premium
-                </button>
-              </form>
-            ) : (
-              <form action={activarPremium30Dias}>
-                <input type="hidden" name="id" value={negocio.id} />
-                <button
-                  type="submit"
-                  className="rounded-full bg-amber-500 text-white text-xs font-semibold px-4 py-2 hover:bg-amber-600"
-                >
-                  ⭐ Premium 30 dias
-                </button>
-              </form>
-            )}
-            <Link
-              href={`/admin/negocio/${negocio.id}/estadisticas`}
-              className="rounded-full bg-sky-600 text-white text-xs font-semibold px-4 py-2 hover:bg-sky-700"
-            >
-              Estadisticas
-            </Link>
-            <Link
-              href={categoria ? `/${categoria.slug}/${negocio.slug}` : "/"}
-              className="rounded-full bg-white border border-border text-foreground text-xs font-semibold px-4 py-2 hover:bg-secondary"
-            >
-              Ver en el sitio
-            </Link>
-          </>
-        )}
-      </div>
-    </li>
-  );
-}
