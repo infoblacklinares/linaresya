@@ -10,7 +10,10 @@ type Negocio = {
   nombre: string;
   slug: string;
   telefono: string | null;
+  whatsapp: string | null;
   direccion: string | null;
+  lat: number | null;
+  lng: number | null;
   descripcion: string | null;
   categoria_id: number | null;
   a_domicilio: boolean;
@@ -57,6 +60,7 @@ function construirProblemas(
         lat: negocio.lat,
         lng: negocio.lng,
         a_domicilio: negocio.a_domicilio,
+        direccionGenerica: ubicacionGenerica(negocio.direccion),
         categoriaId: negocio.categoria_id,
         tieneFotografias: fotosPorNegocio.has(negocio.id),
         tieneHorariosCompletos: (horariosPorNegocio.get(negocio.id)?.size ?? 0) === 7,
@@ -98,7 +102,7 @@ export default async function CalidadPage() {
   const { data, error } = await supabaseAdmin
     .from("negocios")
     .select(
-      "id,nombre,slug,telefono,direccion,descripcion,categoria_id,a_domicilio,activo,verificado",
+      "id,nombre,slug,telefono,whatsapp,direccion,lat,lng,descripcion,categoria_id,a_domicilio,activo,verificado",
     )
     .eq("activo", true)
     .order("nombre", { ascending: true });
@@ -112,7 +116,7 @@ export default async function CalidadPage() {
   const negociosVerificados = negocios.filter((negocio) => negocio.verificado);
   const auditorReport = await fetchDataAuditorFindings();
 
-  const negocioIds = negociosActivos.map((negocio) => negocio.id);
+  const negocioIds = negocios.map((negocio) => negocio.id);
   const [{ data: fotos }, { data: horarios }] =
     negocioIds.length > 0
       ? await Promise.all([
