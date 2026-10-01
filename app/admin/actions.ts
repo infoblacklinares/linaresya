@@ -121,6 +121,8 @@ export async function verificarNegocio(formData: FormData): Promise<void> {
     .update({ activo: true, verificado: true })
     .eq("id", id);
   revalidatePath("/admin");
+  revalidatePath("/admin/calidad");
+  revalidatePath("/admin/verificacion");
   revalidatePath("/");
   if (antes) await notificarSiCorresponde(antes, id, true);
 }
