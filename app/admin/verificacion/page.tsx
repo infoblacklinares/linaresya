@@ -114,6 +114,48 @@ export default async function VerificacionPage() {
                   </div>
                 </div>
 
+                <div className="mt-4 ml-8 rounded-xl border border-sky-200 bg-sky-50 p-3">
+                  <p className="text-xs font-bold text-sky-950">Evidencia para verificar</p>
+                  <p className="mt-1 text-[11px] text-sky-900">
+                    Usa estas búsquedas para comprobar identidad, ubicación y presencia
+                    pública. La evidencia no marca la ficha automáticamente.
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <a
+                      href={`https://www.google.com/search?q=${encodeURIComponent(
+                        negocio.nombre + " " + (negocio.direccion ?? "Linares"),
+                      )}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-full border border-sky-300 bg-white px-3 py-1.5 text-[11px] font-bold text-sky-900"
+                    >
+                      Buscar negocio
+                    </a>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        negocio.nombre + " " + (negocio.direccion ?? "Linares"),
+                      )}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-full border border-sky-300 bg-white px-3 py-1.5 text-[11px] font-bold text-sky-900"
+                    >
+                      Buscar en Maps
+                    </a>
+                    {negocio.telefono ? (
+                      <a
+                        href={`https://www.google.com/search?q=${encodeURIComponent(
+                          '"' + negocio.telefono + '" "' + negocio.nombre + '"',
+                        )}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded-full border border-sky-300 bg-white px-3 py-1.5 text-[11px] font-bold text-sky-900"
+                      >
+                        Comprobar teléfono
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+
                 <div className="mt-4 flex flex-wrap gap-2 pl-8">
                   <Link
                     href={`/admin/negocio/${negocio.id}/editar`}
