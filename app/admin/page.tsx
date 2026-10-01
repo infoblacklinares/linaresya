@@ -272,21 +272,6 @@ export default async function AdminPage({
   const hoy = resumenEventos(eventosHoy);
   const fuentesHoy = porFuente(eventosHoy).slice(0, 4);
 
-  // Calidad del directorio: cuantas fichas activas les falta algo. Cada numero
-  // es un enlace que filtra el listado, para poder arreglarlas de una.
-  const calidad = (Object.keys(FALTANTES) as Faltante[])
-    .map((clave) => ({
-      clave,
-      etiqueta: FALTANTES[clave].etiqueta,
-      total:
-        clave === "fotografias"
-          ? act.filter((n) => !tieneFotografias(n)).length
-          : clave === "horarios"
-            ? act.filter((n) => !tieneHorariosCompletos(n)).length
-            : act.filter(FALTANTES[clave].test).length,
-    }))
-    .filter((c) => c.total > 0);
-
   const premiumActivos = act.filter((n) => n.plan === "premium").length;
   const auditorFindings = auditorReport?.findings ?? [];
 
@@ -314,6 +299,21 @@ export default async function AdminPage({
   const tieneFotografias = (n: NegocioRow) => negociosConFoto.has(n.id);
   const tieneHorariosCompletos = (n: NegocioRow) =>
     (diasPorNegocio.get(n.id)?.size ?? 0) === 7;
+
+  // Calidad del directorio: cuantas fichas activas les falta algo. Cada numero
+  // es un enlace que filtra el listado, para poder arreglarlas de una.
+  const calidad = (Object.keys(FALTANTES) as Faltante[])
+    .map((clave) => ({
+      clave,
+      etiqueta: FALTANTES[clave].etiqueta,
+      total:
+        clave === "fotografias"
+          ? act.filter((n) => !tieneFotografias(n)).length
+          : clave === "horarios"
+            ? act.filter((n) => !tieneHorariosCompletos(n)).length
+            : act.filter(FALTANTES[clave].test).length,
+    }))
+    .filter((c) => c.total > 0);
 
   type TrabajoItem = {
     id: string;
