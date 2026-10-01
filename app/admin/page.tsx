@@ -278,10 +278,7 @@ export default async function AdminPage({
     .filter((c) => c.total > 0);
 
   const premiumActivos = act.filter((n) => n.plan === "premium").length;
-  const pendientesVerificacion = act.filter((n) => !n.verificado).length;
-  const verificadosActivos = act.length - pendientesVerificacion;
   const auditorFindings = auditorReport?.findings ?? [];
-  const auditorHigh = auditorFindings.filter((finding) => finding.severity === "HIGH" && act.some((negocio) => negocio.verificado && (negocio.id === finding.business_id || negocio.slug === finding.business_id))).length;
 
   type TrabajoItem = {
     id: string;
@@ -346,8 +343,16 @@ export default async function AdminPage({
     });
   }
 
+  const prioridadValor = { ALTA: 0, MEDIA: 1 } as const;
   const trabajoUnico = Array.from(
-    new Map(trabajo.map((item) => [item.negocioId ? `${item.prioridad}-${item.negocioId}` : item.id, item])).values(),
+    trabajo
+      .sort((a, b) => prioridadValor[a.prioridad] - prioridadValor[b.prioridad])
+      .reduce((mapa, item) => {
+        const key = item.negocioId ? item.negocioId : item.id;
+        if (!mapa.has(key)) mapa.set(key, item);
+        return mapa;
+      }, new Map<string, TrabajoItem>())
+      .values(),
   );
   const trabajoAlta = trabajoUnico.filter((item) => item.prioridad === "ALTA").slice(0, 5);
   const trabajoMedia = trabajoUnico.filter((item) => item.prioridad === "MEDIA").slice(0, 5);
