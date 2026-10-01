@@ -473,82 +473,6 @@ export default async function AdminPage({
         </div>
       </header>
 
-      <section className="px-4 pt-4">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <StatCard label="Pendientes" value={pend.length} accent />
-          <StatCard label="Activos" value={act.length} />
-          <Link
-            href="/admin/resenas"
-            className={`block rounded-2xl p-4 ue-shadow-sm transition hover:opacity-90 ${
-              resCount > 0
-                ? "bg-[oklch(0.94_0.04_80)]"
-                : "bg-white border border-border"
-            }`}
-          >
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              Resenas
-            </p>
-            <p className="text-3xl font-extrabold mt-1">{resCount}</p>
-          </Link>
-          <Link
-            href="/admin/reportes"
-            className={`block rounded-2xl p-4 ue-shadow-sm transition hover:opacity-90 ${
-              reportesCount > 0
-                ? "bg-rose-50 border border-rose-200"
-                : "bg-white border border-border"
-            }`}
-          >
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              Reportes
-            </p>
-            <p className="text-3xl font-extrabold mt-1">{reportesCount}</p>
-          </Link>
-        </div>
-        <Link
-          href="/admin/estadisticas"
-          className="mt-3 flex items-center justify-between rounded-2xl bg-[#2B6E80] text-white px-4 py-3.5 hover:opacity-90 transition"
-        >
-          <span className="text-sm font-bold">📊 Estadisticas</span>
-          <span className="text-xs font-semibold opacity-80">Hoy, 7, 30 dias o rango →</span>
-        </Link>
-        <Link
-          href="/admin/resultados"
-          className="mt-2 flex items-center justify-between rounded-2xl bg-secondary px-4 py-3 hover:opacity-90 transition"
-        >
-          <span className="text-sm font-bold">🧾 Resultados del negocio</span>
-          <span className="text-xs font-semibold text-muted-foreground">
-            Lo que dice que le llego →
-          </span>
-        </Link>
-        <Link
-          href="/admin/negocio/nuevo"
-          className="mt-3 flex items-center justify-between rounded-2xl bg-foreground text-background px-4 py-3.5 hover:opacity-90 transition"
-        >
-          <span className="text-sm font-bold">➕ Agregar negocio</span>
-          <span className="text-xs font-semibold opacity-70">Crear activo →</span>
-        </Link>
-        <Link
-          href="/admin/historias"
-          className="mt-2 flex items-center justify-between rounded-2xl bg-gradient-to-r from-[#F4B860]/20 to-[#C05A46]/10 border border-[#F4B860]/40 px-4 py-3 hover:opacity-90 transition"
-        >
-          <span className="text-sm font-bold">📸 Historias premium</span>
-          <span className="text-xs font-semibold text-muted-foreground">Gestionar →</span>
-        </Link>
-        <Link
-          href="/admin/eventos"
-          className="mt-2 flex items-center justify-between rounded-2xl bg-gradient-to-r from-[#2B6E80]/10 to-[#3D5A45]/10 border border-[#2B6E80]/30 px-4 py-3 hover:opacity-90 transition"
-        >
-          <span className="text-sm font-bold">🗓️ Eventos de Linares</span>
-          <span className="text-xs font-semibold text-muted-foreground">Gestionar →</span>
-        </Link>
-        <p className="mt-3 text-[11px] text-muted-foreground">
-          Premium activos: <strong>{premiumActivos}</strong> de {act.length}.{" "}
-          {premiumActivos === 0
-            ? "Ninguno esta pagando todavia."
-            : "Se cambian con el boton de cada negocio."}
-        </p>
-      </section>
-
       <section className="px-4 pt-6">
         <div className="flex items-end justify-between gap-3 mb-2">
           <div>
@@ -612,7 +536,7 @@ export default async function AdminPage({
                         <p className="text-sm font-bold truncate">{item.titulo}</p>
                         <p className="text-[11px] text-muted-foreground">{item.detalle}</p>
                       </div>
-                      <span className="text-xs font-bold shrink-0">Abrir ficha →</span>
+                      <span className="text-xs font-bold shrink-0">{item.negocioId ? "Abrir ficha →" : "Abrir cola →"}</span>
                     </Link>
                   ))}
                 </div>
@@ -624,6 +548,59 @@ export default async function AdminPage({
             ✓ El directorio no presenta acciones calculadas de alta o media prioridad.
           </div>
         )}
+      </section>
+
+      <section className="px-4 pt-6">
+        <div className="flex items-end justify-between gap-3 mb-2">
+          <div>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              📊 Estado del directorio
+            </h2>
+            <p className="text-[11px] text-muted-foreground mt-0.5">
+              Resumen operativo de las fichas y de lo que requiere atención.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <StatCard label="Pendientes" value={pend.length} accent />
+          <StatCard label="Activos" value={act.length} />
+          <Link
+            href="/admin/resenas"
+            className={`block rounded-2xl p-4 ue-shadow-sm transition hover:opacity-90 ${
+              resCount > 0 ? "bg-[oklch(0.94_0.04_80)]" : "bg-white border border-border"
+            }`}
+          >
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Resenas</p>
+            <p className="text-3xl font-extrabold mt-1">{resCount}</p>
+          </Link>
+          <Link
+            href="/admin/reportes"
+            className={`block rounded-2xl p-4 ue-shadow-sm transition hover:opacity-90 ${
+              reportesCount > 0 ? "bg-rose-50 border border-rose-200" : "bg-white border border-border"
+            }`}
+          >
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Reportes</p>
+            <p className="text-3xl font-extrabold mt-1">{reportesCount}</p>
+          </Link>
+        </div>
+        <Link
+          href="/admin/estadisticas"
+          className="mt-3 flex items-center justify-between rounded-2xl bg-[#2B6E80] text-white px-4 py-3.5 hover:opacity-90 transition"
+        >
+          <span className="text-sm font-bold">📊 Estadisticas</span>
+          <span className="text-xs font-semibold opacity-80">Hoy, 7, 30 dias o rango →</span>
+        </Link>
+        <Link
+          href="/admin/resultados"
+          className="mt-2 flex items-center justify-between rounded-2xl bg-secondary px-4 py-3 hover:opacity-90 transition"
+        >
+          <span className="text-sm font-bold">🧾 Resultados del negocio</span>
+          <span className="text-xs font-semibold text-muted-foreground">Lo que dice que le llego →</span>
+        </Link>
+        <p className="mt-3 text-[11px] text-muted-foreground">
+          Premium activos: <strong>{premiumActivos}</strong> de {act.length}.{" "}
+          {premiumActivos === 0 ? "Ninguno esta pagando todavia." : "Se cambian desde la ficha de cada negocio."}
+        </p>
       </section>
 
       <section className="px-4 pt-6">
@@ -781,6 +758,56 @@ export default async function AdminPage({
           </ul>
         </section>
       )}
+
+      <section className="px-4 pt-8">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+          🛠️ Herramientas
+        </h2>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Link
+            href="/admin/negocio/nuevo"
+            className="flex items-center justify-between rounded-2xl bg-foreground text-background px-4 py-3.5 hover:opacity-90 transition"
+          >
+            <span className="text-sm font-bold">➕ Agregar negocio</span>
+            <span className="text-xs font-semibold opacity-70">Crear activo →</span>
+          </Link>
+          <Link
+            href="/admin/estadisticas"
+            className="flex items-center justify-between rounded-2xl bg-white border border-border px-4 py-3 hover:bg-secondary transition"
+          >
+            <span className="text-sm font-bold">📈 Estadisticas</span>
+            <span className="text-xs font-semibold text-muted-foreground">Abrir →</span>
+          </Link>
+          <Link
+            href="/admin/resultados"
+            className="flex items-center justify-between rounded-2xl bg-white border border-border px-4 py-3 hover:bg-secondary transition"
+          >
+            <span className="text-sm font-bold">🧾 Resultados</span>
+            <span className="text-xs font-semibold text-muted-foreground">Abrir →</span>
+          </Link>
+          <Link
+            href="/admin/historias"
+            className="flex items-center justify-between rounded-2xl bg-white border border-border px-4 py-3 hover:bg-secondary transition"
+          >
+            <span className="text-sm font-bold">📸 Historias premium</span>
+            <span className="text-xs font-semibold text-muted-foreground">Gestionar →</span>
+          </Link>
+          <Link
+            href="/admin/eventos"
+            className="flex items-center justify-between rounded-2xl bg-white border border-border px-4 py-3 hover:bg-secondary transition"
+          >
+            <span className="text-sm font-bold">🗓️ Eventos de Linares</span>
+            <span className="text-xs font-semibold text-muted-foreground">Gestionar →</span>
+          </Link>
+          <Link
+            href="/admin/calidad"
+            className="flex items-center justify-between rounded-2xl bg-white border border-border px-4 py-3 hover:bg-secondary transition"
+          >
+            <span className="text-sm font-bold">🔎 Calidad</span>
+            <span className="text-xs font-semibold text-muted-foreground">Abrir →</span>
+          </Link>
+        </div>
+      </section>
 
       <section className="px-4 pt-8">
         <h2 className="text-xl font-extrabold tracking-tight mb-1">Pendientes de revision</h2>
