@@ -150,7 +150,12 @@ export default async function CalidadPage() {
   );
   const altas = problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity === "HIGH").length;
   const medias = problemas.length - problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity !== "HIGH").length;
-  const totalAcciones = problemas.length + auditorFindings.length;
+  const negociosConProblemas = new Set([
+    ...problemas.map((problema) => problema.id),
+    ...auditorFindings.map((finding) => negocioIdByExternalId.get(finding.business_id)).filter((id): id is string => Boolean(id)),
+  ]);
+  const fichasAfectadas = negociosConProblemas.size;
+  const totalProblemas = problemas.length + auditorFindings.length;
 
   return (
     <main className="flex-1 mx-auto w-full max-w-3xl pb-10">
@@ -177,10 +182,13 @@ export default async function CalidadPage() {
           <p className="text-xs font-semibold uppercase tracking-wider opacity-70">
             Acción pendiente
           </p>
-          <p className="text-3xl font-extrabold mt-1">{totalAcciones}</p>
+          <p className="text-3xl font-extrabold mt-1">{fichasAfectadas}</p>
           <p className="text-sm opacity-80 mt-1">
-            problemas accionables en fichas activas
+            fichas activas con observaciones
           </p>
+          <div className="mt-3 text-xs opacity-80">
+            {totalProblemas} problemas detectados · {problemas.length + auditorFindings.length} acciones de corrección posibles
+          </div>
           <div className="flex gap-2 mt-4 text-xs font-bold">
             <span className="rounded-full bg-white/15 px-3 py-1.5">
               {altas} alta{altas === 1 ? "" : "s"}
