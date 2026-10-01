@@ -2,7 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { activarPremium30Dias, aprobarNegocio, verificarNegocio, quitarPremium, eliminarNegocio } from "@/app/admin/actions";
+import { activarPremium30Dias, aprobarNegocio, quitarPremium, eliminarNegocio } from "@/app/admin/actions";
 
 export const metadata = {
   title: "Ficha - Admin LinaresYa",
@@ -187,10 +187,7 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
                     <input type="hidden" name="id" value={n.id} />
                     <button type="submit" className="rounded-full bg-foreground text-background px-3 py-2 text-xs font-bold">Aprobar</button>
                   </form>
-                  <form action={verificarNegocio}>
-                    <input type="hidden" name="id" value={n.id} />
-                    <button type="submit" className="rounded-full bg-emerald-600 text-white px-3 py-2 text-xs font-bold">Aprobar + verificar</button>
-                  </form>
+                  <Link href={`/admin/verificacion?negocio=undefined`} className="rounded-full bg-emerald-600 text-white px-3 py-2 text-xs font-bold">Ir a verificar</Link>
                   <form action={eliminarNegocio}>
                     <input type="hidden" name="id" value={n.id} />
                     <button type="submit" className="rounded-full border border-rose-200 bg-rose-50 text-rose-700 px-3 py-2 text-xs font-bold">Rechazar</button>
