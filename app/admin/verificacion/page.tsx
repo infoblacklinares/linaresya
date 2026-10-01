@@ -17,19 +17,23 @@ type Negocio = {
   creado_en: string;
 };
 
-export default async function VerificacionPage() {
+export default async function VerificacionPage({ searchParams }: { searchParams: Promise<{ negocio?: string }> }) {
   if (!(await isAdminAuthenticated())) {
     redirect("/admin/login");
   }
 
-  const { data, error } = await supabaseAdmin
+  const { negocio: negocioId } = await searchParams;
+  let query = supabaseAdmin
     .from("negocios")
-    .select(
-      "id,nombre,slug,telefono,direccion,descripcion,categoria_id,a_domicilio,creado_en",
-    )
+    .from("negocios")
+    .select("id,nombre,slug,telefono,direccion,descripcion,categoria_id,a_domicilio,creado_en")
     .eq("activo", true)
     .eq("verificado", false)
     .order("creado_en", { ascending: true });
+
+  if (negocioId) query = query.eq("id", negocioId);
+
+  const { data, error } = await query;
 
   if (error) {
     throw new Error(`No se pudo cargar la cola de verificación: ${error.message}`);
@@ -52,7 +56,7 @@ export default async function VerificacionPage() {
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               Operación
             </p>
-            <h1 className="text-base font-bold tracking-tight">Cola de verificación</h1>
+            <h1 className="text-base font-bold tracking-tight">{negocioId ? "Verificación de ficha" : "Cola de verificación"}</h1>
           </div>
         </div>
       </header>
@@ -76,7 +80,12 @@ export default async function VerificacionPage() {
       </section>
 
       <section className="px-4 pt-6">
-        {negocios.length === 0 ? (
+        {negocioId && negocios.length === 0 ? (
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+            <p className="font-bold">Esta ficha ya está verificada o no está disponible para revisión.</p>
+            <Link href={`/admin/negocio/${negocioId}`} className="inline-block mt-3 rounded-full bg-foreground text-background px-4 py-2 text-xs font-bold">Volver a la ficha</Link>
+          </div>
+        ) : negocios.length === 0 ? (
           <div className="rounded-2xl border-2 border-dashed border-border p-8 text-center">
             <p className="font-bold">No hay fichas pendientes.</p>
             <p className="text-sm text-muted-foreground mt-1">
