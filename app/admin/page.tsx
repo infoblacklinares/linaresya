@@ -44,6 +44,8 @@ type NegocioRow = {
   categoria_id: number | null;
   creado_en: string;
   premium_hasta: string | null;
+  lat: number | null;
+  lng: number | null;
 };
 
 type Categoria = { id: number; nombre: string; emoji: string; slug: string };
@@ -53,10 +55,13 @@ type Categoria = { id: number; nombre: string; emoji: string; slug: string };
  * para trabajar la lista, no para mirarla (LY-033).
  */
 const FALTANTES = {
-  telefono: { etiqueta: "Sin telefono", test: (n: NegocioRow) => !n.telefono },
-  direccion: { etiqueta: "Sin direccion", test: (n: NegocioRow) => !n.direccion },
+  telefono: { etiqueta: "Sin telefono/WhatsApp", test: (n: NegocioRow) => !n.telefono && !n.whatsapp },
+  direccion: { etiqueta: "Sin direccion", test: (n: NegocioRow) => !n.direccion && !n.a_domicilio },
+  coordenadas: { etiqueta: "Sin coordenadas", test: (n: NegocioRow) => n.lat == null || n.lng == null },
   descripcion: { etiqueta: "Sin descripcion", test: (n: NegocioRow) => !n.descripcion },
   categoria: { etiqueta: "Sin categoria", test: (n: NegocioRow) => !n.categoria_id },
+  fotografias: { etiqueta: "Sin fotografias", test: (n: NegocioRow) => false },
+  horarios: { etiqueta: "Sin horarios completos", test: (n: NegocioRow) => false },
 } as const;
 
 type Faltante = keyof typeof FALTANTES;
@@ -273,12 +278,42 @@ export default async function AdminPage({
     .map((clave) => ({
       clave,
       etiqueta: FALTANTES[clave].etiqueta,
-      total: act.filter(FALTANTES[clave].test).length,
+      total:
+        clave === "fotografias"
+          ? act.filter((n) => !tieneFotografias(n)).length
+          : clave === "horarios"
+            ? act.filter((n) => !tieneHorariosCompletos(n)).length
+            : act.filter(FALTANTES[clave].test).length,
     }))
     .filter((c) => c.total > 0);
 
   const premiumActivos = act.filter((n) => n.plan === "premium").length;
   const auditorFindings = auditorReport?.findings ?? [];
+
+  // Fotos y horarios viven en tablas separadas. Se consultan una sola vez para
+  // todas las fichas activas y se reutilizan para la cola y los filtros.
+  const negocioIds = act.map((n) => n.id);
+  const [{ data: fotosTrabajo }, { data: horariosTrabajo }] =
+    negocioIds.length > 0
+      ? await Promise.all([
+          supabaseAdmin.from("fotos").select("negocio_id").in("negocio_id", negocioIds),
+          supabaseAdmin.from("horarios").select("negocio_id,dia").in("negocio_id", negocioIds),
+        ])
+      : [{ data: [] }, { data: [] }];
+
+  const negociosConFoto = new Set(
+    ((fotosTrabajo ?? []) as Array<{ negocio_id: string }>).map((x) => x.negocio_id),
+  );
+  const diasPorNegocio = new Map<string, Set<string>>();
+  for (const fila of (horariosTrabajo ?? []) as Array<{ negocio_id: string; dia: string }>) {
+    const dias = diasPorNegocio.get(fila.negocio_id) ?? new Set<string>();
+    dias.add(fila.dia);
+    diasPorNegocio.set(fila.negocio_id, dias);
+  }
+
+  const tieneFotografias = (n: NegocioRow) => negociosConFoto.has(n.id);
+  const tieneHorariosCompletos = (n: NegocioRow) =>
+    (diasPorNegocio.get(n.id)?.size ?? 0) === 7;
 
   type TrabajoItem = {
     id: string;
@@ -329,9 +364,11 @@ export default async function AdminPage({
   }
 
   for (const negocio of act) {
-    const faltantesFicha = (Object.keys(FALTANTES) as Faltante[]).filter((clave) =>
-      FALTANTES[clave].test(negocio),
-    );
+    const faltantesFicha = (Object.keys(FALTANTES) as Faltante[]).filter((clave) => {
+      if (clave === "fotografias") return !tieneFotografias(negocio);
+      if (clave === "horarios") return !tieneHorariosCompletos(negocio);
+      return FALTANTES[clave].test(negocio);
+    });
     if (faltantesFicha.length === 0) continue;
     trabajo.push({
       id: `completar-${negocio.id}`,
@@ -340,6 +377,28 @@ export default async function AdminPage({
       titulo: `Completar ficha — ${negocio.nombre}`,
       detalle: `${faltantesFicha.length} punto${faltantesFicha.length === 1 ? "" : "s"} pendiente${faltantesFicha.length === 1 ? "" : "s"}`,
       href: `/admin/negocio/${negocio.id}`,
+    });
+  }
+
+  if (resCount > 0) {
+    trabajo.push({
+      id: "resenas-pendientes",
+      negocioId: null,
+      prioridad: "MEDIA",
+      titulo: "Revisar reseñas pendientes",
+      detalle: resCount + (resCount === 1 ? " reseña esperando moderación" : " reseñas esperando moderación"),
+      href: "/admin/resenas",
+    });
+  }
+
+  if (reportesCount > 0) {
+    trabajo.push({
+      id: "reportes-pendientes",
+      negocioId: null,
+      prioridad: "MEDIA",
+      titulo: "Resolver reportes pendientes",
+      detalle: reportesCount + (reportesCount === 1 ? " reporte sin resolver" : " reportes sin resolver"),
+      href: "/admin/reportes",
     });
   }
 
@@ -362,7 +421,13 @@ export default async function AdminPage({
   const hayFiltro = Boolean(consulta || falta);
   const actFiltrados = (() => {
     let lista = act;
-    if (falta) lista = lista.filter(FALTANTES[falta].test);
+    if (falta) {
+      lista = lista.filter((n) => {
+        if (falta === "fotografias") return !tieneFotografias(n);
+        if (falta === "horarios") return !tieneHorariosCompletos(n);
+        return FALTANTES[falta].test(n);
+      });
+    }
     if (consulta) {
       const q = normalizarTexto(consulta);
       lista = lista.filter((n) =>
