@@ -3,6 +3,7 @@ import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
+import { calcularEstadoFicha } from "@/lib/estado-ficha";
 import { activarPremium30Dias, aprobarNegocio, quitarPremium, eliminarNegocio } from "@/app/admin/actions";
 
 export const metadata = {
