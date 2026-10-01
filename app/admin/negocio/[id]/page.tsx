@@ -9,6 +9,8 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
+export const dynamic = "force-dynamic";
+
 type Negocio = {
   id: string;
   nombre: string;
