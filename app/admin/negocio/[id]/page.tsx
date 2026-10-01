@@ -302,8 +302,8 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
           </div>
           {ultimoResultado ? (
             <div className="grid grid-cols-2 gap-2 mt-3">
-              <Metric label="Consultas" value={ultimoResultado.consultas ?? 0} />
-              <Metric label="Clientes" value={ultimoResultado.clientes ?? 0} />
+              <Metric label="Consultas" value={ultimoResultado.consultas} />
+              <Metric label="Clientes" value={ultimoResultado.clientes} />
               <div className="col-span-2 rounded-xl bg-secondary/50 p-3 text-xs">
                 <p className="font-semibold">Periodo: {ultimoResultado.periodo}</p>
                 {ultimoResultado.nota && <p className="text-muted-foreground mt-1">{ultimoResultado.nota}</p>}
@@ -351,6 +351,6 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
   );
 }
 
-function Metric({ label, value }: { label: string; value: number }) {
-  return <div className="rounded-2xl bg-white border border-border p-4"><p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">{label}</p><p className="text-2xl font-extrabold mt-1 tabular-nums">{value}</p></div>;
+function Metric({ label, value }: { label: string; value: number | null }) {
+  return <div className="rounded-2xl bg-white border border-border p-4"><p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">{label}</p><p className="text-2xl font-extrabold mt-1 tabular-nums">{value === null ? "—" : value}</p></div>;
 }
