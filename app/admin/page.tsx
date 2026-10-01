@@ -54,6 +54,12 @@ type NegocioRow = {
 
 type Categoria = { id: number; nombre: string; emoji: string; slug: string };
 
+function ubicacionGenerica(direccion: string | null): boolean {
+  if (!direccion) return false;
+  const value = direccion.trim().toLowerCase().replace(/\s+/g, " ");
+  return ["linares", "centro", "centro de linares", "linares centro"].includes(value);
+}
+
 /**
  * Lo que le falta a una ficha para servir. Son los filtros del listado: sirven
  * para trabajar la lista, no para mirarla (LY-033).
@@ -393,6 +399,7 @@ export default async function AdminPage({
         lat: negocio.lat,
         lng: negocio.lng,
         a_domicilio: negocio.a_domicilio,
+        direccionGenerica: ubicacionGenerica(negocio.direccion),
         categoriaId: negocio.categoria_id,
         tieneFotografias: tieneFotografias(negocio),
         tieneHorariosCompletos: tieneHorariosCompletos(negocio),
@@ -402,10 +409,7 @@ export default async function AdminPage({
     const faltantesFicha = estadoNegocio.faltantes.filter((item) => item !== "Verificación pendiente");
     if (faltantesFicha.length === 0) continue;
 
-    const ubicacionCritica =
-      (!negocio.direccion && !negocio.a_domicilio) ||
-      negocio.lat == null ||
-      negocio.lng == null;
+    const ubicacionCritica = estadoNegocio.problemasCriticos.includes("La ubicación está incompleta");
 
     trabajo.push({
       id: `completar-${negocio.id}`,
