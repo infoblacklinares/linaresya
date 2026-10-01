@@ -410,6 +410,10 @@ export default async function AdminPage({
     if (faltantesFicha.length === 0) continue;
 
     const ubicacionCritica = estadoNegocio.problemasCriticos.includes("La ubicación está incompleta");
+    const etiquetasFaltantes = faltantesFicha.map((clave) => {
+      const faltante = faltanteValido(clave);
+      return faltante ? FALTANTES[faltante].etiqueta.toLowerCase() : clave.toLowerCase();
+    });
 
     trabajo.push({
       id: `completar-${negocio.id}`,
@@ -420,7 +424,7 @@ export default async function AdminPage({
         : `Completar ficha — ${negocio.nombre}`,
       detalle: ubicacionCritica
         ? "Falta dirección o coordenadas; la ubicación afecta la utilidad de la ficha."
-        : `Faltan: ${faltantesFicha.map((clave) => FALTANTES[clave].etiqueta.toLowerCase()).join(", ")}.`,
+        : `Faltan: ${etiquetasFaltantes.join(", ")}.`,
       accion: "Abrir ficha",
       href: `/admin/negocio/${negocio.id}?origen=trabajo&accion=completar`,
     });
