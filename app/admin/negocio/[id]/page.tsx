@@ -2,6 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { activarPremium30Dias, quitarPremium } from "@/app/admin/actions";
 
 export const metadata = {
   title: "Ficha - Admin LinaresYa",
@@ -34,6 +35,15 @@ type Negocio = {
 
 type Foto = { id: number; url: string };
 type Horario = { dia: string; abre: string | null; cierra: string | null; cerrado: boolean };
+type Verificacion = {
+  id: string;
+  estado: string;
+  fuente: string;
+  url_fuente: string | null;
+  evidencia: string;
+  observacion: string | null;
+  verificado_en: string;
+};
 type Stat = {
   vistas: number;
   clicks_whatsapp: number;
@@ -66,11 +76,13 @@ export default async function FichaNegocioPage({
     { data: categoria },
     { data: fotos },
     { data: horarios },
+    { data: verificaciones },
     { data: stats },
   ] = await Promise.all([
     supabaseAdmin.from("negocios").select("*").eq("id", id).single(),
     supabaseAdmin.from("fotos").select("id,url").eq("negocio_id", id).order("orden", { ascending: true }),
-    supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id", id),
+supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id", id),
+    supabaseAdmin.from("verificaciones_negocio").select("id,estado,fuente,url_fuente,evidencia,observacion,verificado_en").eq("negocio_id", id).order("verificado_en", { ascending: false }).limit(5),
     supabaseAdmin.from("estadisticas_diarias")
       .select("vistas,clicks_whatsapp,clicks_telefono,clicks_maps")
       .eq("negocio_id", id)
@@ -88,6 +100,8 @@ export default async function FichaNegocioPage({
 
   const fotosList = (fotos ?? []) as Foto[];
   const horariosList = (horarios ?? []) as Horario[];
+  const verificacionesList = (verificaciones ?? []) as Verificacion[];
+  const ultimaVerificacion = verificacionesList[0] ?? null;
   const filas = (stats ?? []) as Stat[];
   const vistas = filas.reduce((s, x) => s + Number(x.vistas ?? 0), 0);
   const whatsapp = filas.reduce((s, x) => s + Number(x.clicks_whatsapp ?? 0), 0);
@@ -193,9 +207,74 @@ export default async function FichaNegocioPage({
         <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Gestionar</h2>
         <div className="grid grid-cols-2 gap-2">
           <Link href={`/admin/negocio/${n.id}/editar`} className="rounded-xl border border-border bg-white p-4 text-sm font-bold">✏️ Editar información</Link>
-          <Link href={`/admin/verificacion`} className="rounded-xl border border-border bg-white p-4 text-sm font-bold">✓ Verificación</Link>
+          <Link href={`/admin/verificacion?negocio=${n.id}`} className="rounded-xl border border-border bg-white p-4 text-sm font-bold">✓ Verificación</Link>
           <Link href={`/admin/calidad`} className="rounded-xl border border-border bg-white p-4 text-sm font-bold">🛠️ Calidad</Link>
           <Link href={`/admin/negocio/${n.id}/estadisticas`} className="rounded-xl border border-border bg-white p-4 text-sm font-bold">📊 Estadísticas</Link>
+        </div>
+      </section>
+
+      <section className="px-4 pt-5">
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-bold">Verificación</h2>
+              <p className="text-[11px] text-muted-foreground mt-0.5">
+                {ultimaVerificacion
+                  ? `Última revisión: ${new Intl.DateTimeFormat("es-CL", { timeZone: "America/Santiago", day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(ultimaVerificacion.verificado_en))}`
+                  : "Todavía no existe un registro de verificación"}
+              </p>
+            </div>
+            <Link href={`/admin/verificacion?negocio=${n.id}`} className="rounded-full border border-border px-3 py-2 text-[11px] font-bold">
+              {n.verificado ? "Revisar" : "Verificar"}
+            </Link>
+          </div>
+          {ultimaVerificacion && (
+            <div className="mt-3 rounded-xl bg-secondary/50 p-3 text-xs space-y-1.5">
+              <p><strong>Fuente:</strong> {ultimaVerificacion.fuente.replaceAll("_", " ")}</p>
+              <p><strong>Evidencia:</strong> {ultimaVerificacion.evidencia}</p>
+              {ultimaVerificacion.observacion && <p><strong>Observación:</strong> {ultimaVerificacion.observacion}</p>}
+              {ultimaVerificacion.url_fuente && <a href={ultimaVerificacion.url_fuente} target="_blank" rel="noreferrer" className="inline-block text-[#2B6E80] font-bold">Abrir fuente ↗</a>}
+            </div>
+          )}
+          {verificacionesList.length > 1 && (
+            <details className="mt-3">
+              <summary className="cursor-pointer text-xs font-bold">Ver historial ({verificacionesList.length})</summary>
+              <div className="mt-2 space-y-2">
+                {verificacionesList.slice(1).map((v) => (
+                  <div key={v.id} className="border-t border-border pt-2 text-[11px]">
+                    <p className="font-bold">{new Intl.DateTimeFormat("es-CL", { timeZone: "America/Santiago", day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(v.verificado_en))} · {v.fuente.replaceAll("_", " ")}</p>
+                    <p className="text-muted-foreground mt-0.5">{v.evidencia}</p>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
+        </div>
+      </section>
+
+      <section className="px-4 pt-5">
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-bold">Premium</h2>
+              <p className="text-[11px] text-muted-foreground mt-0.5">
+                {n.plan === "premium"
+                  ? n.premium_hasta ? `Activo hasta ${new Intl.DateTimeFormat("es-CL", { timeZone: "America/Santiago", day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(n.premium_hasta))}` : "Activo sin fecha de vencimiento"
+                  : "Plan Básico"}
+              </p>
+            </div>
+            {n.plan === "premium" ? (
+              <form action={quitarPremium}>
+                <input type="hidden" name="id" value={n.id} />
+                <button type="submit" className="rounded-full border border-border px-3 py-2 text-[11px] font-bold">Quitar Premium</button>
+              </form>
+            ) : (
+              <form action={activarPremium30Dias}>
+                <input type="hidden" name="id" value={n.id} />
+                <button type="submit" className="rounded-full bg-foreground text-background px-3 py-2 text-[11px] font-bold">Activar 30 días</button>
+              </form>
+            )}
+          </div>
         </div>
       </section>
 
