@@ -217,10 +217,10 @@ export default async function VerificacionPage() {
 
                   <div className="flex flex-wrap gap-2 pt-1">
                     <Link
-                      href={`/admin/negocio/${negocio.id}/editar`}
+                      href={`/admin/negocio/${negocio.id}`}
                       className="rounded-full bg-foreground text-background text-xs font-bold px-4 py-2"
                     >
-                      Revisar ficha
+                      Abrir ficha
                     </Link>
                     <VerificarButton />
                   </div>
