@@ -334,7 +334,7 @@ export default async function AdminPage({
       titulo: `Aprobar ficha — ${negocio.nombre}`,
       detalle: "Solicitud nueva pendiente de aprobación.",
       accion: "Abrir ficha",
-      href: `/admin/negocio/${negocio.id}`,
+      href: `/admin/negocio/${negocio.id}?origen=trabajo&accion=aprobacion`,
     });
   }
 
@@ -362,7 +362,7 @@ export default async function AdminPage({
       titulo: `Revisar calidad — ${negocio.nombre}`,
       detalle: "Hallazgo HIGH del Data Auditor requiere revisión.",
       accion: "Revisar calidad",
-      href: `/admin/negocio/${negocio.id}`,
+      href: `/admin/negocio/${negocio.id}?origen=trabajo&accion=calidad`,
     });
   }
 
@@ -390,7 +390,7 @@ export default async function AdminPage({
         ? "Falta dirección o coordenadas; la ubicación afecta la utilidad de la ficha."
         : `Faltan: ${faltantesFicha.map((clave) => FALTANTES[clave].etiqueta.toLowerCase()).join(", ")}.`,
       accion: "Editar ficha",
-      href: `/admin/negocio/${negocio.id}`,
+      href: `/admin/negocio/${negocio.id}?origen=trabajo&accion=completar`,
     });
   }
 
