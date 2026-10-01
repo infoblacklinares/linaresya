@@ -283,6 +283,76 @@ export default async function AdminPage({
   const auditorFindings = auditorReport?.findings ?? [];
   const auditorHigh = auditorFindings.filter((finding) => finding.severity === "HIGH" && act.some((negocio) => negocio.verificado && (negocio.id === finding.business_id || negocio.slug === finding.business_id))).length;
 
+  type TrabajoItem = {
+    id: string;
+    negocioId: string | null;
+    prioridad: "ALTA" | "MEDIA";
+    titulo: string;
+    detalle: string;
+    href: string;
+  };
+
+  const trabajo: TrabajoItem[] = [];
+
+  for (const negocio of pend) {
+    trabajo.push({
+      id: `aprobacion-${negocio.id}`,
+      negocioId: negocio.id,
+      prioridad: "ALTA",
+      titulo: `Aprobar ficha — ${negocio.nombre}`,
+      detalle: "Negocio pendiente de revisión",
+      href: `/admin/negocio/${negocio.id}`,
+    });
+  }
+
+  for (const negocio of act.filter((n) => !n.verificado)) {
+    trabajo.push({
+      id: `verificacion-${negocio.id}`,
+      negocioId: negocio.id,
+      prioridad: "ALTA",
+      titulo: `Verificar ficha — ${negocio.nombre}`,
+      detalle: "Ficha activa pendiente de verificación",
+      href: `/admin/negocio/${negocio.id}`,
+    });
+  }
+
+  for (const finding of auditorFindings.filter((f) => f.severity === "HIGH")) {
+    const negocio = act.find(
+      (n) => n.verificado && (n.id === finding.business_id || n.slug === finding.business_id),
+    );
+    if (!negocio) continue;
+    trabajo.push({
+      id: `auditor-${negocio.id}-${finding.business_id}`,
+      negocioId: negocio.id,
+      prioridad: "ALTA",
+      titulo: `Revisar calidad — ${negocio.nombre}`,
+      detalle: "Hallazgo HIGH del Data Auditor",
+      href: `/admin/negocio/${negocio.id}`,
+    });
+  }
+
+  for (const negocio of act) {
+    const faltantesFicha = (Object.keys(FALTANTES) as Faltante[]).filter((clave) =>
+      FALTANTES[clave].test(negocio),
+    );
+    if (faltantesFicha.length === 0) continue;
+    trabajo.push({
+      id: `completar-${negocio.id}`,
+      negocioId: negocio.id,
+      prioridad: "MEDIA",
+      titulo: `Completar ficha — ${negocio.nombre}`,
+      detalle: `${faltantesFicha.length} punto${faltantesFicha.length === 1 ? "" : "s"} pendiente${faltantesFicha.length === 1 ? "" : "s"}`,
+      href: `/admin/negocio/${negocio.id}`,
+    });
+  }
+
+  const trabajoUnico = Array.from(
+    new Map(trabajo.map((item) => [item.negocioId ? `${item.prioridad}-${item.negocioId}` : item.id, item])).values(),
+  );
+  const trabajoAlta = trabajoUnico.filter((item) => item.prioridad === "ALTA").slice(0, 5);
+  const trabajoMedia = trabajoUnico.filter((item) => item.prioridad === "MEDIA").slice(0, 5);
+  const totalTrabajo = trabajoUnico.length;
+
   // Busqueda y filtro del listado de activos.
   const hayFiltro = Boolean(consulta || falta);
   const actFiltrados = (() => {
@@ -403,32 +473,77 @@ export default async function AdminPage({
       </section>
 
       <section className="px-4 pt-6">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
-          Qué requiere atención
-        </h2>
-        <div className="space-y-2">
-          <Link href="/admin/verificacion" className={`flex items-center justify-between rounded-2xl border px-4 py-3 transition hover:bg-secondary ${pendientesVerificacion > 0 ? "border-amber-200 bg-amber-50" : "border-border bg-white"}`}>
-            <div>
-              <p className="text-sm font-bold">1. Verificar fichas</p>
-              <p className="text-[11px] text-muted-foreground">{pendientesVerificacion} pendientes · {verificadosActivos} activas verificadas</p>
-            </div>
-            <span className="text-xs font-bold">Revisar →</span>
-          </Link>
-          <Link href="/admin/calidad" className={`flex items-center justify-between rounded-2xl border px-4 py-3 transition hover:bg-secondary ${auditorHigh > 0 ? "border-rose-200 bg-rose-50" : "border-border bg-white"}`}>
-            <div>
-              <p className="text-sm font-bold">2. Resolver calidad</p>
-              <p className="text-[11px] text-muted-foreground">{auditorHigh} hallazgo{auditorHigh === 1 ? "" : "s"} de alta prioridad del Data Auditor</p>
-            </div>
-            <span className="text-xs font-bold">Revisar →</span>
-          </Link>
-          <Link href="/admin/calidad" className="flex items-center justify-between rounded-2xl border border-border bg-white px-4 py-3 transition hover:bg-secondary">
-            <div>
-              <p className="text-sm font-bold">3. Completar fichas</p>
-              <p className="text-[11px] text-muted-foreground">Teléfono, dirección, descripción y categoría se trabajan desde la cola de calidad</p>
-            </div>
-            <span className="text-xs font-bold">Ver cola →</span>
-          </Link>
+        <div className="flex items-end justify-between gap-3 mb-2">
+          <div>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              ⚡ Trabajo pendiente
+            </h2>
+            <p className="text-[11px] text-muted-foreground mt-0.5">
+              {totalTrabajo === 0
+                ? "No hay acciones calculadas para las fichas."
+                : `${totalTrabajo} acción${totalTrabajo === 1 ? "" : "es"} detectada${totalTrabajo === 1 ? "" : "s"} desde el estado actual del directorio.`}
+            </p>
+          </div>
+          {totalTrabajo > 10 && (
+            <Link href="/admin/calidad" className="text-[11px] font-bold text-[#2B6E80]">
+              Ver colas →
+            </Link>
+          )}
         </div>
+
+        {totalTrabajo > 0 ? (
+          <div className="space-y-4">
+            {trabajoAlta.length > 0 && (
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-rose-700 mb-2">
+                  🔴 Alta prioridad
+                </p>
+                <div className="space-y-2">
+                  {trabajoAlta.map((item) => (
+                    <Link
+                      key={item.id}
+                      href={item.href}
+                      className="flex items-center justify-between gap-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 hover:bg-rose-100 transition"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold truncate">{item.titulo}</p>
+                        <p className="text-[11px] text-muted-foreground">{item.detalle}</p>
+                      </div>
+                      <span className="text-xs font-bold shrink-0">Abrir ficha →</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {trabajoMedia.length > 0 && (
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-amber-700 mb-2">
+                  🟠 Para completar
+                </p>
+                <div className="space-y-2">
+                  {trabajoMedia.map((item) => (
+                    <Link
+                      key={item.id}
+                      href={item.href}
+                      className="flex items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 hover:bg-amber-100 transition"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold truncate">{item.titulo}</p>
+                        <p className="text-[11px] text-muted-foreground">{item.detalle}</p>
+                      </div>
+                      <span className="text-xs font-bold shrink-0">Abrir ficha →</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-sm font-semibold text-emerald-800">
+            ✓ El directorio no presenta acciones calculadas de alta o media prioridad.
+          </div>
+        )}
       </section>
 
       <section className="px-4 pt-6">
