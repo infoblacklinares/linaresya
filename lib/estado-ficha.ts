@@ -59,6 +59,9 @@ export function calcularEstadoFicha(
   if (ficha.lat == null || ficha.lng == null) {
     faltantes.push("Faltan coordenadas");
   }
+  if (ficha.direccionGenerica) {
+    faltantes.push("Ubicación demasiado genérica");
+  }
   if (!ficha.categoriaId) faltantes.push("Falta categoría");
   if (!ficha.tieneFotografias) faltantes.push("No tiene fotografías");
   if (!ficha.tieneHorariosCompletos) faltantes.push("Faltan horarios");
