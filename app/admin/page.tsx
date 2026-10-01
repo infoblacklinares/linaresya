@@ -770,7 +770,7 @@ function NegocioRowAdmin({ negocio }: { negocio: NegocioRow }) {
       {/* Acciones */}
       <div className="flex items-center gap-1 shrink-0">
         <Link
-          href={`/admin/negocio/${negocio.id}/editar`}
+          href={`/admin/negocio/${negocio.id}`}
           className="text-[11px] font-semibold text-[#2B6E80] hover:underline px-1"
         >
           Editar
@@ -922,10 +922,10 @@ function NegocioCardAdmin({
               className="rounded-full bg-secondary text-foreground text-xs font-semibold px-4 py-2 hover:bg-rose-100 hover:text-rose-800"
             />
             <Link
-              href={`/admin/negocio/${negocio.id}/editar`}
+              href={`/admin/negocio/${negocio.id}`}
               className="rounded-full bg-white border border-border text-foreground text-xs font-semibold px-4 py-2 hover:bg-secondary"
             >
-              Editar
+              Abrir ficha
             </Link>
           </>
         ) : (
@@ -951,10 +951,10 @@ function NegocioCardAdmin({
               mensaje={`¿Eliminar "${negocio.nombre}" permanentemente? Se borrarán también sus fotos. Esta acción es irreversible.`}
             />
             <Link
-              href={`/admin/negocio/${negocio.id}/editar`}
+              href={`/admin/negocio/${negocio.id}`}
               className="rounded-full bg-foreground text-background text-xs font-semibold px-4 py-2 hover:opacity-90"
             >
-              Editar
+              Abrir ficha
             </Link>
             {negocio.plan === "premium" ? (
               <form action={quitarPremium}>
