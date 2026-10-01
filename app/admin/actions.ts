@@ -113,13 +113,59 @@ export async function aprobarNegocio(formData: FormData): Promise<void> {
 
 export async function verificarNegocio(formData: FormData): Promise<void> {
   await requireAdmin();
+
   const id = String(formData.get("id") ?? "");
-  if (!id) return;
+  const fuente = String(formData.get("fuente") ?? "").trim();
+  const urlFuente = String(formData.get("url_fuente") ?? "").trim() || null;
+  const evidencia = String(formData.get("evidencia") ?? "").trim();
+  const observacion = String(formData.get("observacion") ?? "").trim() || null;
+
+  if (!id || !fuente || !evidencia) {
+    throw new Error("Para verificar una ficha debes registrar la fuente y la evidencia.");
+  }
+
+  const fuentesPermitidas = new Set([
+    "google_maps",
+    "sitio_web",
+    "instagram",
+    "facebook",
+    "directorio_empresarial",
+    "otra_fuente_publica",
+  ]);
+
+  if (!fuentesPermitidas.has(fuente)) {
+    throw new Error("Fuente de verificación no válida.");
+  }
+
   const antes = await fetchNegocioParaAprobar(id);
-  await supabaseAdmin
+
+  const { error: historialError } = await supabaseAdmin
+    .from("verificaciones_negocio")
+    .insert({
+      negocio_id: id,
+      estado: "verificado",
+      fuente,
+      url_fuente: urlFuente,
+      evidencia,
+      coincide_nombre: formData.get("coincide_nombre") === "on",
+      coincide_direccion: formData.get("coincide_direccion") === "on",
+      coincide_telefono: formData.get("coincide_telefono") === "on",
+      observacion,
+    });
+
+  if (historialError) {
+    throw new Error(`No se pudo guardar el historial de verificación: ${historialError.message}`);
+  }
+
+  const { error } = await supabaseAdmin
     .from("negocios")
     .update({ activo: true, verificado: true })
     .eq("id", id);
+
+  if (error) {
+    throw new Error(`No se pudo marcar la ficha como verificada: ${error.message}`);
+  }
+
   revalidatePath("/admin");
   revalidatePath("/admin/calidad");
   revalidatePath("/admin/verificacion");
