@@ -5,7 +5,6 @@ import { isAdminAuthenticated } from "@/lib/admin-auth";
 import {
   activarPremium30Dias,
   aprobarNegocio,
-  verificarNegocio,
   desactivarNegocio,
   eliminarNegocio,
   logoutAction,
@@ -583,20 +582,6 @@ export default async function AdminPage({
             <p className="text-3xl font-extrabold mt-1">{reportesCount}</p>
           </Link>
         </div>
-        <Link
-          href="/admin/estadisticas"
-          className="mt-3 flex items-center justify-between rounded-2xl bg-[#2B6E80] text-white px-4 py-3.5 hover:opacity-90 transition"
-        >
-          <span className="text-sm font-bold">📊 Estadisticas</span>
-          <span className="text-xs font-semibold opacity-80">Hoy, 7, 30 dias o rango →</span>
-        </Link>
-        <Link
-          href="/admin/resultados"
-          className="mt-2 flex items-center justify-between rounded-2xl bg-secondary px-4 py-3 hover:opacity-90 transition"
-        >
-          <span className="text-sm font-bold">🧾 Resultados del negocio</span>
-          <span className="text-xs font-semibold text-muted-foreground">Lo que dice que le llego →</span>
-        </Link>
         <p className="mt-3 text-[11px] text-muted-foreground">
           Premium activos: <strong>{premiumActivos}</strong> de {act.length}.{" "}
           {premiumActivos === 0 ? "Ninguno esta pagando todavia." : "Se cambian desde la ficha de cada negocio."}
@@ -1130,12 +1115,12 @@ function NegocioCardAdmin({
                 Aprobar
               </button>
             </form>
-            <form action={verificarNegocio}>
-              <input type="hidden" name="id" value={negocio.id} />
-              <button type="submit" className="rounded-full bg-emerald-600 text-white text-xs font-semibold px-4 py-2">
-                Aprobar + Verificar
-              </button>
-            </form>
+            <Link
+              href={`/admin/negocio/${negocio.id}`}
+              className="rounded-full bg-emerald-600 text-white text-xs font-semibold px-4 py-2"
+            >
+              Aprobar + verificar
+            </Link>
             <ConfirmDeleteButton
               action={eliminarNegocio}
               id={negocio.id}
@@ -1153,12 +1138,12 @@ function NegocioCardAdmin({
         ) : (
           <>
             {!negocio.verificado && (
-              <form action={verificarNegocio}>
-                <input type="hidden" name="id" value={negocio.id} />
-                <button type="submit" className="rounded-full bg-emerald-600 text-white text-xs font-semibold px-4 py-2">
-                  Marcar verificado
-                </button>
-              </form>
+              <Link
+                href={`/admin/verificacion?negocio=${negocio.id}`}
+                className="rounded-full bg-emerald-600 text-white text-xs font-semibold px-4 py-2"
+              >
+                Verificar
+              </Link>
             )}
             <form action={desactivarNegocio}>
               <input type="hidden" name="id" value={negocio.id} />
