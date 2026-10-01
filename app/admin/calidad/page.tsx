@@ -196,9 +196,12 @@ export default async function CalidadPage() {
                 Las fichas no verificadas se conservan en el directorio, pero no se consideran problemas de calidad todavía.
               </p>
             </div>
-            <span className="shrink-0 rounded-full bg-secondary px-3 py-1.5 text-xs font-bold">
-              {pendientesVerificacion.length}
-            </span>
+            <Link
+              href="/admin/verificacion"
+              className="shrink-0 rounded-full bg-secondary px-3 py-1.5 text-xs font-bold hover:opacity-80"
+            >
+              {pendientesVerificacion.length} →
+            </Link>
           </div>
         </div>
 
