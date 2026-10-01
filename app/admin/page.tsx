@@ -106,14 +106,14 @@ export default async function AdminPage({
     supabaseAdmin
       .from("negocios")
       .select(
-        "id, nombre, slug, tipo, plan, activo, verificado, telefono, whatsapp, direccion, descripcion, a_domicilio, zona_cobertura, disponibilidad, categoria_id, creado_en, premium_hasta",
+        "id, nombre, slug, tipo, plan, activo, verificado, telefono, whatsapp, direccion, descripcion, a_domicilio, zona_cobertura, disponibilidad, categoria_id, creado_en, premium_hasta, lat, lng",
       )
       .eq("activo", false)
       .order("creado_en", { ascending: false }),
     supabaseAdmin
       .from("negocios")
       .select(
-        "id, nombre, slug, tipo, plan, activo, verificado, telefono, whatsapp, direccion, descripcion, a_domicilio, zona_cobertura, disponibilidad, categoria_id, creado_en, premium_hasta",
+        "id, nombre, slug, tipo, plan, activo, verificado, telefono, whatsapp, direccion, descripcion, a_domicilio, zona_cobertura, disponibilidad, categoria_id, creado_en, premium_hasta, lat, lng",
       )
       .eq("activo", true)
       .order("creado_en", { ascending: false })
