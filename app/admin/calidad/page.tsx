@@ -187,7 +187,7 @@ export default async function CalidadPage() {
             fichas activas con observaciones
           </p>
           <div className="mt-3 text-xs opacity-80">
-            {totalProblemas} problemas detectados · {problemas.length + auditorFindings.length} acciones de corrección posibles
+            {totalProblemas} problemas accionables detectados
           </div>
           <div className="flex gap-2 mt-4 text-xs font-bold">
             <span className="rounded-full bg-white/15 px-3 py-1.5">
