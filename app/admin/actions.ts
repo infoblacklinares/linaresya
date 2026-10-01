@@ -254,6 +254,7 @@ async function cambiarPlanNegocio(
     revalidatePath(`/${categoria.slug}`);
   }
   revalidatePath("/admin");
+  revalidatePath(`/admin/negocio/${id}`);
   revalidatePath("/");
   revalidatePath("/mapa");
 
