@@ -555,9 +555,12 @@ export default async function AdminPage({
             </p>
           </div>
           {totalTrabajo > 10 && (
-            <Link href="/admin/calidad" className="text-[11px] font-bold text-[#2B6E80]">
-              Ver todas →
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              <Link href="/admin/verificacion" className="text-[11px] font-bold text-[#2B6E80]">Verificación</Link>
+              <Link href="/admin/calidad" className="text-[11px] font-bold text-[#2B6E80]">Calidad</Link>
+              <Link href="/admin/resenas" className="text-[11px] font-bold text-[#2B6E80]">Reseñas</Link>
+              <Link href="/admin/reportes" className="text-[11px] font-bold text-[#2B6E80]">Reportes</Link>
+            </div>
           )}
         </div>
 
