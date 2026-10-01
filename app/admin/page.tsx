@@ -556,7 +556,7 @@ export default async function AdminPage({
           </div>
           {totalTrabajo > 10 && (
             <Link href="/admin/calidad" className="text-[11px] font-bold text-[#2B6E80]">
-              Ver colas →
+              Ver todas →
             </Link>
           )}
         </div>
