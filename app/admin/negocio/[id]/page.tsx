@@ -2,6 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
 import { activarPremium30Dias, aprobarNegocio, quitarPremium, eliminarNegocio } from "@/app/admin/actions";
 
 export const metadata = {
@@ -159,6 +160,30 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
         ? { titulo: "Completar ficha", detalle: "Esta ficha llegó desde Trabajo pendiente porque tiene información básica pendiente." }
         : null;
   const pendientesCompletables = faltantes.filter((x) => x !== "Verificación pendiente");
+  const auditorReport = await fetchDataAuditorFindings();
+  const auditorFindings = (auditorReport?.findings ?? []).filter(
+    (finding) => finding.business_id === n.id || finding.business_id === n.slug,
+  );
+  const auditorHigh = auditorFindings.filter((finding) => finding.severity === "HIGH");
+  const pendientesBasicos = faltantes.filter((item) => item !== "Verificación pendiente");
+  const saludFicha = !n.activo || !n.verificado || auditorHigh.length > 0
+    ? "ROJO"
+    : pendientesBasicos.length > 0 || auditorFindings.length > 0
+      ? "AMARILLO"
+      : "VERDE";
+  const saludTitulo = saludFicha === "VERDE" ? "Lista" : saludFicha === "AMARILLO" ? "Observaciones" : "Requiere atención";
+  const saludDetalle = saludFicha === "VERDE"
+    ? "La ficha cumple las comprobaciones operativas actuales."
+    : saludFicha === "AMARILLO"
+      ? "Hay observaciones pendientes de revisión."
+      : "Existe al menos un aspecto crítico que requiere atención antes de considerar la ficha lista.";
+  const saludClasses = saludFicha === "VERDE"
+    ? "border-emerald-200 bg-emerald-50 text-emerald-950"
+    : saludFicha === "AMARILLO"
+      ? "border-amber-200 bg-amber-50 text-amber-950"
+      : "border-rose-200 bg-rose-50 text-rose-950";
+  const saludBadge = saludFicha === "VERDE" ? "bg-emerald-100 text-emerald-800" : saludFicha === "AMARILLO" ? "bg-amber-100 text-amber-800" : "bg-rose-100 text-rose-800";
+  const saludIcon = saludFicha === "VERDE" ? "🟢" : saludFicha === "AMARILLO" ? "🟡" : "🔴";
   const publicUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
 
   return (
@@ -237,6 +262,32 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
               <Link href={`/admin/negocio/${n.id}/editar`} className="rounded-full bg-foreground text-background px-3 py-2 text-xs font-bold">Editar</Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="px-4 pt-5">
+        <div className={`rounded-2xl border p-4 ${saludClasses}`}>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider opacity-70">Estado de la ficha</p>
+              <h2 className="text-lg font-extrabold mt-1">{saludTitulo}</h2>
+              <p className="text-xs mt-1 opacity-80">{saludDetalle}</p>
+            </div>
+            <span className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-extrabold ${saludBadge}`}>{saludIcon} {saludFicha}</span>
+          </div>
+          <div className="flex flex-wrap gap-2 mt-3 text-[10px] font-bold">
+            <span className="rounded-full bg-white/70 px-2.5 py-1">Básicos: {pendientesBasicos.length === 0 ? "OK" : pendientesBasicos.length}</span>
+            <span className="rounded-full bg-white/70 px-2.5 py-1">Auditor: {auditorFindings.length === 0 ? "OK" : auditorFindings.length}</span>
+            <span className="rounded-full bg-white/70 px-2.5 py-1">Verificación: {n.verificado ? "OK" : "Pendiente"}</span>
+          </div>
+          {auditorHigh.length > 0 && (
+            <div className="mt-3 rounded-xl border border-rose-200 bg-white/70 p-3">
+              <p className="text-[11px] font-extrabold">Hallazgo crítico del Data Auditor</p>
+              <ul className="mt-1.5 space-y-1">
+                {auditorHigh.map((finding) => <li key={`high-${finding.rule}`} className="text-xs">• {finding.message}</li>)}
+              </ul>
+            </div>
+          )}
         </div>
       </section>
 
