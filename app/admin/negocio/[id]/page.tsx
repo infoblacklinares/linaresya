@@ -2,7 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { activarPremium30Dias, quitarPremium } from "@/app/admin/actions";
+import { activarPremium30Dias, aprobarNegocio, verificarNegocio, quitarPremium, eliminarNegocio } from "@/app/admin/actions";
 
 export const metadata = {
   title: "Ficha - Admin LinaresYa",
@@ -180,7 +180,23 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
                 )}
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
+              {!n.activo && (
+                <>
+                  <form action={aprobarNegocio}>
+                    <input type="hidden" name="id" value={n.id} />
+                    <button type="submit" className="rounded-full bg-foreground text-background px-3 py-2 text-xs font-bold">Aprobar</button>
+                  </form>
+                  <form action={verificarNegocio}>
+                    <input type="hidden" name="id" value={n.id} />
+                    <button type="submit" className="rounded-full bg-emerald-600 text-white px-3 py-2 text-xs font-bold">Aprobar + verificar</button>
+                  </form>
+                  <form action={eliminarNegocio}>
+                    <input type="hidden" name="id" value={n.id} />
+                    <button type="submit" className="rounded-full border border-rose-200 bg-rose-50 text-rose-700 px-3 py-2 text-xs font-bold">Rechazar</button>
+                  </form>
+                </>
+              )}
               <a href={`${publicUrl}${fichaUrl}`} target="_blank" rel="noreferrer" className="rounded-full border border-border px-3 py-2 text-xs font-bold hover:bg-secondary">Ver ficha ↗</a>
               <Link href={`/admin/negocio/${n.id}/editar`} className="rounded-full bg-foreground text-background px-3 py-2 text-xs font-bold">Editar</Link>
             </div>
