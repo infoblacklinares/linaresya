@@ -10,6 +10,7 @@ export type FichaCalidadInput = {
   lat: number | null;
   lng: number | null;
   a_domicilio: boolean;
+  direccionGenerica?: boolean;
   categoriaId: number | null;
   tieneFotografias: boolean;
   tieneHorariosCompletos: boolean;
@@ -68,6 +69,7 @@ export function calcularEstadoFicha(
 
   const ubicacionCritica =
     (!ficha.direccion && !ficha.a_domicilio) ||
+    ficha.direccionGenerica === true ||
     ficha.lat == null ||
     ficha.lng == null;
 
