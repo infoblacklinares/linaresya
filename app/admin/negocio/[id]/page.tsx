@@ -44,7 +44,7 @@ type Verificacion = {
   observacion: string | null;
   verificado_en: string;
 };
-type Stat = {
+type Resultado = {\n  periodo: string;\n  consultas: number | null;\n  clientes: number | null;\n  nota: string | null;\n};\ntype Stat = {
   vistas: number;
   clicks_whatsapp: number;
   clicks_telefono: number;
@@ -102,7 +102,7 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
   const horariosList = (horarios ?? []) as Horario[];
   const verificacionesList = (verificaciones ?? []) as Verificacion[];
   const ultimaVerificacion = verificacionesList[0] ?? null;
-  const filas = (stats ?? []) as Stat[];
+  const filas = (stats ?? []) as Stat[];\n  const ultimoResultado = ((resultados ?? [])[0] ?? null) as Resultado | null;
   const vistas = filas.reduce((s, x) => s + Number(x.vistas ?? 0), 0);
   const whatsapp = filas.reduce((s, x) => s + Number(x.clicks_whatsapp ?? 0), 0);
   const telefono = filas.reduce((s, x) => s + Number(x.clicks_telefono ?? 0), 0);
@@ -278,7 +278,7 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
         </div>
       </section>
 
-      <section className="px-4 pt-5">
+      <section className="px-4 pt-5">\n        <div className="rounded-2xl border border-border bg-white p-4">\n          <div className="flex items-center justify-between gap-3">\n            <div>\n              <h2 className="text-sm font-bold">Último resultado reportado</h2>\n              <p className="text-[11px] text-muted-foreground mt-0.5">Dato informado por el negocio, no medido automáticamente.</p>\n            </div>\n            <Link href="/admin/resultados" className="text-xs font-bold text-[#2B6E80]">Ver resultados →</Link>\n          </div>\n          {ultimoResultado ? (\n            <div className="grid grid-cols-2 gap-2 mt-3">\n              <Metric label="Consultas" value={ultimoResultado.consultas ?? 0} />\n              <Metric label="Clientes" value={ultimoResultado.clientes ?? 0} />\n              <div className="col-span-2 rounded-xl bg-secondary/50 p-3 text-xs">\n                <p className="font-semibold">Periodo: {ultimoResultado.periodo}</p>\n                {ultimoResultado.nota && <p className="text-muted-foreground mt-1">{ultimoResultado.nota}</p>}\n              </div>\n            </div>\n          ) : (\n            <p className="mt-3 text-xs text-muted-foreground">Todavía no hay un resultado reportado para esta ficha.</p>\n          )}\n        </div>\n      </section>\n\n      <section className="px-4 pt-5">
         <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Rendimiento · 30 días</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <Metric label="Vistas" value={vistas} />
