@@ -41,7 +41,7 @@ function construirProblemas(
   negocios: Negocio[],
   fotosPorNegocio: Set<string>,
   horariosPorNegocio: Map<string, Set<string>>,
-  auditorFindings: Awaited<ReturnType<typeof fetchDataAuditorFindings>>["findings"],
+  auditorFindings: NonNullable<Awaited<ReturnType<typeof fetchDataAuditorFindings>>>["findings"],
 ): Problema[] {
   const problemas: Problema[] = [];
 
