@@ -232,7 +232,7 @@ export default async function CalidadPage() {
                       <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{finding.message}</p>
                     </div>
                     {negocioIdByExternalId.get(finding.business_id) ? (
-                      <Link href={`/admin/negocio/${negocioIdByExternalId.get(finding.business_id)}/editar`} className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90">Corregir →</Link>
+                      <Link href={`/admin/negocio/${negocioIdByExternalId.get(finding.business_id)}`} className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90">Corregir →</Link>
                     ) : (
                       <span className="shrink-0 rounded-full border border-amber-200 bg-amber-50 text-amber-900 text-[10px] font-semibold px-3 py-2">Sin ficha vinculada</span>
                     )}
@@ -282,7 +282,7 @@ export default async function CalidadPage() {
                     </p>
                   </div>
                   <Link
-                    href={`/admin/negocio/${problema.id}/editar`}
+                    href={`/admin/negocio/${problema.id}`}
                     className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90"
                   >
                     Corregir →
