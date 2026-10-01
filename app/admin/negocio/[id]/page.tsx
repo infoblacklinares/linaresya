@@ -162,12 +162,12 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
 
 
   const estados = [
-    ["Información básica", Boolean(n.nombre && cat && n.descripcion)],
-    ["Contacto", Boolean(n.telefono || n.whatsapp || n.email)],
-    ["Ubicación", Boolean(n.direccion || n.a_domicilio) && n.lat != null && n.lng != null],
-    ["Horarios", horariosCompleto],
-    ["Fotografías", fotosList.length > 0],
-    ["Verificación", n.verificado],
+    ["Información básica", !estadoFicha.faltantes.includes("Falta descripción") && Boolean(n.nombre && cat)],
+    ["Contacto", !estadoFicha.faltantes.includes("Falta teléfono/WhatsApp")],
+    ["Ubicación", !estadoFicha.faltantes.includes("Falta dirección") && !estadoFicha.faltantes.includes("Faltan coordenadas") && !estadoFicha.faltantes.includes("Ubicación demasiado genérica")],
+    ["Horarios", !estadoFicha.faltantes.includes("Faltan horarios")],
+    ["Fotografías", !estadoFicha.faltantes.includes("No tiene fotografías")],
+    ["Verificación", !estadoFicha.faltantes.includes("Verificación pendiente")],
   ] as const;
 
   const fichaUrl = cat ? `/${cat.slug}/${n.slug}` : "/";
