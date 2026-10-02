@@ -3,7 +3,7 @@
 - **Prioridad:** P0
 - **Fecha:** 2026-09-12
 - **Depende de:** LY-002 (completada)
-- **Estado final:** En pruebas — auditoría de permisos cerrada, 1 corrección aplicada
+- **Estado final:** En pruebas — auditoría de permisos cerrada, 1 corrección aplicada; registro de auditoría administrativa integrado el 2026-10-02
 - **Siguiente tarea:** LY-024 — Sistema de planes
 
 ## Objetivo
@@ -75,7 +75,7 @@ Nada más. El resto de la tarea era verificar, y lo que falta son decisiones que
 
 ## Hallazgos que quedan abiertos
 
-1. **El registro de auditoría es código muerto.** `lib/audit.ts` define `logAudit()` y existe la tabla `audit_logs`, pero **ninguna acción lo llama**. Hoy no queda rastro de quién aprobó, cambió de plan o eliminó un negocio. Candidato a LY-026/LY-027.
+1. **Auditoría administrativa integrada 2026-10-02.** Las acciones sensibles del panel y la aprobación mediante link firmado registran cambios relevantes mediante `lib/audit-server.ts`. La migración `20261002_audit_logs_v2.sql` queda pendiente de ejecución en Supabase.
 2. **Los límites por IP no sirven en producción.** Los de reseñas, reportes y búsqueda son en memoria, y en Vercel cada instancia tiene la suya. Hay que moverlos a Cloudflare o a un almacén compartido (LY-005 / LY-030).
 3. **`/api/track` no tiene ninguna protección.** Cualquiera puede inflar las métricas (LY-005).
 4. **La tabla `reportes` guarda la IP del que reporta.** Es dato personal: revisar si hace falta y por cuánto tiempo se conserva (LY-030).
