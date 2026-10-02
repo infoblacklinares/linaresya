@@ -21,6 +21,9 @@ ALTER TABLE audit_logs
 ALTER TABLE audit_logs
   DROP CONSTRAINT IF EXISTS audit_logs_entity_fk;
 
+DROP TRIGGER IF EXISTS trigger_suspicious_activity ON audit_logs;
+DROP FUNCTION IF EXISTS check_suspicious_activity();
+
 -- entity_id es texto para permitir UUID, enteros u otros identificadores
 -- sin acoplar la auditoría a un tipo de PK concreto.
 ALTER TABLE audit_logs
