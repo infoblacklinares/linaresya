@@ -525,6 +525,13 @@ export async function guardarResultadoNegocio(formData: FormData): Promise<void>
   const clientes = contarReportado(formData.get("clientes"));
   const nota = limpiarNota(formData.get("nota"));
 
+  const { data: antes } = await supabaseAdmin
+    .from("resultados_negocio")
+    .select("id, negocio_id, periodo, consultas, clientes, nota")
+    .eq("negocio_id", negocioId)
+    .eq("periodo", periodo)
+    .maybeSingle();
+
   // Un reporte sin ningun dato no es un reporte: seria una fila vacia que
   // despues se lee como "le fue mal".
   if (consultas === null && clientes === null && nota === null) return;
@@ -541,6 +548,21 @@ export async function guardarResultadoNegocio(formData: FormData): Promise<void>
     return;
   }
 
+  await logAuditServer({
+    action: "UPDATE",
+    entityType: "resultados_negocio",
+    entityId: String((antes as { id?: unknown } | null)?.id ?? negocioId + ":" + periodo),
+    before: (antes as Record<string, unknown> | null) ?? {},
+    after: {
+      negocio_id: negocioId,
+      periodo,
+      consultas,
+      clientes,
+      nota,
+    },
+    reason: "Guardar resultado reportado por negocio",
+  });
+
   revalidatePath("/admin/resultados");
 }
 
@@ -552,6 +574,13 @@ export async function borrarResultadoNegocio(formData: FormData): Promise<void> 
   const periodo = String(formData.get("periodo") ?? "");
   if (!negocioId || !esPeriodoValido(periodo)) return;
 
+  const { data: antes } = await supabaseAdmin
+    .from("resultados_negocio")
+    .select("id, negocio_id, periodo, consultas, clientes, nota")
+    .eq("negocio_id", negocioId)
+    .eq("periodo", periodo)
+    .maybeSingle();
+
   const { error } = await supabaseAdmin
     .from("resultados_negocio")
     .delete()
@@ -561,6 +590,17 @@ export async function borrarResultadoNegocio(formData: FormData): Promise<void> 
   if (error) {
     console.error("[borrarResultadoNegocio] error:", error.message);
     return;
+  }
+
+  if (antes) {
+    await logAuditServer({
+      action: "DELETE",
+      entityType: "resultados_negocio",
+      entityId: String((antes as { id?: unknown }).id ?? negocioId + ":" + periodo),
+      before: antes as Record<string, unknown>,
+      after: {},
+      reason: "Eliminar resultado reportado por negocio",
+    });
   }
 
   revalidatePath("/admin/resultados");
