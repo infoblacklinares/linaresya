@@ -2,8 +2,20 @@
 
 Registro vivo. Cada punto es algo **verificado en el código o en producción**, no una sospecha. Si algo se resuelve, se marca acá con fecha y se deja escrito por qué.
 
+> **Estado actual:** 2026-10-02. La referencia rápida del proyecto está en `docs/estado-actual.md`. Los documentos históricos conservan el contexto de las etapas anteriores y no deben usarse por sí solos para determinar qué sigue pendiente.
+
 - **Creado:** 2026-09-12, al cerrar la Fase 1 del plan (LY-001 a LY-024) más LY-026 y LY-027.
 - **Regla:** ninguna de estas decisiones se toma sola mientras se programa. Las de negocio las toma Willson; las técnicas se proponen acá antes de tocar código.
+
+## Estado técnico cerrado al 2026-10-02
+
+- Estado unificado de ficha integrado en Admin, Calidad y ficha individual.
+- Cola operativa de administración y reglas de prioridad integradas.
+- Data Auditor conectado como fuente complementaria, sin desactivar las reglas internas.
+- CI de GitHub ejecuta tests y build; el último run revisado está exitoso.
+- Migración de claves Supabase completada en código y CI: Publishable para cliente y Secret para servidor/CI.
+- La documentación de variables de entorno y despliegue se mantiene alineada con esos nombres.
+- No hay issues abiertos registrados en el repositorio al momento del corte.
 
 ## Regla de migraciones (aprendida a golpes el 2026-09-12)
 
@@ -26,113 +38,90 @@ Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y 
 | **P1 — bloquea crecer** | Aguanta hoy con 164 fichas, se rompe con 500 o con clientes pagando |
 | **P2 — deuda** | Cuesta tiempo cada vez que se toca esa zona |
 
----
-
 ## P0 — Antes de cobrar
 
 ### 1. `/api/track` es público y sin límite — RESUELTO 2026-09-12 (migración corrida y desplegado)
 
 **Cómo quedó:** tres puertas antes de contar — user-agent de navegador real, mismo origen, y límite por minuto en Postgres (no en memoria, que en Vercel no sirve). La clave del límite es un hash con sal, no la IP. Ver `docs/seguridad/proteger-tracking.md`. Migración corrida el 2026-09-12 y verificada en producción: a partir del evento 30 en un minuto la respuesta es `contado:false`.
 
-**Lo que decía cuando se abrió:**
+**Lo que decía cuando se abrió:**  
 **Qué pasa:** cualquiera puede inflar las métricas de cualquier negocio desde la consola del navegador. Ya hay evidencia real: los barridos de auditoría con `curl` del 11-sep sumaron 346 visitas falsas, porque el filtro de bots mira el user-agent y no reconoce `curl`.
+
 **Por qué importa:** esas cifras son el argumento de venta del Plan Estrella. Un número que no se puede defender no sirve para cobrar.
-**Decisión pendiente:** límite por IP real (Cloudflare, no en memoria), filtro de bots ampliado, y validar que el evento venga de una ficha existente.
 
-### 2. Los límites por IP no funcionan en producción
-**Qué pasa:** búsqueda, reseñas y reportes limitan con un `Map` en memoria. En Vercel cada instancia tiene su propio mapa, así que el límite real es "el que toque".
-**Decisión pendiente:** mover a Cloudflare Rate Limiting o a un almacén compartido. Está escrito en el propio código (`proxy.ts` lo admite en un comentario).
-**Avance 2026-09-12:** el tracking ya no depende de memoria, usa un límite en Postgres (punto 1). El mismo patrón sirve para búsqueda, reseñas y reportes, que siguen pendientes.
-
-### 3. La analítica no puede responder lo que se le va a preguntar — RESUELTO 2026-09-12 (migración corrida y desplegado)
-
-**Cómo quedó:** tabla `eventos_negocio`, una fila por evento con hora, sesión anónima, fuente y UTM. Es la fuente de verdad, y ella misma mantiene los contadores diarios para no romper los paneles que ya funcionan. Se agregaron los eventos que no existían: Instagram, Facebook, sitio web, compartir y QR. Ver `docs/analitica/LY-005-sistema-de-eventos.md`. Migración corrida y desplegada el 2026-09-12, verificada con un evento real (`contado:true` = fila insertada). El panel ya muestra visitantes únicos, los eventos nuevos, el origen del tráfico y las campañas (LY-006 y LY-008, `docs/analitica/LY-006-LY-008-panel-de-eventos.md`). **Sigue pendiente:** los resultados que reporta el propio negocio, en tabla aparte, y llevar lo nuevo a la pantalla del dueño.
-
-**Lo que decía cuando se abrió:**
-**Qué pasa:** hoy se guarda 1 fila por negocio por día con 4 contadores. No hay hora, ni sesión, ni origen.
-**Consecuencia:** no existen visitantes únicos, ni campañas, ni embudo por publicación. Y el histórico no se puede convertir: lo que no se guardó, no se recupera.
-**Decisión de arquitectura propuesta:** la **tabla de eventos pasa a ser la fuente de verdad**, y los contadores diarios quedan como resumen derivado de ella. Dos fuentes de verdad para el mismo número es cómo se llega a un dashboard que se contradice.
-
----
+**Pendiente que sigue vigente:** límites distribuidos para búsqueda, reseñas y reportes. El tracking ya no depende del `Map` en memoria.
 
 ## P1 — Antes de crecer
 
-### 4. El esquema de la base no está versionado
-**Qué pasa:** la definición base vive fuera del repo (`linaresya_database_final.sql`) y está desactualizada: tenía otra versión de `estadisticas_diarias` que ya no es la de producción. Los SQL nuevos se corren a mano desde el editor de Supabase, sin orden ni registro de qué se aplicó.
-**Riesgo:** el código asume columnas que pueden no existir. Ya hay parches que lo demuestran: `/publicar` reintenta el alta sacando columnas opcionales de a una si Supabase las rechaza.
-**Decisión pendiente:** volcar el esquema real al repo y adoptar migraciones numeradas. Requiere un `pg_dump` o acceso de lectura al catálogo.
+### 2. El esquema de la base no está versionado
 
-### 5. No se guarda desde cuándo un negocio es Premium — RESUELTO 2026-09-12 (migración corrida y desplegado)
+La definición base vive fuera del repo (`linaresya_database_final.sql`) y está desactualizada. Los SQL nuevos se corren a mano desde el editor de Supabase, sin orden ni registro completo de qué se aplicó.
 
-**Cómo quedó:** se agrega `premium_desde`, que el panel escribe **solo cuando el plan sube** (no en cada guardado) y limpia al volver a Básico. Migración: `supabase/premium_desde.sql`. El código funciona con o sin la columna: si no existe, reintenta el cambio de plan sin ella y lo avisa en el log. **Sobre la tabla `pagos`, decidido el 2026-09-12:** no se borra y **no se usa todavía**. Ver abajo, "Decisión sobre `pagos`".
+**Decisión pendiente:** volcar el esquema real al repo y adoptar migraciones numeradas. Requiere acceso de lectura al catálogo o un `pg_dump`.
 
-**Lo que decía cuando se abrió:**
-**Qué pasa:** solo existe `premium_hasta`. La tabla `pagos` (con campos de Flow) existe y **nadie la usa**.
-**Consecuencia:** no se puede calcular un periodo cobrado, ni saber cuántos meses lleva un cliente, ni conciliar un pago.
-**Decisión pendiente, antes del primer cobro:** agregar `premium_desde` o una tabla de historial de plan, y decidir si `pagos` se usa o se elimina.
+### 3. No queda rastro de quién hizo qué
 
-### 6. No queda rastro de quién hizo qué
-**Qué pasa:** `lib/audit.ts` define `logAudit()` y existe la tabla `audit_logs`, pero **ninguna acción lo llama**. Aprobar, verificar, cambiar de plan, desactivar y eliminar no dejan registro.
-**Consecuencia:** con un solo operador se aguanta; con un cliente reclamando "yo no pedí esto", no.
-**Decisión pendiente:** llamar a `logAudit` en las acciones sensibles del panel.
+`lib/audit.ts` define `logAudit()` y existe la tabla `audit_logs`, pero ninguna acción lo llama.
 
-### 7. La revalidación de caché depende de que alguien se acuerde
-**Qué pasa:** cada acción tiene que listar a mano qué rutas revalidar. Ese olvido fue exactamente el bug de "activé Premium y no aparece": faltaban la ficha, la categoría y el mapa.
-**Decisión propuesta:** un solo helper `revalidarNegocio(id)` que sepa todas las rutas donde se ve un negocio, y que todas las acciones usen ese.
+**Decisión pendiente:** integrar `logAudit` en las acciones sensibles del panel y revisar antes la migración `audit_logs.sql`, incluida su definición de integridad referencial.
 
-### 8. El service worker sirve la versión vieja
-**Qué pasa:** el caché `linaresya-v2` devolvió páginas anteriores durante las pruebas locales. Tras un deploy, un visitante que ya entró puede seguir viendo la ficha vieja.
-**Decisión pendiente:** estrategia *network-first* para el HTML, dejando el caché solo para lo estático.
+### 4. La revalidación de caché depende de que alguien se acuerde
 
-### 9. Privacidad: hay una IP guardada — RESUELTO 2026-09-12 (migración corrida y desplegado)
+Cada acción tiene que listar a mano qué rutas revalidar.
 
-**Cómo quedó:** el código dejó de escribirla y de leerla; el panel ya no la muestra y la consulta ya no la pide. El límite por IP para frenar spam sigue funcionando en memoria, sin almacenar nada. Para borrar las IPs ya guardadas hay que correr `supabase/quitar_ip_reportes.sql`, que **elimina la columna y su contenido de forma permanente**.
+**Decisión propuesta:** un solo helper `revalidarNegocio(id)` que sepa todas las rutas donde se ve un negocio, y que todas las acciones usen ese helper.
 
-**Lo que decía cuando se abrió:**
-**Qué pasa:** la analítica no guarda IP (bien), pero la tabla `reportes` sí guarda la del que reporta. Con la Ley 21.719 encima, eso es dato personal con finalidad y plazo que hay que justificar.
-**Decisión pendiente:** decidir si se necesita, y si sí, por cuánto tiempo se conserva. Si no, se borra la columna.
+### 5. El service worker sirve la versión vieja
 
-### 10. El acceso del dueño es un link reusable
-**Qué pasa:** el dueño entra por un token en la URL, reusable hasta 30 días, sin cuenta. `owner_id` existe en la base y no se usa.
-**Es una decisión tomada, no un olvido:** es lo que permite que un negocio sin correo pueda editar su ficha. Queda registrado como aceptado, con su riesgo: quien tenga el link, entra.
+El caché `linaresya-v2` puede devolver páginas anteriores durante las pruebas locales.
 
-### 11. El bucket de imágenes acepta subidas anónimas
-**Qué pasa:** la política de Storage permite que cualquiera suba al bucket `negocios`. Lo limita el tamaño, el tipo de archivo y un cron que borra huérfanos.
+**Decisión pendiente:** estrategia network-first para HTML, dejando el caché solo para estáticos.
+
+### 6. Privacidad / reportes
+
+El código actual dejó de guardar la IP del reportante. El historial de la decisión y la migración correspondiente se conservan en la documentación.
+
+### 7. El acceso del dueño es un link reusable
+
+El dueño entra por un token en la URL, reusable hasta 30 días, sin cuenta. `owner_id` existe en la base y no se usa.
+
+**Decisión tomada:** se acepta para el piloto, con el riesgo documentado de que quien tenga el link puede entrar.
+
+### 8. El bucket de imágenes acepta subidas anónimas
+
+La política de Storage permite que cualquiera suba al bucket `negocios`.
+
 **Decisión pendiente:** aceptarlo explícitamente o mover las subidas al servidor.
-
----
 
 ## P2 — Deuda
 
-### 12. Admin de un solo factor, y esa clave firma otras cosas
-La contraseña del panel también firma los links de aprobación por correo. Cambiarla invalida todos los links viejos: es correcto, pero hay que saberlo.
+### 9. Admin de un solo factor, y esa clave firma otras cosas
 
-### 13. El color de los títulos está clavado en el CSS global
+La contraseña del panel también firma los links de aprobación por correo. Cambiarla invalida todos los links viejos.
 
-**Qué pasa:** `app/globals.css` fija `color: #1A1410` en todos los `h1`–`h4`. Esa regla **pisa el `text-white` del contenedor**, así que cualquier título dentro de un bloque oscuro sale casi negro sobre negro, salvo que lleve su propia clase de color.
+### 10. El color de los títulos está clavado en el CSS global
 
-**Cómo apareció:** Willson vio el título del hero de `/premium` ilegible (2026-09-12). Un barrido encontró otros dos casos reales: el hero de `/publicar` y el de `/para-negocios`. Los tres se arreglaron con `text-white` explícito.
+Se conserva como deuda técnica hasta poder eliminar la regla global sin introducir regresiones visuales.
 
-**Qué se intentó y no funcionó:** cambiar la regla global a `color: inherit`. Tras limpiar la caché de build y reiniciar el servidor, el título seguía saliendo oscuro y no se encontró qué otra regla lo estaba pisando. Se revirtió: **una regla que afecta a todo el sitio no se cambia sin poder verificarla**.
+### 11. Tipos duplicados
 
-**Qué falta:** entender por qué `inherit` no ganó, y recién ahí sacar el color fijo. Mientras tanto, todo título nuevo sobre fondo oscuro necesita su `text-white`, y quedó un comentario en `globals.css` avisándolo.
+El tipo `Negocio` estaba redefinido en varias páginas. Se unifica gradualmente.
 
-### 14. Tipos duplicados
-El tipo `Negocio` estaba redefinido en 8 páginas. Se van unificando a medida que cada tarea toca su archivo (ya se hizo en la ficha). Quedan las del panel.
+### 12. `SITE_URL` con destino equivocado por defecto
 
-### 14. `SITE_URL` con destino equivocado por defecto
-Varios archivos caen a `linaresya.vercel.app` si falta la variable de entorno. En producción está bien seteada, pero un preview mal configurado genera links y canonicals al dominio equivocado.
+Varios archivos caen a `linaresya.vercel.app` si falta la variable de entorno.
 
-### 15. Sin pruebas fuera de la lógica pura
-Hay 25 tests, todos de funciones puras (contactos, planes, estadísticas). No hay pruebas de integración ni de interfaz, así que nada verifica automáticamente los formularios del panel ni del dueño.
+### 13. Sin pruebas fuera de la lógica pura
 
-### 16. No hay API de lectura de analítica
-Todo se renderiza en el servidor. Sirve hoy; el día que haya una app, un informe externo o un dashboard para el cliente, hace falta endpoint.
+Los tests actuales cubren principalmente funciones puras. No hay una cobertura equivalente de integración/UI.
 
-### 17. Calidad de datos del directorio
-Verificado en producción: 2 teléfonos con un dígito de menos, 1 negocio que no aparece en el sitemap por no tener categoría válida, 60 fichas sin teléfono y solo 1 con Instagram. Es LY-033, y es lo que hace que una ficha se vea abandonada.
+### 14. No hay API de lectura de analítica
 
----
+Todo se renderiza en el servidor. Sirve hoy; un dashboard externo podría requerir un endpoint.
+
+### 15. Calidad de datos del directorio
+
+Se conserva como línea de trabajo de calidad del catálogo y debe contrastarse nuevamente antes de usar números históricos como estado actual.
 
 ## Decisión sobre `pagos` (2026-09-12)
 
@@ -140,39 +129,32 @@ Verificado en producción: 2 teléfonos con un dígito de menos, 1 negocio que n
 
 Por qué, en orden de peso:
 
-1. **Hay 0 clientes pagando.** Construir el módulo de cobros antes de cobrarle al primero es expandir sin cerrar, que es justo el patrón que este proyecto tiene que evitar. Lo que falta para cobrar no es una tabla: es un negocio que diga sí.
-2. **La tabla está diseñada para Flow** (`flow_order_id`, `flow_token`), y hoy el cobro es transferencia a una Cuenta RUT con boleta de honorarios. Usarla como está sería guardar datos de un medio de pago que no se usa.
-3. **El diseño correcto se conoce recién con el primer cobro.** ¿Mensual o anual? ¿Se guarda el comprobante? ¿Se emite boleta por cada uno? Adivinar eso ahora garantiza rehacerlo después.
+1. **Hay 0 clientes pagando.** Construir el módulo de cobros antes de cobrarle al primero es expandir sin cerrar.
+2. **La tabla está diseñada para Flow** y hoy el cobro es transferencia.
+3. **El diseño correcto se conoce recién con el primer cobro.**
 
-**Qué se hace mientras tanto:** el primer pago se registra donde ya vive la plata del negocio, en `crm/pipeline.md` y en la bitácora. Con `premium_desde` y `premium_hasta` ya se sabe desde y hasta cuándo está pagado un plan, que es lo que la ficha necesita.
+**Qué se hace mientras tanto:** el primer pago se registra donde ya vive la plata del negocio, en `crm/pipeline.md` y en la bitácora.
 
-**Cuándo se retoma:** cuando entre el primer pago. Ahí la tabla se adapta al cobro real — `pagado_en`, `medio`, `nota`, y fuera los campos de Flow — y se agrega la pantalla para registrarlo.
+**Cuándo se retoma:** cuando entre el primer pago.
 
 ## Decisiones de producto que condicionan la arquitectura
 
-### 18. Premium hoy son dos cosas
-WhatsApp y salir destacado. Las estadísticas quedaron gratis a propósito (2026-09-12): son la prueba con la que se vende. Si algún día WhatsApp pasa a ser gratis, Premium queda sin contenido hasta que existan productos (LY-009) y ofertas de pago (LY-012).
+### 16. Premium hoy son dos cosas
 
-### 19. El popup de altas compite con los CTA
-El popup "Registra tu negocio" aparece también sobre las fichas y tapa la pantalla en móvil, justo donde ahora están los botones de contacto. No se tocó: es la palanca de altas y la decisión es comercial. Si se saca de las fichas, hay que mover también el denominador del embudo, que comparte la misma lista de rutas.
+WhatsApp y salir destacado. Las estadísticas quedaron gratis a propósito (2026-09-12).
 
----
+### 17. El popup de altas compite con los CTA
 
-## Resueltas
+El popup "Registra tu negocio" aparece también sobre las fichas y tapa la pantalla en móvil. La decisión comercial se mantiene hasta tener datos del piloto.
 
-| Fecha | Decisión |
-|---|---|
-| 2026-09-11 | `estadisticas_diarias`: producción usa la definición del repo. El SQL base quedó obsoleto |
-| 2026-09-11 | No se renombra ninguna columna: el modelo del plan se adapta al real |
-| 2026-09-11 | Los datos viejos mal formateados no se tocan al normalizar contactos; se corrigen al guardar (y en LY-033) |
-| 2026-09-12 | El plan vigente se decide en un solo archivo, y un Premium vencido baja al instante sin esperar al cron |
-| 2026-09-12 | Las estadísticas quedan gratis para los dos planes, y WhatsApp no se regala al Básico |
-| 2026-09-12 | El panel muestra el plan **guardado**; el resto del sitio usa el **vigente** |
-| 2026-09-12 | El tracking exige navegador real, mismo origen y un tope por minuto en Postgres. La clave del límite es un hash con sal, no la IP |
-| 2026-09-12 | La IP de quien reporta **no se guarda**. El límite antispam no la necesita almacenada |
-| 2026-09-12 | Se guarda `premium_desde`, escrito solo cuando el plan sube. Paso previo a cobrar por periodo |
-| 2026-09-12 | El popup de altas **se queda** en las fichas hasta tener datos del piloto (cuántos lo ven contra cuántas acciones se pierden) |
-| 2026-09-12 | `eventos_negocio` es la fuente de verdad de la analítica; los contadores diarios pasan a ser un resumen derivado de ella |
-| 2026-09-12 | "Visitante único" significa **una sesión de navegador**, no una persona. Sin cookie persistente ni IP |
-| 2026-09-12 | La vista se cuenta en el navegador, no en el servidor. Hay menos vistas que antes y son más reales: no se comparan con agosto |
-| 2026-09-12 | La cadena de medición UTM queda verificada de punta a punta. El `vista` que no salía era artefacto de probar con la pestaña oculta: los datos reales muestran 7 vistas de 5 sesiones el mismo día |
+## Próximos bloques técnicos sugeridos
+
+Estos no se ejecutan automáticamente por aparecer aquí:
+
+1. Auditoría e integración de `logAudit`.
+2. Versionado real del esquema Supabase.
+3. Rate limiting distribuido para endpoints públicos.
+4. Estrategia de caché/service worker.
+5. Consolidación de tipos y pruebas de integración/UI.
+
+La prioridad concreta debe definirse en un bloque **ANALIZA/PROPÓN** antes de ejecutar código nuevo.
