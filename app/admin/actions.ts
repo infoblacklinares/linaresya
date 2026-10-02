@@ -34,6 +34,7 @@ type NegocioParaAprobar = {
   slug: string;
   email: string | null;
   activo: boolean;
+  verificado: boolean;
   categoria: {
     nombre: string;
     slug: string;
@@ -298,7 +299,6 @@ async function cambiarPlanNegocio(
   }
 }
 
-/** Premium por 30 dias, en un clic, sin escribir la fecha a mano. */
 export async function activarPremium30Dias(formData: FormData): Promise<void> {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
@@ -306,7 +306,6 @@ export async function activarPremium30Dias(formData: FormData): Promise<void> {
   await cambiarPlanNegocio(id, "premium", vencimientoEnDias(30));
 }
 
-/** Vuelve el negocio al plan gratis. La ficha sigue publicada. */
 export async function quitarPremium(formData: FormData): Promise<void> {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
@@ -395,7 +394,6 @@ export async function aprobarResena(formData: FormData): Promise<void> {
       if (slug && catSlug) {
         revalidatePath(`/${catSlug}/${slug}`);
       }
-      // Notificar al dueño del negocio si tiene email registrado.
       if (email && typeof email === "string" && slug && catSlug) {
         const resenaData = data as {
           autor_nombre: string;
@@ -420,14 +418,11 @@ export async function rechazarResena(formData: FormData): Promise<void> {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
   if (!id) return;
-  // Borramos directo: rechazar = no la queremos en la tabla.
   const { data: eliminada, error } = await supabaseAdmin.from("resenas").delete().eq("id", id).select("id, negocio_id, autor_nombre, estrellas").maybeSingle();
   if (error) throw new Error(`No se pudo rechazar la reseña: ${error.message}`);
   await logAuditServer({ action: "DELETE", entityType: "resenas", entityId: id, before: (eliminada as Record<string, unknown> | null) ?? {}, after: {}, reason: "Rechazo de reseña" });
   revalidatePath("/admin/resenas");
 }
-
-// ===== REPORTES =====
 
 export async function resolverReporte(formData: FormData): Promise<void> {
   await requireAdmin();
@@ -465,7 +460,6 @@ export async function toggleVecinoVerificado(formData: FormData): Promise<void> 
   const nuevo = formData.get("nuevo_estado") === "true";
   if (!id) return;
 
-  // Actualizamos el flag y revalidamos la ficha publica si conocemos su slug.
   const { data } = await supabaseAdmin
     .from("resenas")
     .select(
@@ -500,20 +494,6 @@ export async function toggleVecinoVerificado(formData: FormData): Promise<void> 
   }
 }
 
-// =============================================================================
-// Resultados reportados por el negocio (LY-028)
-// =============================================================================
-
-/**
- * Guarda lo que el negocio dijo que le llego ese mes.
- *
- * Es un dato **reportado**: lo cuenta el duenno, no lo mide el sitio. Se guarda
- * aparte de las estadisticas justamente para que nadie los mezcle. Un solo
- * reporte por negocio y mes: volver a preguntar corrige el anterior.
- *
- * Dejar un campo vacio guarda `null`, que significa "no supo decirme", y no es
- * lo mismo que cero. Con cero se puede promediar; con null hay que preguntar.
- */
 export async function guardarResultadoNegocio(formData: FormData): Promise<void> {
   await requireAdmin();
 
@@ -532,8 +512,6 @@ export async function guardarResultadoNegocio(formData: FormData): Promise<void>
     .eq("periodo", periodo)
     .maybeSingle();
 
-  // Un reporte sin ningun dato no es un reporte: seria una fila vacia que
-  // despues se lee como "le fue mal".
   if (consultas === null && clientes === null && nota === null) return;
 
   const { error } = await supabaseAdmin
@@ -566,7 +544,6 @@ export async function guardarResultadoNegocio(formData: FormData): Promise<void>
   revalidatePath("/admin/resultados");
 }
 
-/** Borra un reporte mal tomado. No toca ninguna estadistica del sitio. */
 export async function borrarResultadoNegocio(formData: FormData): Promise<void> {
   await requireAdmin();
 
@@ -606,17 +583,6 @@ export async function borrarResultadoNegocio(formData: FormData): Promise<void> 
   revalidatePath("/admin/resultados");
 }
 
-/**
- * Abre WhatsApp con el pedido de resultados ya escrito (LY-028).
- *
- * De 164 negocios, 13 tienen correo: el resto los cargo Willson desde datos
- * publicos y no hay a quien escribirle por mail. Para esos, el cron no sirve y
- * la alternativa real es WhatsApp. Este boton genera el link de una vez y
- * entrega la conversacion lista: un toque, sin redactar y sin copiar nada.
- *
- * El token se crea recien al apretar, no para los 164 de antemano: un link que
- * nadie va a usar es un link de mas dando vueltas.
- */
 export async function pedirResultadoPorWhatsApp(formData: FormData): Promise<void> {
   await requireAdmin();
 
@@ -645,8 +611,6 @@ export async function pedirResultadoPorWhatsApp(formData: FormData): Promise<voi
     `Queria saber como te fue${mes ? ` en ${mes}` : ""} con la gente que llego por el ` +
     `directorio. Son dos preguntas, te tomas 30 segundos: ${linkUrl}`;
 
-  // El WhatsApp cargado manda; si no hay, se intenta con el telefono, que en
-  // muchas fichas es el mismo celular.
   const destino =
     whatsAppLink(negocio.whatsapp, mensaje) ?? whatsAppLink(negocio.telefono, mensaje);
   if (!destino) return;
