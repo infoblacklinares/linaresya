@@ -370,10 +370,12 @@ export async function aprobarResena(formData: FormData): Promise<void> {
     .eq("id", id)
     .single();
 
-  await supabaseAdmin
+  const { error: updateError } = await supabaseAdmin
     .from("resenas")
     .update({ aprobada: true })
     .eq("id", id);
+  if (updateError) throw new Error(`No se pudo aprobar la reseña: ${updateError.message}`);
+  await logAuditServer({ action: "UPDATE", entityType: "resenas", entityId: id, before: { aprobada: false }, after: { aprobada: true }, reason: "Aprobación de reseña" });
 
   revalidatePath("/admin/resenas");
 
@@ -419,7 +421,9 @@ export async function rechazarResena(formData: FormData): Promise<void> {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
   // Borramos directo: rechazar = no la queremos en la tabla.
-  await supabaseAdmin.from("resenas").delete().eq("id", id);
+  const { data: eliminada, error } = await supabaseAdmin.from("resenas").delete().eq("id", id).select("id, negocio_id, autor_nombre, estrellas").maybeSingle();
+  if (error) throw new Error(`No se pudo rechazar la reseña: ${error.message}`);
+  await logAuditServer({ action: "DELETE", entityType: "resenas", entityId: id, before: (eliminada as Record<string, unknown> | null) ?? {}, after: {}, reason: "Rechazo de reseña" });
   revalidatePath("/admin/resenas");
 }
 
@@ -430,13 +434,16 @@ export async function resolverReporte(formData: FormData): Promise<void> {
   const id = String(formData.get("id") ?? "");
   const nuevo = formData.get("nuevo_estado") === "true";
   if (!id) return;
-  await supabaseAdmin
+  const { data: antes } = await supabaseAdmin.from("reportes").select("resuelto, resuelto_en").eq("id", id).maybeSingle();
+  const { error } = await supabaseAdmin
     .from("reportes")
     .update({
       resuelto: nuevo,
       resuelto_en: nuevo ? new Date().toISOString() : null,
     })
     .eq("id", id);
+  if (error) throw new Error(`No se pudo actualizar el reporte: ${error.message}`);
+  await logAuditServer({ action: "UPDATE", entityType: "reportes", entityId: id, before: (antes as Record<string, unknown> | null) ?? {}, after: { resuelto: nuevo, resuelto_en: nuevo ? "now" : null }, reason: nuevo ? "Resolución de reporte" : "Reapertura de reporte" });
   revalidatePath("/admin/reportes");
   revalidatePath("/admin");
 }
@@ -445,7 +452,9 @@ export async function eliminarReporte(formData: FormData): Promise<void> {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
   if (!id) return;
-  await supabaseAdmin.from("reportes").delete().eq("id", id);
+  const { data: eliminado, error } = await supabaseAdmin.from("reportes").delete().eq("id", id).select("id, negocio_id, resuelto").maybeSingle();
+  if (error) throw new Error(`No se pudo eliminar el reporte: ${error.message}`);
+  await logAuditServer({ action: "DELETE", entityType: "reportes", entityId: id, before: (eliminado as Record<string, unknown> | null) ?? {}, after: {}, reason: "Eliminación de reporte" });
   revalidatePath("/admin/reportes");
   revalidatePath("/admin");
 }
@@ -465,10 +474,13 @@ export async function toggleVecinoVerificado(formData: FormData): Promise<void> 
     .eq("id", id)
     .single();
 
-  await supabaseAdmin
+  const { data: antes } = await supabaseAdmin.from("resenas").select("vecino_verificado").eq("id", id).maybeSingle();
+  const { error } = await supabaseAdmin
     .from("resenas")
     .update({ vecino_verificado: nuevo })
     .eq("id", id);
+  if (error) throw new Error(`No se pudo actualizar la verificación del vecino: ${error.message}`);
+  await logAuditServer({ action: "UPDATE", entityType: "resenas", entityId: id, before: { vecino_verificado: (antes as { vecino_verificado?: unknown } | null)?.vecino_verificado ?? null }, after: { vecino_verificado: nuevo }, reason: nuevo ? "Marcar vecino verificado" : "Quitar verificación de vecino" });
 
   revalidatePath("/admin/resenas");
 
