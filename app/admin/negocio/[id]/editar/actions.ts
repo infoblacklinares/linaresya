@@ -6,6 +6,7 @@ import { randomBytes } from "crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { deleteFotosFromStorage } from "@/lib/storage";
+import { logAuditServer } from "@/lib/audit-server";
 import { normalizarInstagram } from "@/lib/instagram";
 import {
   normalizarFacebook,
@@ -144,7 +145,7 @@ export async function updateNegocio(
   // Snapshot de foto_portada actual para comparar y limpiar Storage si cambia
   const { data: antesNeg } = await supabaseAdmin
     .from("negocios")
-    .select("foto_portada, plan")
+    .select("activo, verificado, plan, premium_desde, premium_hasta, nombre, categoria_id, descripcion, telefono, whatsapp, email, sitio_web, instagram, facebook, direccion, lat, lng, a_domicilio, zona_cobertura, disponibilidad, foto_portada")
     .eq("id", id)
     .maybeSingle();
   const planAnterior = String(
@@ -206,6 +207,21 @@ export async function updateNegocio(
       error: `Error al guardar: ${error.message}`,
     };
   }
+
+  const { data: despuesNeg } = await supabaseAdmin
+    .from("negocios")
+    .select("activo, verificado, plan, premium_desde, premium_hasta, nombre, categoria_id, descripcion, telefono, whatsapp, email, sitio_web, instagram, facebook, direccion, lat, lng, a_domicilio, zona_cobertura, disponibilidad, foto_portada")
+    .eq("id", id)
+    .maybeSingle();
+
+  await logAuditServer({
+    action: "UPDATE",
+    entityType: "negocios",
+    entityId: id,
+    before: (antesNeg as Record<string, unknown> | null) ?? {},
+    after: (despuesNeg as Record<string, unknown> | null) ?? {},
+    reason: "Edición administrativa de ficha",
+  });
 
   // Limpiar Storage si la portada cambio (la URL nueva es distinta y no nula)
   const portadaNueva = (update as { foto_portada?: string | null }).foto_portada ?? null;
