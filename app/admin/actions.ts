@@ -45,7 +45,7 @@ async function fetchNegocioParaAprobar(id: string): Promise<NegocioParaAprobar |
   const { data } = await supabaseAdmin
     .from("negocios")
     .select(
-      "nombre, slug, email, activo, categorias:categoria_id(nombre, slug, emoji)",
+      "nombre, slug, email, activo, verificado, categorias:categoria_id(nombre, slug, emoji)",
     )
     .eq("id", id)
     .single();
@@ -67,6 +67,7 @@ async function fetchNegocioParaAprobar(id: string): Promise<NegocioParaAprobar |
     slug: String((data as { slug?: unknown }).slug ?? ""),
     email: ((data as { email?: unknown }).email as string | null) ?? null,
     activo: Boolean((data as { activo?: unknown }).activo),
+    verificado: Boolean((data as { verificado?: unknown }).verificado),
     categoria,
   };
 }
@@ -175,7 +176,7 @@ export async function verificarNegocio(formData: FormData): Promise<void> {
   revalidatePath("/admin/verificacion");
   revalidatePath("/");
   if (antes) await notificarSiCorresponde(antes, id, true);
-  await logAuditServer({ action: "UPDATE", entityType: "negocios", entityId: id, before: { activo: antes?.activo ?? null, verificado: false }, after: { activo: true, verificado: true }, reason: "Verificación de ficha" });
+  await logAuditServer({ action: "UPDATE", entityType: "negocios", entityId: id, before: { activo: antes?.activo ?? null, verificado: antes?.verificado ?? null }, after: { activo: true, verificado: true }, reason: "Verificación de ficha" });
 }
 
 export async function desactivarNegocio(formData: FormData): Promise<void> {
@@ -207,7 +208,7 @@ async function cambiarPlanNegocio(
   const { data: antesRaw } = await supabaseAdmin
     .from("negocios")
     .select(
-      "nombre, slug, email, whatsapp, plan, categorias:categoria_id(nombre, slug, emoji)",
+      "nombre, slug, email, whatsapp, plan, premium_desde, premium_hasta, categorias:categoria_id(nombre, slug, emoji)",
     )
     .eq("id", id)
     .maybeSingle();
