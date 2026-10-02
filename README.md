@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LinaresYa
 
-## Getting Started
+Directorio digital de negocios de Linares, construido con Next.js y Supabase.
 
-First, run the development server:
+## Estado del proyecto
+
+**Corte: 2026-10-02**
+
+La rama principal contiene la implementación operativa actual del directorio y del panel administrativo. La validación automática ejecuta tests y build.
+
+Para el estado técnico y los pendientes reales, consultar:
+
+- `docs/estado-actual.md`
+- `docs/arquitectura/decisiones-abiertas.md`
+
+## Desarrollo local
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Para probar desde otro dispositivo en la misma WiFi:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev:host
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Validación
 
-## Learn More
+```bash
+npm test
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Variables de entorno
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Copiar `.env.example` como `.env.local` y completar los valores reales.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Las claves de Supabase actuales son:
 
-## Deploy on Vercel
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_SECRET_KEY` (solo servidor/CI)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Nunca expongas la Secret Key en código, navegador, capturas públicas o documentación.
