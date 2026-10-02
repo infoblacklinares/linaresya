@@ -13,6 +13,8 @@ import {
 import { deleteFotosFromStorage } from "@/lib/storage";
 import { vencimientoEnDias } from "@/lib/planes";
 import { whatsAppLink } from "@/lib/contacto";
+import { logAuditServer } from "@/lib/audit-server";
+
 import {
   contarReportado,
   esPeriodoValido,
@@ -105,7 +107,9 @@ export async function aprobarNegocio(formData: FormData): Promise<void> {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
   const antes = await fetchNegocioParaAprobar(id);
-  await supabaseAdmin.from("negocios").update({ activo: true }).eq("id", id);
+  const { error: updateError } = await supabaseAdmin.from("negocios").update({ activo: true }).eq("id", id);
+  if (updateError) throw new Error(`No se pudo aprobar la ficha: ${updateError.message}`);
+  await logAuditServer({ action: "UPDATE", entityType: "negocios", entityId: id, before: { activo: antes?.activo ?? null }, after: { activo: true }, reason: "Aprobación de ficha" });
   revalidatePath("/admin");
   revalidatePath("/");
   if (antes) await notificarSiCorresponde(antes, id, false);
@@ -171,13 +175,17 @@ export async function verificarNegocio(formData: FormData): Promise<void> {
   revalidatePath("/admin/verificacion");
   revalidatePath("/");
   if (antes) await notificarSiCorresponde(antes, id, true);
+  await logAuditServer({ action: "UPDATE", entityType: "negocios", entityId: id, before: { activo: antes?.activo ?? null, verificado: false }, after: { activo: true, verificado: true }, reason: "Verificación de ficha" });
 }
 
 export async function desactivarNegocio(formData: FormData): Promise<void> {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
   if (!id) return;
-  await supabaseAdmin.from("negocios").update({ activo: false }).eq("id", id);
+  const { data: antes } = await supabaseAdmin.from("negocios").select("activo").eq("id", id).maybeSingle();
+  const { error } = await supabaseAdmin.from("negocios").update({ activo: false }).eq("id", id);
+  if (error) throw new Error(`No se pudo desactivar la ficha: ${error.message}`);
+  await logAuditServer({ action: "UPDATE", entityType: "negocios", entityId: id, before: { activo: (antes as { activo?: unknown } | null)?.activo ?? null }, after: { activo: false }, reason: "Desactivación de ficha" });
   revalidatePath("/admin");
   revalidatePath("/");
 }
@@ -235,6 +243,15 @@ async function cambiarPlanNegocio(
     console.error("[cambiarPlanNegocio] error:", error.message);
     return;
   }
+
+  await logAuditServer({
+    action: "UPDATE",
+    entityType: "negocios",
+    entityId: id,
+    before: { plan: antesRaw?.plan ?? null, premium_hasta: antesRaw?.premium_hasta ?? null, premium_desde: antesRaw?.premium_desde ?? null },
+    after: { plan, premium_hasta: premiumHasta, premium_desde: cambios.premium_desde ?? antesRaw?.premium_desde ?? null },
+    reason: plan === "premium" ? "Activación de Premium" : "Retiro de Premium",
+  });
 
   const antes = (antesRaw ?? null) as Record<string, unknown> | null;
   const catRaw = antes?.categorias;
@@ -305,7 +322,7 @@ export async function eliminarNegocio(formData: FormData): Promise<void> {
   const [{ data: negocio }, { data: fotos }] = await Promise.all([
     supabaseAdmin
       .from("negocios")
-      .select("foto_portada")
+      .select("nombre, slug, activo, verificado, plan, foto_portada")
       .eq("id", id)
       .maybeSingle(),
     supabaseAdmin.from("fotos").select("url").eq("negocio_id", id),
@@ -320,7 +337,9 @@ export async function eliminarNegocio(formData: FormData): Promise<void> {
   }
 
   // Borrar la fila (cascadea fotos por FK on delete cascade) y luego limpiar Storage
-  await supabaseAdmin.from("negocios").delete().eq("id", id);
+  const { data: eliminado, error: deleteError } = await supabaseAdmin.from("negocios").delete().eq("id", id).select("id, nombre, slug, activo, verificado, plan").maybeSingle();
+  if (deleteError) throw new Error(`No se pudo eliminar la ficha: ${deleteError.message}`);
+  await logAuditServer({ action: "DELETE", entityType: "negocios", entityId: id, before: (eliminado as Record<string, unknown> | null) ?? {}, after: {}, reason: "Eliminación de ficha" });
   if (urls.length > 0) {
     await deleteFotosFromStorage(urls);
   }
