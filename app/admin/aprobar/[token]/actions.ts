@@ -5,6 +5,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import { verificarAccionAdmin } from "@/lib/admin-link";
 import { generarTokenDueno } from "@/lib/dueno-token";
 import { sendOwnerAprobacionNotification } from "@/lib/email";
+import { logAuditServer } from "@/lib/audit-server";
 
 export type AprobarPorLinkState = { ok: boolean; error?: string };
 
@@ -48,6 +49,16 @@ export async function aprobarPorLink(
   if (error) {
     return { ok: false, error: "No pudimos aprobarlo. Intentá desde el panel." };
   }
+
+  await logAuditServer({
+    action: "UPDATE",
+    entityType: "negocios",
+    entityId: negocioId,
+    actorType: "signed_link",
+    before: { activo: Boolean((antes as { activo?: unknown }).activo) },
+    after: { activo: true },
+    reason: "Aprobación de ficha mediante link firmado",
+  });
 
   revalidatePath("/admin");
   revalidatePath("/");
