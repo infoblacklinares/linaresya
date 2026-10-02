@@ -59,11 +59,11 @@ La definición base vive fuera del repo (`linaresya_database_final.sql`) y está
 
 **Decisión pendiente:** volcar el esquema real al repo y adoptar migraciones numeradas. Requiere acceso de lectura al catálogo o un `pg_dump`.
 
-### 3. No queda rastro de quién hizo qué
+### 3. Auditoría administrativa — RESUELTO 2026-10-02
 
-`lib/audit.ts` define `logAudit()` y existe la tabla `audit_logs`, pero ninguna acción lo llama.
+La auditoría administrativa quedó integrada mediante `lib/audit-server.ts`. Las acciones sensibles de negocios, reseñas, reportes y resultados reportados registran cambios relevantes; la aprobación mediante link firmado registra `actor_type = signed_link`.
 
-**Decisión pendiente:** integrar `logAudit` en las acciones sensibles del panel y revisar antes la migración `audit_logs.sql`, incluida su definición de integridad referencial.
+La migración segura es `supabase/migrations/20261002_audit_logs_v2.sql`. **Pendiente únicamente ejecutar esa migración en Supabase** y, en un bloque posterior, definir la visualización administrativa del historial.
 
 ### 4. La revalidación de caché depende de que alguien se acuerde
 
@@ -151,7 +151,7 @@ El popup "Registra tu negocio" aparece también sobre las fichas y tapa la panta
 
 Estos no se ejecutan automáticamente por aparecer aquí:
 
-1. Auditoría e integración de `logAudit`.
+1. Ejecutar y verificar la migración de auditoría `20261002_audit_logs_v2.sql` en Supabase.
 2. Versionado real del esquema Supabase.
 3. Rate limiting distribuido para endpoints públicos.
 4. Estrategia de caché/service worker.
