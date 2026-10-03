@@ -99,7 +99,7 @@ export default function CercaDeMi({ onResultados, activo }: CercaDeMiProps) {
   }
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col items-start gap-1">
       <button
         type="button"
         onClick={() => (estado === "activo" ? desactivar() : activar())}
