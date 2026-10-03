@@ -378,10 +378,20 @@ export default async function BuscarPage({
       )}
 
       <section className="pt-4 pb-10">
-        <div className="px-4 mb-3 flex items-center justify-between gap-2">
-          <p className="text-xs font-semibold text-muted-foreground">
-            {itemsOrdenados.length} resultado{itemsOrdenados.length === 1 ? "" : "s"}
-          </p>
+        <div className="px-4 mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div className="min-w-0">
+            <h2 className="text-base font-bold tracking-tight">
+              {q ? `Resultados para "${q}"` : categoriaActiva ? `${categoriaActiva.emoji} ${categoriaActiva.nombre}` : "Negocios en Linares"}
+            </h2>
+            <p className="mt-0.5 text-xs font-semibold text-muted-foreground">
+              {itemsOrdenados.length} resultado{itemsOrdenados.length === 1 ? "" : "s"}
+              {abierto ? " · Abiertos ahora" : ""}
+              {domicilio ? " · A domicilio" : ""}
+              {verificado ? " · Verificados" : ""}
+              {premium ? " · Premium" : ""}
+              {tipo === "independiente" ? " · Independientes" : ""}
+            </p>
+          </div>
           <div className="flex gap-1.5 shrink-0">
             <Link
               href={urlWith({ orden: null })}
