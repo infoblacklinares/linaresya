@@ -455,6 +455,9 @@ export default async function BuscarPage({
             verificado={verificado}
             domicilio={domicilio}
             abierto={abierto}
+            orden={orden}
+            urlRelevancia={urlWith({ orden: null })}
+            urlRating={urlWith({ orden: "rating" })}
           />
         )}
 
