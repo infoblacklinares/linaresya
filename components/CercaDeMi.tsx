@@ -1,37 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { distanciaKm, formatoDistancia } from "@/lib/distancia";
+import { useState } from "react";
 
-/**
- * Boton "Cerca de mi": pide la ubicacion al navegador y reordena los
- * resultados por distancia, escribiendo el badge de distancia en cada card.
- *
- * PRIVACIDAD: la ubicacion se usa solo en el navegador. No se envia a
- * ningun servidor ni se guarda. Al recargar, se pierde.
- *
- * Cada card debe tener data-lat / data-lng y un slot [data-distancia].
- */
-export default function CercaDeMi({ contenedorId }: { contenedorId: string }) {
-  const [estado, setEstado] = useState<"idle" | "cargando" | "activo" | "error">("idle");
-  const [mensaje, setMensaje] = useState<string>("");
+type CercaDeMiResult = {
+  negocioId: string;
+  distanciaKm: number;
+};
 
-  // Al desactivar, restaurar el orden original guardado en data-orden
-  useEffect(() => {
-    if (estado !== "idle") return;
-    const cont = document.getElementById(contenedorId);
-    if (!cont) return;
-    const cards = [...cont.querySelectorAll<HTMLElement>("[data-lat]")];
-    if (!cards.length) return;
-    cards
-      .slice()
-      .sort((a, b) => Number(a.dataset.orden ?? 0) - Number(b.dataset.orden ?? 0))
-      .forEach((c) => {
-        cont.appendChild(c);
-        const slot = c.querySelector<HTMLElement>("[data-distancia]");
-        if (slot) { slot.textContent = ""; slot.classList.add("hidden"); }
-      });
-  }, [estado, contenedorId]);
+type CercaDeMiProps = {
+  onResultados: (resultados: CercaDeMiResult[]) => void;
+  activo: boolean;
+};
+
+export default function CercaDeMi({ onResultados, activo }: CercaDeMiProps) {
+  const [estado, setEstado] = useState<"idle" | "cargando" | "activo" | "error">(
+    activo ? "activo" : "idle",
+  );
+  const [mensaje, setMensaje] = useState("");
+
+  function desactivar() {
+    setEstado("idle");
+    setMensaje("");
+    onResultados([]);
+  }
 
   function activar() {
     if (!("geolocation" in navigator)) {
@@ -39,59 +30,55 @@ export default function CercaDeMi({ contenedorId }: { contenedorId: string }) {
       setMensaje("Tu navegador no permite ubicación.");
       return;
     }
+
     setEstado("cargando");
     setMensaje("");
+
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const yo = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        const cont = document.getElementById(contenedorId);
-        if (!cont) return;
-        const cards = [...cont.querySelectorAll<HTMLElement>("[data-lat]")];
+      async (pos) => {
+        try {
+          const response = await fetch("/api/cerca-de-mi", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              lat: pos.coords.latitude,
+              lng: pos.coords.longitude,
+              limite: 50,
+            }),
+          });
 
-        // Guardar el orden original la primera vez
-        cards.forEach((c, i) => {
-          if (c.dataset.orden === undefined) c.dataset.orden = String(i);
-        });
+          const data = (await response.json()) as {
+            negocios?: CercaDeMiResult[];
+            error?: string;
+          };
 
-        const conDistancia = cards.map((c) => {
-          const lat = parseFloat(c.dataset.lat ?? "");
-          const lng = parseFloat(c.dataset.lng ?? "");
-          const km = Number.isFinite(lat) && Number.isFinite(lng)
-            ? distanciaKm(yo, { lat, lng })
-            : Infinity;
-          return { el: c, km };
-        });
-
-        // Ordenar por distancia; los que no tienen coordenadas quedan al final
-        conDistancia.sort((a, b) => a.km - b.km);
-        conDistancia.forEach(({ el, km }) => {
-          cont.appendChild(el);
-          const slot = el.querySelector<HTMLElement>("[data-distancia]");
-          if (slot) {
-            if (Number.isFinite(km)) {
-              slot.textContent = `📍 a ${formatoDistancia(km)}`;
-              slot.classList.remove("hidden");
-            } else {
-              slot.textContent = "";
-              slot.classList.add("hidden");
-            }
+          if (!response.ok) {
+            throw new Error(data.error || "No pudimos buscar negocios cerca de ti.");
           }
-        });
 
-        const conCoord = conDistancia.filter((x) => Number.isFinite(x.km)).length;
+          const resultados = Array.isArray(data.negocios) ? data.negocios : [];
 
-        if (conCoord === 0) {
+          if (resultados.length === 0) {
+            setEstado("error");
+            setMensaje(
+              "No encontramos negocios cerca de ti. Puedes buscar por nombre o categoría.",
+            );
+            onResultados([]);
+            return;
+          }
+
+          setEstado("activo");
+          setMensaje(
+            resultados.length === 1
+              ? "1 negocio encontrado cerca de ti"
+              : `${resultados.length} negocios encontrados cerca de ti`,
+          );
+          onResultados(resultados);
+        } catch {
           setEstado("error");
-          setMensaje("No encontramos negocios con ubicación. Puedes buscar por nombre o categoría.");
-          return;
+          setMensaje("No pudimos buscar negocios cerca de ti.");
+          onResultados([]);
         }
-
-        setEstado("activo");
-        setMensaje(
-          conCoord === 1
-            ? "1 negocio encontrado cerca de ti"
-            : `${conCoord} negocios encontrados cerca de ti`,
-        );
       },
       (err) => {
         setEstado("error");
@@ -100,6 +87,7 @@ export default function CercaDeMi({ contenedorId }: { contenedorId: string }) {
             ? "Permiso denegado. Actívalo en el candado de la barra de direcciones."
             : "No pudimos obtener tu ubicación.",
         );
+        onResultados([]);
       },
       { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
     );
@@ -109,7 +97,7 @@ export default function CercaDeMi({ contenedorId }: { contenedorId: string }) {
     <div className="flex flex-col gap-1">
       <button
         type="button"
-        onClick={() => (estado === "activo" ? setEstado("idle") : activar())}
+        onClick={() => (estado === "activo" ? desactivar() : activar())}
         disabled={estado === "cargando"}
         className={`rounded-full text-xs font-semibold px-3 py-1.5 transition disabled:opacity-60 ${
           estado === "activo"
@@ -117,12 +105,18 @@ export default function CercaDeMi({ contenedorId }: { contenedorId: string }) {
             : "bg-secondary text-foreground hover:bg-muted"
         }`}
       >
-        {estado === "cargando" ? "Ubicando…" : estado === "activo" ? "📍 Cerca de mí ✓" : "📍 Cerca de mí"}
+        {estado === "cargando"
+          ? "Ubicando…"
+          : estado === "activo"
+            ? "📍 Cerca de mí ✓"
+            : "📍 Cerca de mí"}
       </button>
       {mensaje && (
-        <span className={`text-[10px] px-1 ${
-          estado === "error" ? "text-rose-600" : "text-muted-foreground"
-        }`}>
+        <span
+          className={`text-[10px] px-1 ${
+            estado === "error" ? "text-rose-600" : "text-muted-foreground"
+          }`}
+        >
           {mensaje}
         </span>
       )}
