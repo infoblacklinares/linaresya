@@ -280,9 +280,9 @@ export default async function NegocioDetalle({
         : null;
 
   const accionesContacto = [
-    wa && { href: wa, evento: "whatsapp" as const, external: true, icon: <WhatsAppIcon />, label: "WhatsApp" },
-    tel && { href: tel, evento: "telefono" as const, external: false, icon: <PhoneIcon />, label: "Llamar" },
-    maps && { href: maps, evento: "maps" as const, external: true, icon: <MapIcon />, label: "Llegar" },
+    wa ? { href: wa, evento: "whatsapp" as const, external: true, icon: <WhatsAppIcon />, label: "WhatsApp" } : null,
+    tel ? { href: tel, evento: "telefono" as const, external: false, icon: <PhoneIcon />, label: "Llamar" } : null,
+    maps ? { href: maps, evento: "maps" as const, external: true, icon: <MapIcon />, label: "Llegar" } : null,
   ].filter((action): action is NonNullable<typeof action> => action !== null);
 
   const accionesSecundarias = accionPrimaria
