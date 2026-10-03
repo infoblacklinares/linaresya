@@ -267,7 +267,15 @@ export default async function BuscarPage({
 
   const hayFiltros =
     Boolean(q) || Boolean(categoriaSlug) || Boolean(tipo) || premium || verificado || abierto || domicilio;
-  const ratings = Object.fromEntries(ratingsMap.entries());
+  const ratings = Object.fromEntries(
+    Array.from(ratingsMap.entries()).map(([id, rating]) => [
+      id,
+      {
+        avg: rating.count > 0 ? rating.sum / rating.count : 0,
+        count: rating.count,
+      },
+    ]),
+  );
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-full lg:px-8 xl:px-14">
