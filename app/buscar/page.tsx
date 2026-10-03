@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { diaHoySantiago, horaAhoraSantiago, dentroDeRango } from "@/lib/horarios";
 import AnimatedCard from "@/components/AnimatedCard";
-import CercaDeMi from "@/components/CercaDeMi";
+import ResultadosBusqueda from "@/components/ResultadosBusqueda";
 import { whatsAppLink } from "@/lib/contacto";
 import { canUseFeature, esPremium } from "@/lib/planes";
 
@@ -267,6 +267,7 @@ export default async function BuscarPage({
 
   const hayFiltros =
     Boolean(q) || Boolean(categoriaSlug) || Boolean(tipo) || premium || verificado || abierto || domicilio;
+  const ratings = Object.fromEntries(ratingsMap.entries());
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-full lg:px-8 xl:px-14">
@@ -308,7 +309,6 @@ export default async function BuscarPage({
         </div>
 
         <div className="px-4 pb-3 flex items-start gap-2 overflow-x-auto no-scrollbar">
-          <CercaDeMi contenedorId="resultados-buscar" />
           <FilterPill href={urlWith({ abierto: abierto ? null : "1" })} active={abierto}>
             Abierto ahora
           </FilterPill>
@@ -378,36 +378,6 @@ export default async function BuscarPage({
       )}
 
       <section className="pt-4 pb-10">
-        <div className="px-4 mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div className="min-w-0">
-            <h2 className="text-base font-bold tracking-tight">
-              {q ? `Resultados para "${q}"` : categoriaActiva ? `${categoriaActiva.emoji} ${categoriaActiva.nombre}` : "Negocios en Linares"}
-            </h2>
-            <p className="mt-0.5 text-xs font-semibold text-muted-foreground">
-              {itemsOrdenados.length} resultado{itemsOrdenados.length === 1 ? "" : "s"}
-              {abierto ? " · Abiertos ahora" : ""}
-              {domicilio ? " · A domicilio" : ""}
-              {verificado ? " · Verificados" : ""}
-              {premium ? " · Premium" : ""}
-              {tipo === "independiente" ? " · Independientes" : ""}
-            </p>
-          </div>
-          <div className="flex gap-1.5 shrink-0">
-            <Link
-              href={urlWith({ orden: null })}
-              className={`rounded-full text-[11px] font-semibold px-3 py-1 transition ${orden === "relevancia" ? "bg-foreground text-background" : "bg-secondary text-foreground hover:bg-muted"}`}
-            >
-              Relevancia
-            </Link>
-            <Link
-              href={urlWith({ orden: "rating" })}
-              className={`rounded-full text-[11px] font-semibold px-3 py-1 transition ${orden === "rating" ? "bg-foreground text-background" : "bg-secondary text-foreground hover:bg-muted"}`}
-            >
-              ★ Mejor valorados
-            </Link>
-          </div>
-        </div>
-
         {itemsOrdenados.length === 0 ? (
           <div className="mx-4 rounded-3xl border border-dashed border-border p-8 sm:p-10 text-center">
             <div className="text-5xl mb-3">{"\u{1F50D}"}</div>
@@ -436,7 +406,6 @@ export default async function BuscarPage({
               </Link>
             </div>
 
-            {/* Sugerir negocio */}
             <div className="mt-6 pt-6 border-t border-border">
               <p className="text-sm text-muted-foreground mb-3">
                 ¿Conocés un negocio que debería estar acá?
@@ -475,27 +444,20 @@ export default async function BuscarPage({
             )}
           </div>
         ) : (
-          <div id="resultados-buscar" className="px-4 grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {itemsOrdenados.map((n, i) => {
-              const rData = ratingsMap.get(n.id);
-              const rating = rData && rData.count > 0
-                ? { avg: rData.sum / rData.count, count: rData.count }
-                : null;
-              return (
-                <AnimatedCard
-                  key={n.id}
-                  index={i}
-                  data-lat={n.lat ?? undefined}
-                  data-lng={n.lng ?? undefined}
-                >
-                  <NegocioCard n={n} isOpen={resultOpenIds.includes(n.id)} rating={rating} />
-                </AnimatedCard>
-              );
-            })}
-          </div>
+          <ResultadosBusqueda
+            items={itemsOrdenados}
+            ratings={ratings}
+            openIds={resultOpenIds}
+            q={q}
+            categoriaId={categoriaActiva?.id}
+            tipo={tipo}
+            premium={premium}
+            verificado={verificado}
+            domicilio={domicilio}
+            abierto={abierto}
+          />
         )}
 
-        {/* Pie "¿No está lo que buscas?" — se muestra cuando hay resultados pero con búsqueda activa */}
         {itemsOrdenados.length > 0 && hayFiltros && (
           <div className="mx-4 mt-4 mb-2 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl bg-secondary/50 px-5 py-4">
             <p className="text-sm text-muted-foreground">
