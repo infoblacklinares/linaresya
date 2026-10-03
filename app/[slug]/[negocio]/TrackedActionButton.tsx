@@ -32,7 +32,7 @@ export default function TrackedActionButton({
 
   const cls = `flex flex-col items-center justify-center gap-1 rounded-2xl py-3 text-xs font-semibold transition ${
     primary
-      ? "bg-emerald-500 text-white hover:bg-emerald-600 py-4 text-sm shadow-sm"
+      ? "bg-[#2B6E80] text-white hover:bg-[#235b6a] py-4 text-sm shadow-sm"
       : "bg-foreground text-background hover:opacity-90"
   }`;
 
