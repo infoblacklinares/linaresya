@@ -40,6 +40,7 @@ export default function CercaDeMi({ contenedorId }: { contenedorId: string }) {
       return;
     }
     setEstado("cargando");
+    setMensaje("");
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const yo = { lat: pos.coords.latitude, lng: pos.coords.longitude };
@@ -78,8 +79,19 @@ export default function CercaDeMi({ contenedorId }: { contenedorId: string }) {
         });
 
         const conCoord = conDistancia.filter((x) => Number.isFinite(x.km)).length;
+
+        if (conCoord === 0) {
+          setEstado("error");
+          setMensaje("No encontramos negocios con ubicación. Puedes buscar por nombre o categoría.");
+          return;
+        }
+
         setEstado("activo");
-        setMensaje(`${conCoord} negocios ordenados por cercanía`);
+        setMensaje(
+          conCoord === 1
+            ? "1 negocio encontrado cerca de ti"
+            : `${conCoord} negocios encontrados cerca de ti`,
+        );
       },
       (err) => {
         setEstado("error");
@@ -108,7 +120,9 @@ export default function CercaDeMi({ contenedorId }: { contenedorId: string }) {
         {estado === "cargando" ? "Ubicando…" : estado === "activo" ? "📍 Cerca de mí ✓" : "📍 Cerca de mí"}
       </button>
       {mensaje && (
-        <span className={`text-[10px] px-1 ${estado === "error" ? "text-rose-600" : "text-muted-foreground"}`}>
+        <span className={`text-[10px] px-1 ${
+          estado === "error" ? "text-rose-600" : "text-muted-foreground"
+        }`}>
           {mensaje}
         </span>
       )}
