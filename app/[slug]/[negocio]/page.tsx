@@ -279,6 +279,16 @@ export default async function NegocioDetalle({
         ? { href: maps, evento: "maps" as const, external: true, icon: <MapIcon />, label: "Llegar" }
         : null;
 
+  const accionesContacto = [
+    wa && { href: wa, evento: "whatsapp" as const, external: true, icon: <WhatsAppIcon />, label: "WhatsApp" },
+    tel && { href: tel, evento: "telefono" as const, external: false, icon: <PhoneIcon />, label: "Llamar" },
+    maps && { href: maps, evento: "maps" as const, external: true, icon: <MapIcon />, label: "Llegar" },
+  ].filter((action): action is NonNullable<typeof action> => action !== null && action !== false);
+
+  const accionesSecundarias = accionPrimaria
+    ? accionesContacto.filter((action) => action.evento !== accionPrimaria.evento)
+    : accionesContacto;
+
   const ratingPromedio =
     promedioResenas !== null ? promedioResenas.toFixed(1) : null;
 
@@ -708,17 +718,9 @@ export default async function NegocioDetalle({
               label={accionPrimaria.label}
               primary
             />
-            {[ 
-              wa && accionPrimaria.evento !== "whatsapp" ? { href: wa, evento: "whatsapp" as const, external: true, icon: <WhatsAppIcon />, label: "WhatsApp" } : null,
-              tel && accionPrimaria.evento !== "telefono" ? { href: tel, evento: "telefono" as const, external: false, icon: <PhoneIcon />, label: "Llamar" } : null,
-              maps && accionPrimaria.evento !== "maps" ? { href: maps, evento: "maps" as const, external: true, icon: <MapIcon />, label: "Llegar" } : null,
-            ].filter((action): action is NonNullable<typeof action> => action !== null).length > 0 && (
+            {accionesSecundarias.length > 0 && (
               <div className="mt-2 grid grid-cols-2 gap-2">
-                {[
-                  wa && accionPrimaria.evento !== "whatsapp" ? { href: wa, evento: "whatsapp" as const, external: true, icon: <WhatsAppIcon />, label: "WhatsApp" } : null,
-                  tel && accionPrimaria.evento !== "telefono" ? { href: tel, evento: "telefono" as const, external: false, icon: <PhoneIcon />, label: "Llamar" } : null,
-                  maps && accionPrimaria.evento !== "maps" ? { href: maps, evento: "maps" as const, external: true, icon: <MapIcon />, label: "Llegar" } : null,
-                ].filter((action): action is NonNullable<typeof action> => action !== null).map((action) => (
+                {accionesSecundarias.map((action) => (
                   <TrackedActionButton
                     key={action.evento}
                     href={action.href}
