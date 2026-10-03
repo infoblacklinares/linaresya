@@ -461,30 +461,6 @@ export default async function Home() {
       {/* Historias premium — estilo Instagram */}
       <StoriesBar historias={historias} />
 
-      {/* Filtros rápidos — estilo Uber Eats */}
-      <div className="flex gap-2 overflow-x-auto px-4 pt-4 pb-2 no-scrollbar">
-        {[
-          { label: "Todos",         icon: "🏠", href: "/buscar" },
-          { label: "Abierto ahora", icon: "🟢", href: "/buscar?abierto=1" },
-          { label: "Premium",       icon: "⭐", href: "/buscar?premium=1" },
-          { label: "Verificados",   icon: "✓",  href: "/buscar?verificado=1" },
-          { label: "A domicilio",   icon: "🛵", href: "/buscar?domicilio=1" },
-        ].map((f, i) => (
-          <Link
-            key={f.href}
-            href={f.href}
-            className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold transition flex items-center gap-1.5 ${
-              i === 0
-                ? "bg-[#1A1410] text-white shadow-sm"
-                : "border border-[#E8E4DE] bg-white text-[#1A1410] hover:border-[#1A1410]/30"
-            }`}
-          >
-            <span className="text-base leading-none">{f.icon}</span>
-            {f.label}
-          </Link>
-        ))}
-      </div>
-
       {/* Farmacia de turno — acceso rápido */}
       <div className="px-4 pt-4">
         <Link
@@ -495,23 +471,6 @@ export default async function Home() {
           <div className="flex-1 min-w-0">
             <p className="text-sm font-bold text-[#1A1410]">Farmacia de turno hoy</p>
             <p className="text-xs text-muted-foreground truncate">¿Cuál está abierta las 24 horas?</p>
-          </div>
-          <svg className="text-muted-foreground group-hover:text-[#2B6E80] transition shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-            <path d="m9 18 6-6-6-6" />
-          </svg>
-        </Link>
-      </div>
-
-      {/* Mapa de Linares — acceso rápido */}
-      <div className="px-4 pt-2">
-        <Link
-          href="/mapa"
-          className="flex items-center gap-3 rounded-2xl bg-white border border-[#E8E4DE] px-4 py-3 hover:border-[#2B6E80]/40 transition group"
-        >
-          <span className="h-10 w-10 rounded-xl bg-[#3D5A45]/10 flex items-center justify-center text-xl shrink-0">🗺️</span>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-[#1A1410]">Mapa de Linares</p>
-            <p className="text-xs text-muted-foreground truncate">Explora todos los negocios en el mapa</p>
           </div>
           <svg className="text-muted-foreground group-hover:text-[#2B6E80] transition shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
             <path d="m9 18 6-6-6-6" />
