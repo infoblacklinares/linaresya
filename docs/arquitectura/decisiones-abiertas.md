@@ -2,12 +2,12 @@
 
 Registro vivo. Cada punto es algo **verificado en el código o en producción**, no una sospecha. Si algo se resuelve, se marca acá con fecha y se deja escrito por qué.
 
-> **Estado actual:** 2026-10-02. La referencia rápida del proyecto está en `docs/estado-actual.md`. Los documentos históricos conservan el contexto de las etapas anteriores y no deben usarse por sí solos para determinar qué sigue pendiente.
+> **Estado actual:** 2026-10-03. La referencia rápida del proyecto está en `docs/estado-actual.md`. Los documentos históricos conservan el contexto de las etapas anteriores y no deben usarse por sí solos para determinar qué sigue pendiente.
 
 - **Creado:** 2026-09-12, al cerrar la Fase 1 del plan (LY-001 a LY-024) más LY-026 y LY-027.
 - **Regla:** ninguna de estas decisiones se toma sola mientras se programa. Las de negocio las toma Willson; las técnicas se proponen acá antes de tocar código.
 
-## Estado técnico cerrado al 2026-10-02
+## Estado técnico cerrado al 2026-10-03
 
 - Estado unificado de ficha integrado en Admin, Calidad y ficha individual.
 - Cola operativa de administración y reglas de prioridad integradas.
@@ -15,6 +15,8 @@ Registro vivo. Cada punto es algo **verificado en el código o en producción**,
 - CI de GitHub ejecuta tests y build; el último run revisado está exitoso.
 - Migración de claves Supabase completada en código y CI: Publishable para cliente y Secret para servidor/CI.
 - La documentación de variables de entorno y despliegue se mantiene alineada con esos nombres.
+- Auditoria administrativa validada en produccion el 2026-10-03: una edicion real genero registros en `audit_logs`.
+- La migracion `20261002_audit_logs_v2.sql` fue ejecutada y verificada en Supabase.
 - No hay issues abiertos registrados en el repositorio al momento del corte.
 
 ## Regla de migraciones (aprendida a golpes el 2026-09-12)
@@ -44,11 +46,6 @@ Toda migración se entrega **diciendo en qué orden va respecto del deploy**, y 
 
 **Cómo quedó:** tres puertas antes de contar — user-agent de navegador real, mismo origen, y límite por minuto en Postgres (no en memoria, que en Vercel no sirve). La clave del límite es un hash con sal, no la IP. Ver `docs/seguridad/proteger-tracking.md`. Migración corrida el 2026-09-12 y verificada en producción: a partir del evento 30 en un minuto la respuesta es `contado:false`.
 
-**Lo que decía cuando se abrió:**  
-**Qué pasa:** cualquiera puede inflar las métricas de cualquier negocio desde la consola del navegador. Ya hay evidencia real: los barridos de auditoría con `curl` del 11-sep sumaron 346 visitas falsas, porque el filtro de bots mira el user-agent y no reconoce `curl`.
-
-**Por qué importa:** esas cifras son el argumento de venta del Plan Estrella. Un número que no se puede defender no sirve para cobrar.
-
 **Pendiente que sigue vigente:** límites distribuidos para búsqueda, reseñas y reportes. El tracking ya no depende del `Map` en memoria.
 
 ## P1 — Antes de crecer
@@ -59,11 +56,13 @@ La definición base vive fuera del repo (`linaresya_database_final.sql`) y está
 
 **Decisión pendiente:** volcar el esquema real al repo y adoptar migraciones numeradas. Requiere acceso de lectura al catálogo o un `pg_dump`.
 
-### 3. Auditoría administrativa — RESUELTO 2026-10-02
+### 3. Auditoría administrativa — RESUELTO 2026-10-03
 
 La auditoría administrativa quedó integrada mediante `lib/audit-server.ts`. Las acciones sensibles de negocios, reseñas, reportes y resultados reportados registran cambios relevantes; la aprobación mediante link firmado registra `actor_type = signed_link`.
 
-La migración segura es `supabase/migrations/20261002_audit_logs_v2.sql`. **Pendiente únicamente ejecutar esa migración en Supabase** y, en un bloque posterior, definir la visualización administrativa del historial.
+La migración segura `supabase/migrations/20261002_audit_logs_v2.sql` fue ejecutada y verificada en Supabase. Una edición administrativa real en producción genero registros correctos en `audit_logs`.
+
+**Pendiente separado:** rotar la `SUPABASE_SECRET_KEY` anterior que fue expuesta durante el trabajo. No bloquea el funcionamiento actual, pero queda como saneamiento de seguridad.
 
 ### 4. La revalidación de caché depende de que alguien se acuerde
 
@@ -151,10 +150,9 @@ El popup "Registra tu negocio" aparece también sobre las fichas y tapa la panta
 
 Estos no se ejecutan automáticamente por aparecer aquí:
 
-1. Ejecutar y verificar la migración de auditoría `20261002_audit_logs_v2.sql` en Supabase.
-2. Versionado real del esquema Supabase.
-3. Rate limiting distribuido para endpoints públicos.
-4. Estrategia de caché/service worker.
-5. Consolidación de tipos y pruebas de integración/UI.
+1. Versionado real del esquema Supabase.
+2. Rate limiting distribuido para endpoints públicos.
+3. Estrategia de caché/service worker.
+4. Consolidación de tipos y pruebas de integración/UI.
 
 La prioridad concreta debe definirse en un bloque **ANALIZA/PROPÓN** antes de ejecutar código nuevo.
