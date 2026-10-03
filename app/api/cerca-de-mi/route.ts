@@ -61,8 +61,15 @@ export async function POST(request: Request) {
     );
   }
 
+  type CercaDeMiRow = {
+    negocio_id: string;
+    distancia_km: number;
+  };
+
+  const filas = (data ?? []) as CercaDeMiRow[];
+
   return NextResponse.json({
-    negocios: (data ?? []).map((row) => ({
+    negocios: filas.map((row) => ({
       negocioId: row.negocio_id,
       distanciaKm: row.distancia_km,
     })),
