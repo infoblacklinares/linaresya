@@ -89,7 +89,7 @@ export default function ResultadosBusqueda(props: Props) {
       });
 
     const distanciaPorId = new Map(resultados.map((r) => [r.negocioId, r.distanciaKm]));
-    setGeoResultados(filtrados.map((n) => ({ negocioId: n.id, distanciaKm: distanciaPorId.get(n.id) ?? 0 })));
+    setGeoResultados(resultados);
     setGeoNegocios(filtrados);
 
     if (filtrados.length === 0) {
