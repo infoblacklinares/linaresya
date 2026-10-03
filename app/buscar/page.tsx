@@ -312,18 +312,39 @@ export default async function BuscarPage({
           <FilterPill href={urlWith({ abierto: abierto ? null : "1" })} active={abierto}>
             Abierto ahora
           </FilterPill>
-          <FilterPill href={urlWith({ premium: premium ? null : "1" })} active={premium}>
-            Premium
-          </FilterPill>
-          <FilterPill href={urlWith({ verificado: verificado ? null : "1" })} active={verificado}>
-            Verificados
-          </FilterPill>
           <FilterPill href={urlWith({ domicilio: domicilio ? null : "1" })} active={domicilio}>
             A domicilio
           </FilterPill>
-          <FilterPill href={urlWith({ tipo: tipo === "independiente" ? null : "independiente" })} active={tipo === "independiente"}>
-            Independientes
-          </FilterPill>
+          <details className="relative shrink-0">
+            <summary
+              className={[
+                "list-none cursor-pointer rounded-full border px-3 py-2 text-xs font-semibold whitespace-nowrap",
+                "border-border bg-background text-foreground",
+                "[&::-webkit-details-marker]:hidden",
+                (premium || verificado || tipo === "independiente")
+                  ? "border-primary/50 bg-primary/5 text-primary"
+                  : "",
+              ].join(" ")}
+            >
+              Más filtros
+              {(premium || verificado || tipo === "independiente") && (
+                <span className="ml-1">•</span>
+              )}
+            </summary>
+            <div className="absolute left-0 top-full z-20 mt-2 min-w-44 rounded-2xl border border-border bg-background p-2 shadow-lg">
+              <div className="flex flex-col gap-1">
+                <FilterPill href={urlWith({ premium: premium ? null : "1" })} active={premium}>
+                  Premium
+                </FilterPill>
+                <FilterPill href={urlWith({ verificado: verificado ? null : "1" })} active={verificado}>
+                  Verificados
+                </FilterPill>
+                <FilterPill href={urlWith({ tipo: tipo === "independiente" ? null : "independiente" })} active={tipo === "independiente"}>
+                  Independientes
+                </FilterPill>
+              </div>
+            </div>
+          </details>
         </div>
 
         {hayFiltros && (
