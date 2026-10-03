@@ -107,6 +107,7 @@ export function localBusinessJsonLd(
   categoria: CategoriaJsonLd,
   horarios: Horario[],
   resenas: Resena[],
+  resenasResumen?: { promedio: number; total: number } | null,
 ): Record<string, unknown> {
   const url = `${SITE_URL}/${categoria.slug}/${negocio.slug}`;
 
@@ -139,14 +140,21 @@ export function localBusinessJsonLd(
       closes: h.cierra,
     }));
 
-  // Rating agregado si hay resenas aprobadas.
+  // Rating agregado: usa el resumen completo de resenas aprobadas cuando esta disponible.
   let aggregateRating: Record<string, unknown> | undefined;
-  if (resenas.length > 0) {
-    const avg = resenas.reduce((a, r) => a + r.estrellas, 0) / resenas.length;
+  const resumen = resenasResumen ?? (
+    resenas.length > 0
+      ? {
+          promedio: resenas.reduce((a, r) => a + r.estrellas, 0) / resenas.length,
+          total: resenas.length,
+        }
+      : null
+  );
+  if (resumen && resumen.total > 0) {
     aggregateRating = {
       "@type": "AggregateRating",
-      ratingValue: Number(avg.toFixed(1)),
-      reviewCount: resenas.length,
+      ratingValue: Number(resumen.promedio.toFixed(1)),
+      reviewCount: resumen.total,
       bestRating: 5,
       worstRating: 1,
     };
