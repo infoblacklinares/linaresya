@@ -480,7 +480,7 @@ export default async function BuscarPage({
               rel="noopener noreferrer"
               className="shrink-0 inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white text-xs font-bold px-4 py-2 hover:bg-[#1ebe5d] transition"
             >
-              <WhatsAppIcon /> Sugerilo
+              <WhatsAppIcon /> Sugerir negocio
             </a>
           </div>
         )}
