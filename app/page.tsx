@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import JsonLd from "@/components/JsonLd";
 import FavoritoButton from "@/components/FavoritoButton";
 import Hero from "@/components/Hero";
+import HomeIntentNav from "@/components/HomeIntentNav";
 import LinaresEsencial from "@/components/LinaresEsencial";
 import AdvertisementBanner from "@/components/AdvertisementBanner";
 import NewsletterForm from "@/components/NewsletterForm";
@@ -448,6 +449,11 @@ export default async function Home() {
 
       {/* Hero — full-bleed en desktop, contenido centrado adentro */}
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} verificados={verificadosCount ?? 0} />
+
+      {/* UX-01: acciones principales antes del contenido editorial */}
+      <div className="mx-auto w-full max-w-2xl lg:hidden">
+        <HomeIntentNav />
+      </div>
 
       {/* Contenido centrado */}
       <div className="mx-auto w-full max-w-2xl lg:max-w-full lg:px-4 xl:px-10">
