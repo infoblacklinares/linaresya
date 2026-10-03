@@ -213,38 +213,54 @@ export default async function NegocioDetalle({
   const n = neg as Negocio;
 
   const hoyISO = new Date().toISOString().split("T")[0];
-  const [{ data: horariosData }, { data: fotosData }, { data: resenasData }, { data: ofertasData }] =
-    await Promise.all([
-      supabase
-        .from("horarios")
-        .select("dia,abre,cierra,cerrado")
-        .eq("negocio_id", n.id),
-      supabase
-        .from("fotos")
-        .select("id,url,orden")
-        .eq("negocio_id", n.id)
-        .order("orden"),
-      supabase
-        .from("resenas")
-        .select(
-          "id,autor_nombre,estrellas,comentario,vecino_verificado,creado_en",
-        )
-        .eq("negocio_id", n.id)
-        .eq("aprobada", true)
-        .order("creado_en", { ascending: false })
-        .limit(5),
-      supabase
-        .from("ofertas")
-        .select("id,titulo,descripcion,descuento_pct,precio_normal,precio_oferta,imagen_url,fecha_fin")
-        .eq("negocio_id", n.id)
-        .eq("activa", true)
-        .gte("fecha_fin", hoyISO)
-        .order("fecha_fin"),
-    ]);
+  const [
+    { data: horariosData },
+    { data: fotosData },
+    { data: resenasData },
+    { data: resenasResumenData },
+    { data: ofertasData },
+  ] = await Promise.all([
+    supabase
+      .from("horarios")
+      .select("dia,abre,cierra,cerrado")
+      .eq("negocio_id", n.id),
+    supabase
+      .from("fotos")
+      .select("id,url,orden")
+      .eq("negocio_id", n.id)
+      .order("orden"),
+    supabase
+      .from("resenas")
+      .select(
+        "id,autor_nombre,estrellas,comentario,vecino_verificado,creado_en",
+      )
+      .eq("negocio_id", n.id)
+      .eq("aprobada", true)
+      .order("creado_en", { ascending: false })
+      .limit(5),
+    supabase
+      .from("resenas")
+      .select("estrellas")
+      .eq("negocio_id", n.id)
+      .eq("aprobada", true),
+    supabase
+      .from("ofertas")
+      .select("id,titulo,descripcion,descuento_pct,precio_normal,precio_oferta,imagen_url,fecha_fin")
+      .eq("negocio_id", n.id)
+      .eq("activa", true)
+      .gte("fecha_fin", hoyISO)
+      .order("fecha_fin"),
+  ]);
 
   const horarios = (horariosData ?? []) as Horario[];
   const fotos = (fotosData ?? []) as Foto[];
   const resenas = (resenasData ?? []) as Resena[];
+  const resenasResumen = (resenasResumenData ?? []) as { estrellas: number }[];
+  const totalResenas = resenasResumen.length;
+  const promedioResenas =
+    totalResenas > 0
+      ? resenasResumen.reduce((acc, r) => acc + r.estrellas, 0) / totalResenas
+      : null;
   type OfertaFicha = {
     id: number; titulo: string; descripcion: string | null;
     descuento_pct: number | null; precio_normal: number | null;
@@ -264,11 +280,7 @@ export default async function NegocioDetalle({
   const ctasPrincipales = [wa, tel, maps].filter(Boolean).length;
 
   const ratingPromedio =
-    resenas.length > 0
-      ? (
-          resenas.reduce((acc, r) => acc + r.estrellas, 0) / resenas.length
-        ).toFixed(1)
-      : null;
+    promedioResenas !== null ? promedioResenas.toFixed(1) : null;
 
   // JSON-LD structured data: LocalBusiness + BreadcrumbList. Google los usa
   // para rich results, knowledge panel, y mejor ranking en "cerca de mi".
@@ -299,6 +311,9 @@ export default async function NegocioDetalle({
     },
     horarios,
     resenas,
+    promedioResenas !== null
+      ? { promedio: promedioResenas, total: totalResenas }
+      : null,
   );
   const breadcrumbData = breadcrumbJsonLd([
     { name: "Inicio", url: SITE_URL },
@@ -406,7 +421,7 @@ export default async function NegocioDetalle({
             </div>
             <div className="text-center px-2">
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Reseñas</p>
-              <p className="text-lg font-extrabold mt-0.5">{resenas.length}</p>
+              <p className="text-lg font-extrabold mt-0.5">{totalResenas}</p>
             </div>
             <div className="text-center px-2">
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Estado</p>
@@ -586,7 +601,7 @@ export default async function NegocioDetalle({
             <span className="text-sm font-semibold">
               {"\u2B50"} {ratingPromedio}{" "}
               <span className="text-muted-foreground font-normal">
-                - {resenas.length}
+                - {totalResenas}
               </span>
             </span>
           )}
