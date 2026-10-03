@@ -178,7 +178,11 @@ export default async function BuscarPage({
     }
   }
 
-  // Ordenar por rating si se pidió (sort JS sobre los hasta 100 resultados)
+  // Orden de resultados:
+  // - Rating: prioriza la valoración, con Premium/verificado como desempate.
+  // - Relevancia: prioriza coincidencias directas en el nombre antes de
+  //   usar Premium/verificado como desempate. Así "Relevancia" no termina
+  //   siendo simplemente Premium -> verificado -> nombre.
   const itemsOrdenados = [...items];
   if (orden === "rating") {
     itemsOrdenados.sort((a, b) => {
@@ -187,10 +191,40 @@ export default async function BuscarPage({
       const avgA = ra && ra.count > 0 ? ra.sum / ra.count : 0;
       const avgB = rb && rb.count > 0 ? rb.sum / rb.count : 0;
       if (avgB !== avgA) return avgB - avgA;
-      // desempate: destacado (Premium vigente) > verificado > nombre
       const da = canUseFeature(a, "destacado") ? 1 : 0;
       const db = canUseFeature(b, "destacado") ? 1 : 0;
       if (db !== da) return db - da;
+      if (b.verificado !== a.verificado) return Number(b.verificado) - Number(a.verificado);
+      return a.nombre.localeCompare(b.nombre, "es");
+    });
+  } else if (q) {
+    const termino = q.toLocaleLowerCase("es").trim();
+    const normalizar = (valor: string) =>
+      valor
+        .normalize("NFD")
+        .replace(/[\\u0300-\\u036f]/g, "")
+        .toLocaleLowerCase("es")
+        .trim();
+
+    const terminoNormalizado = normalizar(termino);
+    const puntajeRelevancia = (n: NegocioRow) => {
+      const nombre = normalizar(n.nombre);
+      if (nombre === terminoNormalizado) return 400;
+      if (nombre.startsWith(terminoNormalizado)) return 300;
+      if (nombre.includes(terminoNormalizado)) return 200;
+      return 100;
+    };
+
+    itemsOrdenados.sort((a, b) => {
+      const scoreA = puntajeRelevancia(a);
+      const scoreB = puntajeRelevancia(b);
+      if (scoreB !== scoreA) return scoreB - scoreA;
+
+      const da = canUseFeature(a, "destacado") ? 1 : 0;
+      const db = canUseFeature(b, "destacado") ? 1 : 0;
+      if (db !== da) return db - da;
+
+      if (b.verificado !== a.verificado) return Number(b.verificado) - Number(a.verificado);
       return a.nombre.localeCompare(b.nombre, "es");
     });
   }
