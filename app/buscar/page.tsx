@@ -567,7 +567,7 @@ function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; r
     <div className="relative rounded-2xl bg-white/80 backdrop-blur-sm border border-white shadow-[0_2px_12px_rgba(0,0,0,0.07)] overflow-hidden hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 transition-all group">
       {/* Imagen */}
       <Link href={href} aria-label={`Ver ficha de ${n.nombre}`} className="block">
-      <div className="relative aspect-[4/3] overflow-hidden bg-[#F0EDE8]">
+        <div className="relative aspect-[4/3] overflow-hidden bg-[#F0EDE8]">
         {n.foto_portada ? (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img src={n.foto_portada} alt={n.nombre} loading="lazy" decoding="async" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -596,7 +596,7 @@ function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; r
             </span>
           </div>
         )}
-      </div>
+        </div>
       </Link>
 
       {/* Info */}
@@ -607,31 +607,27 @@ function NegocioCard({ n, isOpen, rating }: { n: NegocioRow; isOpen?: boolean; r
         <Link href={href} className="block mt-0.5">
           <p className="font-bold text-[13px] text-[#1A1410] leading-tight line-clamp-1 group-hover:text-[#2B6E80] transition-colors">{n.nombre}</p>
         </Link>
-        {/* Distancia: la rellena CercaDeMi en el navegador */}
-        <span data-distancia className="hidden text-[10px] font-bold text-[#2B6E80] mt-0.5" />
         {n.descripcion && (
           <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5 leading-snug">{n.descripcion}</p>
         )}
-        <div className="mt-2 flex items-center justify-between gap-1">
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {rating && <span className="text-[11px] font-bold text-amber-600">★ {rating.avg.toFixed(1)}</span>}
-            {n.a_domicilio && <span className="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded-full font-medium">🛵 A domicilio</span>}
-            <span data-distancia className="hidden text-[10px] font-semibold text-[#2B6E80]" />
-          </div>
-          <div className="mt-3 flex items-center gap-2">
-            <Link href={href} className="flex-1 inline-flex items-center justify-center rounded-full border border-border bg-white px-3 py-2 text-[11px] font-bold text-foreground hover:bg-secondary transition">
+        <div className="mt-2 flex items-center gap-1.5 flex-wrap">
+          {rating && <span className="text-[11px] font-bold text-amber-600">★ {rating.avg.toFixed(1)}</span>}
+          {n.a_domicilio && <span className="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded-full font-medium">🛵 A domicilio</span>}
+          <span data-distancia className="hidden text-[10px] font-semibold text-[#2B6E80]" />
+        </div>
+        <div className="mt-3 flex items-center gap-2">
+          <Link href={href} className="flex-1 inline-flex items-center justify-center rounded-full border border-border bg-white px-3 py-2 text-[11px] font-bold text-foreground hover:bg-secondary transition">
+            Ver ficha
+          </Link>
+          {waUrl ? (
+            <a href={waUrl} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#25D366] px-3 py-2 text-[11px] font-bold text-white hover:bg-[#1ebe5d] transition shadow-sm">
+              <WhatsAppIcon /> WhatsApp
+            </a>
+          ) : (
+            <Link href={href} className="flex-1 inline-flex items-center justify-center rounded-full bg-[#2B6E80] px-3 py-2 text-[11px] font-bold text-white hover:bg-[#245d6d] transition">
               Ver ficha
             </Link>
-            {waUrl ? (
-              <a href={waUrl} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#25D366] px-3 py-2 text-[11px] font-bold text-white hover:bg-[#1ebe5d] transition shadow-sm">
-                <WhatsAppIcon /> WhatsApp
-              </a>
-            ) : (
-              <Link href={href} className="flex-1 inline-flex items-center justify-center rounded-full bg-[#2B6E80] px-3 py-2 text-[11px] font-bold text-white hover:bg-[#245d6d] transition">
-                Ver ficha
-              </Link>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </div>
