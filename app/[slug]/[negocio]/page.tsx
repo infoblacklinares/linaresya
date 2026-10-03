@@ -480,8 +480,9 @@ export default async function NegocioDetalle({
         </section>
       )}
 
-      {/* Ofertas vigentes del negocio */}
-      {ofertasNegocio.length > 0 && (
+      <section className="px-4 mt-6">
+        <h2 className="text-base font-bold mb-2">Horarios</h2>
+        {tieneHorariosEstructurados ? (
         <section className="px-4 mt-6">
           <h2 className="text-base font-bold mb-2">🔥 Ofertas de {n.nombre}</h2>
           <div className="space-y-2">
