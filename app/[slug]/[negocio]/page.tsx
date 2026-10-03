@@ -111,13 +111,6 @@ function fmtHora(h: string | null): string {
   return h.slice(0, 5);
 }
 
-// Clases estaticas para que Tailwind las genere: 1, 2 o 3 botones principales.
-const GRID_COLS: Record<number, string> = {
-  1: "grid-cols-1",
-  2: "grid-cols-2",
-  3: "grid-cols-3",
-};
-
 function mapsLink(n: Negocio): string | null {
   if (n.lat != null && n.lng != null) return `https://www.google.com/maps/search/?api=1&query=${n.lat},${n.lng}`;
   if (n.direccion) {
@@ -277,7 +270,14 @@ export default async function NegocioDetalle({
   const wa = canUseFeature(n, "whatsapp") ? whatsAppLink(n.whatsapp) : null;
   const tel = telLink(n.telefono);
   const maps = mapsLink(n);
-  const ctasPrincipales = [wa, tel, maps].filter(Boolean).length;
+  // Una sola accion domina la ficha; las demas quedan como acciones secundarias.
+  const accionPrimaria = wa
+    ? { href: wa, evento: "whatsapp" as const, external: true, icon: <WhatsAppIcon />, label: "WhatsApp" }
+    : tel
+      ? { href: tel, evento: "telefono" as const, external: false, icon: <PhoneIcon />, label: "Llamar" }
+      : maps
+        ? { href: maps, evento: "maps" as const, external: true, icon: <MapIcon />, label: "Llegar" }
+        : null;
 
   const ratingPromedio =
     promedioResenas !== null ? promedioResenas.toFixed(1) : null;
@@ -697,37 +697,39 @@ export default async function NegocioDetalle({
           <aside className="order-first lg:order-none lg:col-start-4 lg:row-start-1 lg:sticky lg:top-4 lg:space-y-2">
       <section className="px-4 mt-5">
         {/* Solo botones con dato: nada de "Llamar" deshabilitado (LY-003). */}
-        {ctasPrincipales > 0 && (
-          <div className={`grid gap-2 ${GRID_COLS[ctasPrincipales]}`}>
-            {wa && (
-              <TrackedActionButton
-                href={wa}
-                negocioId={n.id}
-                evento="whatsapp"
-                external
-                icon={<WhatsAppIcon />}
-                label="WhatsApp"
-                primary
-              />
-            )}
-            {tel && (
-              <TrackedActionButton
-                href={tel}
-                negocioId={n.id}
-                evento="telefono"
-                icon={<PhoneIcon />}
-                label="Llamar"
-              />
-            )}
-            {maps && (
-              <TrackedActionButton
-                href={maps}
-                negocioId={n.id}
-                evento="maps"
-                external
-                icon={<MapIcon />}
-                label="Llegar"
-              />
+        {accionPrimaria && (
+          <div>
+            <TrackedActionButton
+              href={accionPrimaria.href}
+              negocioId={n.id}
+              evento={accionPrimaria.evento}
+              external={accionPrimaria.external}
+              icon={accionPrimaria.icon}
+              label={accionPrimaria.label}
+              primary
+            />
+            {[ 
+              wa && accionPrimaria.evento !== "whatsapp" ? { href: wa, evento: "whatsapp" as const, external: true, icon: <WhatsAppIcon />, label: "WhatsApp" } : null,
+              tel && accionPrimaria.evento !== "telefono" ? { href: tel, evento: "telefono" as const, external: false, icon: <PhoneIcon />, label: "Llamar" } : null,
+              maps && accionPrimaria.evento !== "maps" ? { href: maps, evento: "maps" as const, external: true, icon: <MapIcon />, label: "Llegar" } : null,
+            ].filter((action): action is NonNullable<typeof action> => action !== null).length > 0 && (
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                {[
+                  wa && accionPrimaria.evento !== "whatsapp" ? { href: wa, evento: "whatsapp" as const, external: true, icon: <WhatsAppIcon />, label: "WhatsApp" } : null,
+                  tel && accionPrimaria.evento !== "telefono" ? { href: tel, evento: "telefono" as const, external: false, icon: <PhoneIcon />, label: "Llamar" } : null,
+                  maps && accionPrimaria.evento !== "maps" ? { href: maps, evento: "maps" as const, external: true, icon: <MapIcon />, label: "Llegar" } : null,
+                ].filter((action): action is NonNullable<typeof action> => action !== null).map((action) => (
+                  <TrackedActionButton
+                    key={action.evento}
+                    href={action.href}
+                    negocioId={n.id}
+                    evento={action.evento}
+                    external={action.external}
+                    icon={action.icon}
+                    label={action.label}
+                  />
+                ))}
+              </div>
             )}
           </div>
         )}
