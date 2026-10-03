@@ -483,48 +483,6 @@ export default async function NegocioDetalle({
       <section className="px-4 mt-6">
         <h2 className="text-base font-bold mb-2">Horarios</h2>
         {tieneHorariosEstructurados ? (
-        <section className="px-4 mt-6">
-          <h2 className="text-base font-bold mb-2">🔥 Ofertas de {n.nombre}</h2>
-          <div className="space-y-2">
-            {ofertasNegocio.map(o => {
-              // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
-              const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);
-              return (
-                <div key={o.id} className="flex items-center gap-3 rounded-2xl bg-white border border-[#C05A46]/20 shadow-linares-sm p-3">
-                  {o.imagen_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={o.imagen_url} alt={o.titulo} className="h-14 w-14 shrink-0 rounded-xl object-cover" />
-                  ) : (
-                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#C05A46]/10 text-2xl">🏷️</span>
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-bold text-foreground leading-tight">{o.titulo}</p>
-                    {o.descripcion && <p className="text-xs text-muted-foreground line-clamp-1">{o.descripcion}</p>}
-                    <div className="mt-1 flex items-center gap-2">
-                      {o.precio_oferta && (
-                        <span className="text-sm font-extrabold text-[#C05A46]">${o.precio_oferta.toLocaleString("es-CL")}</span>
-                      )}
-                      {o.precio_normal && (
-                        <span className="text-[10px] text-muted-foreground line-through">${o.precio_normal.toLocaleString("es-CL")}</span>
-                      )}
-                      {o.descuento_pct && (
-                        <span className="rounded-full bg-[#C05A46] px-1.5 py-0.5 text-[9px] font-extrabold text-white">-{o.descuento_pct}%</span>
-                      )}
-                      <span className="ml-auto text-[10px] font-semibold text-muted-foreground">
-                        {dias <= 0 ? "Termina hoy" : dias === 1 ? "Queda 1 día" : `Quedan ${dias} días`}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      <section className="px-4 mt-6">
-        <h2 className="text-base font-bold mb-2">Horarios</h2>
-        {tieneHorariosEstructurados ? (
           <>
             {/* Banner de estado actual */}
             <div className={`mb-3 flex items-center gap-3 rounded-2xl px-4 py-3 ${abierto ? "bg-emerald-50 border border-emerald-200" : "bg-rose-50 border border-rose-200"}`}>
@@ -597,6 +555,47 @@ export default async function NegocioDetalle({
           </div>
         )}
       </section>
+
+      {/* Ofertas vigentes del negocio */}
+      {ofertasNegocio.length > 0 && (
+        <section className="px-4 mt-6">
+          <h2 className="text-base font-bold mb-2">🔥 Ofertas de {n.nombre}</h2>
+          <div className="space-y-2">
+            {ofertasNegocio.map(o => {
+              // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
+              const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);
+              return (
+                <div key={o.id} className="flex items-center gap-3 rounded-2xl bg-white border border-[#C05A46]/20 shadow-linares-sm p-3">
+                  {o.imagen_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={o.imagen_url} alt={o.titulo} className="h-14 w-14 shrink-0 rounded-xl object-cover" />
+                  ) : (
+                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#C05A46]/10 text-2xl">🏷️</span>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-bold text-foreground leading-tight">{o.titulo}</p>
+                    {o.descripcion && <p className="text-xs text-muted-foreground line-clamp-1">{o.descripcion}</p>}
+                    <div className="mt-1 flex items-center gap-2">
+                      {o.precio_oferta && (
+                        <span className="text-sm font-extrabold text-[#C05A46]">${o.precio_oferta.toLocaleString("es-CL")}</span>
+                      )}
+                      {o.precio_normal && (
+                        <span className="text-[10px] text-muted-foreground line-through">${o.precio_normal.toLocaleString("es-CL")}</span>
+                      )}
+                      {o.descuento_pct && (
+                        <span className="rounded-full bg-[#C05A46] px-1.5 py-0.5 text-[9px] font-extrabold text-white">-{o.descuento_pct}%</span>
+                      )}
+                      <span className="ml-auto text-[10px] font-semibold text-muted-foreground">
+                        {dias <= 0 ? "Termina hoy" : dias === 1 ? "Queda 1 día" : `Quedan ${dias} días`}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {fotos.length > 0 && (
         <section className="mt-6">
