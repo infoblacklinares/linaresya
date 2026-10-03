@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type CercaDeMiResult = {
   negocioId: string;
@@ -17,6 +17,11 @@ export default function CercaDeMi({ onResultados, activo }: CercaDeMiProps) {
     activo ? "activo" : "idle",
   );
   const [mensaje, setMensaje] = useState("");
+
+  useEffect(() => {
+    setEstado(activo ? "activo" : "idle");
+    if (!activo) setMensaje("");
+  }, [activo]);
 
   function desactivar() {
     setEstado("idle");
