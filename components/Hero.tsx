@@ -52,10 +52,10 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
 
         {/* Titular con autoridad */}
         <h1 className="mb-1 text-[1.9rem] lg:text-5xl font-black leading-[1.1] tracking-tight text-white lg:text-center">
-          La guía digital<br className="lg:hidden" /> de Linares
+          Encuentra lo que necesitas<br className="lg:hidden" /> en Linares
         </h1>
         <p className="mb-5 text-sm lg:text-base text-white/60 leading-snug lg:max-w-xl lg:mx-auto lg:text-center">
-          Negocios verificados, horarios reales y ofertas de hoy — todo en un solo lugar.
+          Encuentra negocios, servicios y lugares de Linares. Busca, compara y contacta.
         </p>
 
         {/* Stats — tarjetas glass */}
