@@ -621,10 +621,13 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Categorías — iconos grandes estilo Uber Eats */}
+      {/* Descubrimiento por categorías — separado de las acciones rápidas */}
       <section className="pt-6">
         <div className="flex items-end justify-between px-4 mb-4">
-          <h2 className="text-xl font-black tracking-tight text-[#1A1410]">¿Qué necesitas?</h2>
+          <div>
+            <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Explora por categoría</h2>
+            <p className="mt-0.5 text-xs text-[#8E8279]">Descubre negocios según lo que buscas.</p>
+          </div>
           <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todas <NudgeArrow /></Link>
         </div>
         <div className="flex gap-4 overflow-x-auto px-4 pb-3 no-scrollbar">
