@@ -5,6 +5,7 @@ type CercaDeMiBody = {
   lat?: unknown;
   lng?: unknown;
   limite?: unknown;
+  negocioIds?: unknown;
 };
 
 function numeroValido(value: unknown): value is number {
@@ -25,6 +26,14 @@ export async function POST(request: Request) {
 
   const lat = body.lat;
   const lng = body.lng;
+  const negocioIds = Array.isArray(body.negocioIds)
+    ? body.negocioIds.filter(
+        (value): value is string =>
+          typeof value === "string" &&
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value),
+      )
+    : null;
+
   const limite =
     typeof body.limite === "number" && Number.isFinite(body.limite)
       ? Math.max(1, Math.min(Math.trunc(body.limite), 50))
@@ -44,12 +53,17 @@ export async function POST(request: Request) {
     );
   }
 
+  if (Array.isArray(body.negocioIds) && negocioIds && negocioIds.length === 0) {
+    return NextResponse.json({ negocios: [] });
+  }
+
   const { data, error } = await supabaseAdmin.rpc(
     "get_negocios_cerca_de_mi",
     {
       p_lat: lat,
       p_lng: lng,
       p_limite: limite,
+      p_negocio_ids: negocioIds && negocioIds.length > 0 ? negocioIds : null,
     },
   );
 
