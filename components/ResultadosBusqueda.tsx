@@ -34,6 +34,11 @@ type Props = {
   ratings: Record<string, Rating>;
   openIds: string[];
   q: string;
+  categoriaId?: number;
+  tipo: "" | "negocio" | "independiente";
+  premium: boolean;
+  verificado: boolean;
+  domicilio: boolean;
   abierto: boolean;
   orden: "relevancia" | "rating";
   urlRelevancia: string;
@@ -45,6 +50,11 @@ export default function ResultadosBusqueda({
   ratings,
   openIds,
   q,
+  categoriaId,
+  tipo,
+  premium,
+  verificado,
+  domicilio,
   abierto,
   orden,
   urlRelevancia,
