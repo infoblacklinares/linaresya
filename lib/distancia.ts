@@ -2,8 +2,8 @@
  * Utilidades de distancia para la funcion "Cerca de mi".
  * Las coordenadas de los negocios vienen de la geocodificacion (ver
  * scripts/geocodificar.mjs). La ubicacion del usuario la entrega el
- * navegador y NUNCA se envia a nuestros servidores: todo el calculo
- * ocurre en el cliente.
+ * navegador y se envia al endpoint de Cerca de mí solo para calcular
+ * distancias; no se almacena.
  */
 
 export type Punto = { lat: number; lng: number };
