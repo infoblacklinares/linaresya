@@ -10,9 +10,10 @@ type CercaDeMiResult = {
 type CercaDeMiProps = {
   onResultados: (resultados: CercaDeMiResult[]) => void;
   activo: boolean;
+  negocioIds: string[];
 };
 
-export default function CercaDeMi({ onResultados, activo }: CercaDeMiProps) {
+export default function CercaDeMi({ onResultados, activo, negocioIds }: CercaDeMiProps) {
   const [estado, setEstado] = useState<"idle" | "cargando" | "activo" | "error">(
     activo ? "activo" : "idle",
   );
@@ -49,6 +50,7 @@ export default function CercaDeMi({ onResultados, activo }: CercaDeMiProps) {
               lat: pos.coords.latitude,
               lng: pos.coords.longitude,
               limite: 50,
+              negocioIds,
             }),
           });
 
@@ -73,11 +75,7 @@ export default function CercaDeMi({ onResultados, activo }: CercaDeMiProps) {
           }
 
           setEstado("activo");
-          setMensaje(
-            resultados.length === 1
-              ? "1 negocio encontrado cerca de ti"
-              : `${resultados.length} negocios encontrados cerca de ti`,
-          );
+          setMensaje("Ubicación detectada");
           onResultados(resultados);
         } catch {
           setEstado("error");
