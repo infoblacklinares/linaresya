@@ -181,6 +181,14 @@ export default function ResultadosBusqueda({
   const mostrar = geoActivo ? geoNegocios : items;
   const mostrarRatings = geoActivo ? geoRatings : ratings;
   const mostrarOpenIds = geoActivo ? geoOpenIds : openIds;
+  const hayFiltros =
+    Boolean(q) ||
+    Boolean(categoriaId) ||
+    Boolean(tipo) ||
+    premium ||
+    verificado ||
+    domicilio ||
+    abierto;
 
   const distanciaPorId = useMemo(
     () => new Map(geoResultados.map((r) => [r.negocioId, r.distanciaKm])),
@@ -207,7 +215,7 @@ export default function ResultadosBusqueda({
             void cargarCercanos(resultados);
           }}
           activo={geoActivo}
-          negocioIds={items.map((item) => item.id)}
+          negocioIds={hayFiltros ? items.map((item) => item.id) : null}
         />
       </div>
 
