@@ -34,11 +34,6 @@ type Props = {
   ratings: Record<string, Rating>;
   openIds: string[];
   q: string;
-  categoriaId?: number;
-  tipo: "" | "negocio" | "independiente";
-  premium: boolean;
-  verificado: boolean;
-  domicilio: boolean;
   abierto: boolean;
   orden: "relevancia" | "rating";
   urlRelevancia: string;
@@ -50,11 +45,6 @@ export default function ResultadosBusqueda({
   ratings,
   openIds,
   q,
-  categoriaId,
-  tipo,
-  premium,
-  verificado,
-  domicilio,
   abierto,
   orden,
   urlRelevancia,
@@ -102,29 +92,7 @@ export default function ResultadosBusqueda({
 
     let filtrados = resultados
       .map((r) => porId.get(r.negocioId))
-      .filter((n): n is ResultadoNegocio => Boolean(n))
-      .filter((n) => {
-        if (categoriaId && n.categorias?.id !== categoriaId) return false;
-        if (tipo && n.tipo !== tipo) return false;
-        if (premium && n.plan !== "premium") return false;
-        if (verificado && !n.verificado) return false;
-        if (domicilio && !n.a_domicilio) return false;
-
-        if (q) {
-          const termino = q.toLocaleLowerCase("es").trim();
-          const texto = (
-            n.nombre +
-            " " +
-            (n.descripcion ?? "") +
-            " " +
-            (n.categorias?.nombre ?? "")
-          ).toLocaleLowerCase("es");
-
-          if (!texto.includes(termino)) return false;
-        }
-
-        return true;
-      });
+      .filter((n): n is ResultadoNegocio => Boolean(n));
 
     const idsFiltrados = filtrados.map((n) => n.id);
     let abiertos: string[] = [];
@@ -229,6 +197,7 @@ export default function ResultadosBusqueda({
             void cargarCercanos(resultados);
           }}
           activo={geoActivo}
+          negocioIds={items.map((item) => item.id)}
         />
       </div>
 
