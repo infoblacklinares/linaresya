@@ -457,11 +457,6 @@ export default async function BuscarPage({
             ratings={ratings}
             openIds={resultOpenIds}
             q={q}
-            categoriaId={categoriaActiva?.id}
-            tipo={tipo}
-            premium={premium}
-            verificado={verificado}
-            domicilio={domicilio}
             abierto={abierto}
             orden={orden}
             urlRelevancia={urlWith({ orden: null })}
