@@ -10,7 +10,7 @@ type CercaDeMiResult = {
 type CercaDeMiProps = {
   onResultados: (resultados: CercaDeMiResult[]) => void;
   activo: boolean;
-  negocioIds: string[];
+  negocioIds: string[] | null;
 };
 
 export default function CercaDeMi({ onResultados, activo, negocioIds }: CercaDeMiProps) {
@@ -70,7 +70,6 @@ export default function CercaDeMi({ onResultados, activo, negocioIds }: CercaDeM
             setMensaje(
               "No encontramos negocios cerca de ti. Puedes buscar por nombre o categoría.",
             );
-            onResultados([]);
             return;
           }
 
@@ -80,7 +79,6 @@ export default function CercaDeMi({ onResultados, activo, negocioIds }: CercaDeM
         } catch {
           setEstado("error");
           setMensaje("No pudimos buscar negocios cerca de ti.");
-          onResultados([]);
         }
       },
       (err) => {
@@ -90,7 +88,6 @@ export default function CercaDeMi({ onResultados, activo, negocioIds }: CercaDeM
             ? "Permiso denegado. Actívalo en el candado de la barra de direcciones."
             : "No pudimos obtener tu ubicación.",
         );
-        onResultados([]);
       },
       { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
     );
