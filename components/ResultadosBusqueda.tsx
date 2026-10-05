@@ -23,6 +23,7 @@ export type ResultadoNegocio = {
   direccion: string | null;
   a_domicilio: boolean;
   foto_portada: string | null;
+  actualizado_en: string | null;
   categorias: { id: number; nombre: string; slug: string; emoji: string } | null;
 };
 
@@ -80,7 +81,7 @@ export default function ResultadosBusqueda({
     const { data, error } = await supabase
       .from("negocios")
       .select(
-        "id, nombre, slug, descripcion, tipo, plan, verificado, telefono, whatsapp, direccion, a_domicilio, foto_portada, categorias:categoria_id(id, nombre, slug, emoji)",
+        "id, nombre, slug, descripcion, tipo, plan, verificado, telefono, whatsapp, direccion, a_domicilio, foto_portada, actualizado_en, categorias:categoria_id(id, nombre, slug, emoji)",
       )
       .in("id", ids)
       .eq("activo", true);
@@ -403,9 +404,9 @@ function NegocioCard({
         )}
 
         <div className="mt-2 flex items-center gap-1.5 flex-wrap">
-          {rating && (
+          {rating && rating.count > 0 && (
             <span className="text-[11px] font-bold text-amber-600">
-              ★ {rating.avg.toFixed(1)}
+              ★ {rating.avg.toFixed(1)} · {rating.count} reseña{rating.count === 1 ? "" : "s"}
             </span>
           )}
 
@@ -415,11 +416,28 @@ function NegocioCard({
             </span>
           )}
 
+          {n.verificado && (
+            <span className="text-[10px] bg-sky-50 text-sky-700 px-1.5 py-0.5 rounded-full font-semibold">
+              ✓ Negocio verificado
+            </span>
+          )}
+
           {n.a_domicilio && (
             <span className="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded-full font-medium">
               🛵 A domicilio
             </span>
           )}
+
+          {n.actualizado_en && (() => {
+            const dias = Math.floor((Date.now() - new Date(n.actualizado_en).getTime()) / 86_400_000);
+            if (dias < 0 || dias > 60) return null;
+            const texto = dias === 0 ? "Actualizado hoy" : dias === 1 ? "Actualizado ayer" : `Actualizado hace ${dias} días`;
+            return (
+              <span className="text-[10px] bg-[#2B6E80]/8 text-[#2B6E80] px-1.5 py-0.5 rounded-full font-medium">
+                ↻ {texto}
+              </span>
+            );
+          })()}
         </div>
 
         <div className="mt-3 flex items-center gap-2">
