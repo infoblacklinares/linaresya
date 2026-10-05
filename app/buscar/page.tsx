@@ -63,6 +63,7 @@ type NegocioRow = {
   direccion: string | null;
   a_domicilio: boolean;
   foto_portada: string | null;
+  actualizado_en: string | null;
   lat: number | null;
   lng: number | null;
   categorias: { id: number; nombre: string; slug: string; emoji: string } | null;
@@ -125,7 +126,7 @@ export default async function BuscarPage({
   let query = supabase
     .from("negocios")
     .select(
-      "id, nombre, slug, descripcion, tipo, plan, verificado, telefono, whatsapp, direccion, a_domicilio, foto_portada, lat, lng, categorias:categoria_id(id, nombre, slug, emoji)",
+      "id, nombre, slug, descripcion, tipo, plan, verificado, telefono, whatsapp, direccion, a_domicilio, foto_portada, actualizado_en, lat, lng, categorias:categoria_id(id, nombre, slug, emoji)",
     )
     .eq("activo", true);
 
