@@ -448,7 +448,7 @@ export default async function NegocioDetalle({
             })()}
           </div>
 
-          {/* Fila de 3 stats */
+          {/* Fila de 3 stats */}
           <div className="mt-4 grid grid-cols-3 divide-x divide-border rounded-2xl bg-[#F9F8F6] border border-[#F0EDE8] py-3">
             <div className="text-center px-2">
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Calificación</p>
