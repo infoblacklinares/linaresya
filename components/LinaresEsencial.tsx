@@ -1,4 +1,8 @@
 
+"use client";
+
+import { useState } from "react";
+
 type Lugar = {
   nombre: string;
   emoji: string;
@@ -180,9 +184,13 @@ const GRUPO_ORDEN: Record<Lugar["grupo"], number> = {
 };
 
 export default function LinaresEsencial() {
+  const [grupoActivo, setGrupoActivo] = useState<"Todos" | Lugar["grupo"]>("Todos");
+
   // La utilidad debe ser predecible: primero urgencias, luego trámites,
-  // movilidad y dinero. Dentro de cada grupo conservamos el orden editorial.
-  const lugares = [...LUGARES].sort((a, b) => GRUPO_ORDEN[a.grupo] - GRUPO_ORDEN[b.grupo]);
+  // movilidad y dinero. El filtro solo reduce el conjunto visible.
+  const lugares = [...LUGARES]
+    .sort((a, b) => GRUPO_ORDEN[a.grupo] - GRUPO_ORDEN[b.grupo])
+    .filter((lugar) => grupoActivo === "Todos" || lugar.grupo === grupoActivo);
 
   return (
     <section className="pt-6">
@@ -191,12 +199,25 @@ export default function LinaresEsencial() {
         <div>
           <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Servicios útiles de Linares</h2>
           <p className="text-xs text-[#8E8279]">Información práctica para resolver necesidades en Linares</p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {(["Urgencias", "Trámites", "Moverse", "Dinero"] as Lugar["grupo"][]).map((grupo) => (
-              <span key={grupo} className="rounded-full bg-[#F0EDE8] px-2.5 py-1 text-[9px] font-bold text-[#6B625A]">
-                {grupo}
-              </span>
-            ))}
+          <div className="mt-2 flex flex-wrap gap-1.5" role="group" aria-label="Filtrar servicios">
+            {(["Todos", "Urgencias", "Trámites", "Moverse", "Dinero"] as const).map((grupo) => {
+              const activo = grupoActivo === grupo;
+              return (
+                <button
+                  key={grupo}
+                  type="button"
+                  onClick={() => setGrupoActivo(grupo)}
+                  aria-pressed={activo}
+                  className={`rounded-full px-2.5 py-1 text-[9px] font-bold transition ${
+                    activo
+                      ? "bg-[#1A1410] text-white"
+                      : "bg-[#F0EDE8] text-[#6B625A] hover:bg-[#E5E0DA]"
+                  }`}
+                >
+                  {grupo}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
