@@ -185,10 +185,6 @@ export default async function Home() {
   ] = await Promise.all([
     supabase.from("categorias").select("*").order("orden"),
 
-    // IDs de todos los negocios activos para que "Abiertos ahora" no dependa
-    // de Destacados o Nuevos en LinaresYa.
-    supabase.from("negocios").select("id").eq("activo", true),
-
     supabase
       .from("negocios")
       .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, telefono, categorias:categoria_id(nombre, slug, emoji)")
@@ -253,6 +249,10 @@ export default async function Home() {
       .gt("expira_en", new Date().toISOString())
       .order("creada_en", { ascending: false })
       .limit(30),
+
+    // IDs de todos los negocios activos para que "Abiertos ahora" no dependa
+    // de Destacados o Nuevos en LinaresYa.
+    supabase.from("negocios").select("id").eq("activo", true),
   ]);
 
   if (error) {
