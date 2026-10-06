@@ -496,9 +496,6 @@ export default async function Home() {
               <Link href={`/${cat.slug}`} className="flex flex-col items-center gap-2 group">
                 <div className="relative flex h-[72px] w-[72px] items-center justify-center rounded-[22px] bg-white text-[2rem] shadow-[0_2px_14px_rgba(0,0,0,0.09)] border border-[#F0EDE8] transition group-hover:-translate-y-1 group-hover:shadow-[0_8px_24px_rgba(0,0,0,0.13)] active:scale-90">
                   {cat.emoji}
-                  {i === cats.length - 1 && (
-                    <span className="absolute -top-1.5 -right-1.5 rounded-full bg-[#C05A46] px-1.5 py-0.5 text-[8px] font-bold text-white shadow-sm">New</span>
-                  )}
                 </div>
                 <span className="w-[72px] text-center text-[11px] font-semibold leading-tight text-[#6B5E57]">{cat.nombre}</span>
                 {(catCounts.get(cat.id) ?? 0) > 0 && (
