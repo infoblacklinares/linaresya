@@ -423,10 +423,14 @@ export default async function Home() {
   for (const row of ((statsSemana ?? []) as { negocio_id: string; vistas: number }[])) {
     vistasPorNegocio.set(row.negocio_id, (vistasPorNegocio.get(row.negocio_id) ?? 0) + (row.vistas ?? 0));
   }
+  // Lo más visto debe aportar una señal distinta a Destacados:
+  // excluimos los negocios que ya ocupan ese bloque y mantenemos el ranking
+  // real de vistas de los últimos 7 días entre los restantes.
+  const destacadosIds = new Set(destacados.map(n => n.id));
   const topIds = [...vistasPorNegocio.entries()]
     .sort((a, b) => b[1] - a[1])
+    .filter(([id, v]) => v > 0 && !destacadosIds.has(id))
     .slice(0, 4)
-    .filter(([, v]) => v > 0)
     .map(([id]) => id);
   let masVistos: NegocioCard[] = [];
   if (topIds.length > 0) {
