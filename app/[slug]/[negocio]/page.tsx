@@ -423,7 +423,32 @@ export default async function NegocioDetalle({
             <p className="text-center text-xs text-muted-foreground mt-1">📍 {n.direccion}</p>
           )}
 
-          {/* Fila de 3 stats */}
+          {/* Señales de confianza: separadas de Premium para no confundir producto comercial con verificación. */}
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
+            {n.verificado && (
+              <span className="rounded-full bg-sky-50 px-2.5 py-1 text-[10px] font-bold text-sky-700">
+                ✓ Negocio verificado
+              </span>
+            )}
+            {totalResenas > 0 && ratingPromedio && (
+              <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-700">
+                ★ {ratingPromedio} · {totalResenas} reseña{totalResenas === 1 ? "" : "s"}
+              </span>
+            )}
+            {(() => {
+              const ref = n.actualizado_en ?? n.creado_en;
+              const dias = Math.floor((Date.now() - new Date(ref).getTime()) / 86_400_000);
+              if (dias < 0 || dias > 60) return null;
+              const texto = dias === 0 ? "Actualizado hoy" : dias === 1 ? "Actualizado ayer" : `Actualizado hace ${dias} días`;
+              return (
+                <span className="rounded-full bg-[#2B6E80]/8 px-2.5 py-1 text-[10px] font-medium text-[#2B6E80]">
+                  ↻ {texto}
+                </span>
+              );
+            })()}
+          </div>
+
+          {/* Fila de 3 stats */
           <div className="mt-4 grid grid-cols-3 divide-x divide-border rounded-2xl bg-[#F9F8F6] border border-[#F0EDE8] py-3">
             <div className="text-center px-2">
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Calificación</p>
