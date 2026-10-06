@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const INTENTS = [
   { label: "Abiertos ahora", icon: "🟢", href: "/buscar?abierto=1", featured: true },
-  { label: "Cerca de mí", icon: "📍", href: "/mapa" },
+  { label: "Cerca de mí", icon: "📍", href: "/buscar" },
   { label: "A domicilio", icon: "🛵", href: "/buscar?domicilio=1" },
   { label: "Mejor valorados", icon: "⭐", href: "/buscar?orden=rating" },
 ];
