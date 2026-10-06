@@ -650,6 +650,7 @@ export default async function Home() {
                     ✨ Descubre un negocio
                   </span>
                   <p className="mt-1.5 truncate text-base font-black text-white leading-tight">{negocioDelDia.nombre}</p>
+                  <p className="mt-0.5 truncate text-[10px] text-white/55">Una opción que quizás todavía no conocías.</p>
                   <p className="truncate text-[11px] text-white/60">
                     {negocioDelDia.categorias?.emoji} {negocioDelDia.categorias?.nombre}
                     {negocioDelDia.verificado ? " · ✓ Verificado" : ""}
