@@ -3,6 +3,7 @@ type Lugar = {
   nombre: string;
   emoji: string;
   tipo: string;
+  grupo: "Urgencias" | "Trámites" | "Moverse" | "Dinero";
   tipoColor: string;
   descripcion: string;
   info: string;
@@ -27,6 +28,7 @@ const gradiente = (tipo: string) => GRADIENTES[tipo] ?? "from-[#2B6E80] to-[#163
 const LUGARES: Lugar[] = [
   {
     nombre: "Terminal de Buses",
+    grupo: "Moverse",
     imagen: "/esencial/terminal.jpg",
     emoji: "🚌",
     tipo: "Transporte",
@@ -38,6 +40,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Hospital de Linares",
+    grupo: "Urgencias",
     imagen: "/esencial/hospital.jpg",
     emoji: "🏥",
     tipo: "Salud",
@@ -49,6 +52,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Municipalidad",
+    grupo: "Trámites",
     imagen: "/esencial/municipalidad.png",
     emoji: "🏛️",
     tipo: "Servicios",
@@ -60,6 +64,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Registro Civil",
+    grupo: "Trámites",
     imagen: "/esencial/registro-civil.jpg",
     emoji: "📋",
     tipo: "Servicios",
@@ -71,6 +76,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Carabineros",
+    grupo: "Urgencias",
     imagen: "/esencial/carabineros.png",
     emoji: "🚔",
     tipo: "Seguridad",
@@ -82,6 +88,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Bomberos",
+    grupo: "Urgencias",
     imagen: "/esencial/bomberos.png",
     emoji: "🚒",
     tipo: "Emergencia",
@@ -93,6 +100,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "CESFAM",
+    grupo: "Urgencias",
     imagen: "/esencial/cesfam.jpg",
     emoji: "⚕️",
     tipo: "Salud",
@@ -104,6 +112,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Veterinaria de urgencia",
+    grupo: "Urgencias",
     imagen: "/esencial/veterinaria.jpg",
     emoji: "🐾",
     tipo: "Salud",
@@ -115,6 +124,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Bancos",
+    grupo: "Dinero",
     imagen: "/esencial/bancos.jpg",
     emoji: "🏦",
     tipo: "Servicios",
@@ -126,6 +136,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Cajeros automáticos",
+    grupo: "Dinero",
     imagen: "/esencial/cajeros-automaticos.jpg",
     emoji: "💳",
     tipo: "Servicios",
@@ -137,6 +148,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Notarías",
+    grupo: "Trámites",
     imagen: "/esencial/notarias.jpg",
     emoji: "📜",
     tipo: "Servicios",
@@ -148,6 +160,7 @@ const LUGARES: Lugar[] = [
   },
   {
     nombre: "Bencineras",
+    grupo: "Moverse",
     imagen: "/esencial/bencineras.jpg",
     emoji: "⛽",
     tipo: "Transporte",
@@ -159,26 +172,17 @@ const LUGARES: Lugar[] = [
   },
 ];
 
-/** Baraja una copia del arreglo (Fisher-Yates). */
-function barajar<T>(arr: T[]): T[] {
-  const copia = [...arr];
-  for (let i = copia.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copia[i], copia[j]] = [copia[j], copia[i]];
-  }
-  return copia;
-}
-
-// Urgencias: van siempre primero y en orden fijo. Si alguien entra apurado
-// buscando Bomberos o el Hospital, no puede depender del azar.
-const TIPOS_URGENCIA = new Set(["Emergencia", "Salud", "Seguridad"]);
+const GRUPO_ORDEN: Record<Lugar["grupo"], number> = {
+  Urgencias: 0,
+  Trámites: 1,
+  Moverse: 2,
+  Dinero: 3,
+};
 
 export default function LinaresEsencial() {
-  // El resto rota en cada carga para que la sección se sienta viva.
-  // La portada es dinámica (revalidate = 0), así que esto cambia por visita.
-  const urgencias = LUGARES.filter((l) => TIPOS_URGENCIA.has(l.tipo));
-  const resto = barajar(LUGARES.filter((l) => !TIPOS_URGENCIA.has(l.tipo)));
-  const lugares = [...urgencias, ...resto];
+  // La utilidad debe ser predecible: primero urgencias, luego trámites,
+  // movilidad y dinero. Dentro de cada grupo conservamos el orden editorial.
+  const lugares = [...LUGARES].sort((a, b) => GRUPO_ORDEN[a.grupo] - GRUPO_ORDEN[b.grupo]);
 
   return (
     <section className="pt-6">
@@ -187,6 +191,13 @@ export default function LinaresEsencial() {
         <div>
           <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Servicios útiles de Linares</h2>
           <p className="text-xs text-[#8E8279]">Información práctica para resolver necesidades en Linares</p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {(["Urgencias", "Trámites", "Moverse", "Dinero"] as Lugar["grupo"][]).map((grupo) => (
+              <span key={grupo} className="rounded-full bg-[#F0EDE8] px-2.5 py-1 text-[9px] font-bold text-[#6B625A]">
+                {grupo}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -213,7 +224,7 @@ export default function LinaresEsencial() {
 
             {/* Badge de categoría arriba */}
             <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-bold text-[#1A1410] backdrop-blur-sm">
-              {lugar.tipo}
+              {lugar.grupo}
             </span>
 
             {/* Info + acciones sobre la imagen */}
