@@ -458,6 +458,155 @@ export default async function Home() {
       {/* Contenido centrado */}
       <div className="mx-auto w-full max-w-2xl lg:max-w-full lg:px-4 xl:px-10">
 
+      {/* Descubrimiento por categorías — separado de las acciones rápidas */}
+      <section className="pt-6">
+        <div className="flex items-end justify-between px-4 mb-4">
+          <div>
+            <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Explora por categoría</h2>
+            <p className="mt-0.5 text-xs text-[#8E8279]">Descubre negocios según lo que buscas.</p>
+          </div>
+          <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todas <NudgeArrow /></Link>
+        </div>
+        <div className="flex gap-4 overflow-x-auto px-4 pb-3 no-scrollbar">
+          {cats.map((cat, i) => (
+            <AnimatedCard key={cat.id} index={i} className="shrink-0">
+              <Link href={`/${cat.slug}`} className="flex flex-col items-center gap-2 group">
+                <div className="relative flex h-[72px] w-[72px] items-center justify-center rounded-[22px] bg-white text-[2rem] shadow-[0_2px_14px_rgba(0,0,0,0.09)] border border-[#F0EDE8] transition group-hover:-translate-y-1 group-hover:shadow-[0_8px_24px_rgba(0,0,0,0.13)] active:scale-90">
+                  {cat.emoji}
+                  {i === cats.length - 1 && (
+                    <span className="absolute -top-1.5 -right-1.5 rounded-full bg-[#C05A46] px-1.5 py-0.5 text-[8px] font-bold text-white shadow-sm">New</span>
+                  )}
+                </div>
+                <span className="w-[72px] text-center text-[11px] font-semibold leading-tight text-[#6B5E57]">{cat.nombre}</span>
+                {(catCounts.get(cat.id) ?? 0) > 0 && (
+                  <span className="text-[9px] font-bold text-[#2B6E80] -mt-1">{catCounts.get(cat.id)} negocios</span>
+                )}
+              </Link>
+            </AnimatedCard>
+          ))}
+        </div>
+      </section>
+
+      {/* Ofertas activas */}
+      {ofertas.length > 0 && (
+        <section className="pt-7">
+        <FadeInSection>
+          <div className="flex items-center justify-between px-4 mb-3">
+            <div>
+              <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Ofertas activas</h2>
+              <p className="text-xs text-[#8E8279]">Promociones vigentes hoy en Linares</p>
+            </div>
+            <Link href="/ofertas" className="text-xs font-bold text-[#2B6E80]">Ver todas <NudgeArrow /></Link>
+          </div>
+          <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
+            {ofertas.map(o => {
+              const url  = o.negocio?.categoria_slug && o.negocio?.slug ? `/${o.negocio.categoria_slug}/${o.negocio.slug}` : "#";
+              // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
+              const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);
+              return (
+                <Link key={o.id} href={url} className="relative w-48 shrink-0 overflow-hidden rounded-2xl border border-[#E8E4DE] bg-white shadow-linares-sm hover:shadow-linares transition">
+                  <div className="relative flex h-28 items-center justify-center bg-gradient-to-br from-[#F9F8F6] to-[#E8E4DE]">
+                    {o.imagen_url
+                      // eslint-disable-next-line @next/next/no-img-element
+                      ? <img loading="lazy" decoding="async" src={o.imagen_url} alt={o.titulo} className="h-full w-full object-cover" />
+                      : <span className="text-4xl">{o.negocio?.emoji ?? "🏪"}</span>}
+                    {o.descuento_pct && (
+                      <span className="absolute right-2 top-2 rounded-full bg-[#C05A46] px-2 py-0.5 text-[10px] font-extrabold text-white">-{o.descuento_pct}%</span>
+                    )}
+                    {o.boosteada && (
+                      <span className="absolute left-2 top-2 rounded-full bg-[#F4B860] px-1.5 py-0.5 text-[9px] font-bold text-[#1A1410]">⭐ Dest.</span>
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <p className="line-clamp-2 text-xs font-bold leading-tight text-[#1A1410]">{o.titulo}</p>
+                    {o.negocio && <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">{o.negocio.nombre}</p>}
+                    <div className="mt-2 flex items-center justify-between">
+                      {o.precio_oferta
+                        ? <div className="flex items-baseline gap-1">
+                            <span className="text-sm font-extrabold text-[#C05A46]">${o.precio_oferta.toLocaleString("es-CL")}</span>
+                            {o.precio_normal && <span className="text-[9px] text-[#8E8279] line-through">${o.precio_normal.toLocaleString("es-CL")}</span>}
+                          </div>
+                        : <span className="text-[10px] text-[#8E8279]">Ver oferta →</span>}
+                      <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${dias <= 1 ? "bg-[#C05A46]/10 text-[#C05A46]" : "bg-[#F9F8F6] text-[#8E8279]"}`}>
+                        {dias <= 0 ? "Hoy" : dias === 1 ? "1d" : `${dias}d`}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </FadeInSection>
+        </section>
+      )}
+
+      {/* Abiertos ahora — glassmorphism */}
+      {negociosAbiertos.length > 0 && (
+        <section className="pt-6">
+          <div className="flex items-center justify-between px-4 mb-3">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              </span>
+              <h2 className="text-xl font-black text-[#1A1410]">Abiertos ahora</h2>
+            </div>
+            <Link href="/buscar?abierto=1" className="text-xs font-bold text-[#2B6E80]">Ver todos <NudgeArrow /></Link>
+          </div>
+          <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
+            {negociosAbiertos.map(n => {
+              const url = n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#";
+              return (
+                <div key={n.id} className="group shrink-0 w-44 overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition hover:shadow-[0_10px_26px_rgba(0,0,0,0.14)] hover:-translate-y-1">
+                  {/* Banda de foto baja: impacto visual sin agrandar la card */}
+                  <Link href={url} className="relative block h-20 w-full overflow-hidden bg-[#F0EDE8]">
+                    {n.foto_portada ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        loading="lazy"
+                        decoding="async"
+                        src={n.foto_portada}
+                        alt={n.nombre}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                    ) : (
+                      <span className="absolute inset-0 flex items-center justify-center text-3xl">
+                        {n.categorias?.emoji ?? "🏪"}
+                      </span>
+                    )}
+                    <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-white/90 backdrop-blur-sm px-2 py-0.5 shadow-sm">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      <span className="text-[10px] font-bold text-emerald-700">Abierto</span>
+                    </span>
+                  </Link>
+                  <Link href={url} className="block p-3 pt-2 pb-2">
+                    <p className="text-sm font-bold text-[#1A1410] truncate leading-tight group-hover:text-[#2B6E80] transition-colors">{n.nombre}</p>
+                    <p className="text-[10px] text-[#8E8279] mt-0.5 truncate">
+                      {n.categorias?.emoji} {n.categorias?.nombre}
+                    </p>
+                  </Link>
+                  {n.telefono ? (
+                    <a
+                      href={telLink(n.telefono) ?? undefined}
+                      className="flex items-center justify-center gap-1.5 border-t border-[#F5F2EE] py-2.5 text-[11px] font-bold text-[#2B6E80] hover:bg-[#F5F2EE] transition"
+                    >
+                      📞 Llamar
+                    </a>
+                  ) : (
+                    <Link
+                      href={url}
+                      className="flex items-center justify-center gap-1 border-t border-[#F5F2EE] py-2.5 text-[11px] font-bold text-[#2B6E80] hover:bg-[#F5F2EE] transition"
+                    >
+                      Ver ficha →
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
       {/* Historias premium — estilo Instagram */}
       <StoriesBar historias={historias} />
 
@@ -580,6 +729,38 @@ export default async function Home() {
         </section>
       )}
 
+      {/* Negocio del día — rotación diaria automática */}
+      {negocioDelDia && (
+        <section className="px-4 pt-6">
+          <FadeInSection>
+            <Link
+              href={negocioDelDia.categorias ? `/${negocioDelDia.categorias.slug}/${negocioDelDia.slug}` : "#"}
+              className="relative block overflow-hidden rounded-3xl bg-gradient-to-br from-[#1A1410] to-[#3D3428] shadow-[0_6px_24px_rgba(0,0,0,0.18)] active:scale-[0.99] transition"
+            >
+              <div className="flex items-center gap-4 p-4">
+                <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-white/10 flex items-center justify-center text-3xl">
+                  {negocioDelDia.foto_portada
+                    // eslint-disable-next-line @next/next/no-img-element
+                    ? <img loading="lazy" decoding="async" src={negocioDelDia.foto_portada} alt={negocioDelDia.nombre} className="h-full w-full object-cover" />
+                    : <span>{negocioDelDia.categorias?.emoji ?? "🏪"}</span>}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#F4B860] px-2 py-0.5 text-[9px] font-extrabold text-[#1A1410]">
+                    🏆 Negocio del día
+                  </span>
+                  <p className="mt-1.5 truncate text-base font-black text-white leading-tight">{negocioDelDia.nombre}</p>
+                  <p className="truncate text-[11px] text-white/60">
+                    {negocioDelDia.categorias?.emoji} {negocioDelDia.categorias?.nombre}
+                    {negocioDelDia.verificado ? " · ✓ Verificado" : ""}
+                  </p>
+                </div>
+                <span className="shrink-0 text-white/50 text-lg">→</span>
+              </div>
+            </Link>
+          </FadeInSection>
+        </section>
+      )}
+
       {/* Descubrimiento por categorías — separado de las acciones rápidas */}
       <section className="pt-6">
         <div className="flex items-end justify-between px-4 mb-4">
@@ -611,59 +792,6 @@ export default async function Home() {
 
       {/* Banner publicitario */}
       <AdvertisementBanner negocio={bannerNegocio} fallbackCta={!bannerNegocio} />
-
-      {/* Ofertas activas */}
-      {ofertas.length > 0 && (
-        <section className="pt-7">
-        <FadeInSection>
-          <div className="flex items-center justify-between px-4 mb-3">
-            <div>
-              <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Ofertas activas</h2>
-              <p className="text-xs text-[#8E8279]">Promociones vigentes hoy en Linares</p>
-            </div>
-            <Link href="/ofertas" className="text-xs font-bold text-[#2B6E80]">Ver todas <NudgeArrow /></Link>
-          </div>
-          <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
-            {ofertas.map(o => {
-              const url  = o.negocio?.categoria_slug && o.negocio?.slug ? `/${o.negocio.categoria_slug}/${o.negocio.slug}` : "#";
-              // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
-              const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);
-              return (
-                <Link key={o.id} href={url} className="relative w-48 shrink-0 overflow-hidden rounded-2xl border border-[#E8E4DE] bg-white shadow-linares-sm hover:shadow-linares transition">
-                  <div className="relative flex h-28 items-center justify-center bg-gradient-to-br from-[#F9F8F6] to-[#E8E4DE]">
-                    {o.imagen_url
-                      // eslint-disable-next-line @next/next/no-img-element
-                      ? <img loading="lazy" decoding="async" src={o.imagen_url} alt={o.titulo} className="h-full w-full object-cover" />
-                      : <span className="text-4xl">{o.negocio?.emoji ?? "🏪"}</span>}
-                    {o.descuento_pct && (
-                      <span className="absolute right-2 top-2 rounded-full bg-[#C05A46] px-2 py-0.5 text-[10px] font-extrabold text-white">-{o.descuento_pct}%</span>
-                    )}
-                    {o.boosteada && (
-                      <span className="absolute left-2 top-2 rounded-full bg-[#F4B860] px-1.5 py-0.5 text-[9px] font-bold text-[#1A1410]">⭐ Dest.</span>
-                    )}
-                  </div>
-                  <div className="p-3">
-                    <p className="line-clamp-2 text-xs font-bold leading-tight text-[#1A1410]">{o.titulo}</p>
-                    {o.negocio && <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">{o.negocio.nombre}</p>}
-                    <div className="mt-2 flex items-center justify-between">
-                      {o.precio_oferta
-                        ? <div className="flex items-baseline gap-1">
-                            <span className="text-sm font-extrabold text-[#C05A46]">${o.precio_oferta.toLocaleString("es-CL")}</span>
-                            {o.precio_normal && <span className="text-[9px] text-[#8E8279] line-through">${o.precio_normal.toLocaleString("es-CL")}</span>}
-                          </div>
-                        : <span className="text-[10px] text-[#8E8279]">Ver oferta →</span>}
-                      <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${dias <= 1 ? "bg-[#C05A46]/10 text-[#C05A46]" : "bg-[#F9F8F6] text-[#8E8279]"}`}>
-                        {dias <= 0 ? "Hoy" : dias === 1 ? "1d" : `${dias}d`}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </FadeInSection>
-        </section>
-      )}
 
       {/* Destacados — grid 2 columnas */}
       {destacados.length > 0 && (
