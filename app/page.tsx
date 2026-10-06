@@ -181,8 +181,13 @@ export default async function Home() {
     { data: categoriaCountsData },
     { data: eventosData },
     { data: historiasData },
+    { data: activosIdsData },
   ] = await Promise.all([
     supabase.from("categorias").select("*").order("orden"),
+
+    // IDs de todos los negocios activos para que "Abiertos ahora" no dependa
+    // de Destacados o Nuevos en LinaresYa.
+    supabase.from("negocios").select("id").eq("activo", true),
 
     supabase
       .from("negocios")
@@ -436,14 +441,25 @@ export default async function Home() {
   }
 
   // ── Horarios: qué negocios están abiertos ahora ───────────────────────────
-  const todosIds = [...destacados, ...recientes].map(n => n.id);
-  const openIdsArr = await getOpenIds(todosIds);
-  const openIds    = new Set(openIdsArr);
+  // Se calcula sobre todos los negocios activos, no solo sobre carruseles
+  // promocionales, para que esta sección cumpla realmente su promesa de utilidad.
+  const activosIds = ((activosIdsData ?? []) as { id: string }[]).map(n => n.id);
+  const openIdsArr = await getOpenIds(activosIds);
+  const openIds = new Set(openIdsArr);
 
-  // Negocios abiertos ahora (para la sección "Abiertos ahora")
-  const negociosAbiertos = [...destacados, ...recientes]
-    .filter(n => openIds.has(n.id))
-    .slice(0, 8);
+  let negociosAbiertos: NegocioCard[] = [];
+  if (openIdsArr.length > 0) {
+    const { data: abiertosData } = await supabase
+      .from("negocios")
+      .select("id, nombre, slug, descripcion, plan, verificado, foto_portada, a_domicilio, zona_cobertura, creado_en, telefono, categorias:categoria_id(nombre, slug, emoji)")
+      .eq("activo", true)
+      .in("id", openIdsArr)
+      .order("plan", { ascending: false })
+      .order("verificado", { ascending: false })
+      .order("creado_en", { ascending: false })
+      .limit(8);
+    negociosAbiertos = ((abiertosData ?? []) as unknown[]).map(toNegocio);
+  }
   const abiertosCount = negociosAbiertos.length;
 
   return (
