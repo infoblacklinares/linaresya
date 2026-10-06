@@ -384,7 +384,7 @@ export default async function Home() {
 
   const totalNegocios = totalCount ?? destacados.length;
 
-  // ── Negocio del día: rotación determinística por fecha ────────────────────
+  // ── Descubre un negocio: rotación determinística por fecha ───────────────
   // Mismo negocio para todos durante el día, cambia solo a medianoche.
   let negocioDelDia: NegocioCard | null = null;
   if (totalNegocios > 0) {
@@ -627,10 +627,10 @@ export default async function Home() {
         </Link>
       </div>
 
-      {/* Linares Esencial */}
+      {/* Servicios útiles de Linares */}
       <LinaresEsencial />
 
-      {/* Negocio del día — rotación diaria automática */}
+      {/* Descubre un negocio de Linares — rotación diaria automática */}
       {negocioDelDia && (
         <section className="px-4 pt-6">
           <FadeInSection>
@@ -647,7 +647,7 @@ export default async function Home() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <span className="inline-flex items-center gap-1 rounded-full bg-[#F4B860] px-2 py-0.5 text-[9px] font-extrabold text-[#1A1410]">
-                    🏆 Negocio del día
+                    ✨ Descubre un negocio
                   </span>
                   <p className="mt-1.5 truncate text-base font-black text-white leading-tight">{negocioDelDia.nombre}</p>
                   <p className="truncate text-[11px] text-white/60">
