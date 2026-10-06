@@ -403,43 +403,44 @@ function NegocioCard({
           </p>
         )}
 
-        <div className="mt-2 flex items-center gap-1.5 flex-wrap">
-          {rating && rating.count > 0 && (
-            <span className="text-[11px] font-bold text-amber-600">
-              ★ {rating.avg.toFixed(1)} · {rating.count} reseña{rating.count === 1 ? "" : "s"}
-            </span>
-          )}
-
-          {distanciaKm !== undefined && (
-            <span className="text-[10px] font-semibold text-[#2B6E80]">
-              📍 a {formatoDistancia(distanciaKm)}
-            </span>
-          )}
-
-          {n.verificado && (
-            <span className="text-[10px] bg-sky-50 text-sky-700 px-1.5 py-0.5 rounded-full font-semibold">
-              ✓ Negocio verificado
-            </span>
-          )}
-
-          {n.a_domicilio && (
-            <span className="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded-full font-medium">
-              🛵 A domicilio
-            </span>
-          )}
-
-          {n.actualizado_en && (() => {
-            const dias = Math.floor((Date.now() - new Date(n.actualizado_en).getTime()) / 86_400_000);
-            if (dias < 0 || dias > 60) return null;
-            const texto = dias === 0 ? "Actualizado hoy" : dias === 1 ? "Actualizado ayer" : `Actualizado hace ${dias} días`;
-            return (
-              <span className="text-[10px] bg-[#2B6E80]/8 text-[#2B6E80] px-1.5 py-0.5 rounded-full font-medium">
-                ↻ {texto}
+        <div className="mt-2 space-y-1.5">
+          <div className="flex items-center gap-2 flex-wrap text-[11px]">
+            {rating && rating.count > 0 && (
+              <span className="font-bold text-amber-600">
+                ★ {rating.avg.toFixed(1)} · {rating.count} reseña{rating.count === 1 ? "" : "s"}
               </span>
-            );
-          })()}
-        </div>
+            )}
+            {distanciaKm !== undefined && (
+              <span className="font-semibold text-[#2B6E80]">
+                📍 {formatoDistancia(distanciaKm)}
+              </span>
+            )}
+            {isOpen && <span className="font-semibold text-emerald-600">● Abierto</span>}
+          </div>
 
+          <div className="flex items-center gap-1.5 flex-wrap text-[10px]">
+            {n.verificado && (
+              <span className="bg-sky-50 text-sky-700 px-1.5 py-0.5 rounded-full font-semibold">
+                ✓ Verificado
+              </span>
+            )}
+            {n.a_domicilio && (
+              <span className="bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded-full font-medium">
+                🛵 A domicilio
+              </span>
+            )}
+            {n.actualizado_en && (() => {
+              const dias = Math.floor((Date.now() - new Date(n.actualizado_en).getTime()) / 86_400_000);
+              if (dias < 0 || dias > 60) return null;
+              const texto = dias === 0 ? "Actualizado hoy" : dias === 1 ? "Actualizado ayer" : `Actualizado hace ${dias} días`;
+              return (
+                <span className="bg-[#2B6E80]/8 text-[#2B6E80] px-1.5 py-0.5 rounded-full font-medium">
+                  ↻ {texto}
+                </span>
+              );
+            })()}
+          </div>
+        </div>
         <div className="mt-3 flex items-center gap-2">
           <Link
             href={href}
