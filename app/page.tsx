@@ -935,33 +935,6 @@ export default async function Home() {
         </ul>
       </section>
 
-      {/* Grid completo de categorías */}
-      <section className="pb-24 pt-10">
-        <div className="px-4 mb-3">
-          <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Todas las categorías</h2>
-          <p className="text-xs text-[#8E8279]">{cats.length} categorías cubriendo todo Linares.</p>
-        </div>
-        <ul className="grid grid-cols-2 lg:grid-cols-4 gap-3 px-4">
-          {cats.map((cat, i) => (
-            <li key={cat.id}>
-              <AnimatedCard index={i % 8}>
-                <Link href={`/${cat.slug}`} className={`flex items-center gap-3 rounded-2xl p-4 shadow-linares-sm transition hover:shadow-linares ${catColor(i)}`}>
-                  <span className="text-2xl">{cat.emoji}</span>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-bold">{cat.nombre}</p>
-                    <p className="text-[10px] opacity-60">
-                      {(catCounts.get(cat.id) ?? 0) > 0
-                        ? `${catCounts.get(cat.id)} negocio${catCounts.get(cat.id) === 1 ? "" : "s"}`
-                        : "Próximamente"}
-                    </p>
-                  </div>
-                </Link>
-              </AnimatedCard>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       {/* Blog — guías locales (dinámico) */}
       {(() => {
         const recentBlog = getRecentPosts(3);
