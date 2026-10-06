@@ -343,18 +343,6 @@ function NegocioCard({
 
           <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/40 to-transparent" />
 
-          <div className="absolute bottom-2 left-2">
-            <span
-              className={`text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm border ${
-                isOpen
-                  ? "bg-emerald-500/80 text-white border-emerald-400/40"
-                  : "bg-black/50 text-white/80 border-white/10"
-              }`}
-            >
-              {isOpen ? "● Abierto" : "● Cerrado"}
-            </span>
-          </div>
-
           {premium && (
             <div className="absolute top-2 right-2">
               <span className="text-[9px] font-bold bg-[#F4B860] text-[#1A1410] px-1.5 py-0.5 rounded-full">
@@ -415,7 +403,9 @@ function NegocioCard({
                 📍 {formatoDistancia(distanciaKm)}
               </span>
             )}
-            {isOpen && <span className="font-semibold text-emerald-600">● Abierto</span>}
+            <span className={isOpen ? "font-semibold text-emerald-600" : "font-semibold text-muted-foreground"}>
+              {isOpen ? "● Abierto" : "● Cerrado"}
+            </span>
           </div>
 
           <div className="flex items-center gap-1.5 flex-wrap text-[10px]">
