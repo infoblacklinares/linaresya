@@ -261,9 +261,15 @@ export default async function Home() {
   }
 
   const cats           = (categorias ?? []) as Categoria[];
-  // Se muestran TODOS los negocios en carruseles de auto-scroll.
-  // Destacados: todos, barajados (premium/verificados salieron primero de la BD).
-  const destacados = shuffle(((destacadosData ?? []) as unknown[]).map(toNegocio));
+  // Se muestran negocios activos en carruseles de auto-scroll.
+  // Destacados: mantenemos la jerarquía Premium → verificados → resto,
+  // pero rotamos dentro de cada nivel para evitar que siempre aparezcan los mismos.
+  const destacadosBase = ((destacadosData ?? []) as unknown[]).map(toNegocio);
+  const destacados = [
+    ...shuffle(destacadosBase.filter(esPremium)),
+    ...shuffle(destacadosBase.filter(n => !esPremium(n) && n.verificado)),
+    ...shuffle(destacadosBase.filter(n => !esPremium(n) && !n.verificado)),
+  ];
   // Recién sumados: todos, en orden de fecha (los más nuevos primero).
   const recientes  = ((recientesData ?? []) as unknown[]).map(toNegocio);
 
