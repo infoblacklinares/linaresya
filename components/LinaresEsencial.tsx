@@ -26,17 +26,6 @@ const gradiente = (tipo: string) => GRADIENTES[tipo] ?? "from-[#2B6E80] to-[#163
 
 const LUGARES: Lugar[] = [
   {
-    nombre: "Zoo de Linares",
-    imagen: "/esencial/zoo.jpg",
-    emoji: "🦁",
-    tipo: "Turismo",
-    tipoColor: "bg-emerald-100 text-emerald-700",
-    descripcion: "Parque Zoológico Municipal",
-    info: "Mar–Dom · 10:00–18:00",
-    telefono: null,
-    maps: "https://www.google.com/maps/search/?api=1&query=Parque+Zoologico+Linares+Chile",
-  },
-  {
     nombre: "Terminal de Buses",
     imagen: "/esencial/terminal.jpg",
     emoji: "🚌",
@@ -90,28 +79,6 @@ const LUGARES: Lugar[] = [
     info: "Emergencias: 133",
     telefono: "133",
     maps: "https://www.google.com/maps/search/?api=1&query=Carabineros+Linares+Chile",
-  },
-  {
-    nombre: "Plaza de Armas",
-    imagen: "/esencial/Plaza_de_Armas.jpg",
-    emoji: "🌳",
-    tipo: "Turismo",
-    tipoColor: "bg-emerald-100 text-emerald-700",
-    descripcion: "Plaza de Armas de Linares",
-    info: "Siempre abierta",
-    telefono: null,
-    maps: "https://www.google.com/maps/search/?api=1&query=Plaza+de+Armas+Linares+Chile",
-  },
-  {
-    nombre: "Catedral",
-    imagen: "/esencial/catedral.jpg",
-    emoji: "⛪",
-    tipo: "Turismo",
-    tipoColor: "bg-emerald-100 text-emerald-700",
-    descripcion: "Catedral de Linares",
-    info: "Lun–Dom desde 09:00",
-    telefono: null,
-    maps: "https://www.google.com/maps/search/?api=1&query=Catedral+de+Linares+Chile",
   },
   {
     nombre: "Bomberos",
@@ -218,8 +185,8 @@ export default function LinaresEsencial() {
       {/* Header */}
       <div className="flex items-end justify-between px-4 mb-3">
         <div>
-          <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Linares Esencial</h2>
-          <p className="text-xs text-[#8E8279]">Lugares y servicios clave de la ciudad</p>
+          <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Servicios útiles de Linares</h2>
+          <p className="text-xs text-[#8E8279]">Información práctica para resolver necesidades en Linares</p>
         </div>
       </div>
 
