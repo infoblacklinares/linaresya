@@ -29,6 +29,8 @@ const WA_MSG_PREMIUM = encodeURIComponent(
   "Hola! Quiero contratar el Plan Premium de LinaresYa. Te mando el comprobante de transferencia."
 );
 const WA_LINK = `https://wa.me/${WA_NUMERO}?text=${WA_MSG_PREMIUM}`;
+const WA_LINK_MENSUAL = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent("Hola! Quiero contratar LinaresYa Premium mensual por $4.990. Mi negocio es: ")}`;
+const WA_LINK_ANUAL = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent("Hola! Quiero contratar LinaresYa Premium anual por $49.900. Mi negocio es: ")}`;
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
@@ -214,7 +216,7 @@ export default function PremiumPage() {
           ))}
         </ol>
 
-        {/* Datos bancarios */}
+        <div className="mb-5 rounded-2xl bg-secondary/50 p-4 text-sm leading-relaxed">\n          <p className="font-bold">Primero elige tu modalidad</p>\n          <p className="mt-1 text-[12px] text-muted-foreground">El botón de cada precio abre WhatsApp con la modalidad indicada. Después haces la transferencia y envías el comprobante en ese mismo chat.</p>\n        </div>\n\n        {/* Datos bancarios */}
         <div className="rounded-2xl border border-border bg-white overflow-hidden">
           <div className="px-4 py-3 bg-secondary/60 border-b border-border">
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
