@@ -123,7 +123,10 @@ export default function SearchAutocomplete() {
 
   function pick(url: string) {
     guardarReciente(q.trim());
-    router.push(url);
+    const destino = url.startsWith("/") && !url.startsWith("/buscar")
+      ? `${url}${url.includes("?") ? "&" : "?"}origen=busqueda`
+      : url;
+    router.push(destino);
     setOpen(false);
   }
 
