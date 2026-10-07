@@ -64,8 +64,8 @@ const beneficios = [
   },
   {
     emoji: "📊",
-    titulo: "Estadísticas (Premium)",
-    desc: "Sabes cuánta gente vio tu ficha, cuántos te llamaron y cómo llegaron a ti.",
+    titulo: "Estadísticas de tu ficha",
+    desc: "Puedes consultar las estadísticas de tu ficha y entender cómo la encuentran los vecinos, también con el plan gratis.",
   },
 ];
 
@@ -198,9 +198,9 @@ export default async function ParaNegociosPage() {
             ["Horarios de atención", true, true],
             ["Badge Abierto/Cerrado", true, true],
             ["WhatsApp directo", false, true],
-            ["Fotos del negocio", false, true],
+            ["Fotos del negocio", true, true],
             ["Posición destacada", false, true],
-            ["Estadísticas de visitas", false, true],
+            ["Estadísticas de visitas", true, true],
           ].map(([label, basico, premium]) => (
             <div key={String(label)} className="grid grid-cols-3 text-center text-[13px] border-t border-border">
               <div className="px-3 py-2.5 text-left text-foreground/80">{String(label)}</div>
