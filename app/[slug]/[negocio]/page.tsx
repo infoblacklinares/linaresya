@@ -343,14 +343,14 @@ export default async function NegocioDetalle({
       <RegistrarVista negocioId={n.id} />
       <section className="relative">
         {/* Foto de portada full-bleed */}
-        <div className="relative h-72 sm:h-80 lg:h-[26rem] w-full overflow-hidden bg-secondary">
+        <div className="relative aspect-[16/10] sm:aspect-[16/8] lg:aspect-[16/6] w-full overflow-hidden bg-[#E8E4DE]">
           {n.foto_portada ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={n.foto_portada}
               alt={n.nombre}
               fetchPriority="high"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-center"
             />
           ) : (
             <div className={`h-full w-full flex items-center justify-center text-8xl bg-gradient-to-br ${esPremium ? "from-[#2B6E80] to-[#163d4e]" : "from-[#F9F8F6] to-[#E8E4DE]"}`}>
