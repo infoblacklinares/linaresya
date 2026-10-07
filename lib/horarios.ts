@@ -71,6 +71,21 @@ export async function getOpenIds(negocioIds: string[]): Promise<string[]> {
     .map((h) => h.negocio_id);
 }
 
+/** Devuelve todos los negocios con horario abierto hoy, sin cargar primero todos los IDs activos. */
+export async function getOpenIdsHoy(): Promise<string[]> {
+  const dia = diaHoySantiago();
+  const ahora = horaAhoraSantiago();
+  const { data } = await supabase
+    .from("horarios")
+    .select("negocio_id, abre, cierra")
+    .eq("dia", dia)
+    .eq("cerrado", false);
+
+  return ((data ?? []) as { negocio_id: string; abre: string | null; cierra: string | null }[])
+    .filter((h) => h.abre && h.cierra && dentroDeRango(ahora, h.abre, h.cierra))
+    .map((h) => h.negocio_id);
+}
+
 /** Comprueba si un negocio_id específico está en el set de abiertos */
 export function estaAbierto(negocioId: string, openIds: Set<string>): boolean {
   return openIds.has(negocioId);
