@@ -69,7 +69,7 @@ const PASOS_PAGO = [
 const FAQ = [
   {
     q: "¿Hay contrato o permanencia mínima?",
-    a: "No. Puedes cancelar cuando quieras. Si pagas mensual, el plan corre hasta el próximo mes. Si pagaste anual y quieres cancelar antes, te devolvemos los meses restantes.",
+    a: "No hay permanencia mensual. Si quieres cancelar o tienes un problema con un pago anual, escríbenos por WhatsApp y revisamos tu caso.",
   },
   {
     q: "¿Cómo activan mi Premium después de pagar?",
@@ -81,7 +81,7 @@ const FAQ = [
   },
   {
     q: "¿Puedo probar Premium antes de pagar?",
-    a: "Sí. Escríbenos por WhatsApp y lo hablamos. Para negocios nuevos en LinaresYa solemos dar unos días de prueba sin costo.",
+    a: "Puedes escribirnos por WhatsApp y consultar si hay una prueba disponible para tu negocio. No es un beneficio automático del plan.",
   },
   {
     q: "¿Las estadísticas son solo de Premium?",
@@ -159,6 +159,9 @@ export default function PremiumPage() {
             <p className="mt-3 text-[12px] text-foreground/60 leading-snug">
               Pagas cada mes. Cancelas cuando quieras.
             </p>
+            <a href={WA_LINK_MENSUAL} target="_blank" rel="noopener noreferrer" className="mt-4 flex items-center justify-center rounded-full bg-[#0f172a] px-3 py-2 text-xs font-bold text-white hover:opacity-90 transition">
+              Elegir mensual →
+            </a>
           </div>
 
           {/* Anual */}
@@ -216,7 +219,12 @@ export default function PremiumPage() {
           ))}
         </ol>
 
-        <div className="mb-5 rounded-2xl bg-secondary/50 p-4 text-sm leading-relaxed">\n          <p className="font-bold">Primero elige tu modalidad</p>\n          <p className="mt-1 text-[12px] text-muted-foreground">El botón de cada precio abre WhatsApp con la modalidad indicada. Después haces la transferencia y envías el comprobante en ese mismo chat.</p>\n        </div>\n\n        {/* Datos bancarios */}
+        <div className="mb-5 rounded-2xl bg-secondary/50 p-4 text-sm leading-relaxed">
+          <p className="font-bold">Primero elige tu modalidad</p>
+          <p className="mt-1 text-[12px] text-muted-foreground">El botón de cada precio abre WhatsApp con la modalidad indicada. Después haces la transferencia y envías el comprobante en ese mismo chat.</p>
+        </div>
+
+        {/* Datos bancarios */>
         <div className="rounded-2xl border border-border bg-white overflow-hidden">
           <div className="px-4 py-3 bg-secondary/60 border-b border-border">
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
