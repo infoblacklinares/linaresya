@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import TrackedActionButton from "./TrackedActionButton";
+import MobileContactBar from "./MobileContactBar";
 import LeaveReviewForm from "./LeaveReviewForm";
 import ShareButton from "./ShareButton";
 import ReportarButton from "./ReportarButton";
@@ -341,6 +342,15 @@ export default async function NegocioDetalle({
       {/* La vista se registra desde el navegador: en el servidor no existe la
           sesion, asi que no se podia distinguir una persona de diez recargas. */}
       <RegistrarVista negocioId={n.id} />
+      {accionPrimaria && (
+        <MobileContactBar
+          href={accionPrimaria.href}
+          negocioId={n.id}
+          evento={accionPrimaria.evento}
+          external={accionPrimaria.external}
+          label={accionPrimaria.label === "WhatsApp" ? "Contactar por WhatsApp" : accionPrimaria.label}
+        />
+      )}
       <section className="relative">
         {/* Foto de portada full-bleed */}
         <div className="relative aspect-[16/10] sm:aspect-[16/8] lg:aspect-[16/6] w-full overflow-hidden bg-[#E8E4DE]">
