@@ -11,6 +11,7 @@ import {
   quitarPremium,
 } from "./actions";
 import ConfirmDeleteButton from "./ConfirmDeleteButton";
+import ConfirmPremiumButton from "./ConfirmPremiumButton";
 import { fechaCL, normalizarTexto } from "@/lib/estadisticas";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
 import { calcularEstadoFicha } from "@/lib/estado-ficha";
@@ -1033,22 +1034,7 @@ function NegocioRowAdmin({ negocio }: { negocio: NegocioRow }) {
             </button>
           </form>
         ) : (
-          <div className="flex items-center gap-1">
-            <form action={activarPremium}>
-              <input type="hidden" name="id" value={negocio.id} />
-              <input type="hidden" name="duracion" value="30" />
-              <button type="submit" className="text-[11px] font-semibold text-amber-700 hover:underline px-1" title="Activar después de verificar el comprobante">
-                ⭐ 30d
-              </button>
-            </form>
-            <form action={activarPremium}>
-              <input type="hidden" name="id" value={negocio.id} />
-              <input type="hidden" name="duracion" value="365" />
-              <button type="submit" className="text-[11px] font-semibold text-amber-700 hover:underline px-1" title="Activar después de verificar el comprobante">
-                1 año
-              </button>
-            </form>
-          </div>
+          <ConfirmPremiumButton negocioId={negocio.id} compact />
         )}
         {!negocio.verificado && (
           <Link
@@ -1227,29 +1213,14 @@ function NegocioCardAdmin({
                 </button>
               </form>
             ) : (
-              <div className="flex flex-wrap gap-2">
-                <form action={activarPremium}>
-                  <input type="hidden" name="id" value={negocio.id} />
-                  <input type="hidden" name="duracion" value="30" />
-                  <button
-                    type="submit"
-                    className="rounded-full bg-amber-500 text-white text-xs font-semibold px-4 py-2 hover:bg-amber-600"
-                    title="Activar después de verificar el comprobante"
-                  >
-                    ⭐ Activar 30 días
-                  </button>
-                </form>
-                <form action={activarPremium}>
-                  <input type="hidden" name="id" value={negocio.id} />
-                  <input type="hidden" name="duracion" value="365" />
-                  <button
-                    type="submit"
-                    className="rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-semibold px-4 py-2 hover:bg-amber-200"
-                    title="Activar después de verificar el comprobante"
-                  >
-                    Activar 1 año
-                  </button>
-                </form>
+              <div className="w-full rounded-xl border border-amber-200 bg-amber-50/60 p-3">
+                <p className="text-[11px] font-bold text-amber-950">⭐ Activar Premium</p>
+                <p className="mt-0.5 text-[10px] leading-relaxed text-amber-900/75">
+                  Verifica primero el comprobante y luego activa la modalidad correspondiente.
+                </p>
+                <div className="mt-2">
+                  <ConfirmPremiumButton negocioId={negocio.id} />
+                </div>
               </div>
             )}
             <Link
