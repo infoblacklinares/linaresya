@@ -21,7 +21,6 @@ function guardarReciente(q: string) {
   } catch { /* sin localStorage */ }
 }
 
-// Búsquedas populares mostradas al enfocar el buscador vacío
 const POPULARES = [
   { q: "restaurante", emoji: "🍽️" },
   { q: "farmacia", emoji: "💊" },
@@ -43,7 +42,6 @@ export default function SearchAutocomplete() {
   const boxRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // Cerrar al hacer clic fuera
   useEffect(() => {
     function onDown(e: MouseEvent | TouchEvent) {
       if (boxRef.current && !boxRef.current.contains(e.target as Node)) setOpen(false);
@@ -56,12 +54,9 @@ export default function SearchAutocomplete() {
     };
   }, []);
 
-  // Fetch con debounce
   useEffect(() => {
     if (q.trim().length < 2) {
-      // Limpieza sincrónica a propósito: si esperamos al fetch siguiente,
-      // quedan visibles las sugerencias de la búsqueda anterior.
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- ver nota
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setNegocios([]);
       setCategorias([]);
       setFallback([]);
@@ -73,29 +68,29 @@ export default function SearchAutocomplete() {
       const controller = new AbortController();
       abortRef.current = controller;
       try {
-        const res = await fetch(`/api/sugerencias?q=${encodeURIComponent(q.trim())}`, {
-          signal: controller.signal,
-        });
+        const res = await fetch(`/api/sugerencias?q=${encodeURIComponent(q.trim())}`, { signal: controller.signal });
         if (!res.ok) return;
         const data = await res.json();
-        setNegocios(data.negocios ?? []);
-        setCategorias(data.categorias ?? []);
-        setFallback(data.fallback ?? []);
+        setNegocios((data.negocios ?? []).slice(0, 5));
+        setCategorias((data.categorias ?? []).slice(0, 3));
+        setFallback((data.fallback ?? []).slice(0, 3));
         setOpen(true);
         setHighlighted(-1);
       } catch {
         /* abortado o sin red: ignorar */
       }
-    }, 220);
+    }, 180);
     return () => clearTimeout(timer);
   }, [q]);
 
-  const items: Sugerencia[] = [...categorias, ...negocios, ...fallback];
+  // Los negocios aparecen primero porque normalmente el usuario busca un lugar concreto.
+  const items: Sugerencia[] = [...negocios, ...categorias, ...fallback];
   const hasResults = items.length > 0;
   const sinCoincidencias = negocios.length === 0 && categorias.length === 0 && fallback.length > 0;
 
   function submit() {
     if (highlighted >= 0 && items[highlighted]) {
+      guardarReciente(q.trim());
       router.push(items[highlighted].url);
     } else if (q.trim()) {
       guardarReciente(q.trim());
@@ -127,15 +122,14 @@ export default function SearchAutocomplete() {
   }
 
   function pick(url: string) {
+    guardarReciente(q.trim());
     router.push(url);
     setOpen(false);
   }
 
   return (
     <div ref={boxRef} className="relative z-50">
-      <label htmlFor="main-search" className="sr-only">
-        Buscar negocios, servicios o rubros en Linares
-      </label>
+      <label htmlFor="main-search" className="sr-only">Buscar negocios, servicios o rubros en Linares</label>
       <div className="flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 p-1.5 pl-4 backdrop-blur-md">
         <SearchIcon className="shrink-0 text-white/50" />
         <input
@@ -161,7 +155,6 @@ export default function SearchAutocomplete() {
         </motion.button>
       </div>
 
-      {/* Búsquedas populares al enfocar vacío */}
       <AnimatePresence>
         {open && q.trim().length < 2 && (
           <motion.div
@@ -169,38 +162,26 @@ export default function SearchAutocomplete() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="absolute inset-x-0 top-full z-[60] mt-2 overflow-hidden rounded-2xl bg-white shadow-[0_12px_40px_rgba(0,0,0,0.25)] p-3"
+            className="absolute inset-x-0 top-full z-[60] mt-2 overflow-hidden rounded-2xl bg-white p-3 shadow-[0_16px_45px_rgba(0,0,0,0.18)] ring-1 ring-black/5"
           >
             {recientes.length > 0 && (
               <>
-                <p className="px-1 pb-2 text-[10px] font-bold uppercase tracking-wide text-[#8E8279]">
-                  Tus búsquedas recientes
-                </p>
+                <p className="px-1 pb-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#8E8279]">Tus búsquedas recientes</p>
                 <div className="flex flex-wrap gap-2 pb-3">
                   {recientes.map(r => (
-                    <button
-                      key={r}
-                      type="button"
-                      onClick={() => { guardarReciente(r); router.push(`/buscar?q=${encodeURIComponent(r)}`); setOpen(false); }}
-                      className="rounded-full bg-[#2B6E80]/5 border border-[#2B6E80]/20 px-3 py-1.5 text-xs font-semibold text-[#2B6E80] hover:bg-[#2B6E80]/10 transition"
-                    >
+                    <button key={r} type="button" onClick={() => { guardarReciente(r); router.push(`/buscar?q=${encodeURIComponent(r)}`); setOpen(false); }}
+                      className="rounded-full border border-[#2B6E80]/15 bg-[#2B6E80]/5 px-3 py-1.5 text-xs font-semibold text-[#2B6E80] transition hover:bg-[#2B6E80]/10">
                       ↻ {r}
                     </button>
                   ))}
                 </div>
               </>
             )}
-            <p className="px-1 pb-2 text-[10px] font-bold uppercase tracking-wide text-[#8E8279]">
-              Búsquedas populares
-            </p>
+            <p className="px-1 pb-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#8E8279]">Prueba buscar</p>
             <div className="flex flex-wrap gap-2">
               {POPULARES.map(p => (
-                <button
-                  key={p.q}
-                  type="button"
-                  onClick={() => { router.push(`/buscar?q=${encodeURIComponent(p.q)}`); setOpen(false); }}
-                  className="rounded-full bg-[#F9F8F6] border border-[#E8E4DE] px-3 py-1.5 text-xs font-semibold text-[#1A1410] hover:border-[#2B6E80]/40 hover:bg-[#2B6E80]/5 transition"
-                >
+                <button key={p.q} type="button" onClick={() => { router.push(`/buscar?q=${encodeURIComponent(p.q)}`); setOpen(false); }}
+                  className="rounded-full border border-[#E8E4DE] bg-[#F9F8F6] px-3 py-1.5 text-xs font-semibold text-[#1A1410] transition hover:border-[#2B6E80]/35 hover:bg-[#2B6E80]/5">
                   {p.emoji} {p.q}
                 </button>
               ))}
@@ -209,7 +190,6 @@ export default function SearchAutocomplete() {
         )}
       </AnimatePresence>
 
-      {/* Dropdown de sugerencias estilo Pinterest */}
       <AnimatePresence>
         {open && hasResults && (
           <motion.div
@@ -217,49 +197,34 @@ export default function SearchAutocomplete() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="absolute inset-x-0 top-full z-[60] mt-2 max-h-[60vh] overflow-y-auto rounded-2xl bg-white shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
+            className="absolute inset-x-0 top-full z-[60] mt-2 max-h-[60vh] overflow-y-auto rounded-2xl bg-white shadow-[0_18px_50px_rgba(0,0,0,0.2)] ring-1 ring-black/5"
           >
             {sinCoincidencias && (
-              <div className="px-4 pt-3 pb-1">
-                <p className="text-xs font-semibold text-[#1A1410]">
-                  Sin resultados para &ldquo;{q.trim()}&rdquo;
-                </p>
-                <p className="text-[10px] font-bold uppercase tracking-wide text-[#8E8279] mt-2">
-                  Quizás te interese
-                </p>
+              <div className="px-4 pt-4 pb-2">
+                <p className="text-xs font-semibold text-[#1A1410]">No encontramos “{q.trim()}”.</p>
+                <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#8E8279]">Quizás te interese</p>
               </div>
             )}
-            {categorias.length > 0 && (
-              <div className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-wide text-[#8E8279]">
-                Categorías
-              </div>
+            {negocios.length > 0 && (
+              <div className="border-b border-[#F0EDE8] px-4 pt-3 pb-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[#8E8279]">Negocios</div>
             )}
-            {categorias.map((s, i) => (
+            {negocios.map((s, i) => (
               <SuggestionRow key={s.url} s={s} active={highlighted === i} onPick={() => pick(s.url)} onHover={() => setHighlighted(i)} />
             ))}
-            {negocios.length > 0 && (
-              <div className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-wide text-[#8E8279]">
-                Negocios
-              </div>
+            {categorias.length > 0 && (
+              <div className="border-b border-[#F0EDE8] px-4 pt-3 pb-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[#8E8279]">Categorías</div>
             )}
-            {negocios.map((s, i) => {
-              const idx = categorias.length + i;
-              return (
-                <SuggestionRow key={s.url} s={s} active={highlighted === idx} onPick={() => pick(s.url)} onHover={() => setHighlighted(idx)} />
-              );
+            {categorias.map((s, i) => {
+              const idx = negocios.length + i;
+              return <SuggestionRow key={s.url} s={s} active={highlighted === idx} onPick={() => pick(s.url)} onHover={() => setHighlighted(idx)} />;
             })}
             {fallback.map((s, i) => {
-              const idx = categorias.length + negocios.length + i;
-              return (
-                <SuggestionRow key={s.url} s={s} active={highlighted === idx} onPick={() => pick(s.url)} onHover={() => setHighlighted(idx)} />
-              );
+              const idx = negocios.length + categorias.length + i;
+              return <SuggestionRow key={s.url} s={s} active={highlighted === idx} onPick={() => pick(s.url)} onHover={() => setHighlighted(idx)} />;
             })}
-            <button
-              type="button"
-              onClick={submit}
-              className="w-full border-t border-[#F0EDE8] px-4 py-3 text-left text-xs font-bold text-[#2B6E80] hover:bg-[#F9F8F6] transition"
-            >
-              Buscar &ldquo;{q.trim()}&rdquo; en todo LinaresYa →
+            <button type="button" onClick={submit}
+              className="w-full border-t border-[#E8E4DE] bg-[#F9F8F6]/70 px-4 py-3.5 text-left text-xs font-extrabold text-[#2B6E80] transition hover:bg-[#F1EEEA]">
+              Ver todos los resultados para “{q.trim()}” →
             </button>
           </motion.div>
         )}
@@ -268,38 +233,18 @@ export default function SearchAutocomplete() {
   );
 }
 
-function SuggestionRow({
-  s,
-  active,
-  onPick,
-  onHover,
-}: {
-  s: Sugerencia;
-  active: boolean;
-  onPick: () => void;
-  onHover: () => void;
-}) {
+function SuggestionRow({ s, active, onPick, onHover }: { s: Sugerencia; active: boolean; onPick: () => void; onHover: () => void }) {
   return (
-    <button
-      type="button"
-      onClick={onPick}
-      onMouseEnter={onHover}
-      className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition ${active ? "bg-[#F0EDE8]" : "hover:bg-[#F9F8F6]"}`}
-    >
+    <button type="button" onClick={onPick} onMouseEnter={onHover}
+      className={`group flex w-full items-center gap-3 px-4 py-3 text-left transition ${active ? "bg-[#F4F1ED]" : "hover:bg-[#FAF8F5]"}`}>
       {s.foto ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={s.foto}
-          alt={s.nombre}
-          className="h-9 w-9 shrink-0 rounded-xl object-cover"
-        />
+        <img src={s.foto} alt="" className="h-10 w-10 shrink-0 rounded-xl object-cover ring-1 ring-black/5" />
       ) : (
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#F0EDE8] text-base">
-          {s.emoji}
-        </span>
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F0EDE8] text-base">{s.emoji}</span>
       )}
-      <span className="truncate text-sm font-semibold text-[#1A1410]">{s.nombre}</span>
-      <span className="ml-auto text-xs text-[#8E8279]">→</span>
+      <span className="min-w-0 flex-1 truncate text-sm font-semibold text-[#1A1410]">{s.nombre}</span>
+      <span className="text-xs font-bold text-[#B1A69E] transition group-hover:text-[#2B6E80]">→</span>
     </button>
   );
 }
@@ -307,8 +252,7 @@ function SuggestionRow({
 function SearchIcon({ className }: { className?: string }) {
   return (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className={className}>
-      <circle cx="11" cy="11" r="7" />
-      <path d="m21 21-4.3-4.3" />
+      <circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" />
     </svg>
   );
 }
