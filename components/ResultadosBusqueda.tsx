@@ -316,7 +316,8 @@ function NegocioCard({
     ? whatsAppLink(n.whatsapp)
     : null;
   const categoriaSlug = n.categorias?.slug ?? "sin-categoria";
-  const href = `/${categoriaSlug}/${n.slug}`;
+  // Conserva la procedencia de la búsqueda hasta la ficha.
+  const href = `/${categoriaSlug}/${n.slug}?origen=busqueda`;
 
   return (
     <div>
