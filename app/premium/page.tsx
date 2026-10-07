@@ -114,7 +114,7 @@ export default function PremiumPage() {
         {/* text-white explicito: globals.css fuerza color #1A1410 en todos los
             h1-h4, asi que sobre fondo oscuro el titulo salia casi negro. */}
         <h2 className="text-3xl font-black leading-tight tracking-tight text-white">
-          Más clientes.<br />Más contactos.<br />Menos trabajo.
+          Más visibilidad.<br />Más contactos.<br />Más oportunidades.
         </h2>
         <p className="mt-3 text-sm text-white/70 leading-relaxed max-w-sm">
           WhatsApp directo, fotos de tu local y posición destacada. Todo por menos que un café por día.
