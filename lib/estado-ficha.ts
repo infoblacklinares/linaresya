@@ -100,3 +100,17 @@ export function calcularEstadoFicha(
     problemasCriticos,
   };
 }
+
+
+export function prioridadFaltante(faltante: string): "ALTA" | "MEDIA" {
+  if (
+    faltante === "Falta teléfono/WhatsApp" ||
+    faltante === "Falta dirección" ||
+    faltante === "Faltan coordenadas" ||
+    faltante === "Ubicación demasiado genérica"
+  ) {
+    return "ALTA";
+  }
+
+  return "MEDIA";
+}
