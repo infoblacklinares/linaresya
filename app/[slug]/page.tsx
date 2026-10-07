@@ -51,7 +51,7 @@ export default async function CategoriaPage({
   const filtroDomicilio = sp.domicilio  === "1";
   const filtroOrden     = sp.orden === "rating" ? "rating" : "relevancia";
   const pagina = Math.max(1, Number(sp.pagina) || 1);
-  const POR_PAGINA = 24;
+  const POR_PAGINA = 12;
 
   const categoria = await getCategoriaPorSlug(slug);
   // La categoria existe (lo verifico el layout); aca ademas tiene que estar activa.
@@ -178,11 +178,22 @@ export default async function CategoriaPage({
 
       {/* ── Grid de negocios ────────────────────────────────────────── */}
       <section className="p-4 pb-8">
+        {items.length > 0 && (
+          <div className="mb-4 flex items-end justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-wider text-[#8B7E75]">Resultados</p>
+              <p className="mt-0.5 text-sm font-semibold text-[#1A1410]">{totalNegocios} {totalNegocios === 1 ? "negocio encontrado" : "negocios encontrados"}</p>
+            </div>
+            {totalPaginas > 1 && (
+              <span className="text-[11px] font-medium text-[#8B7E75]">Página {paginaActual} de {totalPaginas}</span>
+            )}
+          </div>
+        )}
         {items.length === 0 ? (
           <EmptyState emoji={cat.emoji} nombre={cat.nombre} />
         ) : (
           <>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {itemsPagina.map((n, i) => {
                 const rData = ratingsMap.get(n.id);
                 const rating = rData && rData.count > 0 ? { avg: rData.sum / rData.count, count: rData.count } : null;
@@ -194,7 +205,7 @@ export default async function CategoriaPage({
               })}
             </div>
             {totalPaginas > 1 && (
-            <nav aria-label="Paginación de negocios" className="mt-6 flex items-center justify-center gap-1.5">
+            <nav aria-label="Paginación de negocios" className="mt-8 flex flex-wrap items-center justify-center gap-1.5 rounded-2xl border border-[#E8E4DE] bg-white p-2 shadow-[0_2px_10px_rgba(26,20,16,0.04)]">
               <Link href={hrefPagina(Math.max(1, paginaActual - 1))} aria-disabled={paginaActual === 1}
                 className={"flex h-9 w-9 items-center justify-center rounded-full border text-sm font-bold transition " + (paginaActual === 1 ? "pointer-events-none border-[#E8E4DE] text-[#C8C0B9]" : "border-[#E8E4DE] bg-white text-[#1A1410] hover:border-[#2B6E80]/30 hover:text-[#2B6E80]")}>
                 ←
@@ -232,13 +243,13 @@ function NegocioCard({
   const waUrl = canUseFeature(n, "whatsapp") ? whatsAppLink(n.whatsapp) : null;
 
   return (
-    <div className="relative rounded-2xl bg-white/80 backdrop-blur-sm border border-white shadow-[0_2px_12px_rgba(0,0,0,0.07)] overflow-hidden hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 transition-all group">
+    <div className="relative rounded-2xl bg-white border border-[#E8E4DE] shadow-[0_2px_10px_rgba(26,20,16,0.05)] overflow-hidden hover:shadow-[0_10px_28px_rgba(26,20,16,0.10)] hover:-translate-y-0.5 transition-all group">
 
       {/* Link de fondo */}
       <Link href={`/${categoriaSlug}/${n.slug}`} className="absolute inset-0 z-10" aria-label={n.nombre} />
 
       {/* Imagen */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-[#F0EDE8]">
+      <div className="relative aspect-[16/10] overflow-hidden bg-[#F0EDE8]">
         {n.foto_portada ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img loading="lazy" decoding="async" src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -280,7 +291,7 @@ function NegocioCard({
       </div>
 
       {/* Info */}
-      <div className="p-3 relative z-10">
+      <div className="p-3.5 relative z-10">
         <p className="font-bold text-[13px] text-[#1A1410] leading-tight line-clamp-1">{n.nombre}</p>
 
         {n.descripcion && (
