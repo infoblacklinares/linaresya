@@ -121,6 +121,18 @@ export default function AdvertisementBanner({
                 </a>
               )}
             </div>
+
+            {/* Captación contextual: el vecino acaba de ver el valor de aparecer en LinaresYa. */}
+            <div className="mt-4 border-t border-white/15 pt-3">
+              <p className="text-xs font-semibold text-white/90">¿Tu negocio también quiere aparecer aquí?</p>
+              <p className="mt-0.5 text-[10px] text-white/60">Publica tu negocio gratis y haz que te encuentren en Linares.</p>
+              <Link
+                href="/publicar"
+                className="mt-2 inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-bold text-white transition hover:bg-white/25"
+              >
+                Publicar gratis →
+              </Link>
+            </div>
           </div>
         </div>
       </div>
