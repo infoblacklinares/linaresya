@@ -224,7 +224,7 @@ export default function PremiumPage() {
           <p className="mt-1 text-[12px] text-muted-foreground">El botón de cada precio abre WhatsApp con la modalidad indicada. Después haces la transferencia y envías el comprobante en ese mismo chat.</p>
         </div>
 
-        {/* Datos bancarios */>
+        {/* Datos bancarios */}
         <div className="rounded-2xl border border-border bg-white overflow-hidden">
           <div className="px-4 py-3 bg-secondary/60 border-b border-border">
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
