@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 
     const { data, error } = await supabaseAdmin
       .from("negocios")
-      .update({ plan: "basico" })
+      .update({ plan: "basico", premium_desde: null })
       .eq("plan", "premium")
       .not("premium_hasta", "is", null)
       .lt("premium_hasta", ahora)
@@ -34,6 +34,10 @@ export async function GET(req: NextRequest) {
 
     const degradados = (data ?? []) as { id: string; nombre: string; premium_hasta: string }[];
     if (degradados.length > 0) {
+      revalidatePath("/");
+      revalidatePath("/mapa");
+      revalidatePath("/admin");
+    }
       console.log(
         `[cron expire-premium] ${degradados.length} negocio(s) degradado(s) a básico:`,
         degradados.map(n => n.nombre).join(", "),
