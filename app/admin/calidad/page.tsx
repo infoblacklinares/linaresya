@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
-import { calcularEstadoFicha } from "@/lib/estado-ficha";
+import { calcularEstadoFicha, prioridadFaltante } from "@/lib/estado-ficha";
 
 type Negocio = {
   id: string;
