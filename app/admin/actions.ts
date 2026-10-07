@@ -214,8 +214,12 @@ async function cambiarPlanNegocio(
     .eq("id", id)
     .maybeSingle();
 
+  if (!antesRaw) {
+    throw new Error("No se encontró el negocio para cambiar su plan.");
+  }
+
   const eraPremiumPrevio =
-    String((antesRaw as Record<string, unknown> | null)?.plan ?? "") === "premium";
+    String((antesRaw as Record<string, unknown>).plan ?? "") === "premium";
 
   const cambios: Record<string, unknown> = { plan, premium_hasta: premiumHasta };
   // Fecha de inicio del Premium: se escribe solo cuando el plan sube, para no
@@ -243,7 +247,7 @@ async function cambiarPlanNegocio(
   }
   if (error) {
     console.error("[cambiarPlanNegocio] error:", error.message);
-    return;
+    throw new Error(`No se pudo cambiar el plan del negocio: ${error.message}`);
   }
 
   await logAuditServer({
