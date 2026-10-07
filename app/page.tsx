@@ -17,7 +17,7 @@ import MarqueeRow from "@/components/MarqueeRow";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { telLink } from "@/lib/contacto";
 import { esPremium } from "@/lib/planes";
-import { getOpenIds, estaAbierto, badgeAbierto } from "@/lib/horarios";
+import { getOpenIdsHoy, estaAbierto, badgeAbierto } from "@/lib/horarios";
 import { getRecentPosts } from "@/lib/blog-posts";
 import { RUBROS } from "@/lib/rubros";
 
@@ -181,7 +181,6 @@ export default async function Home() {
     { data: categoriaCountsData },
     { data: eventosData },
     { data: historiasData },
-    { data: activosIdsData },
   ] = await Promise.all([
     supabase.from("categorias").select("*").order("orden"),
 
@@ -250,9 +249,6 @@ export default async function Home() {
       .order("creada_en", { ascending: false })
       .limit(30),
 
-    // IDs de todos los negocios activos para que "Abiertos ahora" no dependa
-    // de Destacados o Nuevos en LinaresYa.
-    supabase.from("negocios").select("id").eq("activo", true),
   ]);
 
   if (error) {
@@ -447,8 +443,7 @@ export default async function Home() {
   // ── Horarios: qué negocios están abiertos ahora ───────────────────────────
   // Se calcula sobre todos los negocios activos, no solo sobre carruseles
   // promocionales, para que esta sección cumpla realmente su promesa de utilidad.
-  const activosIds = ((activosIdsData ?? []) as { id: string }[]).map(n => n.id);
-  const openIdsArr = await getOpenIds(activosIds);
+  const openIdsArr = await getOpenIdsHoy();
   const openIds = new Set(openIdsArr);
 
   let negociosAbiertos: NegocioCard[] = [];
