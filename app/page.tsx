@@ -773,10 +773,12 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Banner publicitario */}
-      <AdvertisementBanner negocio={bannerNegocio} fallbackCta={!bannerNegocio} />
+      {/* Banner publicitario / captación contextual */}
+      <section className="px-4 pt-8">
+        <AdvertisementBanner negocio={bannerNegocio} fallbackCta={!bannerNegocio} />
+      </section>
 
-      {/* Agenda de eventos */}
+      {/* Agenda de eventos — vida local */}
       {eventos_home.length > 0 && (
         <section className="pt-8">
           <div className="flex items-end justify-between px-4 mb-3">
@@ -832,10 +834,10 @@ export default async function Home() {
         </Link>
       </div>
 
-      {/* Lo más visto de la semana — prueba social con datos reales */}
+      {/* Lo más visto — señal social */}
       {masVistos.length > 0 && (
-        <section className="pt-8 px-4">
-          <div className="mb-3">
+        <section className="mt-10 border-t border-[#E8E4DE] pt-8 px-4">
+          <div className="mb-4">
             <h2 className="text-xl font-black tracking-tight text-[#1A1410]">🔥 Lo más visto</h2>
             <p className="text-xs text-[#8E8279]">Los negocios que más miran los vecinos esta semana</p>
           </div>
@@ -872,9 +874,10 @@ export default async function Home() {
 
       {/* Reseñas recientes — prueba social */}
       {resenasRecientes.length > 0 && (
-        <section className="pt-8 px-4">
-          <div className="mb-3">
-            <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Lo que dicen los vecinos</h2>
+        <section className="mt-10 border-t border-[#E8E4DE] pt-8 px-4">
+          <div className="mb-4">
+            <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#8E8279]">Confianza local</span>
+            <h2 className="mt-1 text-xl font-black tracking-tight text-[#1A1410]">Lo que dicen los vecinos</h2>
             <p className="text-xs text-[#8E8279]">Reseñas reales de clientes de Linares</p>
           </div>
           <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
@@ -912,8 +915,8 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Newsletter */}
-      <section className="px-4 pt-8">
+      {/* Newsletter — cierre de la portada */}
+      <section className="mt-10 border-t border-[#E8E4DE] bg-[#F7F5F1] px-4 pt-8 pb-8">
         <FadeInSection className="rounded-3xl bg-gradient-to-br from-[#1f5268] to-[#2B6E80] p-5 lg:max-w-2xl lg:mx-auto lg:p-8">
           <div className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-white/90">
             📬 Novedades de Linares
@@ -928,62 +931,9 @@ export default async function Home() {
         </FadeInSection>
       </section>
 
-      {/* Lo que la gente busca en Google (LY-034).
-          Las categorias de mas abajo son baldes anchos —"gastronomia",
-          "servicios y oficios"— y nadie los escribe en un buscador. Estos son
-          los terminos reales, y enlazarlos desde la portada, que es la pagina
-          con mas fuerza del sitio, es lo que hace que Google los encuentre y
-          los tome en serio. */}
-      <section className="px-4 pt-8">
-        <h2 className="text-xl font-black tracking-tight text-[#1A1410]">
-          Lo mas buscado en Linares
-        </h2>
-        <p className="text-xs text-[#8E8279]">
-          Los rubros que la gente pregunta, con telefono y direccion.
-        </p>
-        <ul className="mt-3 flex flex-wrap gap-2">
-          {RUBROS.map((r) => (
-            <li key={r.slug}>
-              <Link
-                href={`/en-linares/${r.slug}`}
-                className="inline-block rounded-full bg-[#F0EDE8] px-3.5 py-1.5 text-sm font-semibold text-[#1A1410] hover:bg-[#E8E4DE] transition"
-              >
-                {r.titulo.replace(" en Linares", "")}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
 
-      {/* Blog — guías locales (dinámico) */}
-      {(() => {
-        const recentBlog = getRecentPosts(3);
-        return (
-          <section className="px-4 pt-8 pb-4">
-            <div className="flex items-end justify-between mb-3">
-              <div>
-                <h2 className="text-base font-extrabold tracking-tight text-[#1A1410]">Guías de Linares</h2>
-                <p className="text-xs text-[#8E8279]">Artículos útiles para vecinos</p>
-              </div>
-              <Link href="/blog" className="text-xs font-semibold text-[#2B6E80]">Ver todo <NudgeArrow /></Link>
-            </div>
-            <div className="space-y-2 lg:grid lg:grid-cols-3 lg:gap-2 lg:space-y-0">
-              {recentBlog.map((art) => (
-                <Link
-                  key={art.slug}
-                  href={`/blog/${art.slug}`}
-                  className="flex items-center gap-3 rounded-xl bg-white px-4 py-3 shadow-linares-sm hover:shadow-linares transition-shadow"
-                >
-                  <span className="text-xl">{art.emoji}</span>
-                  <span className="text-sm font-semibold text-[#1A1410] line-clamp-1">{art.titulo}</span>
-                  <span className="ml-auto text-[#8E8279] text-xs shrink-0">→</span>
-                </Link>
-              ))}
-            </div>
-          </section>
         );
       })()}
-
       </div>{/* /contenido centrado */}
 
       {/* Bottom nav */}
