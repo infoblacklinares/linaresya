@@ -299,6 +299,19 @@ async function cambiarPlanNegocio(
   }
 }
 
+export async function activarPremium(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  const duracion = String(formData.get("duracion") ?? "");
+  if (!id) return;
+
+  const dias = duracion === "365" ? 365 : duracion === "30" ? 30 : 0;
+  if (!dias) return;
+
+  await cambiarPlanNegocio(id, "premium", vencimientoEnDias(dias));
+}
+
+// Compatibilidad con enlaces/acciones antiguas que todavía puedan apuntar a 30 días.
 export async function activarPremium30Dias(formData: FormData): Promise<void> {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
