@@ -485,26 +485,28 @@ export default async function Home() {
       {/* Contenido centrado */}
       <div className="mx-auto w-full max-w-2xl lg:max-w-full lg:px-4 xl:px-10">
 
-      {/* Descubrimiento por categorías — separado de las acciones rápidas */}
-      <section className="pt-6">
+      {/* Descubrimiento por categorías */}
+      <section className="pt-7">
         <div className="flex items-end justify-between px-4 mb-4">
           <div>
-            <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Explora por categoría</h2>
-            <p className="mt-0.5 text-xs text-[#8E8279]">Descubre negocios según lo que buscas.</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#2B6E80]">Explora</p>
+            <h2 className="mt-1 text-xl font-black tracking-tight text-[#1A1410]">Encuentra por categoría</h2>
+            <p className="mt-0.5 text-xs text-[#8E8279]">Elige un rubro y descubre negocios de Linares.</p>
           </div>
-          <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todas <NudgeArrow /></Link>
+          <Link href="/buscar" className="shrink-0 rounded-full border border-[#E8E4DE] bg-white px-3 py-1.5 text-[11px] font-bold text-[#2B6E80] shadow-sm transition hover:border-[#2B6E80]/30 hover:bg-[#F9F8F6]">Ver todas <NudgeArrow /></Link>
         </div>
-        <div className="flex gap-4 overflow-x-auto px-4 pb-3 no-scrollbar">
+        <div className="grid grid-cols-2 gap-2.5 px-4 sm:grid-cols-3 lg:grid-cols-6">
           {cats.map((cat, i) => (
-            <AnimatedCard key={cat.id} index={i} className="shrink-0">
-              <Link href={`/${cat.slug}`} className="flex flex-col items-center gap-2 group">
-                <div className="relative flex h-[72px] w-[72px] items-center justify-center rounded-[22px] bg-white text-[2rem] shadow-[0_2px_14px_rgba(0,0,0,0.09)] border border-[#F0EDE8] transition group-hover:-translate-y-1 group-hover:shadow-[0_8px_24px_rgba(0,0,0,0.13)] active:scale-90">
-                  {cat.emoji}
+            <AnimatedCard key={cat.id} index={i}>
+              <Link href={`/${cat.slug}`} className="group flex min-h-[112px] flex-col justify-between rounded-2xl border border-[#E8E4DE] bg-white p-3.5 shadow-[0_2px_10px_rgba(0,0,0,0.04)] transition-all hover:-translate-y-0.5 hover:border-[#2B6E80]/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.09)] active:scale-[0.98]">
+                <div className="flex items-start justify-between gap-2">
+                  <span className={`flex h-11 w-11 items-center justify-center rounded-xl text-xl ${catColor(i)} transition-transform group-hover:scale-105`}>{cat.emoji}</span>
+                  <span className="text-[11px] font-bold text-[#C2B9B1] transition-colors group-hover:text-[#2B6E80]">→</span>
                 </div>
-                <span className="w-[72px] text-center text-[11px] font-semibold leading-tight text-[#6B5E57]">{cat.nombre}</span>
-                {(catCounts.get(cat.id) ?? 0) > 0 && (
-                  <span className="text-[9px] font-bold text-[#2B6E80] -mt-1">{catCounts.get(cat.id)} negocios</span>
-                )}
+                <div className="mt-3 min-w-0">
+                  <p className="truncate text-xs font-extrabold text-[#1A1410]">{cat.nombre}</p>
+                  <p className="mt-0.5 text-[10px] font-medium text-[#8E8279]">{catCounts.get(cat.id) ?? 0} {catCounts.get(cat.id) === 1 ? "negocio" : "negocios"}</p>
+                </div>
               </Link>
             </AnimatedCard>
           ))}
