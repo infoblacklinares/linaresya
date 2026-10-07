@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import {
-  activarPremium30Dias,
+  activarPremium,
   aprobarNegocio,
   desactivarNegocio,
   eliminarNegocio,
@@ -1033,12 +1033,22 @@ function NegocioRowAdmin({ negocio }: { negocio: NegocioRow }) {
             </button>
           </form>
         ) : (
-          <form action={activarPremium30Dias}>
-            <input type="hidden" name="id" value={negocio.id} />
-            <button type="submit" className="text-[11px] font-semibold text-amber-700 hover:underline px-1">
-              ⭐ Premium 30d
-            </button>
-          </form>
+          <div className="flex items-center gap-1">
+            <form action={activarPremium}>
+              <input type="hidden" name="id" value={negocio.id} />
+              <input type="hidden" name="duracion" value="30" />
+              <button type="submit" className="text-[11px] font-semibold text-amber-700 hover:underline px-1" title="Activar después de verificar el comprobante">
+                ⭐ 30d
+              </button>
+            </form>
+            <form action={activarPremium}>
+              <input type="hidden" name="id" value={negocio.id} />
+              <input type="hidden" name="duracion" value="365" />
+              <button type="submit" className="text-[11px] font-semibold text-amber-700 hover:underline px-1" title="Activar después de verificar el comprobante">
+                1 año
+              </button>
+            </form>
+          </div>
         )}
         {!negocio.verificado && (
           <Link
@@ -1217,15 +1227,30 @@ function NegocioCardAdmin({
                 </button>
               </form>
             ) : (
-              <form action={activarPremium30Dias}>
-                <input type="hidden" name="id" value={negocio.id} />
-                <button
-                  type="submit"
-                  className="rounded-full bg-amber-500 text-white text-xs font-semibold px-4 py-2 hover:bg-amber-600"
-                >
-                  ⭐ Premium 30 dias
-                </button>
-              </form>
+              <div className="flex flex-wrap gap-2">
+                <form action={activarPremium}>
+                  <input type="hidden" name="id" value={negocio.id} />
+                  <input type="hidden" name="duracion" value="30" />
+                  <button
+                    type="submit"
+                    className="rounded-full bg-amber-500 text-white text-xs font-semibold px-4 py-2 hover:bg-amber-600"
+                    title="Activar después de verificar el comprobante"
+                  >
+                    ⭐ Activar 30 días
+                  </button>
+                </form>
+                <form action={activarPremium}>
+                  <input type="hidden" name="id" value={negocio.id} />
+                  <input type="hidden" name="duracion" value="365" />
+                  <button
+                    type="submit"
+                    className="rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-semibold px-4 py-2 hover:bg-amber-200"
+                    title="Activar después de verificar el comprobante"
+                  >
+                    Activar 1 año
+                  </button>
+                </form>
+              </div>
             )}
             <Link
               href={`/admin/negocio/${negocio.id}/estadisticas`}
