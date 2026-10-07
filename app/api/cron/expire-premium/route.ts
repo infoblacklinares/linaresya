@@ -39,11 +39,10 @@ export async function GET(req: NextRequest) {
       revalidatePath("/mapa");
       revalidatePath("/admin");
     }
-      console.log(
-        `[cron expire-premium] ${degradados.length} negocio(s) degradado(s) a básico:`,
-        degradados.map(n => n.nombre).join(", "),
-      );
-    }
+    console.log(
+      `[cron expire-premium] ${degradados.length} negocio(s) degradado(s) a básico:`,
+      degradados.map(n => n.nombre).join(", "),
+    );
 
     return NextResponse.json({
       ok: true,
