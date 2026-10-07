@@ -932,8 +932,6 @@ export default async function Home() {
       </section>
 
 
-        );
-      })()}
       </div>{/* /contenido centrado */}
 
       {/* Bottom nav */}
