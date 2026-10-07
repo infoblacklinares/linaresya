@@ -181,18 +181,19 @@ export default async function CategoriaPage({
         {items.length === 0 ? (
           <EmptyState emoji={cat.emoji} nombre={cat.nombre} />
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {itemsPagina.map((n, i) => {
-              const rData = ratingsMap.get(n.id);
-              const rating = rData && rData.count > 0 ? { avg: rData.sum / rData.count, count: rData.count } : null;
-              return (
-                <AnimatedCard key={n.id} index={i}>
-                  <NegocioCard n={n} categoriaSlug={cat.slug} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
-                </AnimatedCard>
-              );
-            })}
-          </div>
-          {totalPaginas > 1 && (
+          <>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              {itemsPagina.map((n, i) => {
+                const rData = ratingsMap.get(n.id);
+                const rating = rData && rData.count > 0 ? { avg: rData.sum / rData.count, count: rData.count } : null;
+                return (
+                  <AnimatedCard key={n.id} index={i}>
+                    <NegocioCard n={n} categoriaSlug={cat.slug} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
+                  </AnimatedCard>
+                );
+              })}
+            </div>
+            {totalPaginas > 1 && (
             <nav aria-label="Paginación de negocios" className="mt-6 flex items-center justify-center gap-1.5">
               <Link href={hrefPagina(Math.max(1, paginaActual - 1))} aria-disabled={paginaActual === 1}
                 className={"flex h-9 w-9 items-center justify-center rounded-full border text-sm font-bold transition " + (paginaActual === 1 ? "pointer-events-none border-[#E8E4DE] text-[#C8C0B9]" : "border-[#E8E4DE] bg-white text-[#1A1410] hover:border-[#2B6E80]/30 hover:text-[#2B6E80]")}>
@@ -214,7 +215,8 @@ export default async function CategoriaPage({
                 →
               </Link>
             </nav>
-          )}
+            )}
+          </>
         )}
       </section>
     </main>
