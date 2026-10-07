@@ -49,7 +49,11 @@ function crearContexto(): Contexto {
     sesion: nuevaSesion(),
     // El origen se calcula una sola vez, al entrar: es de donde vino la
     // persona. Si se recalculara en cada click, todo terminaria como "interno".
-    fuente: fuenteDesde({ utm, refererHost }),
+    fuente:
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("origen") === "busqueda"
+        ? "busqueda"
+        : fuenteDesde({ utm, refererHost }),
     utm,
     refererHost,
   };
