@@ -136,9 +136,11 @@ export default async function CalidadPage() {
     dias.add(fila.dia);
     horariosPorNegocio.set(fila.negocio_id, dias);
   }
-  const problemas = construirProblemas(negociosVerificados, fotosPorNegocio, horariosPorNegocio, auditorReport?.findings ?? []);
+  // La calidad de datos debe cubrir todas las fichas activas, no solo las verificadas.
+  // La verificación se mantiene como flujo separado y no se cuenta como problema aquí.
+  const problemas = construirProblemas(negocios, fotosPorNegocio, horariosPorNegocio, auditorReport?.findings ?? []);
   const auditorFindings = (auditorReport?.findings ?? []).filter((finding) =>
-    negociosVerificados.some(
+    negocios.some(
       (negocio) => negocio.id === finding.business_id || negocio.slug === finding.business_id,
     ),
   );
