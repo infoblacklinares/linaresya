@@ -40,13 +40,13 @@ const BENEFICIOS = [
   {
     icon: "📊",
     titulo: "Estadísticas propias",
-    desc: "Sabes cuántas personas vieron tu ficha, llamaron o buscaron cómo llegar.",
+    desc: "Tu ficha te ayuda a mostrar lo que ofreces y facilitar el contacto con nuevos clientes.",
   },
 ];
 
 const PASOS = [
   { n: "1", txt: "Completas el formulario con los datos de tu negocio (tarda 3 minutos)." },
-  { n: "2", txt: "Revisamos la información y la activamos en las próximas horas." },
+  { n: "2", txt: "Revisamos la información y, si está todo bien, la activamos pronto." },
   { n: "3", txt: "Tu negocio aparece en el directorio y en las búsquedas locales de Linares." },
 ];
 
@@ -111,7 +111,7 @@ export default async function PublicarPage({
           Publica tu negocio gratis
         </h2>
         <p className="mt-2 text-[13px] font-semibold text-white/85">
-          Gratis · Sin registro · Activo en pocas horas
+          Gratis · Sin registro · Lo revisamos y activamos pronto
         </p>
         {totalNegocios > 0 && (
           <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-[12px] font-semibold">
