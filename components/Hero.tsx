@@ -79,15 +79,6 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
                 </div>
               </div>
             ) : null}
-            {verificados ? (
-              <div className="flex items-center gap-2 rounded-2xl border border-[#F4B860]/25 bg-[#F4B860]/15 px-3 py-2 backdrop-blur-sm">
-                <span className="text-lg leading-none">✓</span>
-                <div>
-                  <p className="text-xs font-black leading-none text-[#F4B860]"><AnimatedCounter value={verificados} duration={900} /></p>
-                  <p className="mt-0.5 text-[10px] leading-none text-[#F4B860]/70">verificados</p>
-                </div>
-              </div>
-            ) : null}
           </div>
         ) : <div className="mb-5" />}
 
@@ -121,22 +112,6 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
               </Link>
             </motion.div>
           ))}
-          {/* CTA captación de negocios */}
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.85 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            whileHover={{ scale: 1.08, y: -2 }}
-            whileTap={{ scale: 0.92 }}
-            transition={{ type: "spring", stiffness: 300, damping: 18, delay: 0.6 }}
-            className="shrink-0"
-          >
-            <Link
-              href="/publicar"
-              className="block rounded-full bg-[#F4B860] px-3 py-1.5 text-xs font-bold text-[#1A1410] transition hover:bg-[#f0ad4a]"
-            >
-              🏪 Publica tu negocio gratis
-            </Link>
-          </motion.div>
         </div>
       </div>
     </section>
