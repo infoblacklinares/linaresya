@@ -50,6 +50,8 @@ export default async function CategoriaPage({
   const filtroAbierto   = sp.abierto    === "1";
   const filtroDomicilio = sp.domicilio  === "1";
   const filtroOrden     = sp.orden === "rating" ? "rating" : "relevancia";
+  const pagina = Math.max(1, Number(sp.pagina) || 1);
+  const POR_PAGINA = 24;
 
   const categoria = await getCategoriaPorSlug(slug);
   // La categoria existe (lo verifico el layout); aca ademas tiene que estar activa.
@@ -96,8 +98,26 @@ export default async function CategoriaPage({
     });
   }
 
-  const breadcrumbData = breadcrumbJsonLd([{ name: "Inicio", url: SITE_URL }, { name: cat.nombre, url: `${SITE_URL}/${cat.slug}` }]);
-  const itemListData = itemListJsonLd(items.map(n => ({ nombre: n.nombre, slug: n.slug })), cat.slug);
+  const totalNegocios = items.length;
+  const totalPaginas = Math.max(1, Math.ceil(totalNegocios / POR_PAGINA));
+  const paginaActual = Math.min(pagina, totalPaginas);
+  const itemsPagina = items.slice((paginaActual - 1) * POR_PAGINA, paginaActual * POR_PAGINA);
+
+  const filtrosBase = new URLSearchParams();
+  if (filtroPremium) filtrosBase.set("premium", "1");
+  if (filtroVerif) filtrosBase.set("verificado", "1");
+  if (filtroAbierto) filtrosBase.set("abierto", "1");
+  if (filtroDomicilio) filtrosBase.set("domicilio", "1");
+  if (filtroOrden === "rating") filtrosBase.set("orden", "rating");
+  const hrefPagina = (numero: number) => {
+    const params = new URLSearchParams(filtrosBase);
+    if (numero > 1) params.set("pagina", String(numero));
+    const query = params.toString();
+    return "/" + cat.slug + (query ? "?" + query : "");
+  };
+
+  const breadcrumbData = breadcrumbJsonLd([{ name: "Inicio", url: SITE_URL }, { name: cat.nombre, url: SITE_URL + "/" + cat.slug }]);
+  const itemListData = itemListJsonLd(itemsPagina.map(n => ({ nombre: n.nombre, slug: n.slug })), cat.slug);
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-full lg:px-8 xl:px-14 bg-[#F9F8F6]">
@@ -124,7 +144,7 @@ export default async function CategoriaPage({
               <h1 className="text-base font-extrabold tracking-tight text-white truncate">{cat.emoji} {cat.nombre}</h1>
             </div>
             <span className="text-xs font-bold text-white/60 shrink-0 bg-white/10 rounded-full px-2.5 py-1">
-              {items.length}
+              {totalNegocios}
             </span>
           </div>
         </header>
@@ -162,7 +182,7 @@ export default async function CategoriaPage({
           <EmptyState emoji={cat.emoji} nombre={cat.nombre} />
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {items.map((n, i) => {
+            {itemsPagina.map((n, i) => {
               const rData = ratingsMap.get(n.id);
               const rating = rData && rData.count > 0 ? { avg: rData.sum / rData.count, count: rData.count } : null;
               return (
@@ -172,6 +192,29 @@ export default async function CategoriaPage({
               );
             })}
           </div>
+          {totalPaginas > 1 && (
+            <nav aria-label="Paginación de negocios" className="mt-6 flex items-center justify-center gap-1.5">
+              <Link href={hrefPagina(Math.max(1, paginaActual - 1))} aria-disabled={paginaActual === 1}
+                className={"flex h-9 w-9 items-center justify-center rounded-full border text-sm font-bold transition " + (paginaActual === 1 ? "pointer-events-none border-[#E8E4DE] text-[#C8C0B9]" : "border-[#E8E4DE] bg-white text-[#1A1410] hover:border-[#2B6E80]/30 hover:text-[#2B6E80]")}>
+                ←
+              </Link>
+              {Array.from({ length: totalPaginas }, (_, i) => i + 1)
+                .filter(n => n === 1 || n === totalPaginas || Math.abs(n - paginaActual) <= 1)
+                .map((n, i, arr) => (
+                  <span key={n} className="flex items-center">
+                    {i > 0 && arr[i - 1] !== n - 1 && <span className="px-1 text-xs text-[#B8AEA6]">…</span>}
+                    <Link href={hrefPagina(n)} aria-current={n === paginaActual ? "page" : undefined}
+                      className={"flex h-9 min-w-9 items-center justify-center rounded-full px-2 text-xs font-bold transition " + (n === paginaActual ? "bg-[#1A1410] text-white shadow-sm" : "border border-[#E8E4DE] bg-white text-[#6B5E57] hover:border-[#2B6E80]/30 hover:text-[#2B6E80]")}>
+                      {n}
+                    </Link>
+                  </span>
+                ))}
+              <Link href={hrefPagina(Math.min(totalPaginas, paginaActual + 1))} aria-disabled={paginaActual === totalPaginas}
+                className={"flex h-9 w-9 items-center justify-center rounded-full border text-sm font-bold transition " + (paginaActual === totalPaginas ? "pointer-events-none border-[#E8E4DE] text-[#C8C0B9]" : "border-[#E8E4DE] bg-white text-[#1A1410] hover:border-[#2B6E80]/30 hover:text-[#2B6E80]")}>
+                →
+              </Link>
+            </nav>
+          )}
         )}
       </section>
     </main>
@@ -277,14 +320,14 @@ function EmptyState({ emoji, nombre }: { emoji: string; nombre: string }) {
     <div className="col-span-2 rounded-3xl border border-dashed border-border p-8 text-center">
       <div className="text-5xl mb-3">{emoji}</div>
       <h2 className="text-lg font-bold">Aún no hay negocios en {nombre}</h2>
-      <p className="mt-1.5 text-sm text-muted-foreground max-w-sm mx-auto">¿Eres el primero? Publica gratis y apareces acá en pocas horas.</p>
+      <p className="mt-1.5 text-sm text-muted-foreground max-w-sm mx-auto">¿Eres el primero? Publica gratis y haz que te encuentren en Linares.</p>
       <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-2">
         <Link href="/publicar" className="inline-flex items-center gap-1.5 rounded-full bg-foreground text-background text-sm font-semibold px-5 py-2.5">
           Publicar mi negocio →
         </Link>
         <a href={`https://wa.me/${WA_SUGERIR}?text=${msg}`} target="_blank" rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white text-sm font-bold px-5 py-2.5">
-          Sugerí uno por WhatsApp
+          Sugerir uno por WhatsApp
         </a>
       </div>
     </div>
