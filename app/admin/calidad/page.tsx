@@ -315,12 +315,6 @@ export default async function CalidadPage() {
       </section>
 
       <section className="px-4 pt-6">
-        {auditorFindings.length > 0 && (
-          <div className="mb-4 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-xs text-sky-900">
-            <strong>Data Auditor integrado:</strong> los hallazgos externos ya están asociados a cada ficha en la cola de trabajo. Revisa el detalle desde la ficha correspondiente.
-          </div>
-        )}
-
         {problemas.length === 0 && auditorFindings.length === 0 ? (
           <div className="rounded-2xl border-2 border-dashed border-border p-8 text-center">
             <p className="font-bold">No hay problemas accionables.</p>
