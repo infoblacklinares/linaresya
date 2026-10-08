@@ -318,7 +318,8 @@ export default async function CalidadPage() {
             </p>
           </div>
         ) : (
-          <div className="mb-3">
+          <>
+            <div className="mb-3">
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Orden de trabajo</p>
             <h2 className="text-sm font-bold mt-1">Qué corregir primero</h2>
             <p className="text-xs text-muted-foreground mt-1">Las fichas con problemas de contacto o ubicación aparecen arriba.</p>
@@ -366,6 +367,7 @@ export default async function CalidadPage() {
               </article>
             ))}
           </div>
+          </>
         )}
       </section>
     </main>
