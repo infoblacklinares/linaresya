@@ -226,7 +226,7 @@ export default async function CalidadPage() {
       altas: items.filter((item) => item.prioridad === "ALTA").length + (hallazgosPorNegocio.get(id) ?? 0),
       hallazgos: hallazgosPorNegocio.get(id) ?? 0,
     }))
-    .sort((a, b) => b.altas - a.altas || b.problemas.length - a.problemas.length || a.nombre.localeCompare(b.nombre, "es"));
+    .sort((a, b) => b.altas - a.altas || (b.problemas.length + b.hallazgos) - (a.problemas.length + a.hallazgos) || a.nombre.localeCompare(b.nombre, "es"));
 
   return (
     <main className="flex-1 mx-auto w-full max-w-3xl pb-10">
