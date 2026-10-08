@@ -6,6 +6,8 @@ export type FichaCalidadInput = {
   descripcion: string | null;
   telefono: string | null;
   whatsapp: string | null;
+  /** Indica si al menos uno de los contactos guardados puede generar un contacto utilizable. */
+  contactoUtilizable?: boolean;
   direccion: string | null;
   lat: number | null;
   lng: number | null;
@@ -52,7 +54,11 @@ export function calcularEstadoFicha(
   const problemasCriticos: string[] = [];
 
   if (!ficha.descripcion) faltantes.push("Falta descripción");
-  if (!ficha.telefono && !ficha.whatsapp) faltantes.push("Falta teléfono/WhatsApp");
+  if (!ficha.telefono && !ficha.whatsapp) {
+    faltantes.push("Falta teléfono/WhatsApp");
+  } else if (ficha.contactoUtilizable === false) {
+    faltantes.push("Contacto no utilizable");
+  }
   if (!ficha.direccion && !ficha.a_domicilio) {
     faltantes.push("Falta dirección");
   }
@@ -105,6 +111,7 @@ export function calcularEstadoFicha(
 export function prioridadFaltante(faltante: string): "ALTA" | "MEDIA" {
   if (
     faltante === "Falta teléfono/WhatsApp" ||
+    faltante === "Contacto no utilizable" ||
     faltante === "Falta dirección" ||
     faltante === "Faltan coordenadas" ||
     faltante === "Ubicación demasiado genérica"
