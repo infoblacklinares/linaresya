@@ -32,6 +32,25 @@ type Problema = {
 
 const prioridadOrden = { ALTA: 0, MEDIA: 1 };
 
+function impactoProblema(problema: Problema): { etiqueta: string; detalle: string } {
+  switch (problema.tipo) {
+    case "TELEFONO":
+      return { etiqueta: "Contacto", detalle: "Puede impedir que el vecino contacte al negocio." };
+    case "UBICACION":
+      return { etiqueta: "Conversión", detalle: "Puede dificultar llegar al negocio o usar mapas." };
+    case "FOTOGRAFIAS":
+      return { etiqueta: "Confianza", detalle: "Una ficha sin fotos transmite menos información para decidir." };
+    case "DESCRIPCION":
+      return { etiqueta: "Visibilidad", detalle: "Falta contexto para entender qué ofrece el negocio." };
+    case "CATEGORIA":
+      return { etiqueta: "Visibilidad", detalle: "Puede impedir que aparezca donde los vecinos esperan encontrarlo." };
+    case "HORARIOS":
+      return { etiqueta: "Conversión", detalle: "Puede generar visitas fuera de horario o dudas antes de contactar." };
+    default:
+      return { etiqueta: "Calidad", detalle: "Conviene corregir este dato para mantener la ficha completa." };
+  }
+}
+
 function ubicacionGenerica(direccion: string | null): boolean {
   if (!direccion) return false;
   const value = direccion.trim().toLowerCase().replace(/\s+/g, " ");
@@ -353,8 +372,18 @@ export default async function CalidadPage() {
                         </span>
                       ))}
                     </div>
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {grupo.problemas.map((problema) => {
+                        const impacto = impactoProblema(problema);
+                        return (
+                          <span key={problema.tipo} className="text-[10px] font-semibold rounded-full bg-slate-50 text-slate-700 px-2 py-1">
+                            Impacto: {impacto.etiqueta}
+                          </span>
+                        );
+                      })}
+                    </div>
                     <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
-                      {grupo.problemas.map((problema) => problema.detalle).join(" · ")}
+                      {grupo.problemas.map((problema) => impactoProblema(problema).detalle).join(" · ")}
                     </p>
                   </div>
                   <Link
