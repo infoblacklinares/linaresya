@@ -206,10 +206,14 @@ export default async function CalidadPage() {
   const fichasAfectadas = negociosConProblemas.size;
   const totalProblemas = problemas.length + auditorFindings.length;
   const hallazgosPorNegocio = new Map<string, number>();
+  const detalleHallazgosPorNegocio = new Map<string, typeof auditorFindings>();
   for (const finding of auditorFindings) {
     const negocioId = negocioIdByExternalId.get(finding.business_id);
     if (negocioId) {
       hallazgosPorNegocio.set(negocioId, (hallazgosPorNegocio.get(negocioId) ?? 0) + 1);
+      const lista = detalleHallazgosPorNegocio.get(negocioId) ?? [];
+      lista.push(finding);
+      detalleHallazgosPorNegocio.set(negocioId, lista);
     }
   }
   const nombrePorNegocio = new Map(negocios.map((negocio) => [negocio.id, negocio.nombre]));
@@ -312,32 +316,8 @@ export default async function CalidadPage() {
 
       <section className="px-4 pt-6">
         {auditorFindings.length > 0 && (
-          <div className="mb-6">
-            <div className="mb-3">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Fuente externa</p>
-              <h2 className="text-sm font-bold">Hallazgos del Data Auditor</h2>
-            </div>
-            <div className="space-y-3">
-              {auditorFindings.map((finding) => (
-                <article key={`${finding.business_id}-${finding.rule}`} className="rounded-2xl border border-sky-200 bg-sky-50/40 p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-bold text-sm">{finding.business_name ?? finding.business_id}</h3>
-                        <span className="text-[9px] font-bold rounded-full bg-sky-100 text-sky-800 px-2 py-0.5">{finding.severity}</span>
-                      </div>
-                      <p className="text-[10px] font-mono text-muted-foreground mt-1">{finding.rule}</p>
-                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{finding.message}</p>
-                    </div>
-                    {negocioIdByExternalId.get(finding.business_id) ? (
-                      <Link href={`/admin/negocio/${negocioIdByExternalId.get(finding.business_id)}`} className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90">Corregir →</Link>
-                    ) : (
-                      <span className="shrink-0 rounded-full border border-amber-200 bg-amber-50 text-amber-900 text-[10px] font-semibold px-3 py-2">Sin ficha vinculada</span>
-                    )}
-                  </div>
-                </article>
-              ))}
-            </div>
+          <div className="mb-4 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-xs text-sky-900">
+            <strong>Data Auditor integrado:</strong> los hallazgos externos ya están asociados a cada ficha en la cola de trabajo. Revisa el detalle desde la ficha correspondiente.
           </div>
         )}
 
@@ -408,6 +388,19 @@ export default async function CalidadPage() {
                       {grupo.problemas.map((problema) => impactoProblema(problema).detalle).join(" · ")}
                       {grupo.hallazgos > 0 && " También tiene hallazgos del Data Auditor que conviene revisar."}
                     </p>
+                    {grupo.hallazgos > 0 && (
+                      <div className="mt-3 space-y-2">
+                        {detalleHallazgosPorNegocio.get(grupo.id)?.map((finding) => (
+                          <div key={finding.rule} className="rounded-xl border border-sky-100 bg-sky-50/60 px-3 py-2">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[9px] font-bold text-sky-800">{finding.severity}</span>
+                              <span className="text-[9px] font-mono text-sky-900/60">{finding.rule}</span>
+                            </div>
+                            <p className="mt-1 text-[10px] leading-relaxed text-sky-900/75">{finding.message}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <Link
                     href={`/admin/negocio/${grupo.id}`}
