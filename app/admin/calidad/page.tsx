@@ -186,6 +186,20 @@ export default async function CalidadPage() {
   ]);
   const fichasAfectadas = negociosConProblemas.size;
   const totalProblemas = problemas.length + auditorFindings.length;
+  const problemasPorNegocio = new Map<string, Problema[]>();
+  for (const problema of problemas) {
+    const lista = problemasPorNegocio.get(problema.id) ?? [];
+    lista.push(problema);
+    problemasPorNegocio.set(problema.id, lista);
+  }
+  const negociosPrioritarios = [...problemasPorNegocio.entries()]
+    .map(([id, items]) => ({
+      id,
+      nombre: items[0]?.nombre ?? id,
+      problemas: items,
+      altas: items.filter((item) => item.prioridad === "ALTA").length,
+    }))
+    .sort((a, b) => b.altas - a.altas || b.problemas.length - a.problemas.length || a.nombre.localeCompare(b.nombre, "es"));
 
   return (
     <main className="flex-1 mx-auto w-full max-w-3xl pb-10">
@@ -304,38 +318,46 @@ export default async function CalidadPage() {
             </p>
           </div>
         ) : (
+          <div className="mb-3">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Orden de trabajo</p>
+            <h2 className="text-sm font-bold mt-1">Qué corregir primero</h2>
+            <p className="text-xs text-muted-foreground mt-1">Las fichas con problemas de contacto o ubicación aparecen arriba.</p>
+          </div>
           <div className="space-y-3">
-            {problemas.map((problema, index) => (
-              <article
-                key={`${problema.id}-${problema.tipo}`}
-                className="rounded-2xl border border-border bg-white p-4"
-              >
+            {negociosPrioritarios.map((grupo, index) => (
+              <article key={grupo.id} className="rounded-2xl border border-border bg-white p-4">
                 <div className="flex items-start gap-3">
-                  <span className="text-xs font-bold text-muted-foreground pt-1 w-5">
-                    {index + 1}
-                  </span>
+                  <span className="text-xs font-bold text-muted-foreground pt-1 w-5">{index + 1}</span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h2 className="font-bold text-sm truncate">{problema.nombre}</h2>
-                      <span
-                        className={`text-[9px] font-bold rounded-full px-2 py-0.5 ${
-                          problema.prioridad === "ALTA"
-                            ? "bg-rose-100 text-rose-800"
-                            : "bg-amber-100 text-amber-800"
-                        }`}
-                      >
-                        {problema.prioridad}
-                      </span>
+                      <h2 className="font-bold text-sm truncate">{grupo.nombre}</h2>
+                      {grupo.altas > 0 && (
+                        <span className="text-[9px] font-bold rounded-full bg-rose-100 text-rose-800 px-2 py-0.5">
+                          {grupo.altas} alta{grupo.altas === 1 ? "" : "s"}
+                        </span>
+                      )}
                       <span className="text-[9px] font-bold rounded-full bg-secondary px-2 py-0.5">
-                        {etiquetas[problema.tipo]}
+                        {grupo.problemas.length} problema{grupo.problemas.length === 1 ? "" : "s"}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      {problema.detalle}
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {grupo.problemas.map((problema) => (
+                        <span
+                          key={problema.tipo}
+                          className={`text-[10px] font-semibold rounded-full px-2 py-1 ${
+                            problema.prioridad === "ALTA" ? "bg-rose-50 text-rose-800" : "bg-amber-50 text-amber-800"
+                          }`}
+                        >
+                          {etiquetas[problema.tipo]}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                      {grupo.problemas.map((problema) => problema.detalle).join(" · ")}
                     </p>
                   </div>
                   <Link
-                    href={`/admin/negocio/${problema.id}`}
+                    href={`/admin/negocio/${grupo.id}`}
                     className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90"
                   >
                     Corregir →
