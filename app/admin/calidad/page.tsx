@@ -212,18 +212,22 @@ export default async function CalidadPage() {
       hallazgosPorNegocio.set(negocioId, (hallazgosPorNegocio.get(negocioId) ?? 0) + 1);
     }
   }
+  const nombrePorNegocio = new Map(negocios.map((negocio) => [negocio.id, negocio.nombre]));
   const problemasPorNegocio = new Map<string, Problema[]>();
   for (const problema of problemas) {
     const lista = problemasPorNegocio.get(problema.id) ?? [];
     lista.push(problema);
     problemasPorNegocio.set(problema.id, lista);
   }
+  for (const negocioId of hallazgosPorNegocio.keys()) {
+    if (!problemasPorNegocio.has(negocioId)) problemasPorNegocio.set(negocioId, []);
+  }
   const negociosPrioritarios = [...problemasPorNegocio.entries()]
     .map(([id, items]) => ({
       id,
-      nombre: items[0]?.nombre ?? id,
+      nombre: items[0]?.nombre ?? nombrePorNegocio.get(id) ?? id,
       problemas: items,
-      altas: items.filter((item) => item.prioridad === "ALTA").length + (hallazgosPorNegocio.get(id) ?? 0),
+      altas: items.filter((item) => item.prioridad === "ALTA").length + auditorFindings.filter((finding) => finding.severity === "HIGH" && negocioIdByExternalId.get(finding.business_id) === id).length,
       hallazgos: hallazgosPorNegocio.get(id) ?? 0,
     }))
     .sort((a, b) => b.altas - a.altas || (b.problemas.length + b.hallazgos) - (a.problemas.length + a.hallazgos) || a.nombre.localeCompare(b.nombre, "es"));
