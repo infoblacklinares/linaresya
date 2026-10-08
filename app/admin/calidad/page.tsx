@@ -365,8 +365,13 @@ export default async function CalidadPage() {
                         </span>
                       )}
                       <span className="text-[9px] font-bold rounded-full bg-secondary px-2 py-0.5">
-                        {grupo.problemas.length} problema{grupo.problemas.length === 1 ? "" : "s"}
+                        {grupo.problemas.length + grupo.hallazgos} elemento{grupo.problemas.length + grupo.hallazgos === 1 ? "" : "s"} por revisar
                       </span>
+                      {grupo.hallazgos > 0 && (
+                        <span className="text-[9px] font-bold rounded-full bg-sky-100 text-sky-800 px-2 py-0.5">
+                          {grupo.hallazgos} Data Auditor
+                        </span>
+                      )}
                     </div>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {grupo.problemas.map((problema) => (
@@ -379,6 +384,11 @@ export default async function CalidadPage() {
                           {etiquetas[problema.tipo]}
                         </span>
                       ))}
+                      {grupo.hallazgos > 0 && (
+                        <span className="text-[10px] font-semibold rounded-full bg-sky-50 text-sky-800 px-2 py-1">
+                          Hallazgos externos
+                        </span>
+                      )}
                     </div>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {grupo.problemas.map((problema) => {
@@ -392,6 +402,7 @@ export default async function CalidadPage() {
                     </div>
                     <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
                       {grupo.problemas.map((problema) => impactoProblema(problema).detalle).join(" · ")}
+                      {grupo.hallazgos > 0 && " También tiene hallazgos del Data Auditor que conviene revisar."}
                     </p>
                   </div>
                   <Link
