@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
-import { calcularEstadoFicha, prioridadFaltante } from "@/lib/estado-ficha";
+import { calcularEstadoFicha } from "@/lib/estado-ficha";
 import { telefonoInternacional, whatsAppLink } from "@/lib/contacto";
 
 type Negocio = {
@@ -122,7 +122,7 @@ const etiquetas: Record<Problema["tipo"], string> = {
   HORARIOS: "Horarios",
 };
 
-export default async function CalidadPage() {
+export default async function CalidadPage({ searchParams }: { searchParams: Promise<{ prioridad?: string }> }) {
   if (!(await isAdminAuthenticated())) {
     redirect("/admin/login");
   }
@@ -141,7 +141,7 @@ export default async function CalidadPage() {
 
   const negocios = (data ?? []) as Negocio[];
   const pendientesVerificacion = negocios.filter((negocio) => !negocio.verificado);
-  const negociosVerificados = negocios.filter((negocio) => negocio.verificado);
+  const { prioridad = "todas" } = await searchParams;
   const auditorReport = await fetchDataAuditorFindings();
 
   const negocioIds = negocios.map((negocio) => negocio.id);
@@ -236,6 +236,17 @@ export default async function CalidadPage() {
     }))
     .sort((a, b) => b.altas - a.altas || (b.problemas.length + b.hallazgos) - (a.problemas.length + a.hallazgos) || a.nombre.localeCompare(b.nombre, "es"));
 
+  const filtros = [
+    { key: "todas", label: "Todas" },
+    { key: "alta", label: "Alta prioridad" },
+    { key: "auditor", label: "Data Auditor" },
+  ] as const;
+  const negociosFiltrados = negociosPrioritarios.filter((grupo) => {
+    if (prioridad === "alta") return grupo.altas > 0;
+    if (prioridad === "auditor") return grupo.hallazgos > 0;
+    return true;
+  });
+
   return (
     <main className="flex-1 mx-auto w-full max-w-3xl pb-10">
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-border">
@@ -329,8 +340,23 @@ export default async function CalidadPage() {
             <h2 className="text-sm font-bold mt-1">Qué corregir primero</h2>
             <p className="text-xs text-muted-foreground mt-1">Las fichas con problemas de contacto o ubicación aparecen arriba.</p>
           </div>
+          <div className="mb-4 flex gap-2 overflow-x-auto pb-1">
+            {filtros.map((filtro) => (
+              <Link
+                key={filtro.key}
+                href={filtro.key === "todas" ? "/admin/calidad" : `/admin/calidad?prioridad=${filtro.key}`}
+                className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-bold ${
+                  prioridad === filtro.key
+                    ? "bg-foreground text-background"
+                    : "border border-border bg-white text-foreground hover:bg-secondary"
+                }`}
+              >
+                {filtro.label}
+              </Link>
+            ))}
+          </div>
           <div className="space-y-3">
-            {negociosPrioritarios.map((grupo, index) => (
+            {negociosFiltrados.map((grupo, index) => (
               <article key={grupo.id} className="rounded-2xl border border-border bg-white p-4">
                 <div className="flex items-start gap-3">
                   <span className="text-xs font-bold text-muted-foreground pt-1 w-5">{index + 1}</span>
