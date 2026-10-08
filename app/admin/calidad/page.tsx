@@ -223,7 +223,8 @@ export default async function CalidadPage() {
       id,
       nombre: items[0]?.nombre ?? id,
       problemas: items,
-      altas: items.filter((item) => item.prioridad === "ALTA").length,
+      altas: items.filter((item) => item.prioridad === "ALTA").length + (hallazgosPorNegocio.get(id) ?? 0),
+      hallazgos: hallazgosPorNegocio.get(id) ?? 0,
     }))
     .sort((a, b) => b.altas - a.altas || b.problemas.length - a.problemas.length || a.nombre.localeCompare(b.nombre, "es"));
 
