@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Footer from "@/components/Footer";
 import PwaInit from "@/components/PwaInit";
 import CookieConsent from "@/components/CookieConsent";
@@ -7,20 +6,7 @@ import ContadorVisita from "@/components/ContadorVisita";
 import PopupNegocio from "@/components/PopupNegocio";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  display: "swap",
-});
-
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  display: "swap",
-});
-
+// Tipografías del sistema: evita depender de la descarga de Google Fonts durante el build.
 // El dominio real como valor por defecto, no el de Vercel. Si la variable
 // llegara a faltar en un deploy, cada canonical y cada URL de Open Graph del
 // sitio apuntaria a linaresya.vercel.app, o sea que el sitio entero se
@@ -100,7 +86,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${inter.variable} ${jakarta.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <body className="min-h-full flex flex-col bg-background text-foreground pb-20 font-sans">
         {children}
