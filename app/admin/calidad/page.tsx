@@ -205,6 +205,13 @@ export default async function CalidadPage() {
   ]);
   const fichasAfectadas = negociosConProblemas.size;
   const totalProblemas = problemas.length + auditorFindings.length;
+  const hallazgosPorNegocio = new Map<string, number>();
+  for (const finding of auditorFindings) {
+    const negocioId = negocioIdByExternalId.get(finding.business_id);
+    if (negocioId) {
+      hallazgosPorNegocio.set(negocioId, (hallazgosPorNegocio.get(negocioId) ?? 0) + 1);
+    }
+  }
   const problemasPorNegocio = new Map<string, Problema[]>();
   for (const problema of problemas) {
     const lista = problemasPorNegocio.get(problema.id) ?? [];
