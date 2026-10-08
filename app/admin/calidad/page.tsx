@@ -67,7 +67,9 @@ function construirProblemas(
         direccionGenerica: ubicacionGenerica(negocio.direccion),
         categoriaId: negocio.categoria_id,
         tieneFotografias: fotosPorNegocio.has(negocio.id),
-        tieneHorariosCompletos: (horariosPorNegocio.get(negocio.id)?.size ?? 0) === 7,
+        tieneHorariosCompletos:
+          (horariosPorNegocio.get(negocio.id)?.size ?? 0) === 7 &&
+          !horariosInvalidos.has(negocio.id),
       },
       hallazgos,
     );
@@ -127,7 +129,7 @@ export default async function CalidadPage() {
     negocioIds.length > 0
       ? await Promise.all([
           supabaseAdmin.from("fotos").select("negocio_id").in("negocio_id", negocioIds),
-          supabaseAdmin.from("horarios").select("negocio_id,dia").in("negocio_id", negocioIds),
+          supabaseAdmin.from("horarios").select("negocio_id,dia,abre,cierra,cerrado").in("negocio_id", negocioIds),
         ])
       : [{ data: [] }, { data: [] }];
 
@@ -135,10 +137,25 @@ export default async function CalidadPage() {
     ((fotos ?? []) as Array<{ negocio_id: string }>).map((fila) => fila.negocio_id),
   );
   const horariosPorNegocio = new Map<string, Set<string>>();
-  for (const fila of (horarios ?? []) as Array<{ negocio_id: string; dia: string }>) {
+  const horariosInvalidos = new Set<string>();
+  for (const fila of (horarios ?? []) as Array<{
+    negocio_id: string;
+    dia: string;
+    abre: string | null;
+    cierra: string | null;
+    cerrado: boolean;
+  }>) {
     const dias = horariosPorNegocio.get(fila.negocio_id) ?? new Set<string>();
     dias.add(fila.dia);
     horariosPorNegocio.set(fila.negocio_id, dias);
+
+    // Un día cerrado no debería guardar horas; un día abierto necesita ambas.
+    if (
+      (fila.cerrado && (fila.abre !== null || fila.cierra !== null)) ||
+      (!fila.cerrado && (!fila.abre || !fila.cierra))
+    ) {
+      horariosInvalidos.add(fila.negocio_id);
+    }
   }
   // La calidad de datos debe cubrir todas las fichas activas, no solo las verificadas.
   // La verificación se mantiene como flujo separado y no se cuenta como problema aquí.
