@@ -42,6 +42,7 @@ function construirProblemas(
   negocios: Negocio[],
   fotosPorNegocio: Set<string>,
   horariosPorNegocio: Map<string, Set<string>>,
+  horariosInvalidos: Set<string>,
   auditorFindings: NonNullable<Awaited<ReturnType<typeof fetchDataAuditorFindings>>>["findings"],
 ): Problema[] {
   const problemas: Problema[] = [];
@@ -159,7 +160,13 @@ export default async function CalidadPage() {
   }
   // La calidad de datos debe cubrir todas las fichas activas, no solo las verificadas.
   // La verificación se mantiene como flujo separado y no se cuenta como problema aquí.
-  const problemas = construirProblemas(negocios, fotosPorNegocio, horariosPorNegocio, auditorReport?.findings ?? []);
+  const problemas = construirProblemas(
+    negocios,
+    fotosPorNegocio,
+    horariosPorNegocio,
+    horariosInvalidos,
+    auditorReport?.findings ?? [],
+  );
   const auditorFindings = (auditorReport?.findings ?? []).filter((finding) =>
     negocios.some(
       (negocio) => negocio.id === finding.business_id || negocio.slug === finding.business_id,
