@@ -209,6 +209,14 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
   const fichasAfectadas = negociosConProblemas.size;
   const totalProblemas = problemas.length + auditorFindings.length;
   const nombrePorNegocio = new Map(negocios.map((negocio) => [negocio.id, negocio.nombre]));
+  const focoPorTipo: Record<Problema["tipo"], string> = {
+    CONTACTO: "contacto",
+    UBICACION: "ubicacion",
+    HORARIOS: "horarios",
+    FOTOGRAFIAS: "fotografias",
+    DESCRIPCION: "basico",
+    CATEGORIA: "basico",
+  };
   const problemasPorNegocio = new Map<string, Problema[]>();
   for (const problema of problemas) {
     const lista = problemasPorNegocio.get(problema.id) ?? [];
@@ -438,7 +446,7 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                     )}
                   </div>
                   <Link
-                    href={`/admin/negocio/${grupo.id}/editar?foco=${grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "CONTACTO" ? "contacto" : grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "UBICACION" ? "ubicacion" : grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "HORARIOS" ? "horarios" : grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "FOTOGRAFIAS" ? "fotografias" : grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "DESCRIPCION" || grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "CATEGORIA" ? "basico" : "auditor"}`}
+                    href={`/admin/negocio/${grupo.id}/editar?foco=${grupo.problemas.find((problema) => problema.prioridad === "ALTA") ? focoPorTipo[grupo.problemas.find((problema) => problema.prioridad === "ALTA")!.tipo] : grupo.problemas[0] ? focoPorTipo[grupo.problemas[0].tipo] : "basico"}`}
                     className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90"
                   >
                     Corregir →
