@@ -355,7 +355,18 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
               </Link>
             ))}
           </div>
-          <div className="space-y-3">
+          <div className="mb-3 text-xs text-muted-foreground">
+            {negociosFiltrados.length} ficha{negociosFiltrados.length === 1 ? "" : "s"} en este filtro
+          </div>
+          {negociosFiltrados.length === 0 ? (
+            <div className="rounded-2xl border-2 border-dashed border-border p-8 text-center">
+              <p className="font-bold">No hay fichas en este filtro.</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Prueba con otro criterio de revisión.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3">
             {negociosFiltrados.map((grupo, index) => (
               <article key={grupo.id} className="rounded-2xl border border-border bg-white p-4">
                 <div className="flex items-start gap-3">
@@ -431,7 +442,8 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                 </div>
               </article>
             ))}
-          </div>
+            </div>
+          )}
           </>
         )}
       </section>
