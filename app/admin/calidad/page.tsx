@@ -113,7 +113,6 @@ function construirProblemas(
 
 const etiquetas: Record<Problema["tipo"], string> = {
   UBICACION: "Ubicación",
-  TELEFONO: "Teléfono",
   CONTACTO: "Contacto",
   DESCRIPCION: "Descripción",
   CATEGORIA: "Categoría",
