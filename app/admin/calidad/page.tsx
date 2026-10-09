@@ -438,7 +438,7 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                     )}
                   </div>
                   <Link
-                    href={`/admin/negocio/${grupo.id}/editar`}
+                    href={`/admin/negocio/${grupo.id}/editar${(() => {\n                      const siguiente = grupo.problemas.find((problema) => problema.prioridad === "ALTA") ?? grupo.problemas[0];\n                      const foco = siguiente?.tipo === "CONTACTO" ? "contacto" : siguiente?.tipo === "UBICACION" ? "ubicacion" : siguiente?.tipo === "HORARIOS" ? "horarios" : siguiente?.tipo === "FOTOGRAFIAS" ? "fotografias" : siguiente?.tipo === "DESCRIPCION" || siguiente?.tipo === "CATEGORIA" ? "basico" : "auditor";\n                      return `?foco=${foco}`;\n                    })()}`}
                     className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90"
                   >
                     Corregir →
