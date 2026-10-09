@@ -75,11 +75,16 @@ export default function EditForm({
   fotosGaleria: FotoGaleria[];
 }) {
   const router = useRouter();
+  const router = useRouter();
   const [state, formAction, pending] = useActionState(
     updateNegocio,
     estadoInicial,
   );
   const fe = state.fieldErrors ?? {};
+
+  useEffect(() => {
+    if (state.ok) router.push(`/admin/negocio/${negocio.id}?revisado=1`);
+  }, [state.ok, negocio.id, router]);
 
   useEffect(() => {
     if (state.ok) {
