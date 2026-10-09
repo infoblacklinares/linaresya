@@ -83,10 +83,6 @@ export default function EditForm({
   const fe = state.fieldErrors ?? {};
 
   useEffect(() => {
-    if (state.ok) router.push(`/admin/negocio/${negocio.id}?revisado=1`);
-  }, [state.ok, negocio.id, router]);
-
-  useEffect(() => {
     if (state.ok) {
       router.push(`/admin/negocio/${negocio.id}?revisado=1`);
     }
