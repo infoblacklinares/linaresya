@@ -1,5 +1,27 @@
 export type EstadoFicha = "VERDE" | "AMARILLO" | "ROJO";
 
+export type HorarioFicha = {
+  dia: string;
+  abre: string | null;
+  cierra: string | null;
+  cerrado: boolean;
+};
+
+/** Determina si existen los siete días y cada fila tiene datos coherentes. */
+export function horariosFichaCompletos(horarios: HorarioFicha[]): boolean {
+  const dias = new Set<string>();
+  for (const horario of horarios) {
+    dias.add(horario.dia);
+    if (
+      (horario.cerrado && (horario.abre !== null || horario.cierra !== null)) ||
+      (!horario.cerrado && (!horario.abre || !horario.cierra))
+    ) {
+      return false;
+    }
+  }
+  return dias.size === 7;
+}
+
 export type FichaCalidadInput = {
   activo: boolean;
   verificado: boolean;
