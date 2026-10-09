@@ -188,7 +188,7 @@ export default function EditForm({
       </section>
 
       {/* BASICO */}
-      <section className="space-y-3">
+      <section id="seccion-basico" className="space-y-3">
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
           Basico
         </h2>
@@ -255,7 +255,7 @@ export default function EditForm({
       </section>
 
       {/* CONTACTO */}
-      <section className="space-y-3">
+      <section id="seccion-contacto" className="space-y-3">
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
           Contacto
         </h2>
@@ -323,7 +323,7 @@ export default function EditForm({
       </section>
 
       {/* UBICACION */}
-      <section className="space-y-3">
+      <section id="seccion-ubicacion" className="space-y-3">
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
           Ubicacion y servicio
         </h2>
@@ -385,7 +385,7 @@ export default function EditForm({
       </section>
 
       {/* HORARIOS */}
-      <section className="space-y-3">
+      <section id="seccion-horarios" className="space-y-3">
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
           Horarios
         </h2>
@@ -393,7 +393,7 @@ export default function EditForm({
       </section>
 
       {/* MEDIA */}
-      <section className="space-y-3">
+      <section id="seccion-fotografias" className="space-y-3">
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
           Foto de portada
         </h2>
