@@ -269,14 +269,30 @@ export default function ResultadosBusqueda({
       </div>
 
       {mostrar.length === 0 ? (
-        <div className="mx-4 rounded-3xl border border-dashed border-border p-8 text-center">
-          <div className="text-4xl mb-2">📍</div>
-          <h3 className="text-base font-bold">
-            No encontramos negocios cercanos con estos filtros
+        <div className="mx-4 rounded-3xl border border-dashed border-border bg-white p-8 text-center">
+          <div className="text-4xl mb-2">{geoActivo ? "📍" : "🔎"}</div>
+          <h3 className="text-base font-extrabold">
+            {geoActivo
+              ? "Por aquí no pillamos nada"
+              : q
+                ? "No pillamos ese negocio"
+                : "Todavía no hay negocios aquí"}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Prueba quitando algún filtro o desactiva “Cerca de mí”.
+            {geoActivo
+              ? "Prueba quitando algún filtro o muévete un poco del mapa."
+              : q
+                ? "Prueba con otro nombre, oficio o categoría."
+                : "Si conoces uno que debería aparecer, puedes publicarlo gratis en LinaresYa."}
           </p>
+          {!geoActivo && !q && (
+            <Link
+              href="/publicar"
+              className="inline-flex mt-4 rounded-full bg-foreground text-background px-4 py-2 text-xs font-bold"
+            >
+              Publicar negocio →
+            </Link>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
