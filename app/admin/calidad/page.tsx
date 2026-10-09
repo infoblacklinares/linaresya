@@ -397,6 +397,18 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                         </span>
                       )}
                     </div>
+                    {(() => {
+                      const siguiente =
+                        grupo.problemas.find((problema) => problema.prioridad === "ALTA") ??
+                        grupo.problemas[0];
+                      return (
+                        <p className="mt-3 rounded-xl bg-foreground/[0.04] px-3 py-2 text-xs font-semibold text-foreground">
+                          {siguiente
+                            ? <>Primero: {etiquetas[siguiente.tipo]} · {siguiente.detalle}</>
+                            : "Primero: revisar los hallazgos del Data Auditor."}
+                        </p>
+                      );
+                    })()}
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {grupo.problemas.map((problema) => {
                         const impacto = impactoProblema(problema);
