@@ -139,6 +139,38 @@ export function calcularEstadoFicha(
 }
 
 
+export type ResumenEstadoFicha = {
+  label: string;
+  ok: boolean;
+};
+
+export function resumenEstadoFicha(
+  faltantes: string[],
+  tieneCategoria: boolean,
+): ResumenEstadoFicha[] {
+  const falta = new Set(faltantes);
+  return [
+    {
+      label: "Información básica",
+      ok: !falta.has("Falta descripción") && tieneCategoria,
+    },
+    {
+      label: "Contacto",
+      ok: !falta.has("Falta teléfono/WhatsApp") && !falta.has("Contacto no utilizable"),
+    },
+    {
+      label: "Ubicación",
+      ok:
+        !falta.has("Falta dirección") &&
+        !falta.has("Faltan coordenadas") &&
+        !falta.has("Ubicación demasiado genérica"),
+    },
+    { label: "Horarios", ok: !falta.has("Faltan horarios") },
+    { label: "Fotografías", ok: !falta.has("No tiene fotografías") },
+    { label: "Verificación", ok: !falta.has("Verificación pendiente") },
+  ];
+}
+
 export function prioridadFaltante(faltante: string): "ALTA" | "MEDIA" {
   if (
     faltante === "Falta teléfono/WhatsApp" ||
