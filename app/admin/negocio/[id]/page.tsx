@@ -3,7 +3,7 @@ import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
-import { calcularEstadoFicha, contactoFichaUtilizable, horariosFichaCompletos } from "@/lib/estado-ficha";
+import { calcularEstadoFicha, contactoFichaUtilizable, horariosFichaCompletos, resumenEstadoFicha } from "@/lib/estado-ficha";
 import { activarPremium30Dias, aprobarNegocio, quitarPremium, eliminarNegocio } from "@/app/admin/actions";
 
 export const metadata = {
@@ -160,14 +160,7 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
   const faltantes = estadoFicha.faltantes;
 
 
-  const estados = [
-    ["Información básica", !estadoFicha.faltantes.includes("Falta descripción") && Boolean(n.nombre && cat)],
-    ["Contacto", !estadoFicha.faltantes.includes("Falta teléfono/WhatsApp") && !estadoFicha.faltantes.includes("Contacto no utilizable")],
-    ["Ubicación", !estadoFicha.faltantes.includes("Falta dirección") && !estadoFicha.faltantes.includes("Faltan coordenadas") && !estadoFicha.faltantes.includes("Ubicación demasiado genérica")],
-    ["Horarios", !estadoFicha.faltantes.includes("Faltan horarios")],
-    ["Fotografías", !estadoFicha.faltantes.includes("No tiene fotografías")],
-    ["Verificación", !estadoFicha.faltantes.includes("Verificación pendiente")],
-  ] as const;
+  const estados = resumenEstadoFicha(estadoFicha.faltantes, Boolean(n.nombre && cat));
 
   const fichaUrl = cat ? `/${cat.slug}/${n.slug}` : "/";
   const contextoTrabajo = origen === "trabajo" && ["aprobacion", "calidad", "completar"].includes(accion ?? "");
