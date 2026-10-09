@@ -1,3 +1,5 @@
+import { telefonoInternacional, whatsAppLink } from "@/lib/contacto";
+
 export type EstadoFicha = "VERDE" | "AMARILLO" | "ROJO";
 
 export type HorarioFicha = {
@@ -39,6 +41,13 @@ export type FichaCalidadInput = {
   tieneFotografias: boolean;
   tieneHorariosCompletos: boolean;
 };
+
+export function contactoFichaUtilizable(telefono: string | null, whatsapp: string | null): boolean {
+  return Boolean(
+    (telefono && telefonoInternacional(telefono)) ||
+    (whatsapp && whatsAppLink(whatsapp))
+  );
+}
 
 export type HallazgoFicha = {
   severity: "LOW" | "MEDIUM" | "HIGH";
