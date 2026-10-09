@@ -3,8 +3,7 @@ import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
-import { calcularEstadoFicha, horariosFichaCompletos, prioridadFaltante } from "@/lib/estado-ficha";
-import { telefonoInternacional, whatsAppLink } from "@/lib/contacto";
+import { calcularEstadoFicha, contactoFichaUtilizable, horariosFichaCompletos, prioridadFaltante } from "@/lib/estado-ficha";
 
 type Negocio = {
   id: string;
@@ -76,9 +75,7 @@ function construirProblemas(
         descripcion: negocio.descripcion,
         telefono: negocio.telefono,
         whatsapp: negocio.whatsapp,
-        contactoUtilizable:
-          Boolean(negocio.telefono && telefonoInternacional(negocio.telefono)) ||
-          Boolean(negocio.whatsapp && whatsAppLink(negocio.whatsapp)),
+        contactoUtilizable: contactoFichaUtilizable(negocio.telefono, negocio.whatsapp),
         direccion: negocio.direccion,
         lat: negocio.lat,
         lng: negocio.lng,
