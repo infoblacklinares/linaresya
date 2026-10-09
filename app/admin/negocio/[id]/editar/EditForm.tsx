@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { updateNegocio, type UpdateState } from "./actions";
 import ScheduleInput, { type HorarioInicial } from "@/app/publicar/ScheduleInput";
 import PhotoUpload from "@/app/publicar/PhotoUpload";
@@ -73,11 +74,18 @@ export default function EditForm({
   horarios: HorarioInicial[];
   fotosGaleria: FotoGaleria[];
 }) {
+  const router = useRouter();
   const [state, formAction, pending] = useActionState(
     updateNegocio,
     estadoInicial,
   );
   const fe = state.fieldErrors ?? {};
+
+  useEffect(() => {
+    if (state.ok) {
+      router.push(`/admin/negocio/${negocio.id}?revisado=1`);
+    }
+  }, [state.ok, negocio.id, router]);
 
   // URL publica del negocio para el QR. Si no tiene categoria asignada,
   // mostramos solo la home (caso edge raro).
