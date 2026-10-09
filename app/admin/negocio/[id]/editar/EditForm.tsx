@@ -75,7 +75,6 @@ export default function EditForm({
   fotosGaleria: FotoGaleria[];
 }) {
   const router = useRouter();
-  const router = useRouter();
   const [state, formAction, pending] = useActionState(
     updateNegocio,
     estadoInicial,
