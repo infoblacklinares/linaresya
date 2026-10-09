@@ -3,8 +3,9 @@ import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
-import { calcularEstadoFicha } from "@/lib/estado-ficha";
+import { calcularEstadoFicha, horariosFichaCompletos } from "@/lib/estado-ficha";
 import { activarPremium30Dias, aprobarNegocio, quitarPremium, eliminarNegocio } from "@/app/admin/actions";
+import { telefonoInternacional, whatsAppLink } from "@/lib/contacto";
 
 export const metadata = {
   title: "Ficha - Admin LinaresYa",
@@ -127,8 +128,7 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
   const telefono = filas.reduce((s, x) => s + Number(x.clicks_telefono ?? 0), 0);
   const maps = filas.reduce((s, x) => s + Number(x.clicks_maps ?? 0), 0);
 
-  const diasConHorario = new Set(horariosList.map((h) => h.dia));
-  const horariosCompleto = diasConHorario.size === 7;
+  const horariosCompleto = horariosFichaCompletos(horariosList);
 
   const auditorReport = await fetchDataAuditorFindings();
   const auditorFindings = (auditorReport?.findings ?? []).filter(
@@ -141,6 +141,9 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
       descripcion: n.descripcion,
       telefono: n.telefono,
       whatsapp: n.whatsapp,
+      contactoUtilizable:
+        Boolean(n.telefono && telefonoInternacional(n.telefono)) ||
+        Boolean(n.whatsapp && whatsAppLink(n.whatsapp)),
       direccion: n.direccion,
       lat: n.lat,
       lng: n.lng,
