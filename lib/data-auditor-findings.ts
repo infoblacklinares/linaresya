@@ -1,12 +1,36 @@
 export type DataAuditorSeverity = "LOW" | "MEDIUM" | "HIGH";
 
+export type DataAuditorActionSection =
+  | "basico"
+  | "contacto"
+  | "ubicacion"
+  | "horarios"
+  | "fotografias";
+
+export type DataAuditorAction = {
+  section: DataAuditorActionSection;
+  field?: string;
+  label: string;
+};
+
 export type DataAuditorFinding = {
   business_id: string;
   business_name?: string;
   rule: string;
   severity: DataAuditorSeverity;
   message: string;
+  action?: DataAuditorAction;
 };
+
+function isActionSection(value: unknown): value is DataAuditorActionSection {
+  return (
+    value === "basico" ||
+    value === "contacto" ||
+    value === "ubicacion" ||
+    value === "horarios" ||
+    value === "fotografias"
+  );
+}
 
 export type DataAuditorFindingsPayload = {
   source: "linaresya-data-auditor";
@@ -69,6 +93,28 @@ export function validateDataAuditorFindings(
       rule: finding.rule,
       severity: finding.severity,
       message: finding.message,
+      ...(finding.action && typeof finding.action === "object"
+        ? (() => {
+            const action = finding.action as Record<string, unknown>;
+            if (
+              !isActionSection(action.section) ||
+              typeof action.label !== "string" ||
+              !action.label.trim() ||
+              (action.field !== undefined && typeof action.field !== "string")
+            ) {
+              throw new Error(
+                `Acción inválida en posición ${index}.`,
+              );
+            }
+            return {
+              action: {
+                section: action.section,
+                ...(typeof action.field === "string" ? { field: action.field } : {}),
+                label: action.label,
+              },
+            };
+          })()
+        : {}),
     };
   });
 
