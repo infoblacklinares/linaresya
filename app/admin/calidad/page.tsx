@@ -187,32 +187,31 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
     horariosPorNegocio,
     auditorFindingsPorNegocio,
   );
-  const altas = problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity === "HIGH").length;
+  const hallazgosPorNegocio = new Map<string, number>();
+  const detalleHallazgosPorNegocio = new Map<string, typeof auditorFindings>();
+  const hallazgosAltosPorNegocio = new Map<string, number>();
+  for (const [negocioId, findings] of auditorFindingsPorNegocio) {
+    if (findings.length === 0) continue;
+    hallazgosPorNegocio.set(negocioId, findings.length);
+    detalleHallazgosPorNegocio.set(negocioId, findings);
+    const altos = findings.filter((finding) => finding.severity === "HIGH").length;
+    if (altos > 0) hallazgosAltosPorNegocio.set(negocioId, altos);
+  }
+
+  const altas = problemas.filter((p) => p.prioridad === "ALTA").length + [...hallazgosAltosPorNegocio.values()].reduce((sum, value) => sum + value, 0);
   const medias = problemas.length - problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity !== "HIGH").length;
   const negociosConProblemas = new Set([
     ...problemas.map((problema) => problema.id),
-    ...auditorFindings.map((finding) => negocioIdByExternalId.get(finding.business_id)).filter((id): id is string => Boolean(id)),
-  ]);
+    ...auditorFindingsPorNegocio.entries(),
+  ].flatMap((entry) => {
+    if (Array.isArray(entry) && entry.length === 2 && typeof entry[0] === "string" && Array.isArray(entry[1]) && entry[1].length > 0) {
+      return [entry[0]];
+    }
+    return [];
+  }));
   const fichasAfectadas = negociosConProblemas.size;
   const totalProblemas = problemas.length + auditorFindings.length;
-  const hallazgosPorNegocio = new Map<string, number>();
-  const detalleHallazgosPorNegocio = new Map<string, typeof auditorFindings>();
-  for (const finding of auditorFindings) {
-    const negocioId = negocioIdByExternalId.get(finding.business_id);
-    if (negocioId) {
-      hallazgosPorNegocio.set(negocioId, (hallazgosPorNegocio.get(negocioId) ?? 0) + 1);
-      const lista = detalleHallazgosPorNegocio.get(negocioId) ?? [];
-      lista.push(finding);
-      detalleHallazgosPorNegocio.set(negocioId, lista);
-    }
-  }
   const nombrePorNegocio = new Map(negocios.map((negocio) => [negocio.id, negocio.nombre]));
-  const hallazgosAltosPorNegocio = new Map<string, number>();
-  for (const finding of auditorFindings) {
-    if (finding.severity !== "HIGH") continue;
-    const negocioId = negocioIdByExternalId.get(finding.business_id);
-    if (negocioId) hallazgosAltosPorNegocio.set(negocioId, (hallazgosAltosPorNegocio.get(negocioId) ?? 0) + 1);
-  }
   const problemasPorNegocio = new Map<string, Problema[]>();
   for (const problema of problemas) {
     const lista = problemasPorNegocio.get(problema.id) ?? [];
