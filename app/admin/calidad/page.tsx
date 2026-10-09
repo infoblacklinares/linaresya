@@ -61,8 +61,7 @@ function ubicacionGenerica(direccion: string | null): boolean {
 function construirProblemas(
   negocios: Negocio[],
   fotosPorNegocio: Set<string>,
-  horariosPorNegocio: Map<string, Set<string>>,
-  horariosInvalidos: Set<string>,
+  horariosPorNegocio: Map<string, Array<{ dia: string; abre: string | null; cierra: string | null; cerrado: boolean }>>,
   auditorFindings: NonNullable<Awaited<ReturnType<typeof fetchDataAuditorFindings>>>["findings"],
 ): Problema[] {
   const problemas: Problema[] = [];
@@ -88,7 +87,7 @@ function construirProblemas(
         direccionGenerica: ubicacionGenerica(negocio.direccion),
         categoriaId: negocio.categoria_id,
         tieneFotografias: fotosPorNegocio.has(negocio.id),
-        tieneHorariosCompletos: (horariosPorNegocio.get(negocio.id)?.size ?? 0) === 7 && !horariosInvalidos.has(negocio.id),
+        tieneHorariosCompletos: horariosFichaCompletos(horariosPorNegocio.get(negocio.id) ?? []),
       },
       hallazgos,
     );
@@ -157,8 +156,7 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
   const fotosPorNegocio = new Set(
     ((fotos ?? []) as Array<{ negocio_id: string }>).map((fila) => fila.negocio_id),
   );
-  const horariosPorNegocio = new Map<string, Set<string>>();
-  const horariosInvalidos = new Set<string>();
+  const horariosPorNegocio = new Map<string, Array<{ dia: string; abre: string | null; cierra: string | null; cerrado: boolean }>>();
   for (const fila of (horarios ?? []) as Array<{
     negocio_id: string;
     dia: string;
@@ -166,17 +164,9 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
     cierra: string | null;
     cerrado: boolean;
   }>) {
-    const dias = horariosPorNegocio.get(fila.negocio_id) ?? new Set<string>();
-    dias.add(fila.dia);
-    horariosPorNegocio.set(fila.negocio_id, dias);
-
-    // Un día cerrado no debería guardar horas; un día abierto necesita ambas.
-    if (
-      (fila.cerrado && (fila.abre !== null || fila.cierra !== null)) ||
-      (!fila.cerrado && (!fila.abre || !fila.cierra))
-    ) {
-      horariosInvalidos.add(fila.negocio_id);
-    }
+    const filas = horariosPorNegocio.get(fila.negocio_id) ?? [];
+    filas.push({ dia: fila.dia, abre: fila.abre, cierra: fila.cierra, cerrado: fila.cerrado });
+    horariosPorNegocio.set(fila.negocio_id, filas);
   }
   // La calidad de datos debe cubrir todas las fichas activas, no solo las verificadas.
   // La verificación se mantiene como flujo separado y no se cuenta como problema aquí.
@@ -184,7 +174,6 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
     negocios,
     fotosPorNegocio,
     horariosPorNegocio,
-    horariosInvalidos,
     auditorReport?.findings ?? [],
   );
   const auditorFindings = (auditorReport?.findings ?? []).filter((finding) =>
