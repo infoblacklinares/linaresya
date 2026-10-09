@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useActionState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { updateNegocio, type UpdateState } from "./actions";
 import ScheduleInput, { type HorarioInicial } from "@/app/publicar/ScheduleInput";
 import PhotoUpload from "@/app/publicar/PhotoUpload";
@@ -111,7 +111,7 @@ export default function EditForm({
 
       {/* PLAN Y ESTADO — arriba a proposito: es lo que mas se busca y antes
           quedaba al fondo, despues de fotos, QR y el link del dueño. */}
-      <section className="space-y-3 rounded-2xl border border-[#F4B860]/40 bg-[#F4B860]/5 p-4">
+      <section id="seccion-plan" className="space-y-3 rounded-2xl border border-[#F4B860]/40 bg-[#F4B860]/5 p-4">
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
           Plan y estado
         </h2>
