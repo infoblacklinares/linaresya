@@ -60,14 +60,12 @@ function construirProblemas(
   negocios: Negocio[],
   fotosPorNegocio: Set<string>,
   horariosPorNegocio: Map<string, Array<{ dia: string; abre: string | null; cierra: string | null; cerrado: boolean }>>,
-  auditorFindings: NonNullable<Awaited<ReturnType<typeof fetchDataAuditorFindings>>>["findings"],
+  hallazgosPorNegocio: Map<string, NonNullable<Awaited<ReturnType<typeof fetchDataAuditorFindings>>>["findings"]>,
 ): Problema[] {
   const problemas: Problema[] = [];
 
   for (const negocio of negocios) {
-    const hallazgos = auditorFindings.filter(
-      (finding) => finding.business_id === negocio.id || finding.business_id === negocio.slug,
-    );
+    const hallazgos = hallazgosPorNegocio.get(negocio.id) ?? [];
     const estado = calcularEstadoFicha(
       {
         activo: negocio.activo,
@@ -165,22 +163,29 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
   }
   // La calidad de datos debe cubrir todas las fichas activas, no solo las verificadas.
   // La verificación se mantiene como flujo separado y no se cuenta como problema aquí.
-  const problemas = construirProblemas(
-    negocios,
-    fotosPorNegocio,
-    horariosPorNegocio,
-    auditorReport?.findings ?? [],
-  );
-  const auditorFindings = (auditorReport?.findings ?? []).filter((finding) =>
-    negocios.some(
-      (negocio) => negocio.id === finding.business_id || negocio.slug === finding.business_id,
-    ),
-  );
   const negocioIdByExternalId = new Map<string, string>(
     negocios.flatMap((negocio) => [
       [negocio.id, negocio.id],
       [negocio.slug, negocio.id],
     ]),
+  );
+  const auditorFindingsPorNegocio = new Map<string, NonNullable<Awaited<ReturnType<typeof fetchDataAuditorFindings>>>["findings"]>();
+  for (const negocio of negocios) {
+    auditorFindingsPorNegocio.set(negocio.id, []);
+  }
+  for (const finding of auditorReport?.findings ?? []) {
+    const negocioId = negocioIdByExternalId.get(finding.business_id);
+    if (!negocioId) continue;
+    const lista = auditorFindingsPorNegocio.get(negocioId) ?? [];
+    lista.push(finding);
+    auditorFindingsPorNegocio.set(negocioId, lista);
+  }
+  const auditorFindings = [...auditorFindingsPorNegocio.values()].flat();
+  const problemas = construirProblemas(
+    negocios,
+    fotosPorNegocio,
+    horariosPorNegocio,
+    auditorFindingsPorNegocio,
   );
   const altas = problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity === "HIGH").length;
   const medias = problemas.length - problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity !== "HIGH").length;
