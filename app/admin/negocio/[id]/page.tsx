@@ -332,7 +332,7 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
       <section className="px-4 pt-5">
         <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Resumen de ficha</h2>
         <div className="rounded-2xl border border-border bg-white overflow-hidden">
-          {estados.map(([label, ok]) => (
+          {estados.map(({ label, ok }) => (
             <div key={label} className="flex items-center justify-between px-4 py-3 border-b last:border-b-0 border-border text-sm">
               <span>{label}</span><span className={`text-xs font-bold ${ok ? "text-emerald-700" : "text-amber-700"}`}>{ok ? "🟢 Completo" : "🟡 Revisar"}</span>
             </div>
