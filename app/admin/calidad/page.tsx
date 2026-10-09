@@ -217,6 +217,14 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
     DESCRIPCION: "basico",
     CATEGORIA: "basico",
   };
+  const focoPorNegocioAuditor = new Map(
+    [...detalleHallazgosPorNegocio.entries()]
+      .map(([negocioId, findings]) => [
+        negocioId,
+        findings.find((finding) => finding.action)?.action?.section ?? null,
+      ])
+      .filter((entry): entry is [string, string] => Boolean(entry[1])),
+  );
   const problemasPorNegocio = new Map<string, Problema[]>();
   for (const problema of problemas) {
     const lista = problemasPorNegocio.get(problema.id) ?? [];
@@ -446,7 +454,7 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                     )}
                   </div>
                   <Link
-                    href={`/admin/negocio/${grupo.id}/editar?foco=${grupo.problemas.find((problema) => problema.prioridad === "ALTA") ? focoPorTipo[grupo.problemas.find((problema) => problema.prioridad === "ALTA")!.tipo] : grupo.problemas[0] ? focoPorTipo[grupo.problemas[0].tipo] : "basico"}`}
+                    href={`/admin/negocio/${grupo.id}/editar?foco=${grupo.problemas.find((problema) => problema.prioridad === "ALTA") ? focoPorTipo[grupo.problemas.find((problema) => problema.prioridad === "ALTA")!.tipo] : grupo.problemas[0] ? focoPorTipo[grupo.problemas[0].tipo] : focoPorNegocioAuditor.get(grupo.id) ?? "basico"}`}
                     className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90"
                   >
                     Corregir →
