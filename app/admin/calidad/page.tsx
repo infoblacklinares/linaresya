@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
-import { calcularEstadoFicha } from "@/lib/estado-ficha";
+import { calcularEstadoFicha, horariosFichaCompletos, prioridadFaltante } from "@/lib/estado-ficha";
 import { telefonoInternacional, whatsAppLink } from "@/lib/contacto";
 
 type Negocio = {
@@ -25,7 +25,7 @@ type Negocio = {
 type Problema = {
   id: string;
   nombre: string;
-  tipo: "UBICACION" | "TELEFONO" | "DESCRIPCION" | "CATEGORIA" | "FOTOGRAFIAS" | "HORARIOS";
+  tipo: "UBICACION" | "CONTACTO" | "DESCRIPCION" | "CATEGORIA" | "FOTOGRAFIAS" | "HORARIOS";
   prioridad: "ALTA" | "MEDIA";
   detalle: string;
 };
@@ -35,6 +35,7 @@ const prioridadOrden = { ALTA: 0, MEDIA: 1 };
 function impactoProblema(problema: Problema): { etiqueta: string; detalle: string } {
   switch (problema.tipo) {
     case "TELEFONO":
+    case "CONTACTO":
       return { etiqueta: "Contacto", detalle: "Puede impedir que el vecino contacte al negocio." };
     case "UBICACION":
       return { etiqueta: "Conversión", detalle: "Puede dificultar llegar al negocio o usar mapas." };
@@ -87,20 +88,19 @@ function construirProblemas(
         direccionGenerica: ubicacionGenerica(negocio.direccion),
         categoriaId: negocio.categoria_id,
         tieneFotografias: fotosPorNegocio.has(negocio.id),
-        tieneHorariosCompletos:
-          (horariosPorNegocio.get(negocio.id)?.size ?? 0) === 7 &&
-          !horariosInvalidos.has(negocio.id),
+        tieneHorariosCompletos: (horariosPorNegocio.get(negocio.id)?.size ?? 0) === 7 && !horariosInvalidos.has(negocio.id),
       },
       hallazgos,
     );
 
     for (const faltante of estado.faltantes.filter((item) => item !== "Verificación pendiente")) {
       const esUbicacion = faltante === "Falta dirección" || faltante === "Faltan coordenadas" || faltante === "Ubicación demasiado genérica";
+      const esContacto = faltante === "Falta teléfono/WhatsApp" || faltante === "Contacto no utilizable";
       problemas.push({
         id: negocio.id,
         nombre: negocio.nombre,
-        tipo: esUbicacion ? "UBICACION" : faltante === "Falta teléfono/WhatsApp" ? "TELEFONO" : faltante === "Falta descripción" ? "DESCRIPCION" : faltante === "No tiene fotografías" ? "FOTOGRAFIAS" : faltante === "Faltan horarios" ? "HORARIOS" : "CATEGORIA",
-        prioridad: esUbicacion ? "ALTA" : "MEDIA",
+        tipo: esUbicacion ? "UBICACION" : esContacto ? "CONTACTO" : faltante === "Falta descripción" ? "DESCRIPCION" : faltante === "No tiene fotografías" ? "FOTOGRAFIAS" : faltante === "Faltan horarios" ? "HORARIOS" : "CATEGORIA",
+        prioridad: prioridadFaltante(faltante),
         detalle: faltante,
       });
     }
@@ -116,6 +116,7 @@ function construirProblemas(
 const etiquetas: Record<Problema["tipo"], string> = {
   UBICACION: "Ubicación",
   TELEFONO: "Teléfono",
+  CONTACTO: "Contacto",
   DESCRIPCION: "Descripción",
   CATEGORIA: "Categoría",
   FOTOGRAFIAS: "Fotografías",
