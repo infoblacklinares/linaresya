@@ -205,6 +205,12 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
     }
   }
   const nombrePorNegocio = new Map(negocios.map((negocio) => [negocio.id, negocio.nombre]));
+  const hallazgosAltosPorNegocio = new Map<string, number>();
+  for (const finding of auditorFindings) {
+    if (finding.severity !== "HIGH") continue;
+    const negocioId = negocioIdByExternalId.get(finding.business_id);
+    if (negocioId) hallazgosAltosPorNegocio.set(negocioId, (hallazgosAltosPorNegocio.get(negocioId) ?? 0) + 1);
+  }
   const problemasPorNegocio = new Map<string, Problema[]>();
   for (const problema of problemas) {
     const lista = problemasPorNegocio.get(problema.id) ?? [];
@@ -219,7 +225,7 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
       id,
       nombre: items[0]?.nombre ?? nombrePorNegocio.get(id) ?? id,
       problemas: items,
-      altas: items.filter((item) => item.prioridad === "ALTA").length + auditorFindings.filter((finding) => finding.severity === "HIGH" && negocioIdByExternalId.get(finding.business_id) === id).length,
+      altas: items.filter((item) => item.prioridad === "ALTA").length + (hallazgosAltosPorNegocio.get(id) ?? 0),
       hallazgos: hallazgosPorNegocio.get(id) ?? 0,
     }))
     .sort((a, b) => b.altas - a.altas || (b.problemas.length + b.hallazgos) - (a.problemas.length + a.hallazgos) || a.nombre.localeCompare(b.nombre, "es"));
