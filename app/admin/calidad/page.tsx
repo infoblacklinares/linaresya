@@ -202,13 +202,10 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
   const medias = problemas.length - problemas.filter((p) => p.prioridad === "ALTA").length + auditorFindings.filter((f) => f.severity !== "HIGH").length;
   const negociosConProblemas = new Set([
     ...problemas.map((problema) => problema.id),
-    ...auditorFindingsPorNegocio.entries(),
-  ].flatMap((entry) => {
-    if (Array.isArray(entry) && entry.length === 2 && typeof entry[0] === "string" && Array.isArray(entry[1]) && entry[1].length > 0) {
-      return [entry[0]];
-    }
-    return [];
-  }));
+    ...[...auditorFindingsPorNegocio.entries()]
+      .filter(([, findings]) => findings.length > 0)
+      .map(([negocioId]) => negocioId),
+  ]);
   const fichasAfectadas = negociosConProblemas.size;
   const totalProblemas = problemas.length + auditorFindings.length;
   const nombrePorNegocio = new Map(negocios.map((negocio) => [negocio.id, negocio.nombre]));
