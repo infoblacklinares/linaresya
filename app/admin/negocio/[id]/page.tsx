@@ -3,9 +3,8 @@ import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
-import { calcularEstadoFicha, horariosFichaCompletos } from "@/lib/estado-ficha";
+import { calcularEstadoFicha, contactoFichaUtilizable, horariosFichaCompletos } from "@/lib/estado-ficha";
 import { activarPremium30Dias, aprobarNegocio, quitarPremium, eliminarNegocio } from "@/app/admin/actions";
-import { telefonoInternacional, whatsAppLink } from "@/lib/contacto";
 
 export const metadata = {
   title: "Ficha - Admin LinaresYa",
@@ -141,9 +140,7 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
       descripcion: n.descripcion,
       telefono: n.telefono,
       whatsapp: n.whatsapp,
-      contactoUtilizable:
-        Boolean(n.telefono && telefonoInternacional(n.telefono)) ||
-        Boolean(n.whatsapp && whatsAppLink(n.whatsapp)),
+      contactoUtilizable: contactoFichaUtilizable(n.telefono, n.whatsapp),
       direccion: n.direccion,
       lat: n.lat,
       lng: n.lng,
@@ -165,7 +162,7 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
 
   const estados = [
     ["Información básica", !estadoFicha.faltantes.includes("Falta descripción") && Boolean(n.nombre && cat)],
-    ["Contacto", !estadoFicha.faltantes.includes("Falta teléfono/WhatsApp")],
+    ["Contacto", !estadoFicha.faltantes.includes("Falta teléfono/WhatsApp") && !estadoFicha.faltantes.includes("Contacto no utilizable")],
     ["Ubicación", !estadoFicha.faltantes.includes("Falta dirección") && !estadoFicha.faltantes.includes("Faltan coordenadas") && !estadoFicha.faltantes.includes("Ubicación demasiado genérica")],
     ["Horarios", !estadoFicha.faltantes.includes("Faltan horarios")],
     ["Fotografías", !estadoFicha.faltantes.includes("No tiene fotografías")],
