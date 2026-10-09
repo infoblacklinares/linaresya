@@ -76,12 +76,12 @@ export default async function FichaNegocioPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ origen?: string; accion?: string }>;
+  searchParams: Promise<{ origen?: string; accion?: string; revisado?: string }>;
 }) {
   if (!(await isAdminAuthenticated())) redirect("/admin/login");
 
   const { id } = await params;
-  const { origen, accion } = await searchParams;
+  const { origen, accion, revisado } = await searchParams;
   const desde = fechaCL(29);
 
   const [
@@ -196,6 +196,8 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
   const saludBadge = saludFicha === "VERDE" ? "bg-emerald-100 text-emerald-800" : saludFicha === "AMARILLO" ? "bg-amber-100 text-amber-800" : "bg-rose-100 text-rose-800";
   const saludIcon = saludFicha === "VERDE" ? "🟢" : saludFicha === "AMARILLO" ? "🟡" : "🔴";
   const publicUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
+  const revisionCompletada = revisado === "1";
+  const pendientesPostRevision = faltantes.filter((x) => x !== "Verificación pendiente");
 
   return (
     <main className="flex-1 mx-auto w-full max-w-3xl pb-10">
@@ -211,6 +213,21 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
           </span>
         </div>
       </header>
+
+      {revisionCompletada && (
+        <section className="px-4 pt-4">
+          <div className={`rounded-2xl border p-4 ${pendientesPostRevision.length === 0 ? "border-emerald-200 bg-emerald-50" : "border-amber-200 bg-amber-50"}`}>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Revisión actualizada</p>
+            <h2 className="text-sm font-extrabold mt-1">{pendientesPostRevision.length === 0 ? "Ficha al día" : "La ficha aún requiere atención"}</h2>
+            <p className="text-xs mt-1">{pendientesPostRevision.length === 0 ? "Guardaste los cambios y el diagnóstico fue recalculado con la información actual." : `Guardaste los cambios y el diagnóstico fue recalculado. Quedan ${pendientesPostRevision.length} punto${pendientesPostRevision.length === 1 ? "" : "s"} por revisar.`}</p>
+            {pendientesPostRevision.length > 0 && <ul className="mt-2 space-y-1">{pendientesPostRevision.map((item) => <li key={item} className="text-xs">• {item}</li>)}</ul>}
+            <div className="mt-3 flex flex-wrap gap-2">
+              {pendientesPostRevision.length > 0 && <Link href={`/admin/negocio/${n.id}/editar`} className="rounded-full bg-foreground text-background px-3 py-2 text-[11px] font-bold">Volver a corregir →</Link>}
+              <Link href="/admin/calidad" className="rounded-full border border-border bg-white/70 px-3 py-2 text-[11px] font-bold">Ver cola de calidad</Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {contextoTrabajo && contexto && (
         <section className="px-4 pt-4">
