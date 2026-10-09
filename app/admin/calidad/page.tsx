@@ -438,7 +438,7 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                     )}
                   </div>
                   <Link
-                    href={`/admin/negocio/${grupo.id}/editar${(() => {\n                      const siguiente = grupo.problemas.find((problema) => problema.prioridad === "ALTA") ?? grupo.problemas[0];\n                      const foco = siguiente?.tipo === "CONTACTO" ? "contacto" : siguiente?.tipo === "UBICACION" ? "ubicacion" : siguiente?.tipo === "HORARIOS" ? "horarios" : siguiente?.tipo === "FOTOGRAFIAS" ? "fotografias" : siguiente?.tipo === "DESCRIPCION" || siguiente?.tipo === "CATEGORIA" ? "basico" : "auditor";\n                      return `?foco=${foco}`;\n                    })()}`}
+                    href={`/admin/negocio/${grupo.id}/editar?foco=${grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "CONTACTO" ? "contacto" : grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "UBICACION" ? "ubicacion" : grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "HORARIOS" ? "horarios" : grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "FOTOGRAFIAS" ? "fotografias" : grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "DESCRIPCION" || grupo.problemas.find((problema) => problema.prioridad === "ALTA")?.tipo === "CATEGORIA" ? "basico" : "auditor"}`}
                     className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90"
                   >
                     Corregir →
