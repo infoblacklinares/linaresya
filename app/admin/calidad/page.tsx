@@ -34,7 +34,6 @@ const prioridadOrden = { ALTA: 0, MEDIA: 1 };
 
 function impactoProblema(problema: Problema): { etiqueta: string; detalle: string } {
   switch (problema.tipo) {
-    case "TELEFONO":
     case "CONTACTO":
       return { etiqueta: "Contacto", detalle: "Puede impedir que el vecino contacte al negocio." };
     case "UBICACION":
