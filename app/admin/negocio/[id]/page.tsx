@@ -191,6 +191,8 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
   const publicUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://linaresya.cl";
   const revisionCompletada = revisado === "1";
   const pendientesPostRevision = faltantes.filter((x) => x !== "Verificación pendiente");
+  const hallazgosPostRevision = auditorFindings.length;
+  const revisionAlDia = pendientesPostRevision.length === 0 && hallazgosPostRevision === 0;
 
   return (
     <main className="flex-1 mx-auto w-full max-w-3xl pb-10">
@@ -211,11 +213,33 @@ supabaseAdmin.from("horarios").select("dia,abre,cierra,cerrado").eq("negocio_id"
         <section className="px-4 pt-4">
           <div className={`rounded-2xl border p-4 ${pendientesPostRevision.length === 0 ? "border-emerald-200 bg-emerald-50" : "border-amber-200 bg-amber-50"}`}>
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Revisión actualizada</p>
-            <h2 className="text-sm font-extrabold mt-1">{pendientesPostRevision.length === 0 ? "Ficha al día" : "La ficha aún requiere atención"}</h2>
-            <p className="text-xs mt-1">{pendientesPostRevision.length === 0 ? "Guardaste los cambios y el diagnóstico fue recalculado con la información actual." : `Guardaste los cambios y el diagnóstico fue recalculado. Quedan ${pendientesPostRevision.length} punto${pendientesPostRevision.length === 1 ? "" : "s"} por revisar.`}</p>
-            {pendientesPostRevision.length > 0 && <ul className="mt-2 space-y-1">{pendientesPostRevision.map((item) => <li key={item} className="text-xs">• {item}</li>)}</ul>}
+            <h2 className="text-sm font-extrabold mt-1">{revisionAlDia ? "Ficha al día" : "La ficha aún requiere atención"}</h2>
+            <p className="text-xs mt-1">
+              {revisionAlDia
+                ? "Guardaste los cambios y las comprobaciones actuales no dejan pendientes básicos ni hallazgos del Data Auditor."
+                : `Guardaste los cambios y el diagnóstico actual fue recalculado. Quedan ${pendientesPostRevision.length + hallazgosPostRevision} elemento${pendientesPostRevision.length + hallazgosPostRevision === 1 ? "" : "s"} por revisar.`}
+            </p>
+            {pendientesPostRevision.length > 0 && (
+              <ul className="mt-2 space-y-1">
+                {pendientesPostRevision.map((item) => <li key={item} className="text-xs">• {item}</li>)}
+              </ul>
+            )}
+            {hallazgosPostRevision > 0 && (
+              <p className="mt-2 text-xs">
+                • {hallazgosPostRevision} hallazgo{hallazgosPostRevision === 1 ? "" : "s"} del Data Auditor pendiente{hallazgosPostRevision === 1 ? "" : "s"}.
+              </p>
+            )}
             <div className="mt-3 flex flex-wrap gap-2">
-              {pendientesPostRevision.length > 0 && <Link href={`/admin/negocio/${n.id}/editar`} className="rounded-full bg-foreground text-background px-3 py-2 text-[11px] font-bold">Volver a corregir →</Link>}
+              {!revisionAlDia && (
+                <Link
+                  href={hallazgosPostRevision > 0 && pendientesPostRevision.length === 0
+                    ? `/admin/calidad?prioridad=auditor`
+                    : `/admin/negocio/${n.id}/editar`}
+                  className="rounded-full bg-foreground text-background px-3 py-2 text-[11px] font-bold"
+                >
+                  {hallazgosPostRevision > 0 && pendientesPostRevision.length === 0 ? "Ver hallazgos →" : "Volver a corregir →"}
+                </Link>
+              )}
               <Link href="/admin/calidad" className="rounded-full border border-border bg-white/70 px-3 py-2 text-[11px] font-bold">Ver cola de calidad</Link>
             </div>
           </div>
