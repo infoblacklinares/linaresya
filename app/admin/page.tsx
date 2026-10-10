@@ -14,7 +14,7 @@ import ConfirmDeleteButton from "./ConfirmDeleteButton";
 import ConfirmPremiumButton from "./ConfirmPremiumButton";
 import { fechaCL, normalizarTexto } from "@/lib/estadisticas";
 import { fetchDataAuditorFindings } from "@/lib/data-auditor-findings";
-import { calcularEstadoFicha } from "@/lib/estado-ficha";
+import { calcularEstadoFicha, contactoFichaUtilizable } from "@/lib/estado-ficha";
 import {
   filtrarPorFechas,
   porFuente,
@@ -66,7 +66,7 @@ function ubicacionGenerica(direccion: string | null): boolean {
  * para trabajar la lista, no para mirarla (LY-033).
  */
 const FALTANTES = {
-  telefono: { etiqueta: "Sin telefono/WhatsApp", test: (n: NegocioRow) => !n.telefono && !n.whatsapp },
+  telefono: { etiqueta: "Sin telefono/WhatsApp", test: (n: NegocioRow) => !contactoFichaUtilizable(n.telefono, n.whatsapp) },
   direccion: { etiqueta: "Sin direccion", test: (n: NegocioRow) => !n.direccion && !n.a_domicilio },
   coordenadas: { etiqueta: "Sin coordenadas", test: (n: NegocioRow) => n.lat == null || n.lng == null },
   descripcion: { etiqueta: "Sin descripcion", test: (n: NegocioRow) => !n.descripcion },
