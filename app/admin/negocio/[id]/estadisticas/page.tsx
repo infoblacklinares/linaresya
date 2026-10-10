@@ -2,6 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { filtrarPorFechas, resumenEventos, type FilaEvento } from "@/lib/eventos";
 
 export const metadata = {
   title: "Estadisticas - Admin LinaresYa",
@@ -72,6 +73,13 @@ export default async function EstadisticasPage({
       .eq("negocio_id", id)
       .gte("fecha", desde)
       .order("fecha", { ascending: true }),
+    supabaseAdmin
+      .from("eventos_negocio")
+      .select("evento, sesion, fuente, campana, negocio_id, creado_en")
+      .eq("negocio_id", id)
+      .gte("creado_en", `${desde}T00:00:00-05:00`)
+      .lte("creado_en", `${fechaCL(0)}T23:59:59-02:00`)
+      .limit(10000),
   ]);
 
   if (!negocio) notFound();
@@ -89,6 +97,11 @@ export default async function EstadisticasPage({
     : null;
 
   const filas = (stats ?? []) as Estadistica[];
+  const eventos = eventosRes?.data
+    ? filtrarPorFechas((eventosRes.data as FilaEvento[]), desde, fechaCL(0))
+    : [];
+  const resumen = resumenEventos(eventos);
+  const hayEventos = !eventosError && eventos.length > 0;
 
   // Construir un map de fecha -> stat para llenar dias sin datos.
   const porFecha = new Map<string, Estadistica>(filas.map((f) => [f.fecha, f]));
@@ -113,6 +126,7 @@ export default async function EstadisticasPage({
   const totalClicks = totalWA + totalTel + totalMaps;
   const tasaConversion =
     totalVistas > 0 ? ((totalClicks / totalVistas) * 100).toFixed(1) : "0.0";
+  const tasaAccion = resumen.tasaAccion === null ? "—" : `${resumen.tasaAccion.toFixed(1)}%`;
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl px-4 pb-10">
@@ -151,6 +165,26 @@ export default async function EstadisticasPage({
         <Metric label="Telefono" value={totalTel} />
         <Metric label="Como llegar" value={totalMaps} />
       </section>
+
+      {hayEventos && (
+        <section className="mt-5 rounded-2xl border border-border bg-secondary/40 p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Valor medido · últimos 30 días</p>
+              <h2 className="text-base font-extrabold mt-1">Personas y acciones</h2>
+              <p className="text-[11px] text-muted-foreground mt-0.5">Sesiones de navegador y acciones registradas por LinaresYa.</p>
+            </div>
+            <Link href="/admin/estadisticas" className="text-[11px] font-bold text-[#2B6E80] shrink-0">Ver análisis →</Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
+            <Metric label="Visitantes únicos" value={resumen.unicos} hint="sesiones distintas" />
+            <Metric label="Acciones" value={resumen.acciones} hint="contactos e interacciones" />
+            <Metric label="Tasa de acción" value={tasaAccion} hint="acciones / visitantes" />
+            <Metric label="Vistas (eventos)" value={resumen.vistas} hint="incluye recargas" />
+          </div>
+          <p className="mt-3 text-[11px] text-muted-foreground leading-relaxed">Un visitante único es una sesión de navegador, no una persona identificada. Estos eventos están disponibles desde el 12 de septiembre de 2026.</p>
+        </section>
+      )}
 
       <section className="mt-6">
         <div className="flex items-center justify-between mb-2">
