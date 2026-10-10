@@ -397,9 +397,9 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                       )}
                     </div>
                     <div className="mt-2 flex flex-wrap gap-1.5">
-                      {grupo.problemas.map((problema) => (
+                      {grupo.problemas.map((problema, problemaIndex) => (
                         <span
-                          key={problema.tipo}
+                          key={`${problema.tipo}-${problemaIndex}`}
                           className={`text-[10px] font-semibold rounded-full px-2 py-1 ${
                             problema.prioridad === "ALTA" ? "bg-rose-50 text-rose-800" : "bg-amber-50 text-amber-800"
                           }`}
@@ -447,10 +447,10 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                       );
                     })()}
                     <div className="mt-2 flex flex-wrap gap-1.5">
-                      {grupo.problemas.map((problema) => {
+                      {grupo.problemas.map((problema, problemaIndex) => {
                         const impacto = impactoProblema(problema);
                         return (
-                          <span key={problema.tipo} className="text-[10px] font-semibold rounded-full bg-slate-50 text-slate-700 px-2 py-1">
+                          <span key={`${problema.tipo}-${problemaIndex}`} className="text-[10px] font-semibold rounded-full bg-slate-50 text-slate-700 px-2 py-1">
                             Impacto: {impacto.etiqueta}
                           </span>
                         );
