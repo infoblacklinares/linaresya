@@ -61,7 +61,7 @@ export default async function EstadisticasPage({
   const { id } = await params;
   const desde = fechaCL(DIAS - 1); // hace 29 dias = 30 dias incluido hoy
 
-  const [{ data: negocio }, { data: stats }] = await Promise.all([
+  const [{ data: negocio }, { data: stats }, { data: eventosRaw, error: eventosError }] = await Promise.all([
     supabaseAdmin
       .from("negocios")
       .select("id, nombre, slug, plan, categoria_id")
@@ -97,8 +97,8 @@ export default async function EstadisticasPage({
     : null;
 
   const filas = (stats ?? []) as Estadistica[];
-  const eventos = eventosRes?.data
-    ? filtrarPorFechas((eventosRes.data as FilaEvento[]), desde, fechaCL(0))
+  const eventos = eventosRaw
+    ? filtrarPorFechas((eventosRaw as FilaEvento[]), desde, fechaCL(0))
     : [];
   const resumen = resumenEventos(eventos);
   const hayEventos = !eventosError && eventos.length > 0;
