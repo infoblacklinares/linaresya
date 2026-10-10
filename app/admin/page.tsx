@@ -370,7 +370,7 @@ export default async function AdminPage({
 
   for (const finding of auditorFindings.filter((f) => f.severity === "HIGH")) {
     const negocio = act.find(
-      (n) => n.verificado && (n.id === finding.business_id || n.slug === finding.business_id),
+      (n) => n.id === finding.business_id || n.slug === finding.business_id,
     );
     if (!negocio) continue;
     trabajo.push({
