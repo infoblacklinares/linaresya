@@ -176,15 +176,14 @@ export default function EditForm({
           />
           <span className="text-sm font-medium">Activo (visible en el sitio)</span>
         </label>
-        <label className="flex items-center gap-2 py-2">
-          <input
-            type="checkbox"
-            name="verificado"
-            defaultChecked={negocio.verificado}
-            className="h-4 w-4"
-          />
-          <span className="text-sm font-medium">Verificado (badge azul)</span>
-        </label>
+        <div className="rounded-xl bg-sky-50 border border-sky-200 px-3 py-2">
+          <p className="text-xs font-semibold text-sky-950">
+            Verificación: {negocio.verificado ? "verificada" : "pendiente"}
+          </p>
+          <p className="mt-0.5 text-[11px] text-sky-900">
+            La verificación se realiza desde la cola de verificación con fuente y evidencia.
+          </p>
+        </div>
       </section>
 
       {/* BASICO */}
