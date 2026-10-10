@@ -414,15 +414,36 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                       )}
                     </div>
                     {(() => {
+                      const siguienteAuditor =
+                        detalleHallazgosPorNegocio
+                          .get(grupo.id)
+                          ?.find((finding) => finding.severity === "HIGH" && finding.action) ??
+                        detalleHallazgosPorNegocio
+                          .get(grupo.id)
+                          ?.find((finding) => finding.action);
                       const siguiente =
                         grupo.problemas.find((problema) => problema.prioridad === "ALTA") ??
                         grupo.problemas[0];
+
                       return (
-                        <p className="mt-3 rounded-xl bg-foreground/[0.04] px-3 py-2 text-xs font-semibold text-foreground">
-                          {siguiente
-                            ? <>Primero: {etiquetas[siguiente.tipo]} · {siguiente.detalle}</>
-                            : "Primero: revisar los hallazgos del Data Auditor."}
-                        </p>
+                        <div className="mt-3 rounded-xl bg-foreground/[0.04] px-3 py-2">
+                          {siguienteAuditor?.action ? (
+                            <>
+                              <p className="text-xs font-bold text-foreground">
+                                Primero: {siguienteAuditor.action.label}
+                              </p>
+                              <p className="mt-0.5 text-[10px] leading-relaxed text-muted-foreground">
+                                {siguienteAuditor.message}
+                              </p>
+                            </>
+                          ) : (
+                            <p className="text-xs font-semibold text-foreground">
+                              {siguiente
+                                ? <>Primero: {etiquetas[siguiente.tipo]} · {siguiente.detalle}</>
+                                : "Primero: revisar los hallazgos del Data Auditor."}
+                            </p>
+                          )}
+                        </div>
                       );
                     })()}
                     <div className="mt-2 flex flex-wrap gap-1.5">
@@ -441,11 +462,18 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                     </p>
                     {grupo.hallazgos > 0 && (
                       <div className="mt-3 space-y-2">
-                        {detalleHallazgosPorNegocio.get(grupo.id)?.map((finding) => (
-                          <div key={finding.rule} className="rounded-xl border border-sky-100 bg-sky-50/60 px-3 py-2">
-                            <div className="flex items-center gap-2">
-                              <span className="text-[9px] font-bold text-sky-800">{finding.severity}</span>
-                              <span className="text-[9px] font-mono text-sky-900/60">{finding.rule}</span>
+                        {detalleHallazgosPorNegocio.get(grupo.id)?.map((finding, findingIndex) => (
+                          <div key={`${finding.rule}-${findingIndex}`} className="rounded-xl border border-sky-100 bg-sky-50/60 px-3 py-2">
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <span className="text-[9px] font-bold text-sky-800">{finding.severity}</span>
+                                <span className="text-[9px] font-mono text-sky-900/60">{finding.rule}</span>
+                              </div>
+                              {finding.action?.label && (
+                                <span className="text-[9px] font-bold text-sky-900">
+                                  {finding.action.label}
+                                </span>
+                              )}
                             </div>
                             <p className="mt-1 text-[10px] leading-relaxed text-sky-900/75">{finding.message}</p>
                           </div>
@@ -454,7 +482,7 @@ export default async function CalidadPage({ searchParams }: { searchParams: Prom
                     )}
                   </div>
                   <Link
-                    href={`/admin/negocio/${grupo.id}/editar?foco=${grupo.problemas.find((problema) => problema.prioridad === "ALTA") ? focoPorTipo[grupo.problemas.find((problema) => problema.prioridad === "ALTA")!.tipo] : grupo.problemas[0] ? focoPorTipo[grupo.problemas[0].tipo] : focoPorNegocioAuditor.get(grupo.id) ?? "basico"}`}
+                    href={`/admin/negocio/${grupo.id}/editar?foco=${detalleHallazgosPorNegocio.get(grupo.id)?.find((finding) => finding.severity === "HIGH" && finding.action)?.action?.section ?? detalleHallazgosPorNegocio.get(grupo.id)?.find((finding) => finding.action)?.action?.section ?? (grupo.problemas.find((problema) => problema.prioridad === "ALTA") ? focoPorTipo[grupo.problemas.find((problema) => problema.prioridad === "ALTA")!.tipo] : grupo.problemas[0] ? focoPorTipo[grupo.problemas[0].tipo] : focoPorNegocioAuditor.get(grupo.id) ?? "basico")}`}
                     className="shrink-0 rounded-full bg-foreground text-background text-[11px] font-bold px-3 py-2 hover:opacity-90"
                   >
                     Corregir →
