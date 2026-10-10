@@ -540,7 +540,7 @@ export async function guardarResultadoNegocio(formData: FormData): Promise<void>
 
   if (error) {
     console.error("[guardarResultadoNegocio] error:", error.message);
-    return;
+    throw new Error(`No se pudo guardar el resultado: ${error.message}`);
   }
 
   await logAuditServer({
@@ -583,7 +583,7 @@ export async function borrarResultadoNegocio(formData: FormData): Promise<void> 
 
   if (error) {
     console.error("[borrarResultadoNegocio] error:", error.message);
-    return;
+    throw new Error(`No se pudo borrar el resultado: ${error.message}`);
   }
 
   if (antes) {
