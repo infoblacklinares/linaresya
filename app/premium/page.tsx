@@ -201,6 +201,36 @@ export default function PremiumPage() {
         </div>
       </section>
 
+      {/* ── Qué significa Premium en la práctica ─────────────────── */}
+      <section className="px-4 pt-8">
+        <div className="rounded-3xl border border-[#2B6E80]/20 bg-[#2B6E80]/[0.05] p-5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-[#2B6E80]">
+            Mide lo que pasa
+          </p>
+          <h2 className="mt-1 text-lg font-extrabold tracking-tight">
+            No te prometemos clientes. Te mostramos oportunidades.
+          </h2>
+          <p className="mt-2 text-[13px] text-foreground/70 leading-relaxed">
+            Tu ficha registra visitas y acciones como llamadas, WhatsApp, cómo llegar y otras interacciones disponibles. Así puedes ver si tu presencia en LinaresYa está generando interés.
+          </p>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <div className="rounded-2xl bg-white p-3 border border-border">
+              <p className="text-lg">👀</p>
+              <p className="mt-1 text-xs font-bold">Visitas</p>
+              <p className="text-[11px] text-muted-foreground">Cuántas personas distintas llegaron a tu ficha.</p>
+            </div>
+            <div className="rounded-2xl bg-white p-3 border border-border">
+              <p className="text-lg">⚡</p>
+              <p className="mt-1 text-xs font-bold">Acciones</p>
+              <p className="text-[11px] text-muted-foreground">Qué hicieron después de encontrarte.</p>
+            </div>
+          </div>
+          <p className="mt-3 text-[11px] text-muted-foreground leading-relaxed">
+            Las estadísticas están disponibles también en el plan gratis. Premium agrega herramientas para ganar más visibilidad y facilitar el contacto.
+          </p>
+        </div>
+      </section>
+
       {/* ── Cómo pagar ─────────────────────────────────────────────── */}
       <section id="como-pagar" className="px-4 pt-8">
         <h2 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-4">
