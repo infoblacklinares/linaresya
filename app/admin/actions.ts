@@ -144,6 +144,21 @@ export async function verificarNegocio(formData: FormData): Promise<void> {
   }
 
   const antes = await fetchNegocioParaAprobar(id);
+  if (!antes) {
+    throw new Error("No se encontró la ficha para verificar.");
+  }
+
+  // Primero actualizamos el estado y luego registramos la evidencia. Si el
+  // historial falla, revertimos el estado para no dejar una ficha verificada
+  // sin respaldo documental.
+  const { error: updateError } = await supabaseAdmin
+    .from("negocios")
+    .update({ activo: true, verificado: true })
+    .eq("id", id);
+
+  if (updateError) {
+    throw new Error(`No se pudo marcar la ficha como verificada: ${updateError.message}`);
+  }
 
   const { error: historialError } = await supabaseAdmin
     .from("verificaciones_negocio")
@@ -160,16 +175,17 @@ export async function verificarNegocio(formData: FormData): Promise<void> {
     });
 
   if (historialError) {
+    // Intentamos dejar el estado anterior si no pudimos conservar la evidencia.
+    const { error: rollbackError } = await supabaseAdmin
+      .from("negocios")
+      .update({ activo: antes.activo, verificado: antes.verificado })
+      .eq("id", id);
+    if (rollbackError) {
+      throw new Error(
+        `No se pudo guardar el historial de verificación y tampoco revertir el estado: ${historialError.message}`,
+      );
+    }
     throw new Error(`No se pudo guardar el historial de verificación: ${historialError.message}`);
-  }
-
-  const { error } = await supabaseAdmin
-    .from("negocios")
-    .update({ activo: true, verificado: true })
-    .eq("id", id);
-
-  if (error) {
-    throw new Error(`No se pudo marcar la ficha como verificada: ${error.message}`);
   }
 
   revalidatePath("/admin");
