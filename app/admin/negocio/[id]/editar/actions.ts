@@ -49,7 +49,9 @@ export async function updateNegocio(
   const disponibilidad = String(formData.get("disponibilidad") ?? "").trim();
   const fotoPortada = String(formData.get("foto_portada") ?? "").trim();
   const activo = formData.get("activo") === "on";
-  const verificado = formData.get("verificado") === "on";
+  // La verificación se gestiona exclusivamente desde la cola de verificación,
+  // donde queda registrada la fuente y evidencia. Editar una ficha no puede
+  // otorgar verificación por accidente o sin historial.
   const premiumHastaRaw = String(formData.get("premium_hasta") ?? "").trim();
   const latRaw = String(formData.get("lat") ?? "").trim();
   const lngRaw = String(formData.get("lng") ?? "").trim();
@@ -173,7 +175,8 @@ export async function updateNegocio(
     disponibilidad: disponibilidad || null,
     foto_portada: fotoPortada || null,
     activo,
-    verificado,
+    // No modificar verificado desde este formulario.
+    // La acción verificarNegocio exige fuente + evidencia y crea historial.
     premium_hasta: premiumHasta,
   };
   if (categoriaId) update.categoria_id = categoriaId;
