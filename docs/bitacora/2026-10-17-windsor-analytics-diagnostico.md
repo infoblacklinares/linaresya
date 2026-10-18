@@ -26,5 +26,12 @@ Priorizar la conexión de datos antes de nuevas auditorías SEO o cambios secund
 ## Siguiente paso
 En Windsor.ai, seleccionar Google Analytics 4 y conectar la cuenta que contiene la propiedad de LinaresYa. Después conectar Google Search Console. No conectar Google Ads ni Facebook Ads salvo que se necesite analizar campañas pagadas. Luego revisar datos reales antes de decidir cambios.
 
+## Avance de conexión (captura de las 22:12)
+- Se seleccionó la cuenta de Google Analytics 4 `LinaresYa` (ID de cuenta mostrado por Windsor.ai: `535235722`) y se pulsó `Finish`.
+- Windsor.ai abrió `/app/data-preview`; por tanto, se llegó a la vista de previsualización.
+- La consulta visible usa `Data Source: Blended Data`, rango `Last 28 days` y muestra `There is no data for the selected fields and dates range`.
+- Interpretación: esta consulta no devuelve filas. No confirma por sí sola ni que la conexión esté rota ni que el sitio no tenga visitas. Falta seleccionar explícitamente Google Analytics 4 en `Data Source` y comprobar campos/rango.
+- Siguiente paso operativo: abrir el selector `Data Source`, elegir Google Analytics 4 (si está disponible), mantener inicialmente `Last 28 days` y revisar si devuelve datos. No comprar plan ni conectar más fuentes antes de verificarlo.
+
 ## Criterio de éxito
 Poder distinguir con datos entre: (a) falta de tráfico, (b) tráfico sin intención, (c) dificultad para contactar negocios y (d) problemas para registrar una ficha. La prioridad es corregir el cuello de botella demostrado, no seguir haciendo auditorías sin una relación clara con los resultados.
