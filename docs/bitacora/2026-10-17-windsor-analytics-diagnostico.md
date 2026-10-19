@@ -47,5 +47,11 @@ En Windsor.ai, seleccionar Google Analytics 4 y conectar la cuenta que contiene 
 - Diagnóstico actual: la propiedad GA4 no muestra recepción de datos en esta prueba. Aún no se puede atribuir la causa a la variable, consentimiento o carga del script.
 - No se modificó configuración de producción ni se desplegó código.
 
+## Segunda prueba de Tiempo real (18-10-2026, 23:19)
+- Willson repitió la prueba desde una ventana de incógnito, abrió LinaresYa y aceptó las cookies; volvió al informe Tiempo real.
+- La captura sigue mostrando 0 usuarios activos en últimos 30 minutos y 0 en últimos 5 minutos.
+- Esto fortalece la hipótesis de que GA4 no está recibiendo la visita de prueba, pero no determina la causa.
+- Próximo paso: inspeccionar la pestaña Network del navegador en LinaresYa y filtrar por `gtag` o `collect` para confirmar si se descarga `gtag.js` y si se envía una petición de medición. No modificar configuración de producción hasta ver ese resultado.
+
 ## Criterio de éxito
 Poder distinguir con datos entre: (a) falta de tráfico, (b) tráfico sin intención, (c) dificultad para contactar negocios y (d) problemas para registrar una ficha. La prioridad es corregir el cuello de botella demostrado, no seguir haciendo auditorías sin una relación clara con los resultados.
