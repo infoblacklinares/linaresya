@@ -53,5 +53,11 @@ En Windsor.ai, seleccionar Google Analytics 4 y conectar la cuenta que contiene 
 - Esto fortalece la hipótesis de que GA4 no está recibiendo la visita de prueba, pero no determina la causa.
 - Próximo paso: inspeccionar la pestaña Network del navegador en LinaresYa y filtrar por `gtag` o `collect` para confirmar si se descarga `gtag.js` y si se envía una petición de medición. No modificar configuración de producción hasta ver ese resultado.
 
+## Inspección de Network (18-10-2026, 23:22–23:23)
+- En dos capturas de DevTools de la ficha pública `linaresya.cl/servicios-y-oficios/chilexpress-linares`, el filtro Network `gtag` y luego `collect` muestra `0 / 27 requests` y `No matches found`.
+- En esa sesión no se observa descarga de `gtag.js` ni solicitud `collect` entre las peticiones capturadas.
+- Esto apoya la hipótesis de que GA4 no se está ejecutando en esa sesión, pero no diferencia todavía entre consentimiento no aceptado en esa sesión y `NEXT_PUBLIC_GA_ID` ausente/incorrecto en el bundle de producción.
+- Próximo paso: comprobar en DevTools > Application > Local Storage > `https://linaresya.cl` el valor de `cookie-consent` (no editarlo); si no es `accepted`, volver a probar aceptación. Si es `accepted` y sigue sin `gtag`, revisar valor efectivo de variable y despliegue. No modificar producción aún.
+
 ## Criterio de éxito
 Poder distinguir con datos entre: (a) falta de tráfico, (b) tráfico sin intención, (c) dificultad para contactar negocios y (d) problemas para registrar una ficha. La prioridad es corregir el cuello de botella demostrado, no seguir haciendo auditorías sin una relación clara con los resultados.
