@@ -33,5 +33,12 @@ En Windsor.ai, seleccionar Google Analytics 4 y conectar la cuenta que contiene 
 - Interpretación: esta consulta no devuelve filas. No confirma por sí sola ni que la conexión esté rota ni que el sitio no tenga visitas. Falta seleccionar explícitamente Google Analytics 4 en `Data Source` y comprobar campos/rango.
 - Siguiente paso operativo: abrir el selector `Data Source`, elegir Google Analytics 4 (si está disponible), mantener inicialmente `Last 28 days` y revisar si devuelve datos. No comprar plan ni conectar más fuentes antes de verificarlo.
 
+## Hallazgo confirmado en Google Analytics (18-10-2026, aprox. 23:06)
+- Willson abrió la propiedad `LinaresYa` en Google Analytics.
+- La pantalla principal indica: «Todavía no se han recibido datos de tu sitio web» y muestra el ID de medición `G-7K05GZ7WEK`.
+- En la tarjeta visible aparecen 0 usuarios activos, 0 eventos, 0 eventos clave y 0 vistas; el panel de usuarios activos de los últimos 30 minutos también muestra 0.
+- Esto confirma que la propiedad abierta no está mostrando datos recibidos en ese momento; no prueba que no existan visitas al sitio, ni que no haya datos históricos en otra propiedad.
+- Próxima verificación: comparar el ID de medición de la propiedad (`G-7K05GZ7WEK`) con el valor de `NEXT_PUBLIC_GA_ID` en Vercel sin compartir secretos; después abrir el sitio en una sesión de prueba, aceptar cookies si corresponde y revisar Tiempo real. No cambiar variables ni desplegar hasta confirmar la discrepancia.
+
 ## Criterio de éxito
 Poder distinguir con datos entre: (a) falta de tráfico, (b) tráfico sin intención, (c) dificultad para contactar negocios y (d) problemas para registrar una ficha. La prioridad es corregir el cuello de botella demostrado, no seguir haciendo auditorías sin una relación clara con los resultados.
