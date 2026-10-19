@@ -40,5 +40,12 @@ En Windsor.ai, seleccionar Google Analytics 4 y conectar la cuenta que contiene 
 - Esto confirma que la propiedad abierta no está mostrando datos recibidos en ese momento; no prueba que no existan visitas al sitio, ni que no haya datos históricos en otra propiedad.
 - Próxima verificación: comparar el ID de medición de la propiedad (`G-7K05GZ7WEK`) con el valor de `NEXT_PUBLIC_GA_ID` en Vercel sin compartir secretos; después abrir el sitio en una sesión de prueba, aceptar cookies si corresponde y revisar Tiempo real. No cambiar variables ni desplegar hasta confirmar la discrepancia.
 
+## Resultado de prueba de Tiempo real y revisión del código (18-10-2026, 23:16)
+- Willson abrió el informe `Resumen en tiempo real` de la propiedad LinaresYa tras navegar por el sitio. La captura muestra 0 usuarios activos en últimos 30 minutos, 0 en últimos 5 minutos y paneles sin datos.
+- Revisión de `components/CookieConsent.tsx` en `main`: GA4 se carga solo si `NEXT_PUBLIC_GA_ID` tiene valor y el consentimiento en `localStorage` es `accepted`; si no existe consentimiento guardado, muestra el banner. Si el usuario rechaza, no se carga GA4.
+- El componente inyecta `gtag.js` y ejecuta `gtag('config', GA_ID)`, por lo que el siguiente chequeo debe confirmar que el usuario aceptó cookies en la prueba y que la variable de producción coincide con `G-7K05GZ7WEK`.
+- Diagnóstico actual: la propiedad GA4 no muestra recepción de datos en esta prueba. Aún no se puede atribuir la causa a la variable, consentimiento o carga del script.
+- No se modificó configuración de producción ni se desplegó código.
+
 ## Criterio de éxito
 Poder distinguir con datos entre: (a) falta de tráfico, (b) tráfico sin intención, (c) dificultad para contactar negocios y (d) problemas para registrar una ficha. La prioridad es corregir el cuello de botella demostrado, no seguir haciendo auditorías sin una relación clara con los resultados.
