@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-admin";
 import { generarLinkResultados } from "@/lib/dueno-token";
 import { sendPedidoResultados } from "@/lib/email";
 import { EVENTOS_ACCION, fechaSantiagoDe, type FilaEvento } from "@/lib/eventos";
@@ -50,6 +49,7 @@ export async function GET(req: NextRequest) {
   const mes = periodoLegible(periodo);
 
   try {
+    const { supabaseAdmin } = await import("@/lib/supabase-admin");
     const [negociosRes, eventosRes, yaRes] = await Promise.all([
       supabaseAdmin
         .from("negocios")
