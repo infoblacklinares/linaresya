@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { supabaseAdmin } from "@/lib/supabase-admin";
 
 // Degrada a plan "basico" los negocios cuyo premium_hasta ya venció.
 // Regla: solo se tocan los que TIENEN premium_hasta en el pasado.
@@ -18,6 +17,9 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    // Inicializar Supabase solo al ejecutar el cron autorizado, no al importar el módulo durante el build.
+    const { supabaseAdmin } = await import("@/lib/supabase-admin");
+
     const ahora = new Date().toISOString();
 
     const { data, error } = await supabaseAdmin
