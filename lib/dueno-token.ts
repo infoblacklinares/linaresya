@@ -1,5 +1,4 @@
 import { randomBytes } from "crypto";
-import { supabaseAdmin } from "@/lib/supabase-admin";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://linaresya.cl";
 
@@ -33,6 +32,7 @@ export async function generarTokenDueno(
 ): Promise<{ editarUrl: string; statsUrl: string } | null> {
   const { email, ip = "alta-web", horas = HORAS_APROBACION } = opciones;
   try {
+    const { supabaseAdmin } = await import("@/lib/supabase-admin");
     const token = randomBytes(24).toString("hex");
     const expiraEn = new Date(Date.now() + horas * 60 * 60 * 1000).toISOString();
 
@@ -69,6 +69,7 @@ export async function generarTokenDueno(
  */
 export async function negocioDelToken(token: string): Promise<string | null> {
   if (!token) return null;
+  const { supabaseAdmin } = await import("@/lib/supabase-admin");
   const { data } = await supabaseAdmin
     .from("dueno_tokens")
     .select("negocio_id, expira_en")
@@ -84,6 +85,7 @@ export async function negocioDelToken(token: string): Promise<string | null> {
 /** Link para que el negocio reporte sus resultados del mes. */
 export async function generarLinkResultados(negocioId: string): Promise<string | null> {
   try {
+    const { supabaseAdmin } = await import("@/lib/supabase-admin");
     const token = randomBytes(24).toString("hex");
     const expiraEn = new Date(Date.now() + HORAS_RESULTADOS * 3600_000).toISOString();
     const { error } = await supabaseAdmin.from("dueno_tokens").insert({
