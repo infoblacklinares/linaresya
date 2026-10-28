@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-admin";
 
 const BUCKET = "negocios";
 const PREFIX = "uploads"; // PhotoUpload sube a uploads/{ts}-{rand}.ext
@@ -25,6 +24,9 @@ export async function GET(req: NextRequest) {
         { status: 500 },
       );
     }
+
+    // Inicializar Supabase solo al ejecutar el cron autorizado, no al importar el módulo durante el build.
+    const { supabaseAdmin } = await import("@/lib/supabase-admin");
 
     // 1. Listar TODOS los archivos en uploads/
     // Storage list devuelve hasta 1000 por defecto, paginamos por las dudas.
