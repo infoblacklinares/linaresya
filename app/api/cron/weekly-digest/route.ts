@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendWeeklyDigest, type WeeklyDigestData } from "@/lib/email";
 
 const SITE_URL =
@@ -23,6 +22,9 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    // Inicializar Supabase solo al ejecutar el cron autorizado, no al importar el módulo durante el build.
+    const { supabaseAdmin } = await import("@/lib/supabase-admin");
+
     const ahora = new Date();
     const haceSiete = new Date(ahora.getTime() - 7 * 24 * 60 * 60 * 1000);
     const isoSiete = haceSiete.toISOString().slice(0, 10);
