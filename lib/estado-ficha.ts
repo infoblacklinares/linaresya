@@ -1,4 +1,4 @@
-import { telefonoInternacional, whatsAppLink } from "@/lib/contacto";
+import { telefonoInternacional, whatsAppLink } from "./contacto";
 
 export type EstadoFicha = "VERDE" | "AMARILLO" | "ROJO";
 
