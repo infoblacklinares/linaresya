@@ -30,7 +30,7 @@ const POPULARES = [
   { q: "peluquería", emoji: "💇" },
 ];
 
-export default function SearchAutocomplete() {
+export default function SearchAutocomplete({ variant = "default" }: { variant?: "default" | "hero" }) {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [negocios, setNegocios] = useState<Sugerencia[]>([]);
@@ -133,8 +133,8 @@ export default function SearchAutocomplete() {
   return (
     <div ref={boxRef} className="relative z-50">
       <label htmlFor="main-search" className="sr-only">Buscar negocios, servicios o rubros en Linares</label>
-      <div className="flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 p-1.5 pl-4 backdrop-blur-md">
-        <SearchIcon className="shrink-0 text-white/50" />
+      <div className={`flex items-center gap-2 rounded-xl p-1.5 pl-4 ${variant === "hero" ? "border border-slate-200 bg-white shadow-sm sm:gap-3 sm:p-2 sm:pl-4" : "border border-white/20 bg-white/10 backdrop-blur-md"}`}>
+        <SearchIcon className={`shrink-0 ${variant === "hero" ? "text-slate-500" : "text-white/50"}`} />
         <input
           id="main-search"
           value={q}
@@ -144,12 +144,12 @@ export default function SearchAutocomplete() {
           type="search"
           placeholder="gasfíter, dentista, restaurante…"
           autoComplete="off"
-          className="min-w-0 flex-1 bg-transparent text-sm text-white placeholder-white/40 outline-none"
+          className={`min-w-0 flex-1 bg-transparent text-sm outline-none ${variant === "hero" ? "text-slate-900 placeholder:text-slate-500" : "text-white placeholder-white/40"}`}
         />
         <motion.button
           type="button"
           onClick={submit}
-          className="shrink-0 rounded-xl bg-white px-4 py-2.5 text-xs font-extrabold text-[#2B6E80]"
+          className={`shrink-0 rounded-lg px-5 py-3 text-xs font-extrabold text-white sm:px-7 ${variant === "hero" ? "bg-[#f51e4e] hover:bg-[#df1743]" : "bg-white text-[#2B6E80]"}`}
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.92 }}
           transition={{ type: "spring", stiffness: 400, damping: 15 }}
