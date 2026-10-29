@@ -1,68 +1,27 @@
 import { ImageResponse } from "next/og";
-import { supabase } from "@/lib/supabase";
-import { esPremium } from "@/lib/planes";
 
-// Imagen Open Graph dinamica para /[slug]/[negocio].
-// Next la usa automaticamente como fallback si generateMetadata no define
-// openGraph.images. Cuando un negocio no tiene foto_portada, esta imagen
-// bonita con el nombre + categoria es lo que ve el que comparte el link
-// por WhatsApp, Twitter, Facebook, etc.
+// Imagen Open Graph de respaldo para fichas de negocio.
+// No consulta Supabase durante la recopilación de páginas de Next.js.
+// Si la ficha tiene una foto_portada, generateMetadata define esa imagen;
+// esta tarjeta genérica solo se usa cuando no hay foto disponible.
 
 export const runtime = "nodejs";
-export const alt = "Negocio en LinaresYa";
+export const alt = "Negocios y servicios locales en LinaresYa";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Tamaños/colores inspirados en el estilo de la app (blanco + amber accent).
+// Estilo alineado con la identidad visual de LinaresYa.
 const FG = "#0f172a";
 const MUTED = "#64748b";
-const ACCENT = "#f59e0b"; // amber-500
-const BG = "#fffaf0"; // crema muy tenue
+const ACCENT = "#2B6E80";
+const BG = "#F9F8F6";
 
-export default async function Image({
-  params,
-}: {
-  params: { slug: string; negocio: string };
-}) {
-  const { slug: categoriaSlug, negocio: negocioSlug } = params;
-
-  // Fetch categoria + negocio en paralelo. Si algo falla, igual
-  // devolvemos una imagen con el fallback generico.
-  const [{ data: cat }, { data: negArr }] = await Promise.all([
-    supabase
-      .from("categorias")
-      .select("id, nombre, emoji")
-      .eq("slug", categoriaSlug)
-      .limit(1),
-    supabase
-      .from("negocios")
-      .select("nombre, descripcion, verificado, plan, premium_hasta, categoria_id")
-      .eq("slug", negocioSlug)
-      .eq("activo", true)
-      .limit(5),
-  ]);
-
-  const categoria =
-    (cat?.[0] as { id: number; nombre: string; emoji: string } | undefined) ??
-    null;
-  const negocio =
-    (negArr as
-      | Array<{
-          nombre: string;
-          descripcion: string | null;
-          verificado: boolean;
-          plan: "basico" | "premium";
-          premium_hasta: string | null;
-          categoria_id: number | null;
-        }>
-      | null
-    )?.find((n) => !categoria || n.categoria_id === categoria.id) ?? null;
-
-  const nombre = negocio?.nombre ?? "Negocio en LinaresYa";
-  const categoriaNombre = categoria?.nombre ?? "Directorio";
-  const emoji = categoria?.emoji ?? "📍";
-  const verificado = negocio?.verificado ?? false;
-  const premium = negocio ? esPremium(negocio) : false;
+export default function Image() {
+  const nombre = "Encuentra negocios en Linares";
+  const categoriaNombre = "Directorio local";
+  const emoji = "📍";
+  const verificado = false;
+  const premium = false;
 
   return new ImageResponse(
     (

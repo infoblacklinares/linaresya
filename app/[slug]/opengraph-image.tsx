@@ -1,54 +1,31 @@
 import { ImageResponse } from "next/og";
-import { supabase } from "@/lib/supabase";
 
-// Imagen Open Graph dinamica para paginas de categoria /[slug].
-// Se genera automaticamente cuando alguien comparte por ejemplo
-// linaresya.cl/comida-rapida. Muestra emoji, nombre categoria, "en Linares"
-// y el branding.
+// Imagen Open Graph de respaldo para páginas de categoría /[slug].
+// Se mantiene independiente de Supabase para que Next.js pueda recopilar
+// los datos de página durante el build sin necesitar variables de entorno.
 
 export const runtime = "nodejs";
-export const alt = "Categoria en LinaresYa";
+export const alt = "Categoría local en LinaresYa";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const FG = "#0f172a";
 const MUTED = "#64748b";
-const ACCENT = "#f59e0b";
-const BG = "#fffaf0";
+const ACCENT = "#2B6E80";
+const BG = "#F9F8F6";
 
 export default async function Image({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }> | { slug: string };
 }) {
-  const { slug } = params;
-
-  const { data } = await supabase
-    .from("categorias")
-    .select("id, nombre, emoji")
-    .eq("slug", slug)
-    .eq("activa", true)
-    .single();
-
-  const cat =
-    (data as { id: number; nombre: string; emoji: string } | null) ?? null;
-  const nombre = cat?.nombre ?? "Directorio local";
-  const emoji = cat?.emoji ?? "🔎";
-
-  // Conteo de negocios activos en la categoria (best-effort, nunca rompe).
-  let cantidad = 0;
-  if (cat) {
-    try {
-      const { count } = await supabase
-        .from("negocios")
-        .select("id", { count: "exact", head: true })
-        .eq("activo", true)
-        .eq("categoria_id", cat.id);
-      cantidad = count ?? 0;
-    } catch {
-      cantidad = 0;
-    }
-  }
+  const { slug } = await params;
+  const nombre =
+    slug
+      .split("-")
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toLocaleUpperCase("es-CL") + word.slice(1))
+      .join(" ") || "Directorio local";
 
   return new ImageResponse(
     (
@@ -76,8 +53,6 @@ export default async function Image({
             display: "flex",
           }}
         />
-
-        {/* Header: tag "Categoria" */}
         <div
           style={{
             display: "flex",
@@ -89,20 +64,10 @@ export default async function Image({
             textTransform: "uppercase",
           }}
         >
-          Categoria
+          Categoría local
         </div>
-
-        {/* Body: emoji enorme + nombre */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 24,
-          }}
-        >
-          <div style={{ fontSize: 180, lineHeight: 1, display: "flex" }}>
-            {emoji}
-          </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          <div style={{ fontSize: 180, lineHeight: 1, display: "flex" }}>🔎</div>
           <div
             style={{
               display: "flex",
@@ -115,20 +80,10 @@ export default async function Image({
           >
             {nombre}
           </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 36,
-              color: MUTED,
-              fontWeight: 600,
-            }}
-          >
-            {cantidad > 0
-              ? `${cantidad} ${cantidad === 1 ? "negocio" : "negocios"} en Linares`
-              : "Directorio local de Linares"}
+          <div style={{ display: "flex", fontSize: 36, color: MUTED, fontWeight: 600 }}>
+            Directorio local de Linares
           </div>
         </div>
-
         <div
           style={{
             display: "flex",

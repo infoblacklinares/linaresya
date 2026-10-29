@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-admin";
 
 type CercaDeMiBody = {
   lat?: unknown;
@@ -56,6 +55,10 @@ export async function POST(request: Request) {
   if (Array.isArray(body.negocioIds) && negocioIds && negocioIds.length === 0) {
     return NextResponse.json({ negocios: [] });
   }
+
+  // Importar el cliente privilegiado solo al atender una solicitud. Así Next.js
+  // no necesita inicializar Supabase al recopilar los datos de la ruta durante el build.
+  const { supabaseAdmin } = await import("@/lib/supabase-admin");
 
   const { data, error } = await supabaseAdmin.rpc(
     "get_negocios_cerca_de_mi",
