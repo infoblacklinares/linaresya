@@ -1068,3 +1068,60 @@
     aspect-ratio: 1.8 / 1 !important;
   }
 }
+
+
+/* LY-ESSENTIAL-01 — servicios útiles en carrusel horizontal, cuatro visibles en escritorio. */
+.ly-home .ly-essential > div:nth-of-type(2) {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.ly-home .ly-essential .ly-essential-card {
+  width: clamp(250px, calc((100vw - 7rem) / 4), 340px) !important;
+  min-width: clamp(250px, calc((100vw - 7rem) / 4), 340px) !important;
+  flex: 0 0 clamp(250px, calc((100vw - 7rem) / 4), 340px) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 5px 18px rgba(20,43,64,.08) !important;
+}
+.ly-home .ly-essential .ly-essential-card > div:first-child {
+  height: 158px !important;
+}
+.ly-home .ly-essential .ly-essential-card > div:last-child {
+  padding: 1rem !important;
+}
+.ly-home .ly-essential .ly-essential-card h3 {
+  font-size: 1rem !important;
+  line-height: 1.25 !important;
+}
+.ly-home .ly-essential .ly-essential-card a {
+  min-height: 42px !important;
+  border-radius: 11px !important;
+  font-size: .72rem !important;
+}
+.ly-home .ly-essential [role="group"] button {
+  min-height: 38px;
+  padding: .55rem .9rem !important;
+  font-size: .75rem !important;
+  border-radius: 999px !important;
+  box-shadow: 0 2px 8px rgba(20,43,64,.06);
+}
+@media (max-width: 900px) {
+  .ly-home .ly-essential .ly-essential-card {
+    width: clamp(250px, 42vw, 310px) !important;
+    min-width: clamp(250px, 42vw, 310px) !important;
+    flex-basis: clamp(250px, 42vw, 310px) !important;
+  }
+}
+@media (max-width: 640px) {
+  .ly-home .ly-essential .ly-essential-card {
+    width: 82vw !important;
+    min-width: 82vw !important;
+    flex-basis: 82vw !important;
+  }
+  .ly-home .ly-essential .ly-essential-card > div:first-child {
+    height: 145px !important;
+  }
+  .ly-home .ly-essential > div:first-child {
+    padding-left: .85rem !important;
+    padding-right: .85rem !important;
+  }
+}
