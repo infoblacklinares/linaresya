@@ -539,10 +539,11 @@ export default async function Home() {
                         <span className="rounded-full bg-[#3D5A45]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#3D5A45]">Nuevo</span>
                       )}
                       {rating && rating.count > 0 && (
-                        <span className="text-[10px] font-bold text-amber-500">
-                          ★ {(rating.sum / rating.count).toFixed(1)}
+                        <span className="text-[11px] font-extrabold text-amber-500">
+                          ★ {(rating.sum / rating.count).toFixed(1)} <span className="font-medium text-slate-500">({rating.count})</span>
                         </span>
                       )}
+                      <span className="text-[10px] text-slate-500">⌖ Linares</span>
                     </div>
                   </div>
                 </Link>
@@ -606,7 +607,7 @@ export default async function Home() {
       )}
 
         <aside className="ly-home-side-promos" aria-label="Descubre Linares">
-          <a href="/categorias/turismo" className="ly-side-promo ly-side-tourism">
+          <a href="/buscar?q=turismo" className="ly-side-promo ly-side-tourism">
             <span className="ly-side-copy">
               <strong>Turismo en Linares</strong>
               <span>Naturaleza, cultura y experiencias para disfrutar la ciudad y sus alrededores.</span>
