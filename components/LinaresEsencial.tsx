@@ -193,97 +193,62 @@ export default function LinaresEsencial() {
     .filter((lugar) => grupoActivo === "Todos" || lugar.grupo === grupoActivo);
 
   return (
-    <section className="pt-6">
-      {/* Header */}
-      <div className="flex items-end justify-between px-4 mb-3">
+    <section className="ly-essential py-8" aria-labelledby="ly-essential-title">
+      <div className="mb-5 flex flex-col gap-3 px-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Servicios útiles de Linares</h2>
-          <p className="text-xs text-[#8E8279]">Información práctica para resolver necesidades en Linares</p>
-          <div className="mt-2 flex flex-wrap gap-1.5" role="group" aria-label="Filtrar servicios">
-            {(["Todos", "Urgencias", "Trámites", "Moverse", "Dinero"] as const).map((grupo) => {
-              const activo = grupoActivo === grupo;
-              return (
-                <button
-                  key={grupo}
-                  type="button"
-                  onClick={() => setGrupoActivo(grupo)}
-                  aria-pressed={activo}
-                  className={`rounded-full px-2.5 py-1 text-[9px] font-bold transition ${
-                    activo
-                      ? "bg-[#1A1410] text-white"
-                      : "bg-[#F0EDE8] text-[#6B625A] hover:bg-[#E5E0DA]"
-                  }`}
-                >
-                  {grupo}
-                </button>
-              );
-            })}
-          </div>
+          <p className="mb-1 text-xs font-extrabold uppercase tracking-[.16em] text-[#C05A46]">Información local</p>
+          <h2 id="ly-essential-title" className="text-2xl font-extrabold tracking-tight text-[#183247] sm:text-3xl">Servicios útiles de Linares</h2>
+          <p className="mt-1 text-sm text-slate-500">Datos prácticos para resolver lo que necesitas en la ciudad.</p>
+        </div>
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar servicios">
+          {(["Todos", "Urgencias", "Trámites", "Moverse", "Dinero"] as const).map((grupo) => {
+            const activo = grupoActivo === grupo;
+            return (
+              <button key={grupo} type="button" onClick={() => setGrupoActivo(grupo)} aria-pressed={activo}
+                className={`rounded-full border px-3.5 py-2 text-xs font-bold transition ${activo ? "border-[#2B6E80] bg-[#2B6E80] text-white shadow-sm" : "border-slate-200 bg-white text-slate-600 hover:border-[#2B6E80] hover:text-[#2B6E80]"}`}>
+                {grupo}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Cards scroll horizontal */}
-      <div className="flex w-full gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-4 pb-3 no-scrollbar">
+      <div className="flex gap-4 overflow-x-auto overscroll-x-contain px-4 pb-4 scroll-smooth no-scrollbar">
         {lugares.map((lugar) => (
-          <div
-            key={lugar.nombre}
-            className="group relative shrink-0 w-[168px] h-[220px] sm:w-[184px] sm:h-[232px] rounded-2xl overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.09)] border border-[#F0EDE8] transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-            {/* Fondo: foto del lugar o degradado por categoría */}
-            {lugar.imagen ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={lugar.imagen}
-                alt={lugar.nombre}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-            ) : (
-              <div className={`absolute inset-0 bg-gradient-to-br ${gradiente(lugar.tipo)}`} />
-            )}
-            {/* Degradado oscuro para legibilidad del texto */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10" />
-
-            {/* Badge de categoría arriba */}
-            <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-bold text-[#1A1410] backdrop-blur-sm">
-              {lugar.grupo}
-            </span>
-
-            {/* Info + acciones sobre la imagen */}
-            <div className="absolute inset-x-0 bottom-0 p-3">
-              <p className="text-[15px] font-black text-white leading-tight line-clamp-1 drop-shadow">
-                {lugar.nombre}
-              </p>
-              <p className="text-xs text-white/85 mt-1 line-clamp-2">{lugar.descripcion}</p>
-              <p className="text-[11px] text-white/80 mt-1 font-medium">{lugar.info}</p>
-
-              <div className="mt-2.5 flex flex-col gap-1.5">
-                <a
-                  href={lugar.maps}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="!flex !h-8 !min-h-8 !max-h-8 !items-center !justify-center !gap-1 !rounded-lg !bg-slate-900/65 !px-2 !py-0 !text-xs !font-bold !leading-none !text-white !shadow-none !backdrop-blur-md !transition-colors hover:!bg-slate-900/75"
-                >
-                  📍 Mapa
+          <article key={lugar.nombre} className="ly-essential-card group w-[248px] shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg sm:w-[268px]">
+            <div className="relative h-[132px] overflow-hidden bg-slate-100">
+              {lugar.imagen ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={lugar.imagen} alt={lugar.nombre} loading="lazy" decoding="async"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              ) : (
+                <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradiente(lugar.tipo)} text-5xl`}>{lugar.emoji}</div>
+              )}
+              <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold text-[#183247] shadow-sm">{lugar.grupo}</span>
+            </div>
+            <div className="p-4">
+              <h3 className="text-base font-extrabold leading-tight text-[#183247]">{lugar.nombre}</h3>
+              <p className="mt-1 text-sm text-slate-500">{lugar.descripcion}</p>
+              <p className="mt-1.5 text-xs font-semibold text-slate-600">{lugar.info}</p>
+              <div className="mt-4 grid grid-cols-1 gap-2">
+                <a href={lugar.maps} target="_blank" rel="noopener noreferrer"
+                  className="flex min-h-10 items-center justify-center gap-2 rounded-xl bg-[#2B6E80] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#235c6b]">
+                  📍 Cómo llegar
                 </a>
                 {lugar.telefono ? (
-                  <a
-                    href={`tel:${lugar.telefono}`}
-                    className="!flex !h-10 !min-h-10 !max-h-10 !items-center !justify-center !gap-1 !rounded-lg !bg-white !px-2 !py-0 !text-xs !font-bold !leading-none !text-[#1A1410] !shadow-none !transition-colors hover:!bg-slate-100"
-                  >
-                    📞 Llamar
+                  <a href={`tel:${lugar.telefono}`}
+                    className="flex min-h-10 items-center justify-center gap-2 rounded-xl border border-[#C05A46]/30 bg-[#C05A46]/[0.06] px-4 py-2.5 text-sm font-bold text-[#A84D3A] transition hover:bg-[#C05A46]/[0.12]">
+                    ☎ Llamar
                   </a>
                 ) : (
-                  <a
-                    href={lugar.maps}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="!flex !h-8 !min-h-8 !max-h-8 !items-center !justify-center !gap-1 !rounded-lg !bg-white/90 !px-2 !py-0 !text-xs !font-bold !leading-none !text-slate-900 !shadow-none hover:!bg-white"
-                  >
-                    Ver →
+                  <a href={lugar.maps} target="_blank" rel="noopener noreferrer"
+                    className="flex min-h-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100">
+                    Ver información
                   </a>
                 )}
               </div>
             </div>
-          </div>
+          </article>
         ))}
       </div>
     </section>
