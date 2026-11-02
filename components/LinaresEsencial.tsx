@@ -260,14 +260,14 @@ export default function LinaresEsencial() {
                   href={lugar.maps}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1 rounded-full bg-white/20 py-1.5 text-[10px] font-bold text-white backdrop-blur-md hover:bg-white/30 transition"
+                  className="!flex !h-10 !min-h-10 !max-h-10 !items-center !justify-center !gap-1 !rounded-xl !bg-slate-900/55 !px-2 !py-0 !text-xs !font-bold !leading-none !text-white !shadow-none !backdrop-blur-md !transition-colors hover:!bg-slate-900/75"
                 >
                   📍 Mapa
                 </a>
                 {lugar.telefono ? (
                   <a
                     href={`tel:${lugar.telefono}`}
-                    className="flex items-center justify-center gap-1 rounded-full bg-white py-1.5 text-[10px] font-bold text-[#1A1410] hover:bg-white/90 transition"
+                    className="!flex !h-10 !min-h-10 !max-h-10 !items-center !justify-center !gap-1 !rounded-xl !bg-white !px-2 !py-0 !text-xs !font-bold !leading-none !text-[#1A1410] !shadow-none !transition-colors hover:!bg-slate-100"
                   >
                     📞 Llamar
                   </a>
