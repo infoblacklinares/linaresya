@@ -31,19 +31,19 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/55 to-slate-950/10" />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-slate-950/10" />
-        <div className="relative mx-auto flex min-h-[460px] max-w-[1600px] flex-col justify-center px-5 pb-14 pt-14 sm:px-8 lg:min-h-[540px] lg:px-16 lg:pb-16">
-          <div className="max-w-[760px]">
+        <div className="relative mx-auto flex min-h-[560px] w-full max-w-none flex-col justify-center px-6 pb-16 pt-16 sm:px-10 lg:min-h-[620px] lg:px-[clamp(3rem,6vw,7rem)] lg:pb-20">
+          <div className="w-full max-w-[880px]">
             <p className="mb-3 flex items-center gap-3 text-[11px] font-extrabold uppercase tracking-[.18em] text-[#ff4268]">
               Apoya lo local <span className="h-px w-8 bg-[#ff4268]" />
             </p>
-            <h1 className="max-w-[520px] text-[3.2rem] font-black leading-[.96] tracking-[-.055em] text-white sm:text-7xl lg:text-[5rem]">
+            <h1 className="max-w-[760px] text-5xl font-black leading-[.98] tracking-[-.055em] text-white sm:text-7xl lg:text-[5.5rem] xl:text-[6rem]">
               Descubre Linares de <span className="text-[#f51e4e]">verdad</span>
             </h1>
-            <p className="mt-5 max-w-[560px] text-base font-medium leading-relaxed text-white/95 sm:text-lg">
+            <p className="mt-5 max-w-[650px] text-lg font-medium leading-relaxed text-white/95 sm:text-xl">
               Negocios locales, ofertas, eventos y todo lo que necesitas en un solo lugar.
             </p>
           </div>
-          <div className="relative z-20 mt-8 w-full max-w-[920px] rounded-2xl bg-white p-1.5 shadow-[0_14px_42px_rgba(0,0,0,.3)] sm:p-2">
+          <div className="relative z-20 mt-8 w-full max-w-[980px] rounded-2xl bg-white p-1.5 shadow-[0_14px_42px_rgba(0,0,0,.3)] sm:p-2">
             <SearchAutocomplete variant="hero" />
           </div>
           <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-white/90">
@@ -54,19 +54,17 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
         </div>
       </section>
 
-      <section className="relative z-10 mx-auto -mt-5 max-w-[1480px] rounded-2xl border border-slate-100 bg-white/95 px-4 py-4 sm:px-6 sm:py-5 shadow-[0_8px_28px_rgba(15,23,42,.12)] backdrop-blur sm:px-5">
-        <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar sm:justify-between sm:gap-3">
-          {CATEGORIAS.map((cat) => (
-            <a key={cat.label} href={cat.href} className="group flex min-w-[92px] shrink-0 flex-col items-center rounded-xl px-3 py-3 text-center transition hover:bg-slate-50 sm:min-w-0 sm:flex-1">
+      <section className="relative z-10 -mt-5 w-full rounded-none border-y border-slate-100 bg-white/95 px-4 py-4 shadow-[0_8px_28px_rgba(15,23,42,.12)] backdrop-blur sm:px-8 sm:py-5 lg:px-[clamp(2rem,4vw,4.5rem)]">
+        <div className="ly-category-marquee overflow-hidden">
+          <div className="ly-category-track flex w-max gap-3 pb-1">
+          {[...CATEGORIAS, { label: "Ver más", sub: "", icon: "•••", href: "/categorias", tone: "bg-slate-100 text-slate-600" }].map((cat) => (
+            <a key={cat.label} href={cat.href} className="group flex w-[112px] shrink-0 flex-col items-center rounded-xl px-3 py-3 text-center transition hover:bg-slate-50 sm:w-[124px]">
               <span className={`flex h-12 w-12 items-center justify-center rounded-full text-2xl transition group-hover:scale-105 ${cat.tone}`} aria-hidden="true">{cat.icon}</span>
-              <span className="mt-2.5 text-xs font-extrabold leading-tight text-slate-800">{cat.label}</span>
-              {cat.sub ? <span className="mt-0.5 text-[10px] leading-tight text-slate-500">{cat.sub}</span> : null}
+              <span className="mt-2.5 text-sm font-extrabold leading-tight text-slate-800">{cat.label}</span>
+              {cat.sub ? <span className="mt-0.5 text-[11px] leading-tight text-slate-500">{cat.sub}</span> : null}
             </a>
           ))}
-          <a href="/categorias" className="group flex min-w-[76px] shrink-0 flex-col items-center rounded-xl px-2 py-2 text-center transition hover:bg-slate-50 sm:min-w-0 sm:flex-1">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-xl text-slate-600" aria-hidden="true">•••</span>
-            <span className="mt-2 text-[11px] font-extrabold leading-tight text-slate-800">Ver más</span>
-          </a>
+          </div>
         </div>
       </section>
     </>
