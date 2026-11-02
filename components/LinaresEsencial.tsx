@@ -228,7 +228,6 @@ export default function LinaresEsencial() {
           <div
             key={lugar.nombre}
             className="group relative shrink-0 w-[168px] h-[220px] sm:w-[184px] sm:h-[232px] rounded-2xl overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.09)] border border-[#F0EDE8] transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-          >
             {/* Fondo: foto del lugar o degradado por categoría */}
             {lugar.imagen ? (
               // eslint-disable-next-line @next/next/no-img-element
