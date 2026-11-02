@@ -205,6 +205,13 @@ export default function PublishForm({
 
   const coreListo =
     lleno("nombre", values.nombre) && lleno("categoria_id", values.categoria_id);
+  const etapaActual = !coreListo
+    ? 0
+    : !lleno("whatsapp", values.whatsapp) && !omitidos.whatsapp
+      ? 1
+      : !lleno("direccion", values.direccion) && !omitidos.direccion
+        ? 2
+        : 3;
 
   const hayErrores = Object.keys(errores).length > 0;
   const puedeEnviar =
@@ -215,7 +222,7 @@ export default function PublishForm({
     !isPending;
 
   return (
-    <form action={formAction} className="px-4 pb-10 pt-2">
+    <form action={formAction} className="w-full min-w-0 p-0">
       {/* De donde vino el alta, para poder medir si el popup sirve */}
       <input type="hidden" name="origen" value={origen} />
       {state.error && (
@@ -225,16 +232,27 @@ export default function PublishForm({
       )}
 
       {/* ── Lo esencial: un campo a la vez ─────────────────────── */}
-      <div className="rounded-3xl bg-white border border-[#F0EDE8] shadow-[0_2px_14px_rgba(0,0,0,0.06)] p-5">
+      <div className="rounded-[26px] border border-[#E8E6E1] bg-white p-5 shadow-[0_8px_28px_rgba(17,47,54,.07)] sm:p-7 lg:p-8">
+        <ol aria-label="Etapas para publicar tu negocio" className="mb-6 grid grid-cols-4 gap-1 sm:gap-3">
+          {["Tu negocio", "Contacto", "Ubicación", "Revisión"].map((label, i) => (
+            <li key={label} className="relative flex min-w-0 flex-col items-center text-center">
+              {i < 3 && <span aria-hidden="true" className={`absolute left-[58%] top-4 hidden h-px w-[84%] sm:block ${i < etapaActual ? "bg-[#0B6A70]" : "bg-[#D9DEDE]"}`} />}
+              <span className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full text-xs font-extrabold transition ${i <= etapaActual ? "bg-[#F34E50] text-white shadow-[0_3px_9px_rgba(243,78,80,.25)]" : "border border-[#D8DEDE] bg-[#F4F6F6] text-[#6C7A7D]"}`}>
+                {i + 1}
+              </span>
+              <span className={`mt-2 text-[10px] font-bold leading-tight sm:text-xs ${i <= etapaActual ? "text-[#102B35]" : "text-[#899699]"}`}>{label}</span>
+            </li>
+          ))}
+        </ol>
         {/* Progreso */}
-        <div className="flex items-center gap-3 mb-5">
+        <div className="mb-5 flex items-center gap-3">
           <div className="flex-1 h-1.5 rounded-full bg-[#F0EDE8] overflow-hidden">
             <div
-              className="h-full rounded-full bg-[#2B6E80] transition-[width] duration-500 ease-out"
+              className="h-full rounded-full bg-[#F34E50] transition-[width] duration-500 ease-out"
               style={{ width: `${(visibles / CORE.length) * 100}%` }}
             />
           </div>
-          <span className="text-[11px] font-bold uppercase tracking-wider text-[#2B6E80] shrink-0">
+          <span className="shrink-0 text-[11px] font-extrabold uppercase tracking-wider text-[#0B6570]">
             Paso {visibles} de {CORE.length}
           </span>
         </div>
@@ -243,7 +261,7 @@ export default function PublishForm({
           {CORE.slice(0, visibles).map((c) => (
             <div key={c.key} className="paso-ue">
               <label
-                className="block text-sm font-bold text-[#1A1410] mb-1.5"
+                className="mb-2 block text-sm font-extrabold text-[#102B35]"
                 htmlFor={`f-${c.key}`}
               >
                 {c.label}
@@ -311,7 +329,7 @@ export default function PublishForm({
       {/* Se monta apenas nombre+categoria estan listos y NUNCA se desmonta:
           si el usuario lo cierra, los campos siguen viajando en el FormData. */}
       {coreListo && (
-        <div className="paso-ue mt-4 rounded-3xl bg-white border border-[#F0EDE8] shadow-[0_2px_14px_rgba(0,0,0,0.06)] overflow-hidden">
+        <div className="paso-ue mt-4 overflow-hidden rounded-[26px] border border-[#E8E6E1] bg-white shadow-[0_8px_28px_rgba(17,47,54,.06)]">
           <button
             type="button"
             onClick={() => setDetallesAbiertos((v) => !v)}
@@ -563,7 +581,7 @@ export default function PublishForm({
             <button
               type="submit"
               disabled={!puedeEnviar}
-              className="w-full rounded-full bg-[#1A1410] text-white text-base font-bold px-6 py-4 transition hover:bg-[#2B6E80] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#1A1410]"
+              className="w-full rounded-full bg-[#F34E50] px-6 py-4 text-base font-extrabold text-white shadow-[0_6px_16px_rgba(243,78,80,.22)] transition hover:bg-[#D93D43] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
             >
               {isPending
                 ? "Enviando…"
