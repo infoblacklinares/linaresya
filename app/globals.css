@@ -253,3 +253,59 @@
   box-shadow: 0 0 0 5px rgba(244, 184, 96, 0.35);
   border-radius: 4px;
 }
+
+
+/* LinaresYa — sistema visual renovado de portada (scoped: solo inicio) */
+.ly-home {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #10243a;
+  letter-spacing: -0.015em;
+}
+.ly-home h1,
+.ly-home h2,
+.ly-home h3 {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: -0.045em;
+}
+.ly-home h2 {
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  line-height: 1.08;
+  font-weight: 850;
+  color: #10243a;
+}
+.ly-home section > div > p:first-child {
+  letter-spacing: .12em;
+}
+.ly-home a.group,
+.ly-home a[class*="rounded-2xl"],
+.ly-home a[class*="rounded-3xl"] {
+  border-radius: 1.25rem;
+  box-shadow: 0 5px 18px rgba(16, 36, 58, .07);
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.ly-home a.group:hover,
+.ly-home a[class*="rounded-2xl"]:hover,
+.ly-home a[class*="rounded-3xl"]:hover {
+  box-shadow: 0 14px 30px rgba(16, 36, 58, .13);
+}
+.ly-home a[href^="/buscar"],
+.ly-home a[href^="/ofertas"] {
+  font-weight: 750;
+}
+.ly-home img {
+  transition: transform .45s cubic-bezier(.2,.7,.2,1);
+}
+.ly-home .text-\\[10px\\],
+.ly-home .text-\\[11px\\] {
+  letter-spacing: -.005em;
+}
+@media (min-width: 768px) {
+  .ly-home > div.mx-auto {
+    max-width: 1440px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  .ly-home section {
+    scroll-margin-top: 5rem;
+  }
+}
