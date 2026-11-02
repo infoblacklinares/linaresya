@@ -1125,3 +1125,32 @@
     padding-right: .85rem !important;
   }
 }
+
+
+/* LY-PUBLISH-TYPO-01 — tipografía moderna y consistente en /publicar.
+   La hoja global declaraba --font-heading con una variable no cargada y
+   terminaba mostrando serif en esta página. Se aísla la corrección para
+   no alterar el resto del sitio. */
+.ly-publish-page,
+.ly-publish-page * {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-synthesis: none;
+}
+.ly-publish-page h1,
+.ly-publish-page h2,
+.ly-publish-page h3,
+.ly-publish-page h4,
+.ly-publish-page label,
+.ly-publish-page button,
+.ly-publish-page input,
+.ly-publish-page select,
+.ly-publish-page textarea {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+.ly-publish-page h1,
+.ly-publish-page h2,
+.ly-publish-page h3 {
+  letter-spacing: -0.035em;
+}
