@@ -458,3 +458,82 @@
   .ly-home h2 { font-size: 1.22rem !important; }
   .ly-home section .grid > a { min-height: 112px; padding: .8rem; }
 }
+
+
+/* LY-HOME-04: ancho completo y legibilidad de portada */
+.ly-home > div.mx-auto {
+  width: 100% !important;
+  max-width: none !important;
+  padding-left: clamp(1rem, 3.2vw, 3.5rem) !important;
+  padding-right: clamp(1rem, 3.2vw, 3.5rem) !important;
+}
+.ly-home > div.mx-auto > section {
+  margin-top: clamp(1.5rem, 2.5vw, 2.5rem) !important;
+  padding-top: .5rem !important;
+}
+.ly-home section h2 {
+  font-size: clamp(1.45rem, 2vw, 1.9rem) !important;
+  line-height: 1.12 !important;
+  font-weight: 850 !important;
+}
+.ly-home section p.text-xs,
+.ly-home section p[class~="text-[11px]"],
+.ly-home section p[class~="text-[10px]"] {
+  font-size: .82rem !important;
+  line-height: 1.45 !important;
+}
+.ly-home section a p[class~="text-xs"],
+.ly-home section a p[class~="text-[11px]"],
+.ly-home section a p[class~="text-[10px]"] {
+  font-size: .78rem !important;
+  line-height: 1.4 !important;
+}
+.ly-home section a p.font-extrabold,
+.ly-home section a p.font-bold {
+  font-size: .95rem !important;
+  line-height: 1.25 !important;
+}
+.ly-home section .grid {
+  gap: clamp(.8rem, 1.3vw, 1.25rem) !important;
+}
+.ly-home section .grid > a {
+  min-height: 150px !important;
+  padding: 1.15rem !important;
+  border-radius: 1.25rem !important;
+}
+.ly-home section .grid > a p {
+  font-size: .9rem !important;
+}
+.ly-home section .grid > a p:last-child {
+  font-size: .78rem !important;
+}
+.ly-home section a[class*="w-44"],
+.ly-home section a[class*="w-48"],
+.ly-home section a[class*="w-52"] {
+  border-radius: 1.25rem !important;
+}
+.ly-home section a[class*="w-44"] p:first-child,
+.ly-home section a[class*="w-48"] p:first-child,
+.ly-home section a[class*="w-52"] p:first-child {
+  font-size: 1rem !important;
+}
+@media (min-width: 1024px) {
+  .ly-home > div.mx-auto {
+    padding-left: clamp(2rem, 4vw, 4.5rem) !important;
+    padding-right: clamp(2rem, 4vw, 4.5rem) !important;
+  }
+  .ly-home > div.mx-auto > section {
+    margin-top: 2.25rem !important;
+  }
+}
+@media (max-width: 640px) {
+  .ly-home > div.mx-auto {
+    padding-left: .9rem !important;
+    padding-right: .9rem !important;
+  }
+  .ly-home section h2 { font-size: 1.35rem !important; }
+  .ly-home section .grid > a {
+    min-height: 128px !important;
+    padding: .9rem !important;
+  }
+}
