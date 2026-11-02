@@ -54,7 +54,7 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
         </div>
       </section>
 
-      <section className="relative z-10 -mt-8 mx-auto w-[min(1240px,calc(100%-2rem))] rounded-2xl border border-slate-100 bg-white/95 px-4 py-3 shadow-[0_12px_32px_rgba(15,23,42,.14)] backdrop-blur sm:px-6 sm:py-4 lg:px-8">
+      <section className="relative z-10 -mt-8 mx-auto w-[calc(100%-2rem)] max-w-none rounded-2xl border border-slate-100 bg-white/95 px-4 py-3 shadow-[0_12px_32px_rgba(15,23,42,.14)] backdrop-blur sm:px-6 sm:py-4 lg:px-8">
         <div className="ly-category-marquee overflow-hidden">
           <div className="ly-category-track flex w-max gap-3 pb-1">
           {[...CATEGORIAS, { label: "Ver más", sub: "", icon: "•••", href: "/categorias", tone: "bg-slate-100 text-slate-600" }, ...CATEGORIAS, { label: "Ver más", sub: "", icon: "•••", href: "/categorias", tone: "bg-slate-100 text-slate-600" }].map((cat, index) => (
