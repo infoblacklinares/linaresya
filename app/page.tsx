@@ -462,7 +462,7 @@ export default async function Home() {
   const abiertosCount = negociosAbiertos.length;
 
   return (
-    <main className="flex-1 w-full bg-[#F9F8F6]">
+    <main className="ly-home flex-1 w-full bg-[#F9F8F6]">
       <JsonLd id="ld-organization" data={organizationJsonLd()} />
       <JsonLd id="ld-website"      data={websiteJsonLd()} />
 
