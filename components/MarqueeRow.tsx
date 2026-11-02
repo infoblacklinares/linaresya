@@ -11,7 +11,7 @@ import { useEffect, useRef } from "react";
  */
 export default function MarqueeRow({
   children,
-  speed = 0.4,
+  speed = 0.85,
 }: {
   children: React.ReactNode;
   speed?: number;
@@ -31,7 +31,9 @@ export default function MarqueeRow({
       if (!pausedRef.current && el.scrollWidth > el.clientWidth) {
         // El primer grupo (mitad del contenido) marca el punto de loop.
         const firstGroup = el.firstElementChild as HTMLElement | null;
-        const loopPoint = firstGroup ? firstGroup.getBoundingClientRect().width + 12 : el.scrollWidth / 2;
+        const styles = window.getComputedStyle(el);
+        const gap = Number.parseFloat(styles.columnGap || styles.gap || "12") || 12;
+        const loopPoint = firstGroup ? firstGroup.getBoundingClientRect().width + gap : el.scrollWidth / 2;
         el.scrollLeft += speed;
         if (el.scrollLeft >= loopPoint) {
           el.scrollLeft -= loopPoint;
