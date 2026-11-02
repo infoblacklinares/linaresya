@@ -683,7 +683,7 @@ export default async function Home() {
                 <Link
                   key={d.id}
                   href={url}
-                  className="group block w-44 lg:w-52 shrink-0 overflow-hidden rounded-3xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
+                  className="group block w-[248px] sm:w-[270px] xl:w-[292px] shrink-0 overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
                 >
                   {/* Imagen */}
                   <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i)}`}>
