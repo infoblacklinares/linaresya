@@ -223,11 +223,11 @@ export default function LinaresEsencial() {
       </div>
 
       {/* Cards scroll horizontal */}
-      <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
+      <div className="flex gap-3 overflow-x-auto px-4 pb-3 no-scrollbar lg:grid lg:grid-cols-4 xl:grid-cols-6 lg:overflow-visible lg:gap-4">
         {lugares.map((lugar) => (
           <div
             key={lugar.nombre}
-            className="group relative shrink-0 w-48 aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_2px_14px_rgba(0,0,0,0.10)] border border-[#F0EDE8]"
+            className="group relative shrink-0 w-48 aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_2px_14px_rgba(0,0,0,0.10)] border border-[#F0EDE8] transition duration-300 hover:-translate-y-1 hover:shadow-xl lg:w-full lg:aspect-[4/5] xl:aspect-[5/6]"
           >
             {/* Fondo: foto del lugar o degradado por categoría */}
             {lugar.imagen ? (
@@ -249,12 +249,12 @@ export default function LinaresEsencial() {
             </span>
 
             {/* Info + acciones sobre la imagen */}
-            <div className="absolute inset-x-0 bottom-0 p-3">
+            <div className="absolute inset-x-0 bottom-0 p-3.5 lg:p-4">
               <p className="text-[15px] font-black text-white leading-tight line-clamp-1 drop-shadow">
                 {lugar.nombre}
               </p>
-              <p className="text-[11px] text-white/80 mt-0.5 line-clamp-1">{lugar.descripcion}</p>
-              <p className="text-[10px] text-white/70 mt-0.5 font-medium">{lugar.info}</p>
+              <p className="text-xs text-white/85 mt-1 line-clamp-2">{lugar.descripcion}</p>
+              <p className="text-[11px] text-white/80 mt-1 font-medium">{lugar.info}</p>
 
               <div className="mt-2.5 grid grid-cols-2 gap-1.5">
                 <a
