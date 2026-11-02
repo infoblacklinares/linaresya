@@ -76,7 +76,7 @@ export default async function PublicarPage({
   const totalNegocios = count ?? 0;
 
   return (
-    <main className="min-h-screen w-full bg-[#F7F5F1] text-[#102B35]">
+    <main className="ly-publish-page min-h-screen w-full bg-[#F7F5F1] text-[#102B35]">
       <header className="sticky top-0 z-40 border-b border-[#E8E6E1] bg-white/95 backdrop-blur-xl">
         <div className="mx-auto flex h-[70px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
           <Link href="/" aria-label="LinaresYa, inicio" className="text-[27px] font-black tracking-tight text-[#073C45]">
