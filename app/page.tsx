@@ -489,8 +489,8 @@ export default async function Home() {
         <section className="pt-8">
           <div className="flex items-end justify-between px-4 mb-3">
             <div>
-              <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Destacados</h2>
-              <p className="text-xs text-[#8E8279]">Premium y verificados por la comunidad</p>
+              <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Negocios destacados</h2>
+              <p className="text-xs text-[#8E8279]">Conoce y apoya los negocios locales de Linares.</p>
             </div>
             <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todo <NudgeArrow /></Link>
           </div>
@@ -559,8 +559,8 @@ export default async function Home() {
         <FadeInSection>
           <div className="flex items-center justify-between px-4 mb-3">
             <div>
-              <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Ofertas activas</h2>
-              <p className="text-xs text-[#8E8279]">Promociones vigentes hoy en Linares</p>
+              <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Ofertas imperdibles</h2>
+              <p className="text-xs text-[#8E8279]">Aprovecha las promociones de los negocios locales.</p>
             </div>
             <Link href="/ofertas" className="text-xs font-bold text-[#2B6E80]">Ver todas <NudgeArrow /></Link>
           </div>
