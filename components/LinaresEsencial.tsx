@@ -255,19 +255,19 @@ export default function LinaresEsencial() {
               <p className="text-xs text-white/85 mt-1 line-clamp-2">{lugar.descripcion}</p>
               <p className="text-[11px] text-white/80 mt-1 font-medium">{lugar.info}</p>
 
-              <div className="mt-2.5 grid grid-cols-2 gap-1.5">
+              <div className="mt-2.5 flex flex-col gap-1.5">
                 <a
                   href={lugar.maps}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="!flex !h-10 !min-h-10 !max-h-10 !items-center !justify-center !gap-1 !rounded-xl !bg-slate-900/55 !px-2 !py-0 !text-xs !font-bold !leading-none !text-white !shadow-none !backdrop-blur-md !transition-colors hover:!bg-slate-900/75"
+                  className="!flex !h-8 !min-h-8 !max-h-8 !items-center !justify-center !gap-1 !rounded-lg !bg-slate-900/65 !px-2 !py-0 !text-xs !font-bold !leading-none !text-white !shadow-none !backdrop-blur-md !transition-colors hover:!bg-slate-900/75"
                 >
                   📍 Mapa
                 </a>
                 {lugar.telefono ? (
                   <a
                     href={`tel:${lugar.telefono}`}
-                    className="!flex !h-10 !min-h-10 !max-h-10 !items-center !justify-center !gap-1 !rounded-xl !bg-white !px-2 !py-0 !text-xs !font-bold !leading-none !text-[#1A1410] !shadow-none !transition-colors hover:!bg-slate-100"
+                    className="!flex !h-10 !min-h-10 !max-h-10 !items-center !justify-center !gap-1 !rounded-lg !bg-white !px-2 !py-0 !text-xs !font-bold !leading-none !text-[#1A1410] !shadow-none !transition-colors hover:!bg-slate-100"
                   >
                     📞 Llamar
                   </a>
@@ -276,7 +276,7 @@ export default function LinaresEsencial() {
                     href={lugar.maps}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-1 rounded-full bg-white/20 py-1.5 text-[10px] font-bold text-white backdrop-blur-md hover:bg-white/30 transition"
+                    className="!flex !h-8 !min-h-8 !max-h-8 !items-center !justify-center !gap-1 !rounded-lg !bg-white/90 !px-2 !py-0 !text-xs !font-bold !leading-none !text-slate-900 !shadow-none hover:!bg-white"
                   >
                     Ver →
                   </a>
