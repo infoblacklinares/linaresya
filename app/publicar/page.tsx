@@ -85,8 +85,8 @@ export default async function PublicarPage({
           </Link>
           <nav className="hidden items-center gap-8 text-sm font-semibold text-[#173944] md:flex">
             <Link href="/buscar" className="transition hover:text-[#F34E50]">Explorar</Link>
-            <Link href="/negocios" className="transition hover:text-[#F34E50]">Negocios</Link>
-            <Link href="/ayuda" className="transition hover:text-[#F34E50]">Ayuda</Link>
+            <Link href="/para-negocios" className="transition hover:text-[#F34E50]">Negocios</Link>
+            <Link href="/para-negocios" className="transition hover:text-[#F34E50]">Ayuda</Link>
           </nav>
           <Link href="/" className="inline-flex items-center gap-2 rounded-full border border-[#C9D2D2] px-4 py-2 text-xs font-bold text-[#123E47] transition hover:border-[#2B6E80] hover:bg-[#F0F7F6] sm:text-sm">
             <span aria-hidden="true">←</span>
@@ -183,7 +183,7 @@ export default async function PublicarPage({
               <p className="mt-2 max-w-[300px] text-sm leading-relaxed text-white/85">
                 Da a conocer tus productos, servicios y ofertas a vecinos que buscan negocios como el tuyo.
               </p>
-              <Link href="/planes" className="mt-5 inline-flex rounded-full bg-white px-4 py-2.5 text-xs font-extrabold text-[#07444D] transition hover:bg-[#FFE6DF]">
+              <Link href="/premium" className="mt-5 inline-flex rounded-full bg-white px-4 py-2.5 text-xs font-extrabold text-[#07444D] transition hover:bg-[#FFE6DF]">
                 Conoce cómo destacar →
               </Link>
             </div>
@@ -191,26 +191,12 @@ export default async function PublicarPage({
           </section>
 
           <p className="px-2 text-center text-xs leading-relaxed text-[#718186]">
-            ¿Tienes dudas? <Link href="/ayuda" className="font-bold text-[#16717A] underline underline-offset-2">Revisa la ayuda</Link> o vuelve al <Link href="/" className="font-bold text-[#16717A] underline underline-offset-2">directorio</Link>.
+            ¿Tienes dudas? <Link href="/para-negocios" className="font-bold text-[#16717A] underline underline-offset-2">Revisa la ayuda</Link> o vuelve al <Link href="/" className="font-bold text-[#16717A] underline underline-offset-2">directorio</Link>.
           </p>
         </aside>
       </div>
 
-      <footer className="border-t border-[#E6E3DD] bg-white">
-        <div className="mx-auto flex max-w-[1320px] flex-col gap-4 px-5 py-6 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <Link href="/" className="text-xl font-black tracking-tight text-[#073C45]">
-            Linares<span className="text-[#F34E50]">Ya</span>
-            <span className="ml-3 text-xs font-medium text-[#78878A]">Directorio de negocios de Linares</span>
-          </Link>
-          <nav className="flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-[#536A70]">
-            <Link href="/buscar" className="hover:text-[#F34E50]">Explorar negocios</Link>
-            <Link href="/publicar" className="hover:text-[#F34E50]">Publicar mi negocio</Link>
-            <Link href="/ayuda" className="hover:text-[#F34E50]">Ayuda</Link>
-            <Link href="/premium" className="hover:text-[#F34E50]">Planes</Link>
-            <Link href="/contacto" className="hover:text-[#F34E50]">Contacto</Link>
-          </nav>
-        </div>
-      </footer>
+
     </main>
   );
 }
