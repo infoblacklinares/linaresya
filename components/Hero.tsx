@@ -27,7 +27,7 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/esencial/Plaza_de_Armas.jpg')" }}
+          style={{ backgroundImage: "url('/hero-plaza-kiosco.jpg')" }}
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/55 to-slate-950/10" />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-slate-950/10" />
