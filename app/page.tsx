@@ -482,6 +482,8 @@ export default async function Home() {
 
       {/* Categorías principales: ya se muestran en la franja del hero */}
 
+      {/* Bloque editorial principal: destacados + ofertas + vitrinas laterales */}
+      <div className="ly-showcase-grid">
       {/* Destacados — grid 2 columnas */}
       {destacados.length > 0 && (
         <section className="pt-8">
@@ -501,7 +503,7 @@ export default async function Home() {
                 <Link
                   key={d.id}
                   href={url}
-                  className="group block w-44 lg:w-52 shrink-0 overflow-hidden rounded-3xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
+                  className="group block w-[218px] lg:w-[232px] shrink-0 overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
                 >
                   {/* Imagen */}
                   <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i)}`}>
@@ -567,8 +569,8 @@ export default async function Home() {
               // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
               const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);
               return (
-                <Link key={o.id} href={url} className="relative w-48 shrink-0 overflow-hidden rounded-2xl border border-[#E8E4DE] bg-white shadow-linares-sm hover:shadow-linares transition">
-                  <div className="relative flex h-28 items-center justify-center bg-gradient-to-br from-[#F9F8F6] to-[#E8E4DE]">
+                <Link key={o.id} href={url} className="relative w-[232px] shrink-0 overflow-hidden rounded-2xl border border-[#E8E4DE] bg-white shadow-linares-sm hover:shadow-linares transition">
+                  <div className="relative flex h-24 items-center justify-center bg-gradient-to-br from-[#F9F8F6] to-[#E8E4DE]">
                     {o.imagen_url
                       // eslint-disable-next-line @next/next/no-img-element
                       ? <img loading="lazy" decoding="async" src={o.imagen_url} alt={o.titulo} className="h-full w-full object-cover" />
@@ -602,6 +604,24 @@ export default async function Home() {
         </FadeInSection>
         </section>
       )}
+
+        <aside className="ly-home-side-promos" aria-label="Descubre Linares">
+          <a href="/categorias/turismo" className="ly-side-promo ly-side-tourism">
+            <span className="ly-side-copy">
+              <strong>Turismo en Linares</strong>
+              <span>Naturaleza, cultura y experiencias para disfrutar la ciudad y sus alrededores.</span>
+              <b>Explorar atractivos <span aria-hidden="true">→</span></b>
+            </span>
+          </a>
+          <a href="/agenda" className="ly-side-promo ly-side-events">
+            <span className="ly-side-copy">
+              <strong>Eventos en Linares</strong>
+              <span>Descubre actividades, ferias y panoramas para compartir en la ciudad.</span>
+              <b>Ver eventos <span aria-hidden="true">→</span></b>
+            </span>
+          </a>
+        </aside>
+      </div>
 
       {/* Abiertos ahora — glassmorphism */}
       {negociosAbiertos.length > 0 && (
@@ -719,7 +739,7 @@ export default async function Home() {
             {recientes.map((d, i) => {
               const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
               return (
-                <Link key={d.id} href={url} className="group block w-44 lg:w-52 shrink-0 overflow-hidden rounded-3xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]">
+                <Link key={d.id} href={url} className="group block w-[218px] lg:w-[232px] shrink-0 overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]">
                   <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i + 4)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
