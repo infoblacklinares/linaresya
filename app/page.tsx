@@ -508,12 +508,9 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Servicios útiles de Linares */}
-      <LinaresEsencial />
-
       {/* Abiertos ahora — glassmorphism */}
       {negociosAbiertos.length > 0 && (
-        <section className="pt-6">
+        <section className="pt-3">
           <div className="flex items-center justify-between px-4 mb-3">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5">
@@ -578,6 +575,9 @@ export default async function Home() {
         </section>
       )}
 
+      {/* Servicios útiles de Linares */}
+      <LinaresEsencial />
+
       {/* Descubre un negocio de Linares — rotación diaria automática */}
       {negocioDelDia && (
         <section className="px-4 pt-6">
@@ -630,10 +630,10 @@ export default async function Home() {
                 <Link
                   key={d.id}
                   href={url}
-                  className="group block w-[248px] sm:w-[270px] xl:w-[292px] shrink-0 overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
+                  className="group block w-[300px] sm:w-[340px] xl:w-[360px] shrink-0 overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
                 >
                   {/* Imagen */}
-                  <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i)}`}>
+                  <div className={`relative w-full aspect-[16/10] overflow-hidden flex items-center justify-center text-6xl ${catColor(i)}`}>
                     {d.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
                       ? <img loading="lazy" decoding="async" src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
