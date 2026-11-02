@@ -962,3 +962,109 @@
   .ly-home .ly-side-copy > span { font-size: .68rem; }
   .ly-home .ly-side-copy b { font-size: .66rem; padding: .42rem .58rem; }
 }
+
+
+/* LY-HOME-11 — corrección estructural de portada según referencia aprobada.
+   Estas reglas van al final para neutralizar los anchos anteriores que
+   reducían las tarjetas a cuatro columnas calculadas dentro del carrusel. */
+.ly-home .ly-showcase-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 320px !important;
+  column-gap: clamp(1.25rem, 2vw, 2rem) !important;
+  row-gap: 1.25rem !important;
+  align-items: start !important;
+}
+.ly-home .ly-showcase-grid > section {
+  min-width: 0 !important;
+  padding-top: 1rem !important;
+}
+.ly-home .ly-showcase-grid > section:first-child .flex.gap-3 > div.flex.shrink-0 > a {
+  width: 270px !important;
+  min-width: 270px !important;
+  max-width: 270px !important;
+  flex: 0 0 270px !important;
+  border-radius: 16px !important;
+}
+.ly-home .ly-showcase-grid > section:first-child .flex.gap-3 > div.flex.shrink-0 > a > div:first-child {
+  aspect-ratio: 1.55 / 1 !important;
+}
+.ly-home .ly-showcase-grid > section:first-child .flex.gap-3 > div.flex.shrink-0 > a > div:last-child {
+  padding: .85rem .9rem 1rem !important;
+}
+.ly-home .ly-showcase-grid > section:first-child .flex.gap-3 > div.flex.shrink-0 > a p:first-child {
+  font-size: 1rem !important;
+}
+.ly-home .ly-showcase-grid > section:nth-child(2) .flex.gap-3 > a {
+  width: 270px !important;
+  min-width: 270px !important;
+  max-width: 270px !important;
+  flex: 0 0 270px !important;
+}
+.ly-home .ly-showcase-grid > section:nth-child(2) .flex.gap-3 > a > div:first-child {
+  height: 150px !important;
+}
+.ly-home .ly-showcase-grid .ly-home-side-promos {
+  grid-column: 2 !important;
+  grid-row: 1 / span 2 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 1rem !important;
+  align-self: start !important;
+  padding-top: 1rem !important;
+  position: static !important;
+}
+.ly-home .ly-showcase-grid:not(:has(> section:nth-child(2))) .ly-home-side-promos {
+  grid-row: 1 !important;
+}
+.ly-home .ly-showcase-grid .ly-side-promo {
+  width: 100% !important;
+  min-height: 0 !important;
+  aspect-ratio: 1.55 / 1 !important;
+  border-radius: 16px !important;
+}
+.ly-home .ly-open-now {
+  margin-top: .5rem !important;
+  padding-top: 1rem !important;
+}
+.ly-home .ly-open-now > div.flex.gap-3 > div {
+  width: 224px !important;
+  min-width: 224px !important;
+  flex: 0 0 224px !important;
+}
+.ly-home .ly-open-now > div.flex.gap-3 > div > a:first-child {
+  height: 132px !important;
+}
+@media (max-width: 1100px) {
+  .ly-home .ly-showcase-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .ly-home .ly-showcase-grid .ly-home-side-promos {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    padding-top: .25rem !important;
+  }
+  .ly-home .ly-showcase-grid .ly-side-promo {
+    aspect-ratio: 1.65 / 1 !important;
+  }
+}
+@media (max-width: 640px) {
+  .ly-home .ly-showcase-grid > section:first-child .flex.gap-3 > div.flex.shrink-0 > a {
+    width: 248px !important;
+    min-width: 248px !important;
+    max-width: 248px !important;
+    flex-basis: 248px !important;
+  }
+  .ly-home .ly-showcase-grid > section:nth-child(2) .flex.gap-3 > a {
+    width: 248px !important;
+    min-width: 248px !important;
+    max-width: 248px !important;
+    flex-basis: 248px !important;
+  }
+  .ly-home .ly-showcase-grid .ly-home-side-promos {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .ly-home .ly-showcase-grid .ly-side-promo {
+    aspect-ratio: 1.8 / 1 !important;
+  }
+}
