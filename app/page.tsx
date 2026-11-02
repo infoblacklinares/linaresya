@@ -578,59 +578,6 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Ofertas activas */}
-      {ofertas.length > 0 && (
-        <section className="pt-7">
-        <FadeInSection>
-          <div className="flex items-center justify-between px-4 mb-3">
-            <div>
-              <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Ofertas activas</h2>
-              <p className="text-xs text-[#8E8279]">Promociones vigentes hoy en Linares</p>
-            </div>
-            <Link href="/ofertas" className="text-xs font-bold text-[#2B6E80]">Ver todas <NudgeArrow /></Link>
-          </div>
-          <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
-            {ofertas.map(o => {
-              const url  = o.negocio?.categoria_slug && o.negocio?.slug ? `/${o.negocio.categoria_slug}/${o.negocio.slug}` : "#";
-              // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
-              const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);
-              return (
-                <Link key={o.id} href={url} className="relative w-48 shrink-0 overflow-hidden rounded-2xl border border-[#E8E4DE] bg-white shadow-linares-sm hover:shadow-linares transition">
-                  <div className="relative flex h-28 items-center justify-center bg-gradient-to-br from-[#F9F8F6] to-[#E8E4DE]">
-                    {o.imagen_url
-                      // eslint-disable-next-line @next/next/no-img-element
-                      ? <img loading="lazy" decoding="async" src={o.imagen_url} alt={o.titulo} className="h-full w-full object-cover" />
-                      : <span className="text-4xl">{o.negocio?.emoji ?? "🏪"}</span>}
-                    {o.descuento_pct && (
-                      <span className="absolute right-2 top-2 rounded-full bg-[#C05A46] px-2 py-0.5 text-[10px] font-extrabold text-white">-{o.descuento_pct}%</span>
-                    )}
-                    {o.boosteada && (
-                      <span className="absolute left-2 top-2 rounded-full bg-[#F4B860] px-1.5 py-0.5 text-[9px] font-bold text-[#1A1410]">⭐ Dest.</span>
-                    )}
-                  </div>
-                  <div className="p-3">
-                    <p className="line-clamp-2 text-xs font-bold leading-tight text-[#1A1410]">{o.titulo}</p>
-                    {o.negocio && <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">{o.negocio.nombre}</p>}
-                    <div className="mt-2 flex items-center justify-between">
-                      {o.precio_oferta
-                        ? <div className="flex items-baseline gap-1">
-                            <span className="text-sm font-extrabold text-[#C05A46]">${o.precio_oferta.toLocaleString("es-CL")}</span>
-                            {o.precio_normal && <span className="text-[9px] text-[#8E8279] line-through">${o.precio_normal.toLocaleString("es-CL")}</span>}
-                          </div>
-                        : <span className="text-[10px] text-[#8E8279]">Ver oferta →</span>}
-                      <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${dias <= 1 ? "bg-[#C05A46]/10 text-[#C05A46]" : "bg-[#F9F8F6] text-[#8E8279]"}`}>
-                        {dias <= 0 ? "Hoy" : dias === 1 ? "1d" : `${dias}d`}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </FadeInSection>
-        </section>
-      )}
-
       {/* Descubre un negocio de Linares — rotación diaria automática */}
       {negocioDelDia && (
         <section className="px-4 pt-6">
@@ -729,6 +676,59 @@ export default async function Home() {
               );
             })}
           </MarqueeRow>
+        </section>
+      )}
+
+      {/* Ofertas activas */}
+      {ofertas.length > 0 && (
+        <section className="pt-7">
+        <FadeInSection>
+          <div className="flex items-center justify-between px-4 mb-3">
+            <div>
+              <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">Ofertas activas</h2>
+              <p className="text-xs text-[#8E8279]">Promociones vigentes hoy en Linares</p>
+            </div>
+            <Link href="/ofertas" className="text-xs font-bold text-[#2B6E80]">Ver todas <NudgeArrow /></Link>
+          </div>
+          <div className="flex gap-3 overflow-x-auto px-4 pb-2 no-scrollbar">
+            {ofertas.map(o => {
+              const url  = o.negocio?.categoria_slug && o.negocio?.slug ? `/${o.negocio.categoria_slug}/${o.negocio.slug}` : "#";
+              // eslint-disable-next-line react-hooks/purity -- Server Component: se renderiza una vez por request, leer el reloj aca es correcto
+              const dias = Math.ceil((new Date(o.fecha_fin).getTime() - Date.now()) / 86_400_000);
+              return (
+                <Link key={o.id} href={url} className="relative w-48 shrink-0 overflow-hidden rounded-2xl border border-[#E8E4DE] bg-white shadow-linares-sm hover:shadow-linares transition">
+                  <div className="relative flex h-28 items-center justify-center bg-gradient-to-br from-[#F9F8F6] to-[#E8E4DE]">
+                    {o.imagen_url
+                      // eslint-disable-next-line @next/next/no-img-element
+                      ? <img loading="lazy" decoding="async" src={o.imagen_url} alt={o.titulo} className="h-full w-full object-cover" />
+                      : <span className="text-4xl">{o.negocio?.emoji ?? "🏪"}</span>}
+                    {o.descuento_pct && (
+                      <span className="absolute right-2 top-2 rounded-full bg-[#C05A46] px-2 py-0.5 text-[10px] font-extrabold text-white">-{o.descuento_pct}%</span>
+                    )}
+                    {o.boosteada && (
+                      <span className="absolute left-2 top-2 rounded-full bg-[#F4B860] px-1.5 py-0.5 text-[9px] font-bold text-[#1A1410]">⭐ Dest.</span>
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <p className="line-clamp-2 text-xs font-bold leading-tight text-[#1A1410]">{o.titulo}</p>
+                    {o.negocio && <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">{o.negocio.nombre}</p>}
+                    <div className="mt-2 flex items-center justify-between">
+                      {o.precio_oferta
+                        ? <div className="flex items-baseline gap-1">
+                            <span className="text-sm font-extrabold text-[#C05A46]">${o.precio_oferta.toLocaleString("es-CL")}</span>
+                            {o.precio_normal && <span className="text-[9px] text-[#8E8279] line-through">${o.precio_normal.toLocaleString("es-CL")}</span>}
+                          </div>
+                        : <span className="text-[10px] text-[#8E8279]">Ver oferta →</span>}
+                      <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${dias <= 1 ? "bg-[#C05A46]/10 text-[#C05A46]" : "bg-[#F9F8F6] text-[#8E8279]"}`}>
+                        {dias <= 0 ? "Hoy" : dias === 1 ? "1d" : `${dias}d`}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </FadeInSection>
         </section>
       )}
 
