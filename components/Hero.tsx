@@ -31,19 +31,19 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/55 to-slate-950/10" />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-slate-950/10" />
-        <div className="relative mx-auto flex min-h-[370px] max-w-[1440px] flex-col justify-center px-5 pb-12 pt-12 sm:px-8 lg:min-h-[390px] lg:px-12 lg:pb-14">
-          <div className="max-w-[570px]">
+        <div className="relative mx-auto flex min-h-[460px] max-w-[1600px] flex-col justify-center px-5 pb-14 pt-14 sm:px-8 lg:min-h-[540px] lg:px-16 lg:pb-16">
+          <div className="max-w-[760px]">
             <p className="mb-3 flex items-center gap-3 text-[11px] font-extrabold uppercase tracking-[.18em] text-[#ff4268]">
               Apoya lo local <span className="h-px w-8 bg-[#ff4268]" />
             </p>
-            <h1 className="max-w-[520px] text-[2.8rem] font-black leading-[.94] tracking-[-.055em] text-white sm:text-6xl lg:text-[3.5rem]">
+            <h1 className="max-w-[520px] text-[3.2rem] font-black leading-[.96] tracking-[-.055em] text-white sm:text-7xl lg:text-[5rem]">
               Descubre Linares de <span className="text-[#f51e4e]">verdad</span>
             </h1>
-            <p className="mt-4 max-w-[430px] text-sm font-medium leading-relaxed text-white/95 sm:text-base">
+            <p className="mt-5 max-w-[560px] text-base font-medium leading-relaxed text-white/95 sm:text-lg">
               Negocios locales, ofertas, eventos y todo lo que necesitas en un solo lugar.
             </p>
           </div>
-          <div className="relative z-20 mt-6 w-full max-w-[790px] rounded-xl bg-white p-1.5 shadow-[0_14px_42px_rgba(0,0,0,.3)] sm:p-2">
+          <div className="relative z-20 mt-8 w-full max-w-[920px] rounded-2xl bg-white p-1.5 shadow-[0_14px_42px_rgba(0,0,0,.3)] sm:p-2">
             <SearchAutocomplete variant="hero" />
           </div>
           <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-white/90">
@@ -54,13 +54,13 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
         </div>
       </section>
 
-      <section className="relative z-10 mx-auto -mt-5 max-w-[1320px] rounded-2xl border border-slate-100 bg-white/95 px-3 py-3 shadow-[0_8px_28px_rgba(15,23,42,.12)] backdrop-blur sm:px-5">
+      <section className="relative z-10 mx-auto -mt-5 max-w-[1480px] rounded-2xl border border-slate-100 bg-white/95 px-4 py-4 sm:px-6 sm:py-5 shadow-[0_8px_28px_rgba(15,23,42,.12)] backdrop-blur sm:px-5">
         <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar sm:justify-between sm:gap-3">
           {CATEGORIAS.map((cat) => (
-            <a key={cat.label} href={cat.href} className="group flex min-w-[82px] shrink-0 flex-col items-center rounded-xl px-2 py-2 text-center transition hover:bg-slate-50 sm:min-w-0 sm:flex-1">
-              <span className={`flex h-10 w-10 items-center justify-center rounded-full text-xl transition group-hover:scale-105 ${cat.tone}`} aria-hidden="true">{cat.icon}</span>
-              <span className="mt-2 text-[11px] font-extrabold leading-tight text-slate-800">{cat.label}</span>
-              {cat.sub ? <span className="mt-0.5 text-[9px] leading-tight text-slate-500">{cat.sub}</span> : null}
+            <a key={cat.label} href={cat.href} className="group flex min-w-[92px] shrink-0 flex-col items-center rounded-xl px-3 py-3 text-center transition hover:bg-slate-50 sm:min-w-0 sm:flex-1">
+              <span className={`flex h-12 w-12 items-center justify-center rounded-full text-2xl transition group-hover:scale-105 ${cat.tone}`} aria-hidden="true">{cat.icon}</span>
+              <span className="mt-2.5 text-xs font-extrabold leading-tight text-slate-800">{cat.label}</span>
+              {cat.sub ? <span className="mt-0.5 text-[10px] leading-tight text-slate-500">{cat.sub}</span> : null}
             </a>
           ))}
           <a href="/categorias" className="group flex min-w-[76px] shrink-0 flex-col items-center rounded-xl px-2 py-2 text-center transition hover:bg-slate-50 sm:min-w-0 sm:flex-1">
