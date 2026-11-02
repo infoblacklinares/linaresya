@@ -685,3 +685,139 @@
   }
   .ly-home .ly-essential-card { width: 238px; }
 }
+
+
+/* LY-HOME-09 — composición editorial inspirada en la referencia aprobada */
+.ly-home .ly-showcase-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+.ly-home .ly-showcase-grid > section {
+  min-width: 0;
+  padding-top: 1.65rem !important;
+}
+.ly-home .ly-showcase-grid > section > div:first-child {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-bottom: 1rem !important;
+}
+.ly-home .ly-showcase-grid > section > div:first-child h2 {
+  font-size: clamp(1.45rem, 1.8vw, 1.9rem) !important;
+}
+.ly-home .ly-home-side-promos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .9rem;
+  min-width: 0;
+}
+.ly-home .ly-side-promo {
+  position: relative;
+  display: flex;
+  min-height: 230px;
+  overflow: hidden;
+  align-items: flex-end;
+  border-radius: 18px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 8px 24px rgba(16,36,58,.14);
+  text-decoration: none;
+  isolation: isolate;
+}
+.ly-home .ly-side-promo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(7,20,33,.02) 5%, rgba(7,20,33,.18) 42%, rgba(7,20,33,.9) 100%);
+}
+.ly-home .ly-side-tourism {
+  background-image: url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=85");
+}
+.ly-home .ly-side-events {
+  background-image: url("https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=85");
+}
+.ly-home .ly-side-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .45rem;
+  width: 100%;
+  padding: 1.1rem;
+  color: #fff;
+}
+.ly-home .ly-side-copy strong {
+  color: #fff;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  font-weight: 850;
+}
+.ly-home .ly-side-copy > span {
+  color: rgba(255,255,255,.92);
+  font-size: .78rem;
+  line-height: 1.35;
+}
+.ly-home .ly-side-copy b {
+  display: inline-flex;
+  gap: .5rem;
+  align-items: center;
+  margin-top: .25rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #142b40;
+  padding: .55rem .85rem;
+  font-size: .75rem;
+  font-weight: 800;
+}
+.ly-home .ly-showcase-grid > section a[class*="w-[218px]"],
+.ly-home .ly-showcase-grid > section a[class*="w-[232px]"] {
+  width: 100%;
+  max-width: 232px;
+  border-radius: 16px !important;
+}
+.ly-home .ly-showcase-grid > section > div.flex.gap-3 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.ly-home .ly-showcase-grid > section:nth-child(2) > div.flex.gap-3 a {
+  max-width: 232px;
+  border-radius: 15px !important;
+}
+.ly-home section.ly-business-cta,
+.ly-home > div.mx-auto > section:has(> div .ly-business-cta) {
+  width: 100%;
+}
+@media (min-width: 1100px) {
+  .ly-home .ly-showcase-grid {
+    grid-template-columns: minmax(0, 1fr) 276px;
+    column-gap: 1.25rem;
+    row-gap: .25rem;
+    align-items: start;
+  }
+  .ly-home .ly-showcase-grid > section:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .ly-home .ly-showcase-grid > section:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .ly-home .ly-home-side-promos {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    grid-template-columns: 1fr;
+    position: sticky;
+    top: 1rem;
+    padding-top: 1.65rem;
+  }
+  .ly-home .ly-side-promo { min-height: 238px; }
+}
+@media (max-width: 700px) {
+  .ly-home .ly-home-side-promos { grid-template-columns: 1fr 1fr; gap: .65rem; }
+  .ly-home .ly-side-promo { min-height: 190px; }
+  .ly-home .ly-side-copy { padding: .8rem; }
+  .ly-home .ly-side-copy strong { font-size: .95rem; }
+  .ly-home .ly-side-copy > span { font-size: .68rem; }
+  .ly-home .ly-side-copy b { font-size: .67rem; padding: .45rem .65rem; }
+}
