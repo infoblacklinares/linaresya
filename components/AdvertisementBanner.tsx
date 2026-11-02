@@ -1,13 +1,4 @@
-/**
- * AdvertisementBanner.tsx — Banner de negocio destacado / premium
- * Server Component: recibe datos del negocio o usa defaults.
- *
- * Uso:
- *   <AdvertisementBanner negocio={primerPremium} />
- *   <AdvertisementBanner />  ← fallback genérico para publicitar el plan
- */
 import Link from "next/link";
-import { whatsAppLink } from "@/lib/contacto";
 
 interface AdvertisementBannerProps {
   negocio?: {
@@ -19,121 +10,42 @@ interface AdvertisementBannerProps {
     whatsapp?: string | null;
     emoji?: string;
   };
-  /** Llamado a la acción alternativo cuando no hay negocio premium */
   fallbackCta?: boolean;
 }
 
-export default function AdvertisementBanner({
-  negocio,
-  fallbackCta = true,
-}: AdvertisementBannerProps) {
-  // ── Si no hay negocio premium, mostrar CTA para contratar ──────────────────
-  if (!negocio) {
-    if (!fallbackCta) return null;
-    return (
-      <section className="px-4 pt-6">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#C05A46] to-[#a84d3a] p-5 shadow-linares">
-          {/* Patrón decorativo */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute right-0 top-0 h-full w-1/3 opacity-10"
-            style={{
-              background:
-                "radial-gradient(circle at 80% 50%, #fff 0%, transparent 70%)",
-            }}
-          />
-          <div className="relative">
-            <span className="mb-1 inline-block rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white">
-              ✦ Espacio Premium
-            </span>
-            <h3 className="mt-1 text-lg font-extrabold leading-tight text-white">
-              ¿Tu negocio aún no está aquí?
-            </h3>
-            <p className="mt-1 text-sm text-white/80">
-              Aparece gratis frente a miles de vecinos que buscan lo que ofreces.
-            </p>
-            <Link
-              href="/publicar"
-              className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-bold text-[#C05A46] transition hover:bg-[#F9F8F6]"
-            >
-              Publicar mi negocio →
-            </Link>
-          </div>
-        </div>
-      </section>
-    );
-  }
+export default function AdvertisementBanner({ negocio, fallbackCta = true }: AdvertisementBannerProps) {
+  if (!negocio && !fallbackCta) return null;
 
-  // ── Negocio premium destacado ──────────────────────────────────────────────
-  const url = `/${negocio.categoria_slug}/${negocio.slug}`;
-  // El numero ya viene guardado con 56: antes aca se le volvia a anteponer.
-  const waUrl = whatsAppLink(negocio.whatsapp);
+  const perfil = negocio?.categoria_slug && negocio?.slug
+    ? `/${negocio.categoria_slug}/${negocio.slug}`
+    : "/publicar";
 
   return (
-    <section className="px-4 pt-6">
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#2B6E80] to-[#1f5268] p-5 shadow-linares">
-        {/* Decoración */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute right-0 top-0 h-full w-1/3 opacity-10"
-          style={{
-            background: "radial-gradient(circle at 80% 50%, #fff 0%, transparent 70%)",
-          }}
-        />
-
-        <div className="relative flex items-start gap-4">
-          {/* Emoji / logo */}
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-white/15 text-3xl">
-            {negocio.emoji ?? "🏪"}
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="rounded-full bg-[#F4B860] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#1A1410]">
-                ⭐ Destacado
-              </span>
-            </div>
-            <h3 className="mt-1 truncate text-base font-extrabold text-white">
-              {negocio.nombre}
-            </h3>
-            {negocio.descripcion && (
-              <p className="mt-0.5 line-clamp-1 text-xs text-white/70">
-                {negocio.descripcion}
-              </p>
-            )}
-
-            {/* Acciones */}
-            <div className="mt-3 flex flex-wrap gap-2">
-              <Link
-                href={url}
-                className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-[#2B6E80] transition hover:bg-[#F9F8F6]"
-              >
-                Ver perfil →
-              </Link>
-              {waUrl && (
-                <a
-                  href={waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full bg-[#25D366] px-3 py-1.5 text-xs font-bold text-white transition hover:bg-[#1fa752]"
-                >
-                  WhatsApp
-                </a>
-              )}
-            </div>
-
-            {/* Captación contextual: el vecino acaba de ver el valor de aparecer en LinaresYa. */}
-            <div className="mt-4 border-t border-white/15 pt-3">
-              <p className="text-xs font-semibold text-white/90">¿Tu negocio también quiere aparecer aquí?</p>
-              <p className="mt-0.5 text-[10px] text-white/60">Publica tu negocio gratis y haz que te encuentren en Linares.</p>
-              <Link
-                href="/publicar"
-                className="mt-2 inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-bold text-white transition hover:bg-white/25"
-              >
-                Publicar gratis →
-              </Link>
-            </div>
-          </div>
+    <section className="px-0 pt-8 pb-3" aria-label="Publica tu negocio en LinaresYa">
+      <div className="ly-business-cta relative flex flex-col gap-5 overflow-hidden rounded-2xl bg-[#071d38] px-5 py-5 text-white shadow-[0_12px_32px_rgba(7,29,56,.18)] sm:flex-row sm:items-center sm:px-7 lg:px-9">
+        <div aria-hidden="true" className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#f51e4e] text-3xl">🏪</div>
+        <div className="min-w-0 flex-1">
+          {negocio ? (
+            <>
+              <span className="text-[10px] font-extrabold uppercase tracking-[.16em] text-[#ffb7c5]">Negocio destacado de Linares</span>
+              <h3 className="mt-1 text-xl font-black leading-tight text-white">{negocio.nombre}</h3>
+              <p className="mt-1 text-sm text-white/75">{negocio.descripcion || "Conoce este negocio local y descubre lo que ofrece."}</p>
+            </>
+          ) : (
+            <>
+              <h3 className="text-xl font-black leading-tight text-white sm:text-2xl">¿Tienes un negocio en Linares?</h3>
+              <p className="mt-1 text-sm text-white/75">Aumenta tu visibilidad, llega a más clientes y sé parte de LinaresYa.</p>
+            </>
+          )}
+        </div>
+        <div className="flex shrink-0 flex-col gap-2 sm:items-end">
+          {negocio ? <Link href={perfil} className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-extrabold text-[#10243a] transition hover:bg-slate-100">Conocer negocio <span className="ml-2">→</span></Link> : null}
+          <Link href="/publicar" className="inline-flex items-center justify-center rounded-full bg-[#f51e4e] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#dc1744]">Publica tu negocio gratis <span className="ml-2">→</span></Link>
+        </div>
+        <div className="hidden shrink-0 items-center gap-6 border-l border-white/15 pl-6 lg:flex">
+          <span className="text-center text-xs font-bold text-white/85">♧<br/>Más clientes</span>
+          <span className="text-center text-xs font-bold text-white/85">☆<br/>Tu marca visible</span>
+          <span className="text-center text-xs font-bold text-white/85">♡<br/>Apoyo local</span>
         </div>
       </div>
     </section>
