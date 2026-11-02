@@ -223,11 +223,11 @@ export default function LinaresEsencial() {
       </div>
 
       {/* Cards scroll horizontal */}
-      <div className="flex gap-3 overflow-x-auto px-4 pb-3 no-scrollbar lg:grid lg:grid-cols-4 xl:grid-cols-6 lg:overflow-visible lg:gap-4">
+      <div className="flex w-full gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-4 pb-3 no-scrollbar">
         {lugares.map((lugar) => (
           <div
             key={lugar.nombre}
-            className="group relative shrink-0 w-48 aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_2px_14px_rgba(0,0,0,0.10)] border border-[#F0EDE8] transition duration-300 hover:-translate-y-1 hover:shadow-xl lg:w-full lg:aspect-[4/5] xl:aspect-[5/6]"
+            className="group relative shrink-0 w-[168px] h-[220px] sm:w-[184px] sm:h-[232px] rounded-2xl overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.09)] border border-[#F0EDE8] transition duration-300 hover:-translate-y-1 hover:shadow-lg">
           >
             {/* Fondo: foto del lugar o degradado por categoría */}
             {lugar.imagen ? (
@@ -249,7 +249,7 @@ export default function LinaresEsencial() {
             </span>
 
             {/* Info + acciones sobre la imagen */}
-            <div className="absolute inset-x-0 bottom-0 p-3.5 lg:p-4">
+            <div className="absolute inset-x-0 bottom-0 p-3">
               <p className="text-[15px] font-black text-white leading-tight line-clamp-1 drop-shadow">
                 {lugar.nombre}
               </p>
