@@ -57,8 +57,8 @@ export default function Hero({ totalNegocios, abiertosAhora, verificados }: Hero
       <section className="relative z-10 -mt-5 w-full rounded-none border-y border-slate-100 bg-white/95 px-4 py-4 shadow-[0_8px_28px_rgba(15,23,42,.12)] backdrop-blur sm:px-8 sm:py-5 lg:px-[clamp(2rem,4vw,4.5rem)]">
         <div className="ly-category-marquee overflow-hidden">
           <div className="ly-category-track flex w-max gap-3 pb-1">
-          {[...CATEGORIAS, { label: "Ver más", sub: "", icon: "•••", href: "/categorias", tone: "bg-slate-100 text-slate-600" }].map((cat) => (
-            <a key={cat.label} href={cat.href} className="group flex w-[112px] shrink-0 flex-col items-center rounded-xl px-3 py-3 text-center transition hover:bg-slate-50 sm:w-[124px]">
+          {[...CATEGORIAS, { label: "Ver más", sub: "", icon: "•••", href: "/categorias", tone: "bg-slate-100 text-slate-600" }, ...CATEGORIAS, { label: "Ver más", sub: "", icon: "•••", href: "/categorias", tone: "bg-slate-100 text-slate-600" }].map((cat, index) => (
+            <a key={`${cat.label}-${index}`} href={cat.href} className="group flex w-[112px] shrink-0 flex-col items-center rounded-xl px-3 py-3 text-center transition hover:bg-slate-50 sm:w-[124px]">
               <span className={`flex h-12 w-12 items-center justify-center rounded-full text-2xl transition group-hover:scale-105 ${cat.tone}`} aria-hidden="true">{cat.icon}</span>
               <span className="mt-2.5 text-sm font-extrabold leading-tight text-slate-800">{cat.label}</span>
               {cat.sub ? <span className="mt-0.5 text-[11px] leading-tight text-slate-500">{cat.sub}</span> : null}
