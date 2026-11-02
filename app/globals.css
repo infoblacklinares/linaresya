@@ -309,3 +309,152 @@
     scroll-margin-top: 5rem;
   }
 }
+
+
+/* LinaresYa — rediseño integral portada v2 */
+.ly-home {
+  --ly-ink: #10243a;
+  --ly-muted: #64748b;
+  --ly-paper: #f5f7f8;
+  --ly-line: #e7edf0;
+  --ly-teal: #2B6E80;
+  --ly-coral: #C05A46;
+  background: var(--ly-paper);
+  color: var(--ly-ink);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  letter-spacing: -.018em;
+  padding-bottom: 5.25rem;
+}
+.ly-home h1,.ly-home h2,.ly-home h3,.ly-home p,.ly-home a {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+.ly-home h2 {
+  color: var(--ly-ink) !important;
+  font-size: clamp(1.3rem, 1.8vw, 1.7rem) !important;
+  font-weight: 850 !important;
+  letter-spacing: -.045em !important;
+  line-height: 1.08 !important;
+}
+.ly-home section { scroll-margin-top: 5rem; }
+.ly-home > div.mx-auto {
+  max-width: 1480px !important;
+  padding-left: clamp(1rem, 3vw, 3rem);
+  padding-right: clamp(1rem, 3vw, 3rem);
+}
+.ly-home > div.mx-auto > section {
+  margin-top: 1.35rem;
+  padding: 1.15rem 0 0;
+}
+.ly-home > div.mx-auto > section > div:first-child {
+  margin-bottom: 1rem !important;
+}
+.ly-home > div.mx-auto > section > div:first-child > div h2 {
+  font-size: clamp(1.35rem, 2vw, 1.75rem) !important;
+}
+.ly-home > div.mx-auto > section > div:first-child > div p:not(h2) {
+  color: var(--ly-muted);
+  font-size: .82rem !important;
+  line-height: 1.45;
+}
+.ly-home a.group,
+.ly-home a[class*="rounded-2xl"],
+.ly-home a[class*="rounded-3xl"],
+.ly-home div[class*="rounded-2xl"] {
+  border-radius: 1.2rem !important;
+}
+.ly-home a.group:hover,
+.ly-home a[class*="rounded-2xl"]:hover,
+.ly-home a[class*="rounded-3xl"]:hover {
+  transform: translateY(-3px);
+}
+.ly-home a.group img,
+.ly-home a[class*="rounded-2xl"] img,
+.ly-home a[class*="rounded-3xl"] img {
+  transition: transform .45s cubic-bezier(.2,.7,.2,1);
+}
+.ly-home a.group:hover img,
+.ly-home a[class*="rounded-2xl"]:hover img,
+.ly-home a[class*="rounded-3xl"]:hover img {
+  transform: scale(1.045);
+}
+.ly-home a[href^="/buscar"],
+.ly-home a[href^="/ofertas"],
+.ly-home a[href^="/agenda"] {
+  text-underline-offset: 3px;
+}
+.ly-home section .text-\\[10px\\],
+.ly-home section .text-\\[11px\\],
+.ly-home section .text-xs {
+  letter-spacing: -.01em;
+}
+.ly-home section .grid > a {
+  min-height: 132px;
+  padding: 1rem;
+  border: 1px solid var(--ly-line);
+  box-shadow: 0 4px 14px rgba(16,36,58,.045);
+}
+.ly-home section .grid > a > div:first-child > span:first-child {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 1rem;
+  font-size: 1.35rem;
+}
+.ly-home section a[class*="w-44"],
+.ly-home section a[class*="w-48"],
+.ly-home section a[class*="w-52"] {
+  background: #fff;
+  border: 1px solid var(--ly-line);
+  box-shadow: 0 6px 20px rgba(16,36,58,.075);
+}
+.ly-home section a[class*="w-44"] > div:first-child,
+.ly-home section a[class*="w-48"] > div:first-child,
+.ly-home section a[class*="w-52"] > div:first-child {
+  overflow: hidden;
+}
+.ly-home section a[class*="w-44"] > div:last-child,
+.ly-home section a[class*="w-48"] > div:last-child,
+.ly-home section a[class*="w-52"] > div:last-child {
+  padding: .85rem .9rem 1rem;
+}
+.ly-home section a[class*="w-44"] p:first-child,
+.ly-home section a[class*="w-48"] p:first-child,
+.ly-home section a[class*="w-52"] p:first-child {
+  color: var(--ly-ink);
+  font-size: .88rem;
+  font-weight: 800;
+  letter-spacing: -.025em;
+}
+.ly-home section a[class*="w-44"] p:not(:first-child),
+.ly-home section a[class*="w-48"] p:not(:first-child),
+.ly-home section a[class*="w-52"] p:not(:first-child) {
+  color: var(--ly-muted);
+}
+.ly-home section .rounded-3xl.bg-gradient-to-br {
+  border-radius: 1.4rem !important;
+  box-shadow: 0 10px 28px rgba(16,36,58,.12);
+}
+.ly-home section .rounded-2xl.bg-white,
+.ly-home section .rounded-2xl.bg-white\/95 {
+  border: 1px solid var(--ly-line);
+  box-shadow: 0 5px 18px rgba(16,36,58,.055);
+}
+.ly-home nav.fixed {
+  border-color: var(--ly-line);
+  box-shadow: 0 -8px 28px rgba(16,36,58,.08);
+}
+.ly-home nav.fixed > div {
+  max-width: 640px;
+}
+@media (min-width: 1024px) {
+  .ly-home { padding-bottom: 2rem; }
+  .ly-home > div.mx-auto { padding-left: 2.5rem; padding-right: 2.5rem; }
+  .ly-home > div.mx-auto > section { margin-top: 1.65rem; }
+  .ly-home section .grid > a { min-height: 145px; }
+  .ly-home nav.fixed { display: none; }
+}
+@media (max-width: 640px) {
+  .ly-home > div.mx-auto { padding-left: .85rem; padding-right: .85rem; }
+  .ly-home > div.mx-auto > section { margin-top: .8rem; padding-top: .8rem; }
+  .ly-home h2 { font-size: 1.22rem !important; }
+  .ly-home section .grid > a { min-height: 112px; padding: .8rem; }
+}
