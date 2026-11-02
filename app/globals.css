@@ -569,3 +569,38 @@
     padding-right: 1rem !important;
   }
 }
+
+
+/* LY-UX-07: hero y categorías a todo el ancho; carril de categorías animado */
+.ly-home > section:first-of-type {
+  width: 100% !important;
+  max-width: none !important;
+}
+.ly-home .ly-category-marquee { width: 100%; overflow: hidden; }
+.ly-home .ly-category-track {
+  width: max-content;
+  animation: ly-category-scroll 34s linear infinite;
+  will-change: transform;
+}
+.ly-home .ly-category-marquee:hover .ly-category-track,
+.ly-home .ly-category-marquee:focus-within .ly-category-track {
+  animation-play-state: paused;
+}
+@keyframes ly-category-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ly-home .ly-category-track { animation: none; }
+}
+.ly-home .ly-category-marquee a {
+  min-height: 104px;
+  background: #fff;
+  border: 1px solid #e8edf0;
+  box-shadow: 0 3px 12px rgba(16,36,58,.06);
+}
+.ly-home .ly-category-marquee a:hover { transform: translateY(-2px); }
+@media (max-width: 640px) {
+  .ly-home .ly-category-track { animation-duration: 26s; }
+  .ly-home .ly-category-marquee a { min-height: 92px; }
+}
