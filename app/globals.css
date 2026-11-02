@@ -1068,3 +1068,169 @@
     aspect-ratio: 1.8 / 1 !important;
   }
 }
+
+
+/* LY-HOME-12 — ajustes visuales finales sobre la composición aprobada */
+.ly-home .ly-showcase-grid {
+  grid-template-rows: min-content min-content !important;
+  row-gap: .7rem !important;
+}
+.ly-home .ly-showcase-grid > section:first-child .flex.gap-3 > div.flex.shrink-0 > a {
+  width: clamp(220px, calc((100% - 36px) / 4), 286px) !important;
+  min-width: clamp(220px, calc((100% - 36px) / 4), 286px) !important;
+  max-width: clamp(220px, calc((100% - 36px) / 4), 286px) !important;
+  flex: 0 0 clamp(220px, calc((100% - 36px) / 4), 286px) !important;
+}
+.ly-home .ly-showcase-grid > section:nth-child(2) .flex.gap-3 > a {
+  width: clamp(220px, calc((100% - 36px) / 4), 286px) !important;
+  min-width: clamp(220px, calc((100% - 36px) / 4), 286px) !important;
+  max-width: clamp(220px, calc((100% - 36px) / 4), 286px) !important;
+  flex: 0 0 clamp(220px, calc((100% - 36px) / 4), 286px) !important;
+}
+.ly-home .ly-showcase-grid > section:first-child .flex.gap-3 > div.flex.shrink-0 > a > div:first-child {
+  aspect-ratio: 1.55 / 1 !important;
+}
+.ly-home .ly-showcase-grid > section:first-child .flex.gap-3 > div.flex.shrink-0 > a > div:last-child {
+  padding: .9rem 1rem 1rem !important;
+}
+.ly-home .ly-showcase-grid > section:first-child .flex.gap-3 > div.flex.shrink-0 > a p:first-child {
+  font-size: 1rem !important;
+}
+.ly-home .ly-showcase-grid .ly-home-side-promos {
+  align-self: start !important;
+  padding-top: .75rem !important;
+  gap: .8rem !important;
+}
+.ly-home .ly-showcase-grid .ly-side-promo {
+  aspect-ratio: 1.62 / 1 !important;
+}
+.ly-home .ly-open-now {
+  margin-top: .15rem !important;
+  padding-top: .55rem !important;
+}
+.ly-home .ly-open-now > div.flex.gap-3 > div {
+  width: clamp(220px, calc((100% - 36px) / 4), 270px) !important;
+  min-width: clamp(220px, calc((100% - 36px) / 4), 270px) !important;
+  flex: 0 0 clamp(220px, calc((100% - 36px) / 4), 270px) !important;
+}
+.ly-home .ly-essential {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+.ly-home .ly-essential > div:first-child {
+  align-items: end !important;
+  gap: 1rem !important;
+}
+.ly-home .ly-essential [role="group"] {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: .5rem !important;
+  padding: .35rem !important;
+  border: 1px solid #e4eaf0 !important;
+  border-radius: 999px !important;
+  background: #fff !important;
+  box-shadow: 0 4px 14px rgba(20,43,64,.06) !important;
+}
+.ly-home .ly-essential [role="group"] button {
+  min-height: 38px !important;
+  padding: .55rem 1rem !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: #536579 !important;
+  font-size: .78rem !important;
+  font-weight: 750 !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+  transition: background .18s ease, color .18s ease, transform .18s ease !important;
+}
+.ly-home .ly-essential [role="group"] button[aria-pressed="true"] {
+  background: #17364b !important;
+  color: #fff !important;
+  box-shadow: 0 3px 9px rgba(23,54,75,.2) !important;
+}
+.ly-home .ly-essential [role="group"] button:hover {
+  transform: translateY(-1px) !important;
+  background: #edf4f6 !important;
+  color: #17364b !important;
+}
+.ly-home .ly-essential [role="group"] button[aria-pressed="true"]:hover {
+  background: #214b63 !important;
+  color: #fff !important;
+}
+.ly-home .ly-essential-card {
+  width: 270px !important;
+  min-width: 270px !important;
+  border-radius: 18px !important;
+  border: 1px solid #e5ebef !important;
+  box-shadow: 0 5px 18px rgba(20,43,64,.07) !important;
+}
+.ly-home .ly-essential-card > div:first-child {
+  height: 148px !important;
+}
+.ly-home .ly-essential-card > div:last-child {
+  padding: 1rem !important;
+}
+.ly-home .ly-essential-card > div:last-child h3 {
+  font-size: 1rem !important;
+}
+.ly-home .ly-essential-card > div:last-child > div {
+  grid-template-columns: 1fr 1fr !important;
+  gap: .5rem !important;
+  margin-top: .85rem !important;
+}
+.ly-home .ly-essential-card a {
+  display: inline-flex !important;
+  min-height: 40px !important;
+  height: 40px !important;
+  padding: .5rem .65rem !important;
+  border-radius: 10px !important;
+  font-size: .72rem !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+.ly-home .ly-essential-card a:first-child {
+  background: #173f55 !important;
+  color: #fff !important;
+}
+.ly-home .ly-essential-card a:last-child {
+  background: #f4f7f9 !important;
+  border: 1px solid #dfe7ec !important;
+  color: #31566b !important;
+}
+.ly-home .ly-essential-card a:hover {
+  transform: translateY(-1px) !important;
+}
+.ly-home .ly-category-marquee {
+  width: 100% !important;
+}
+.ly-home .ly-category-track {
+  gap: .75rem !important;
+}
+@media (max-width: 1100px) {
+  .ly-home .ly-showcase-grid > section:first-child .flex.gap-3 > div.flex.shrink-0 > a,
+  .ly-home .ly-showcase-grid > section:nth-child(2) .flex.gap-3 > a {
+    width: 260px !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
+    flex-basis: 260px !important;
+  }
+  .ly-home .ly-essential > div:first-child {
+    align-items: flex-start !important;
+  }
+}
+@media (max-width: 640px) {
+  .ly-home .ly-essential [role="group"] {
+    width: 100% !important;
+    border-radius: 16px !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+  }
+  .ly-home .ly-essential [role="group"] button {
+    flex: 0 0 auto !important;
+  }
+  .ly-home .ly-essential-card {
+    width: 248px !important;
+    min-width: 248px !important;
+  }
+}
