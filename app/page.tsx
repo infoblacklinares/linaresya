@@ -834,34 +834,39 @@ export default async function Home() {
         </Link>
       </div>
 
-      {/* Lo más visto — señal social */}
+      {/* Lo más visto — tarjetas amplias y legibles */}
       {masVistos.length > 0 && (
-        <section className="mt-10 border-t border-[#E8E4DE] pt-8 px-4">
-          <div className="mb-4">
-            <h2 className="text-xl font-black tracking-tight text-[#1A1410]">🔥 Lo más visto</h2>
-            <p className="text-xs text-[#8E8279]">Los negocios que más miran los vecinos esta semana</p>
+        <section className="mt-12 border-t border-[#E8E4DE] pt-9 px-4 sm:px-6 lg:px-8">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1A1410]">🔥 Lo más visto</h2>
+              <p className="mt-1 text-base sm:text-lg text-[#64748b]">Los negocios que más miran los vecinos esta semana</p>
+            </div>
+            <Link href="/buscar" className="hidden sm:inline-flex shrink-0 items-center gap-2 text-base font-bold text-[#2B6E80] hover:underline">
+              Explorar negocios <NudgeArrow />
+            </Link>
           </div>
-          <div className="space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {masVistos.map((n, i) => {
               const url = n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#";
               const vistas = vistasPorNegocio.get(n.id) ?? 0;
               return (
                 <AnimatedCard key={n.id} index={i}>
-                <Link href={url} className="flex items-center gap-3 rounded-2xl bg-white border border-[#F0EDE8] shadow-linares-sm p-3 hover:shadow-linares transition active:scale-[0.99]">
-                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-black ${i === 0 ? "bg-[#F4B860] text-[#1A1410]" : "bg-[#F0EDE8] text-[#8E8279]"}`}>
+                <Link href={url} className="group flex min-h-[116px] sm:min-h-[132px] items-center gap-4 sm:gap-5 rounded-3xl bg-white border border-[#E5E7EB] shadow-[0_3px_14px_rgba(15,23,42,0.07)] px-4 py-5 sm:px-6 sm:py-6 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(15,23,42,0.12)] transition-all">
+                  <span className={`flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-full text-xl sm:text-2xl font-extrabold ${i === 0 ? "bg-[#F4B860] text-[#1A1410]" : "bg-[#F1F5F9] text-[#64748b]"}`}>
                     {i + 1}
                   </span>
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-[#F0EDE8] flex items-center justify-center text-xl">
+                  <div className="relative h-16 w-16 sm:h-[76px] sm:w-[76px] shrink-0 overflow-hidden rounded-2xl bg-[#F0EDE8] flex items-center justify-center text-3xl sm:text-4xl">
                     {n.foto_portada
                       // eslint-disable-next-line @next/next/no-img-element
                       ? <img loading="lazy" decoding="async" src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
                       : <span>{n.categorias?.emoji ?? "🏪"}</span>}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-bold text-[#1A1410]">{n.nombre}</p>
-                    <p className="truncate text-[10px] text-[#8E8279]">{n.categorias?.emoji} {n.categorias?.nombre}</p>
+                    <p className="truncate text-lg sm:text-xl font-extrabold text-[#1A1410] group-hover:text-[#2B6E80]">{n.nombre}</p>
+                    <p className="mt-1 truncate text-sm sm:text-base text-[#64748b]">{n.categorias?.emoji} {n.categorias?.nombre}</p>
                   </div>
-                  <span className="shrink-0 text-[10px] font-bold text-[#C05A46]">
+                  <span className="shrink-0 rounded-full bg-[#FFF3EF] px-3 py-2 text-sm sm:text-base font-bold text-[#B84F3B]">
                     👁 {vistas} {vistas === 1 ? "vista" : "vistas"}
                   </span>
                 </Link>
