@@ -831,17 +831,17 @@ export default async function Home() {
 
       {/* Lo más visto — ranking compacto de actividad real de la semana */}
       {masVistos.length > 0 && (
-        <section className="mt-8 border-t border-[#E8E4DE] pt-6 px-4 lg:px-8">
-          <div className="mb-4 flex items-end justify-between gap-4">
+        <section className="mt-10 border-t border-[#E8E4DE] pt-8 px-4 sm:px-6 lg:px-10">
+          <div className="mb-5 flex items-end justify-between gap-4">
             <div>
-              <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">🔥 Lo más visto</h2>
-              <p className="mt-0.5 text-xs font-medium text-[#8E8279]">Los negocios que más miran los vecinos esta semana</p>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1A1410]">🔥 Lo más visto</h2>
+              <p className="mt-1 text-base sm:text-lg font-medium text-[#59636B]">Los negocios que más miran los vecinos esta semana</p>
             </div>
-            <Link href="/buscar" className="shrink-0 text-[11px] font-bold text-[#2B6E80] hover:text-[#C05A46] transition-colors">
+            <Link href="/buscar" className="shrink-0 text-sm sm:text-base font-bold text-[#2B6E80] hover:text-[#C05A46] transition-colors">
               Explorar negocios <span aria-hidden="true">→</span>
             </Link>
           </div>
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {masVistos.map((n, i) => {
               const url = n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#";
               const vistas = vistasPorNegocio.get(n.id) ?? 0;
@@ -849,22 +849,22 @@ export default async function Home() {
                 <AnimatedCard key={n.id} index={i}>
                   <Link
                     href={url}
-                    className="group flex min-h-[64px] items-center gap-3 rounded-xl border border-[#E9EDF0] bg-white px-3 py-2.5 shadow-[0_2px_10px_rgba(20,40,50,0.045)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#2B6E80]/35 hover:shadow-[0_8px_22px_rgba(20,40,50,0.10)]"
+                    className="group flex min-h-[88px] items-center gap-4 rounded-2xl border border-[#E9EDF0] bg-white px-4 py-4 shadow-[0_2px_10px_rgba(20,40,50,0.045)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#2B6E80]/35 hover:shadow-[0_8px_22px_rgba(20,40,50,0.10)]"
                   >
-                    <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${i === 0 ? "bg-[#F4B860] text-[#1A1410]" : "bg-[#F0F2F4] text-[#7B8790]"}`}>
+                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-extrabold ${i === 0 ? "bg-[#F4B860] text-[#1A1410]" : "bg-[#F0F2F4] text-[#7B8790]"}`}>
                       {i + 1}
                     </span>
-                    <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-xl border border-black/5 bg-[#F3F5F6] flex items-center justify-center text-lg">
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-black/5 bg-[#F3F5F6] flex items-center justify-center text-2xl">
                       {n.foto_portada
                         // eslint-disable-next-line @next/next/no-img-element
                         ? <img loading="lazy" decoding="async" src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110" />
                         : <span>{n.categorias?.emoji ?? "🏪"}</span>}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-[13px] font-extrabold leading-tight text-[#17232B] group-hover:text-[#2B6E80] transition-colors">{n.nombre}</p>
-                      <p className="mt-0.5 truncate text-[10px] font-medium text-[#87919A]">{n.categorias?.emoji} {n.categorias?.nombre}</p>
+                      <p className="truncate text-base sm:text-lg font-extrabold leading-snug text-[#17232B] group-hover:text-[#2B6E80] transition-colors">{n.nombre}</p>
+                      <p className="mt-1 truncate text-sm font-medium text-[#66727B]">{n.categorias?.emoji} {n.categorias?.nombre}</p>
                     </div>
-                    <span className="shrink-0 rounded-full bg-[#FFF5F1] px-2 py-1 text-[9px] font-bold text-[#C05A46]">
+                    <span className="shrink-0 rounded-full bg-[#FFF5F1] px-3 py-2 text-xs sm:text-sm font-bold text-[#A94432]">
                       <span aria-hidden="true">↗</span> {vistas} {vistas === 1 ? "vista" : "vistas"}
                     </span>
                   </Link>
@@ -877,34 +877,34 @@ export default async function Home() {
 
       {/* Reseñas recientes — prueba social */}
       {resenasRecientes.length > 0 && (
-        <section className="mt-10 border-t border-[#E8E4DE] pt-8 px-4">
+        <section className="mt-12 border-t border-[#E8E4DE] pt-8 px-4 sm:px-6 lg:px-10">
           <div className="mb-4">
-            <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#8E8279]">Confianza local</span>
-            <h2 className="mt-1 text-xl font-black tracking-tight text-[#1A1410]">Lo que dicen los vecinos</h2>
-            <p className="text-xs text-[#8E8279]">Reseñas reales de clientes de Linares</p>
+            <span className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#6B625C]">Confianza local</span>
+            <h2 className="mt-1 text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1A1410]">Lo que dicen los vecinos</h2>
+            <p className="mt-1 text-base sm:text-lg text-[#59636B]">Reseñas reales de clientes de Linares</p>
           </div>
           <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
             {resenasRecientes.map((r, i) => {
               const fichaUrl = r.categoriaSlug && r.negocioSlug ? `/${r.categoriaSlug}/${r.negocioSlug}` : null;
               return (
                 <AnimatedCard key={r.id} index={i}>
-                <div className="rounded-2xl bg-white shadow-linares-sm p-4">
+                <div className="rounded-2xl bg-white shadow-linares-sm p-5 sm:p-6">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div className="min-w-0">
-                      <p className="text-sm font-bold text-[#1A1410] truncate">{r.autor_nombre}</p>
+                      <p className="text-base sm:text-lg font-extrabold text-[#1A1410] truncate">{r.autor_nombre}</p>
                       {fichaUrl ? (
-                        <Link href={fichaUrl} className="text-[11px] text-[#2B6E80] font-medium hover:underline truncate block">
+                        <Link href={fichaUrl} className="text-sm text-[#2B6E80] font-semibold hover:underline truncate block">
                           {r.categoriaEmoji} {r.negocioNombre}
                         </Link>
                       ) : (
-                        <p className="text-[11px] text-[#8E8279] truncate">{r.categoriaEmoji} {r.negocioNombre}</p>
+                        <p className="text-sm text-[#59636B] truncate">{r.categoriaEmoji} {r.negocioNombre}</p>
                       )}
                     </div>
-                    <span className="shrink-0 text-amber-500 font-bold text-sm tracking-tight">
+                    <span className="shrink-0 text-amber-500 font-extrabold text-lg tracking-tight">
                       {"★".repeat(Math.min(5, r.estrellas))}<span className="text-[#E8E4DE]">{"★".repeat(5 - Math.min(5, r.estrellas))}</span>
                     </span>
                   </div>
-                  <p className="text-[13px] text-[#475569] leading-relaxed line-clamp-3 italic">
+                  <p className="mt-2 text-base text-[#334155] leading-relaxed line-clamp-3 italic">
                     &ldquo;{r.comentario}&rdquo;
                   </p>
                 </div>
@@ -912,7 +912,7 @@ export default async function Home() {
               );
             })}
           </div>
-          <Link href="/buscar" className="mt-3 block text-center text-xs font-semibold text-[#2B6E80]">
+          <Link href="/buscar" className="mt-4 block text-center text-base font-bold text-[#2B6E80]">
             Ver todos los negocios <NudgeArrow />
           </Link>
         </section>
