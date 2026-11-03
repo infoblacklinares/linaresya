@@ -78,7 +78,7 @@ export default async function PublicarPage({
   return (
     <main className="ly-publish-page min-h-screen w-full bg-[#F7F5F1] text-[#102B35]">
       <header className="sticky top-0 z-40 border-b border-[#E8E6E1] bg-white/95 backdrop-blur-xl">
-        <div className="mx-auto flex h-[70px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto flex h-[70px] max-w-none w-full items-center justify-between px-5 sm:px-8 lg:px-12">
           <Link href="/" aria-label="LinaresYa, inicio" className="text-[27px] font-black tracking-tight text-[#073C45]">
             <span className="mr-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#F34E50] text-lg text-white">⌖</span>
             Linares<span className="text-[#F34E50]">Ya</span>
@@ -103,7 +103,7 @@ export default async function PublicarPage({
             "linear-gradient(90deg, rgba(3,48,56,.97) 0%, rgba(3,48,56,.88) 42%, rgba(3,48,56,.22) 100%), url('/hero-plaza-kiosco.jpg')",
         }}
       >
-        <div className="mx-auto flex min-h-[250px] max-w-[1440px] items-center px-5 py-10 sm:min-h-[285px] sm:px-8 lg:min-h-[320px] lg:px-16">
+        <div className="mx-auto flex min-h-[250px] max-w-none w-full items-center px-5 py-10 sm:min-h-[285px] sm:px-8 lg:min-h-[320px] lg:px-16">
           <div className="max-w-[690px] text-white">
             <span className="mb-4 block h-1.5 w-14 rounded-full bg-[#F34E50]" />
             <p className="mb-2 text-[11px] font-extrabold uppercase tracking-[.22em] text-[#FFB7A8]">Impulsa lo local</p>
@@ -129,7 +129,7 @@ export default async function PublicarPage({
         </div>
       </section>
 
-      <div className="mx-auto grid max-w-[1320px] grid-cols-1 items-start gap-6 px-4 pb-12 pt-7 sm:px-7 lg:grid-cols-[minmax(0,1.7fr)_minmax(300px,.85fr)] lg:gap-7 lg:px-10 lg:pt-8">
+      <div className="mx-auto grid w-full max-w-none grid-cols-1 items-start gap-6 px-4 pb-12 pt-7 sm:px-8 lg:grid-cols-[minmax(0,1.8fr)_minmax(320px,.9fr)] lg:gap-8 lg:px-12 xl:px-16 lg:pt-8">
         <section className="min-w-0">
           {error && (
             <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
