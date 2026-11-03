@@ -829,37 +829,45 @@ export default async function Home() {
         </Link>
       </div>
 
-      {/* Lo más visto — señal social */}
+      {/* Lo más visto — ranking compacto de actividad real de la semana */}
       {masVistos.length > 0 && (
-        <section className="mt-10 border-t border-[#E8E4DE] pt-8 px-4">
-          <div className="mb-4">
-            <h2 className="text-xl font-black tracking-tight text-[#1A1410]">🔥 Lo más visto</h2>
-            <p className="text-xs text-[#8E8279]">Los negocios que más miran los vecinos esta semana</p>
+        <section className="mt-8 border-t border-[#E8E4DE] pt-6 px-4 lg:px-8">
+          <div className="mb-4 flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-extrabold tracking-tight text-[#1A1410]">🔥 Lo más visto</h2>
+              <p className="mt-0.5 text-xs font-medium text-[#8E8279]">Los negocios que más miran los vecinos esta semana</p>
+            </div>
+            <Link href="/buscar" className="shrink-0 text-[11px] font-bold text-[#2B6E80] hover:text-[#C05A46] transition-colors">
+              Explorar negocios <span aria-hidden="true">→</span>
+            </Link>
           </div>
-          <div className="space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {masVistos.map((n, i) => {
               const url = n.categorias ? `/${n.categorias.slug}/${n.slug}` : "#";
               const vistas = vistasPorNegocio.get(n.id) ?? 0;
               return (
                 <AnimatedCard key={n.id} index={i}>
-                <Link href={url} className="flex items-center gap-3 rounded-2xl bg-white border border-[#F0EDE8] shadow-linares-sm p-3 hover:shadow-linares transition active:scale-[0.99]">
-                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-black ${i === 0 ? "bg-[#F4B860] text-[#1A1410]" : "bg-[#F0EDE8] text-[#8E8279]"}`}>
-                    {i + 1}
-                  </span>
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-[#F0EDE8] flex items-center justify-center text-xl">
-                    {n.foto_portada
-                      // eslint-disable-next-line @next/next/no-img-element
-                      ? <img loading="lazy" decoding="async" src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover" />
-                      : <span>{n.categorias?.emoji ?? "🏪"}</span>}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-bold text-[#1A1410]">{n.nombre}</p>
-                    <p className="truncate text-[10px] text-[#8E8279]">{n.categorias?.emoji} {n.categorias?.nombre}</p>
-                  </div>
-                  <span className="shrink-0 text-[10px] font-bold text-[#C05A46]">
-                    👁 {vistas} {vistas === 1 ? "vista" : "vistas"}
-                  </span>
-                </Link>
+                  <Link
+                    href={url}
+                    className="group flex min-h-[64px] items-center gap-3 rounded-xl border border-[#E9EDF0] bg-white px-3 py-2.5 shadow-[0_2px_10px_rgba(20,40,50,0.045)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#2B6E80]/35 hover:shadow-[0_8px_22px_rgba(20,40,50,0.10)]"
+                  >
+                    <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${i === 0 ? "bg-[#F4B860] text-[#1A1410]" : "bg-[#F0F2F4] text-[#7B8790]"}`}>
+                      {i + 1}
+                    </span>
+                    <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-xl border border-black/5 bg-[#F3F5F6] flex items-center justify-center text-lg">
+                      {n.foto_portada
+                        // eslint-disable-next-line @next/next/no-img-element
+                        ? <img loading="lazy" decoding="async" src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110" />
+                        : <span>{n.categorias?.emoji ?? "🏪"}</span>}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[13px] font-extrabold leading-tight text-[#17232B] group-hover:text-[#2B6E80] transition-colors">{n.nombre}</p>
+                      <p className="mt-0.5 truncate text-[10px] font-medium text-[#87919A]">{n.categorias?.emoji} {n.categorias?.nombre}</p>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-[#FFF5F1] px-2 py-1 text-[9px] font-bold text-[#C05A46]">
+                      <span aria-hidden="true">↗</span> {vistas} {vistas === 1 ? "vista" : "vistas"}
+                    </span>
+                  </Link>
                 </AnimatedCard>
               );
             })}
