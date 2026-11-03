@@ -1154,3 +1154,52 @@
 .ly-publish-page h3 {
   letter-spacing: -0.035em;
 }
+
+
+/* LY-PUBLISH-TYPO-02 — sans-serif real, pesos visibles y jerarquia legible.
+   Scope exclusivo de /publicar: no altera tipografias del resto del sitio. */
+.ly-publish-page,
+.ly-publish-page * {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.ly-publish-page {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+}
+.ly-publish-page h1,
+.ly-publish-page h2,
+.ly-publish-page h3,
+.ly-publish-page h4 {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.035em !important;
+}
+.ly-publish-page h1 {
+  font-size: clamp(2.35rem, 4vw, 3.35rem) !important;
+  line-height: 1.04 !important;
+}
+.ly-publish-page h2 { font-size: clamp(1.35rem, 2vw, 1.75rem) !important; }
+.ly-publish-page label,
+.ly-publish-page button,
+.ly-publish-page a,
+.ly-publish-page strong,
+.ly-publish-page b {
+  font-weight: 700;
+}
+.ly-publish-page input,
+.ly-publish-page select,
+.ly-publish-page textarea {
+  font-size: 1rem !important;
+  font-weight: 500;
+}
+.ly-publish-page p {
+  line-height: 1.55;
+}
+@media (max-width: 640px) {
+  .ly-publish-page h1 { font-size: 2.15rem !important; }
+  .ly-publish-page .input-ue { min-height: 52px; }
+}
