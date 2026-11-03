@@ -1203,3 +1203,52 @@
   .ly-publish-page h1 { font-size: 2.15rem !important; }
   .ly-publish-page .input-ue { min-height: 52px; }
 }
+
+
+/* LY-HOME-REDESIGN-01 — jerarquía tipográfica y ritmo visual de portada */
+@layer base {
+  html, body {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+}
+.ly-home {
+  width: 100%;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+.ly-home h1,
+.ly-home h2,
+.ly-home h3,
+.ly-home h4,
+.ly-home strong {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-weight: 800;
+}
+.ly-home h2 {
+  font-size: clamp(1.45rem, 2vw, 1.9rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -.04em !important;
+}
+.ly-home p,
+.ly-home a,
+.ly-home button,
+.ly-home span {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.ly-home section > div > div > p,
+.ly-home section p.text-xs,
+.ly-home section p.text-sm {
+  line-height: 1.45;
+}
+.ly-home .font-black { font-weight: 900 !important; }
+.ly-home .font-extrabold { font-weight: 800 !important; }
+.ly-home .font-bold { font-weight: 700 !important; }
+.ly-home .font-semibold { font-weight: 600 !important; }
+@media (min-width: 1024px) {
+  .ly-home > div.mx-auto {
+    max-width: none !important;
+    padding-left: clamp(1.5rem, 3vw, 3.5rem) !important;
+    padding-right: clamp(1.5rem, 3vw, 3.5rem) !important;
+  }
+}
