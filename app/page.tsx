@@ -910,19 +910,44 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Newsletter — cierre de la portada */}
-      <section className="mt-10 border-t border-[#E8E4DE] bg-[#F7F5F1] px-4 pt-8 pb-8">
-        <FadeInSection className="rounded-3xl bg-gradient-to-br from-[#1f5268] to-[#2B6E80] p-5 lg:max-w-2xl lg:mx-auto lg:p-8">
-          <div className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-white/90">
-            📬 Novedades de Linares
+      {/* Newsletter — diseño aprobado: ancho completo, formulario, beneficios y foto local */}
+      <section className="relative left-1/2 mt-12 w-screen max-w-none -translate-x-1/2 overflow-hidden border-y border-[#DCE5E7] bg-[#F1F5F6] px-[clamp(12px,2.5vw,40px)] py-5 sm:py-7">
+        <FadeInSection className="relative grid w-full overflow-hidden rounded-[1.75rem] border border-white/70 bg-[#063F49] shadow-[0_22px_55px_rgba(10,48,58,.22)] lg:min-h-[470px] lg:grid-cols-[minmax(0,1.18fr)_minmax(250px,.72fr)_minmax(320px,.9fr)]">
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_18%_20%,rgba(18,112,126,.7),transparent_48%),linear-gradient(120deg,#003B45_0%,#075563_58%,#0C6470_100%)]" />
+          <div className="relative z-10 flex min-w-0 flex-col justify-center px-6 py-9 sm:px-9 lg:px-10 lg:py-12">
+            <div className="mb-6 inline-flex w-fit items-center gap-3 rounded-full border border-white/25 bg-white/10 px-5 py-3 text-base font-extrabold text-white shadow-sm">
+              <span aria-hidden="true" className="text-2xl">✉</span> Novedades de Linares
+            </div>
+            <span aria-hidden="true" className="mb-2 h-1.5 w-16 rounded-full bg-[#FF5B62]" />
+            <h2 className="max-w-[720px] text-[2.15rem] font-black leading-[1.04] tracking-tight text-white sm:text-5xl lg:text-[3.35rem]">
+              Entérate primero de ofertas y negocios nuevos en <span className="text-[#FF5B62]">Linares</span>
+            </h2>
+            <p className="mt-5 max-w-[650px] text-lg font-medium leading-relaxed text-white/90 sm:text-xl">
+              Un resumen semanal con lo mejor de Linares, directo a tu email.
+            </p>
+            <div className="mt-7 w-full max-w-[780px]"><NewsletterForm /></div>
           </div>
-          <h2 className="mt-2 text-lg font-extrabold text-white leading-tight">
-            Enterate primero de<br />ofertas y negocios nuevos
-          </h2>
-          <p className="mt-1 mb-4 text-sm text-white/70">
-            Un resumen semanal de lo mejor en Linares, directo a tu email.
-          </p>
-          <NewsletterForm />
+          <div className="relative z-10 flex flex-col justify-center gap-4 px-6 pb-8 sm:px-9 lg:px-5 lg:py-10">
+            <div className="flex min-h-[96px] items-center gap-4 rounded-3xl border border-white/30 bg-white/10 px-5 py-4 text-white shadow-lg backdrop-blur-md">
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/10 text-3xl" aria-hidden="true">♧</span>
+              <span className="text-lg font-extrabold leading-snug sm:text-xl">Ofertas y promociones locales</span>
+            </div>
+            <div className="flex min-h-[96px] items-center gap-4 rounded-3xl border border-white/30 bg-white/10 px-5 py-4 text-white shadow-lg backdrop-blur-md">
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/10 text-3xl" aria-hidden="true">🏪</span>
+              <span className="text-lg font-extrabold leading-snug sm:text-xl">Nuevos negocios en Linares</span>
+            </div>
+            <div className="flex min-h-[96px] items-center gap-4 rounded-3xl border border-white/30 bg-white/10 px-5 py-4 text-white shadow-lg backdrop-blur-md">
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/10 text-3xl" aria-hidden="true">▦</span>
+              <span className="text-lg font-extrabold leading-snug sm:text-xl">Eventos y novedades de la ciudad</span>
+            </div>
+          </div>
+          <div className="relative min-h-[300px] overflow-hidden sm:min-h-[380px] lg:min-h-full">
+            <div aria-hidden="true" className="absolute inset-0 bg-[url('/esencial/Plaza_de_Armas.jpg')] bg-cover bg-[center_48%]" />
+            <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#003B45]/45 via-transparent to-[#003B45]/10 lg:bg-gradient-to-r lg:from-[#075563]/20 lg:via-transparent lg:to-transparent" />
+            <div className="absolute bottom-5 right-5 rounded-2xl border border-white/80 bg-white px-5 py-3 text-2xl font-black tracking-tight text-[#06434D] shadow-xl sm:bottom-7 sm:right-7 sm:text-3xl">
+              📍 Linares<span className="text-[#F04455]">Ya</span>
+            </div>
+          </div>
         </FadeInSection>
       </section>
 
