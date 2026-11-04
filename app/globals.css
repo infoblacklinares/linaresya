@@ -1425,3 +1425,30 @@
     padding: .8rem .45rem !important;
   }
 }
+
+
+/* LY-MOBILE-03 — categorías compactas: una sola fila dentro del hero */
+@media (max-width: 639px) {
+  .ly-mobile-hero-pills {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: .5rem !important;
+    padding: 0 0 .35rem !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ly-mobile-hero-pills::-webkit-scrollbar {
+    display: none;
+  }
+  .ly-mobile-hero-pills > a {
+    flex: 0 0 auto;
+    min-height: 38px;
+    padding: .5rem .75rem !important;
+    font-size: .8rem !important;
+    white-space: nowrap;
+  }
+}
