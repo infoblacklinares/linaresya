@@ -40,9 +40,9 @@ export default function Hero({ totalNegocios = 0, abiertosAhora = 0, verificados
               <SearchAutocomplete variant="hero" />
             </div>
 
-            <div className="ly-mobile-hero-pills mt-4 flex gap-2.5 overflow-x-auto pb-2 sm:flex-wrap sm:overflow-visible">
+            <div className="ly-mobile-hero-pills mt-4 flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden pb-1 sm:flex-wrap sm:overflow-visible">
               {CATEGORIAS.map((cat) => (
-                <a key={cat.label} href={cat.href} className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-white/30 bg-[#073b43]/65 px-4 py-2.5 text-sm font-bold text-white shadow-sm backdrop-blur-md transition hover:bg-white/25 sm:min-h-0">
+                <a key={cat.label} href={cat.href} className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full border border-white/30 bg-[#073b43]/65 px-3 py-2 text-xs font-bold text-white shadow-sm backdrop-blur-md transition hover:bg-white/25 sm:min-h-0 sm:px-4 sm:text-sm">
                   <span aria-hidden="true">{cat.icon}</span>{cat.label}
                 </a>
               ))}
@@ -66,20 +66,6 @@ export default function Hero({ totalNegocios = 0, abiertosAhora = 0, verificados
         </div>
       </section>
 
-      <section className="ly-mobile-category-section relative z-10 mx-auto -mt-1 w-full max-w-[1600px] px-4 py-5 sm:px-8 lg:px-14 xl:px-20">
-        <div className="rounded-3xl border border-slate-100 bg-white/95 px-3 py-3 shadow-[0_12px_32px_rgba(15,23,42,.10)] backdrop-blur sm:px-5">
-          <div className="ly-category-marquee overflow-x-auto">
-            <div className="ly-category-track flex w-max gap-3 pb-1 sm:gap-3">
-              {CATEGORIAS.map((cat) => (
-                <a key={cat.label} href={cat.href} className="group flex w-[124px] shrink-0 snap-start flex-col items-center rounded-2xl border border-slate-100 bg-white px-3 py-4 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md sm:w-[132px] sm:py-3">
-                  <span className={`flex h-14 w-14 items-center justify-center rounded-2xl text-3xl transition group-hover:scale-105 sm:h-12 sm:w-12 sm:text-2xl ${cat.tone}`} aria-hidden="true">{cat.icon}</span>
-                  <span className="mt-3 text-base font-extrabold leading-tight text-slate-800 sm:mt-2.5 sm:text-sm">{cat.label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
