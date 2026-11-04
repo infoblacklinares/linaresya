@@ -1252,3 +1252,74 @@
     padding-right: clamp(1.5rem, 3vw, 3.5rem) !important;
   }
 }
+
+
+/* LY-MOBILE-01 — portada móvil: legibilidad, fotografía y carruseles utilizables */
+@media (max-width: 639px) {
+  .ly-mobile-hero {
+    min-height: 0;
+    isolation: isolate;
+  }
+  .ly-mobile-hero > div[aria-hidden="true"].bg-cover {
+    background-position: 58% center;
+  }
+  .ly-mobile-hero h1 {
+    color: #fff !important;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, .22);
+  }
+  .ly-mobile-hero p {
+    color: #fff !important;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, .25);
+  }
+  .ly-mobile-hero-pills {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ly-mobile-hero-pills::-webkit-scrollbar,
+  .ly-mobile-category-section .ly-category-marquee::-webkit-scrollbar {
+    display: none;
+  }
+  .ly-mobile-hero-pills > a {
+    scroll-snap-align: start;
+  }
+  .ly-mobile-hero #main-search {
+    min-height: 48px;
+    font-size: 16px;
+  }
+  .ly-mobile-hero button {
+    min-height: 48px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 14px;
+  }
+  .ly-mobile-category-section {
+    padding-top: 1rem;
+    padding-bottom: 1.25rem;
+  }
+  .ly-mobile-category-section > div {
+    border-radius: 1.35rem;
+    padding: .75rem;
+  }
+  .ly-mobile-category-section .ly-category-marquee {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ly-mobile-category-section .ly-category-track {
+    animation: none !important;
+    transform: none !important;
+    width: max-content;
+    gap: .75rem;
+    padding: .15rem .1rem .35rem;
+  }
+  .ly-mobile-category-section .ly-category-track > a {
+    width: 124px;
+    min-height: 132px;
+    scroll-snap-align: start;
+    justify-content: center;
+  }
+}
