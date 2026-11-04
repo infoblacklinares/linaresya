@@ -1527,3 +1527,10 @@
     font-size: .82rem !important;
   }
 }
+
+
+/* LY-MOBILE-04 — buscador compacto, conservando controles cómodos al tacto. */
+@media (max-width: 639px) {
+  .ly-mobile-hero #main-search { min-height: 38px !important; }
+  .ly-mobile-hero button { min-height: 38px !important; padding: .45rem .8rem !important; }
+}
