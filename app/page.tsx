@@ -588,7 +588,7 @@ export default async function Home() {
                       <span className="absolute left-3 top-3 max-w-[72%] truncate rounded-full bg-[#176E80]/95 px-3 py-1.5 text-xs font-extrabold text-white shadow-lg backdrop-blur-sm">
                         {d.categorias?.nombre ?? "Negocio local"}
                       </span>
-                      <div className="absolute right-3 top-3 rounded-full bg-white shadow-lg" onClick={(event) => event.preventDefault()}>
+                      <div className="absolute right-3 top-3 rounded-full bg-white shadow-lg">
                         <FavoritoButton negocioId={d.id} variant="icon" />
                       </div>
                       {esPremium(d) && (
