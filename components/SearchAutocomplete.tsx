@@ -133,7 +133,7 @@ export default function SearchAutocomplete({ variant = "default" }: { variant?: 
   return (
     <div ref={boxRef} className="relative z-50">
       <label htmlFor="main-search" className="sr-only">Buscar negocios, servicios o rubros en Linares</label>
-      <div className={`flex items-center gap-2 rounded-xl p-1 pl-3 ${variant === "hero" ? "border border-slate-200 bg-white shadow-sm sm:gap-3 sm:p-2 sm:pl-4" : "border border-white/20 bg-white/10 backdrop-blur-md"}`}>
+      <div className={`flex items-center gap-2 rounded-xl p-1 pl-3 ${variant === "hero" ? "border border-slate-200 bg-white shadow-sm max-[639px]:gap-1.5 max-[639px]:p-0.5 max-[639px]:pl-2.5 sm:gap-3 sm:p-2 sm:pl-4" : "border border-white/20 bg-white/10 backdrop-blur-md"}`}>
         <SearchIcon className={`shrink-0 ${variant === "hero" ? "text-slate-500" : "text-white/50"}`} />
         <input
           id="main-search"
