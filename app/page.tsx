@@ -921,7 +921,7 @@ export default async function Home() {
       )}
 
       {/* Newsletter — banner protagonista a todo el ancho, según diseño aprobado */}
-      <section className="relative isolate mt-14 w-full overflow-hidden border-y border-[#DCE5E7] bg-[#F1F5F6] px-3 py-5 sm:px-5 sm:py-7 lg:px-7">
+      <section className="relative left-1/2 isolate mt-14 w-screen max-w-none -translate-x-1/2 overflow-hidden border-y border-[#DCE5E7] bg-[#F1F5F6] px-[clamp(12px,2.5vw,40px)] py-5 sm:py-7">
         <FadeInSection className="relative grid w-full overflow-hidden rounded-[1.75rem] border border-white/70 bg-[#063F49] shadow-[0_22px_55px_rgba(10,48,58,.22)] lg:min-h-[470px] lg:grid-cols-[minmax(0,1.18fr)_minmax(250px,.72fr)_minmax(320px,.9fr)]">
           <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_18%_20%,rgba(18,112,126,.7),transparent_48%),linear-gradient(120deg,#003B45_0%,#075563_58%,#0C6470_100%)]" />
 
