@@ -1285,11 +1285,13 @@
     scroll-snap-align: start;
   }
   .ly-mobile-hero #main-search {
-    min-height: 48px;
+    min-height: 42px;
     font-size: 16px;
   }
   .ly-mobile-hero button {
-    min-height: 48px;
+    min-height: 42px;
+    padding-top: .55rem;
+    padding-bottom: .55rem;
     padding-left: 1rem;
     padding-right: 1rem;
     font-size: 14px;
