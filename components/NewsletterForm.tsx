@@ -19,7 +19,7 @@ export default function NewsletterForm() {
 
   if (state.ok) {
     return (
-      <div className="flex items-center gap-2 rounded-2xl bg-[#3D5A45]/10 border border-[#3D5A45]/20 px-4 py-3">
+      <div className="flex items-center gap-3 rounded-2xl bg-white/95 border border-white/70 px-5 py-5 shadow-lg">
         <span className="text-lg">✅</span>
         <p className="text-sm font-semibold text-[#3D5A45]">
           ¡Te sumaste! Te avisamos cuando haya novedades.
@@ -29,26 +29,26 @@ export default function NewsletterForm() {
   }
 
   return (
-    <form action={action} className="space-y-2">
+    <form action={action} className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
       <input
         ref={inputRef}
         type="email"
         name="email"
         required
         placeholder="tu@email.com"
-        className="w-full rounded-xl bg-white/90 border border-white/20 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-white/40 transition placeholder:text-[#8E8279]"
+        className="min-h-[60px] w-full min-w-0 flex-1 rounded-xl border border-[#D7E0E4] bg-white px-5 py-4 text-lg text-[#173A45] outline-none transition placeholder:text-[#718995] focus:border-[#FF5B62] focus:ring-2 focus:ring-[#FF5B62]/30"
       />
       <button
         type="submit"
         disabled={isPending}
-        className="w-full rounded-xl bg-white text-[#2B6E80] text-sm font-extrabold py-3 hover:bg-white/90 disabled:opacity-60 transition active:scale-[0.98]"
+        className="min-h-[60px] shrink-0 rounded-xl bg-[#F04455] px-7 py-4 text-lg font-extrabold text-white shadow-md transition hover:bg-[#D93649] disabled:opacity-60 active:scale-[0.98] sm:min-w-[230px]"
       >
         {isPending ? "Enviando…" : "Suscribirme gratis →"}
       </button>
       {state.error && (
         <p className="text-xs text-red-300 px-1">{state.error}</p>
       )}
-      <p className="text-[11px] text-white/50 px-1">
+      <p className="basis-full px-1 text-sm leading-relaxed text-white/70 sm:text-base">
         Sin spam. Solo novedades de Linares. Al suscribirte aceptas nuestra{" "}
         <Link href="/privacidad" className="underline text-white/70 hover:text-white">
           Política de Privacidad
