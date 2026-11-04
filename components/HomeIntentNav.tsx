@@ -70,13 +70,13 @@ export default function HomeIntentNav() {
 
         <div className="grid grid-cols-2 gap-2.5 sm:gap-5 lg:grid-cols-4">
           {INTENTS.map(({ label, description, href, art }) => (
-            <Link key={href} href={href} className="group flex min-h-[148px] flex-col items-center justify-between rounded-2xl border border-slate-200 bg-white px-2 py-2 text-center shadow-[0_6px_22px_rgba(20,55,70,0.07)] transition duration-200 hover:-translate-y-1 hover:border-[#2B6E80]/40 hover:shadow-[0_14px_30px_rgba(20,55,70,0.12)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2B6E80]/30 sm:min-h-[250px] sm:rounded-3xl sm:px-5 sm:py-5">
-              <span className="flex h-[52px] w-full max-w-[100px] items-center justify-center sm:h-[108px] sm:max-w-[180px]">
+            <Link key={href} href={href} className="group flex min-h-[128px] flex-col items-center justify-between rounded-2xl border border-slate-200 bg-white px-2 py-2 text-center shadow-[0_6px_22px_rgba(20,55,70,0.07)] transition duration-200 hover:-translate-y-1 hover:border-[#2B6E80]/40 hover:shadow-[0_14px_30px_rgba(20,55,70,0.12)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2B6E80]/30 sm:min-h-[250px] sm:rounded-3xl sm:px-5 sm:py-5">
+              <span className="flex h-[44px] w-full max-w-[88px] items-center justify-center sm:h-[108px] sm:max-w-[180px]">
                 <IntentIllustration type={art} />
               </span>
-              <span className="mt-1 block text-[14px] font-extrabold leading-tight text-[#173746] sm:mt-2 sm:text-xl">{label}</span>
-              <span className="mt-0.5 block max-w-[22ch] text-[12px] leading-tight text-slate-700 sm:mt-1 sm:text-base">{description}</span>
-              <span className="mt-2 inline-flex min-h-8 items-center rounded-full bg-[#E8F4F3] px-3 text-[12px] font-bold text-[#176779] transition group-hover:bg-[#2B6E80] group-hover:text-white sm:mt-3 sm:min-h-11 sm:px-4 sm:text-base">Ver opciones →</span>
+              <span className="mt-1 block text-[13px] font-extrabold leading-tight text-[#173746] sm:mt-2 sm:text-xl">{label}</span>
+              <span className="mt-0.5 block max-w-[22ch] text-[11px] leading-tight text-slate-700 sm:mt-1 sm:text-base">{description}</span>
+              <span className="mt-2 inline-flex min-h-7 items-center rounded-full bg-[#E8F4F3] px-3 text-[11px] font-bold text-[#176779] transition group-hover:bg-[#2B6E80] group-hover:text-white sm:mt-3 sm:min-h-11 sm:px-4 sm:text-base">Ver opciones →</span>
             </Link>
           ))}
         </div>
