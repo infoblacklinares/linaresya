@@ -937,11 +937,6 @@ export default async function Home() {
             <div className="mt-7 max-w-[760px]">
               <NewsletterForm />
             </div>
-            <p className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium text-white/75 sm:text-base">
-              <span>🔒 Sin spam. Puedes darte de baja cuando quieras.</span>
-              <span className="hidden text-white/40 sm:inline">|</span>
-              <Link href="/privacidad" className="underline underline-offset-4 hover:text-white">Política de Privacidad</Link>
-            </p>
           </div>
           <div className="relative min-h-[260px] overflow-hidden sm:min-h-[320px] lg:min-h-full">
             <div aria-hidden="true" className="absolute inset-0 bg-[url('/esencial/Plaza_de_Armas.jpg')] bg-cover bg-center" />
