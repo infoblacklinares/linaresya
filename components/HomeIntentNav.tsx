@@ -60,23 +60,23 @@ function IntentIllustration({ type }: { type: (typeof INTENTS)[number]["art"] })
 
 export default function HomeIntentNav() {
   return (
-    <section className="px-4 py-8 sm:px-6 sm:py-10" aria-labelledby="home-intents-title">
+    <section className="px-4 py-7 sm:px-6 sm:py-10" aria-labelledby="home-intents-title">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-5 sm:mb-6">
+        <div className="mb-4 sm:mb-6">
           <p className="mb-1 text-sm font-extrabold uppercase tracking-[0.16em] text-[#2B6E80]">LinaresYa te ayuda</p>
           <h2 id="home-intents-title" className="text-2xl font-extrabold tracking-tight text-[#173746] sm:text-3xl">Encuentra lo que necesitas</h2>
-          <p className="mt-1 text-base text-slate-600 sm:text-lg">Accesos directos para resolverlo más fácil.</p>
+          <p className="mt-1 text-base text-slate-700 sm:text-lg">Accesos directos para resolverlo más fácil.</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
           {INTENTS.map(({ label, description, href, art }) => (
-            <Link key={href} href={href} className="group flex min-h-[220px] flex-col items-center justify-between rounded-3xl border border-slate-200 bg-white px-3 py-4 text-center shadow-[0_6px_22px_rgba(20,55,70,0.07)] transition duration-200 hover:-translate-y-1 hover:border-[#2B6E80]/40 hover:shadow-[0_14px_30px_rgba(20,55,70,0.12)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2B6E80]/30 sm:min-h-[260px] sm:px-5 sm:py-5">
-              <span className="flex h-[92px] w-full max-w-[150px] items-center justify-center sm:h-[116px] sm:max-w-[180px]">
+            <Link key={href} href={href} className="group flex min-h-[205px] flex-col items-center justify-between rounded-3xl border border-slate-200 bg-white px-3 py-3.5 text-center shadow-[0_6px_22px_rgba(20,55,70,0.07)] transition duration-200 hover:-translate-y-1 hover:border-[#2B6E80]/40 hover:shadow-[0_14px_30px_rgba(20,55,70,0.12)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2B6E80]/30 sm:min-h-[250px] sm:px-5 sm:py-5">
+              <span className="flex h-[76px] w-full max-w-[132px] items-center justify-center sm:h-[108px] sm:max-w-[180px]">
                 <IntentIllustration type={art} />
               </span>
-              <span className="mt-2 block text-lg font-extrabold leading-tight text-[#173746] sm:text-xl">{label}</span>
-              <span className="mt-1 block max-w-[22ch] text-sm leading-relaxed text-slate-600 sm:text-base">{description}</span>
-              <span className="mt-3 inline-flex min-h-10 items-center rounded-full bg-[#E8F4F3] px-4 text-sm font-bold text-[#176779] transition group-hover:bg-[#2B6E80] group-hover:text-white sm:text-base">Ver opciones →</span>
+              <span className="mt-2 block text-[17px] font-extrabold leading-tight text-[#173746] sm:text-xl">{label}</span>
+              <span className="mt-1 block max-w-[22ch] text-[15px] leading-snug text-slate-700 sm:text-base">{description}</span>
+              <span className="mt-3 inline-flex min-h-11 items-center rounded-full bg-[#E8F4F3] px-4 text-[15px] font-bold text-[#176779] transition group-hover:bg-[#2B6E80] group-hover:text-white sm:text-base">Ver opciones →</span>
             </Link>
           ))}
         </div>
