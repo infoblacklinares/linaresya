@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Store, Star, MapPin } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import JsonLd from "@/components/JsonLd";
@@ -551,72 +552,75 @@ export default async function Home() {
 
       {/* Bloque editorial principal: destacados + ofertas + vitrinas laterales */}
       <div className="ly-showcase-grid">
-      {/* Destacados — grid 2 columnas */}
+      {/* Negocios destacados — carrusel visual de negocios reales */}
       {destacados.length > 0 && (
-        <section className="pt-8">
-          <div className="flex items-end justify-between px-4 mb-3">
-            <div>
-              <h2 className="text-xl font-black tracking-tight text-[#1A1410]">Negocios destacados</h2>
-              <p className="text-xs text-[#8E8279]">Conoce y apoya los negocios locales de Linares.</p>
+        <section className="ly-featured-section pt-9 pb-3" aria-labelledby="ly-featured-title">
+          <div className="mb-5 flex items-end justify-between gap-3 px-4 sm:px-6">
+            <div className="min-w-0">
+              <div className="mb-1.5 flex items-center gap-2 text-[#2B6E80]">
+                <Store size={21} strokeWidth={2.5} aria-hidden="true" />
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.16em]">Descubre lo local</span>
+              </div>
+              <h2 id="ly-featured-title" className="text-2xl font-black tracking-tight text-[#14283D] sm:text-3xl">Negocios destacados</h2>
+              <p className="mt-1 text-sm text-slate-500 sm:text-base">Conoce y apoya los negocios locales de Linares.</p>
             </div>
-            <Link href="/buscar" className="text-xs font-bold text-[#2B6E80]">Ver todo <NudgeArrow /></Link>
+            <Link href="/buscar" className="mb-1 inline-flex shrink-0 items-center gap-1.5 text-sm font-extrabold text-[#16798A] transition hover:text-[#0B5361]">
+              Ver todo <NudgeArrow />
+            </Link>
           </div>
-          <MarqueeRow>
-            {destacados.map((d, i) => {
-              const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
-              const rating = ratingsMap.get(d.id);
-              const isOpen = estaAbierto(d.id, openIds);
-              return (
-                <Link
-                  key={d.id}
-                  href={url}
-                  className="group block w-[218px] lg:w-[232px] shrink-0 overflow-hidden rounded-2xl bg-white shadow-[0_2px_14px_rgba(0,0,0,0.08)] border border-[#F0EDE8] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
-                >
-                  {/* Imagen */}
-                  <div className={`relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center text-5xl ${catColor(i)}`}>
-                    {d.foto_portada
-                      // eslint-disable-next-line @next/next/no-img-element
-                      ? <img loading="lazy" decoding="async" src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                      : <span className="transition-transform duration-500 group-hover:scale-110">{d.categorias?.emoji ?? "📍"}</span>}
-                    {/* Badge premium sobre imagen */}
-                    {esPremium(d) && (
-                      <span className="absolute left-2 top-2 rounded-full bg-[#F4B860] px-2 py-0.5 text-[9px] font-extrabold text-[#1A1410] shadow-sm">⭐ Premium</span>
-                    )}
-                    {/* Badge abierto/cerrado */}
-                    <span className={`absolute right-2 bottom-2 rounded-full px-2 py-0.5 text-[9px] font-bold backdrop-blur-sm ${badgeAbierto(isOpen).clases}`}>
-                      {badgeAbierto(isOpen).texto}
-                    </span>
-                    {/* Favorito */}
-                    <div className="absolute left-2 bottom-2">
-                      <FavoritoButton negocioId={d.id} variant="icon" />
+          <div className="ly-featured-track">
+            <MarqueeRow speed={0.28}>
+              {destacados.map((d, i) => {
+                const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
+                const rating = ratingsMap.get(d.id);
+                return (
+                  <Link
+                    key={d.id}
+                    href={url}
+                    className="ly-featured-card group relative block w-[min(78vw,300px)] shrink-0 overflow-hidden rounded-[1.35rem] border border-slate-100 bg-white shadow-[0_8px_24px_rgba(20,40,61,0.10)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(20,40,61,0.17)] sm:w-[320px]"
+                  >
+                    <div className={`relative aspect-[4/3] w-full overflow-hidden ${catColor(i)}`}>
+                      {d.foto_portada
+                        // eslint-disable-next-line @next/next/no-img-element
+                        ? <img loading="lazy" decoding="async" src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        : <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#DCEEF0] to-[#F4F7F8] text-6xl">{d.categorias?.emoji ?? "📍"}</div>}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-slate-950/10" />
+                      <span className="absolute left-3 top-3 max-w-[72%] truncate rounded-full bg-[#176E80]/95 px-3 py-1.5 text-xs font-extrabold text-white shadow-lg backdrop-blur-sm">
+                        {d.categorias?.nombre ?? "Negocio local"}
+                      </span>
+                      <div className="absolute right-3 top-3 rounded-full bg-white shadow-lg" onClick={(event) => event.preventDefault()}>
+                        <FavoritoButton negocioId={d.id} variant="icon" />
+                      </div>
+                      {esPremium(d) && (
+                        <span className="absolute bottom-3 left-3 rounded-full bg-amber-300 px-2.5 py-1 text-[11px] font-extrabold text-slate-900 shadow">Premium</span>
+                      )}
                     </div>
-                  </div>
-
-                  {/* Info */}
-                  <div className="p-3">
-                    <p className="truncate text-sm font-black text-[#1A1410] leading-tight group-hover:text-[#2B6E80] transition-colors">{d.nombre}</p>
-                    <p className="mt-0.5 truncate text-[10px] text-[#8E8279]">
-                      {d.categorias?.emoji} {d.categorias?.nombre}{d.a_domicilio ? " · 🛵" : ""}
-                    </p>
-                    <div className="mt-1.5 flex items-center gap-1.5 flex-wrap">
-                      {d.verificado && (
-                        <span className="rounded-full bg-[#2B6E80]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#2B6E80]">✓ Verif.</span>
-                      )}
-                      {esNuevo(d.creado_en) && (
-                        <span className="rounded-full bg-[#3D5A45]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#3D5A45]">Nuevo</span>
-                      )}
-                      {rating && rating.count > 0 && (
-                        <span className="text-[11px] font-extrabold text-amber-500">
-                          ★ {(rating.sum / rating.count).toFixed(1)} <span className="font-medium text-slate-500">({rating.count})</span>
+                    <div className="p-4">
+                      <h3 className="truncate text-lg font-black leading-tight tracking-tight text-[#14283D] group-hover:text-[#16798A]">{d.nombre}</h3>
+                      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
+                        {rating && rating.count > 0 ? (
+                          <span className="inline-flex items-center gap-1 font-bold text-[#14283D]">
+                            <Star size={17} fill="#F5A900" stroke="#F5A900" aria-hidden="true" />
+                            {(rating.sum / rating.count).toFixed(1)}
+                            <span className="font-medium text-slate-500">({rating.count} reseñas)</span>
+                          </span>
+                        ) : (
+                          <span className="text-slate-500">Negocio local</span>
+                        )}
+                        <span className="inline-flex items-center gap-1 text-slate-500">
+                          <MapPin size={16} strokeWidth={2.2} aria-hidden="true" /> Linares
                         </span>
-                      )}
-                      <span className="text-[10px] text-slate-500">⌖ Linares</span>
+                      </div>
+                      <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
+                        {d.verificado ? <span className="text-xs font-bold text-emerald-700">✓ Negocio verificado</span> : <span className="text-xs font-semibold text-slate-400">Conoce su ficha</span>}
+                        <span className="text-sm font-extrabold text-[#16798A]">Ver negocio →</span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </MarqueeRow>
+                  </Link>
+                );
+              })}
+            </MarqueeRow>
+          </div>
         </section>
       )}
 
