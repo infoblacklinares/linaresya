@@ -924,11 +924,11 @@ export default async function Home() {
           <div
             aria-hidden="true"
             className="absolute inset-0 -z-20 bg-cover bg-[center_48%]"
-            style={{ backgroundImage: "url('/hero-plaza-kiosco.jpg')" }}
+            style={{ backgroundImage: "url('/hero-plaza-kiosco.jpg')", backgroundPosition: "center 52%", backgroundSize: "cover" }}
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(2,42,49,0.98)_0%,rgba(3,55,64,0.96)_38%,rgba(3,64,72,0.78)_61%,rgba(3,55,64,0.08)_100%)]"
+            className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(2,42,49,0.97)_0%,rgba(3,55,64,0.91)_34%,rgba(3,64,72,0.52)_53%,rgba(3,55,64,0.12)_70%,rgba(3,55,64,0.02)_100%)]"
           />
           <div className="grid min-h-[560px] grid-cols-1 items-center gap-8 px-6 py-10 sm:px-10 lg:min-h-[620px] lg:grid-cols-12 lg:gap-6 lg:px-12 xl:px-16">
             <div className="max-w-3xl lg:col-span-6">
@@ -937,10 +937,10 @@ export default async function Home() {
                 Novedades de Linares
               </div>
               <div aria-hidden="true" className="mb-2 mt-5 h-1.5 w-16 rounded-full bg-[#ff5b5f]" />
-              <h2 className="max-w-3xl text-4xl font-extrabold leading-[1.06] tracking-tight text-white sm:text-5xl xl:text-6xl">
+              <h2 className="!text-white max-w-3xl text-4xl font-extrabold leading-[1.06] tracking-tight sm:text-5xl xl:text-6xl" style={{ color: "#ffffff", WebkitTextFillColor: "#ffffff" }}>
                 Entérate primero de ofertas y negocios nuevos en <span className="text-[#ff6268]">Linares</span>
               </h2>
-              <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/90 sm:text-xl">
+              <p className="mt-5 max-w-2xl text-lg leading-relaxed !text-white sm:text-xl" style={{ color: "rgba(255,255,255,0.96)", WebkitTextFillColor: "rgba(255,255,255,0.96)" }}>
                 Un resumen semanal con lo mejor de Linares, directo a tu email.
               </p>
               <div className="mt-8 max-w-3xl">
