@@ -569,7 +569,7 @@ export default async function Home() {
             </Link>
           </div>
           <div className="ly-featured-track">
-            <MarqueeRow speed={0.28}>
+            <MarqueeRow speed={0.7}>
               {destacados.map((d, i) => {
                 const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
                 const rating = ratingsMap.get(d.id);
