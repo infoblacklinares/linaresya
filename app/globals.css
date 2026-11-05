@@ -1527,3 +1527,16 @@
     font-size: .82rem !important;
   }
 }
+
+
+/* LY-MOBILE-04 — buscador compacto, conservando controles cómodos al tacto. */
+@media (max-width: 639px) {
+  .ly-mobile-hero #main-search { min-height: 38px !important; }
+  .ly-mobile-hero button { min-height: 38px !important; padding: .45rem .8rem !important; }
+}
+
+
+/* LY-MOBILE-05 — recuperar espacio vertical para mostrar la cuadrícula 2×2. */
+@media (max-width: 639px) {
+  .ly-mobile-hero > div.relative { padding-top: 1.5rem !important; padding-bottom: 1rem !important; }
+}
