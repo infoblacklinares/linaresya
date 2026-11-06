@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import JsonLd from "@/components/JsonLd";
 import Hero from "@/components/Hero";
+import HomeCategories from "@/components/HomeCategories";
 import HomeBusinessCarousel from "@/components/HomeBusinessCarousel";
 import LinaresEsencial from "@/components/LinaresEsencial";
 import AdvertisementBanner from "@/components/AdvertisementBanner";
@@ -179,7 +180,7 @@ export default async function Home() {
     { data: eventosData },
     { data: historiasData },
   ] = await Promise.all([
-    supabase.from("categorias").select("*").order("orden"),
+    supabase.from("categorias").select("*").eq("activa", true).order("orden"),
 
     supabase
       .from("negocios")
@@ -466,6 +467,8 @@ export default async function Home() {
       {/* Encabezado compacto y buscador */}
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} verificados={verificadosCount ?? 0} />
 
+      <HomeCategories categories={cats.map((c) => ({ id: c.id, nombre: c.nombre, slug: c.slug, emoji: c.emoji }))} />
+
       {/* Carrusel principal: negocios reales con fotografía disponible */}
       <div className="mx-auto w-full max-w-2xl lg:max-w-full">
         <HomeBusinessCarousel
@@ -486,7 +489,7 @@ export default async function Home() {
       {/* Contenido centrado */}
       <div className="mx-auto w-full max-w-2xl lg:max-w-full lg:px-4 xl:px-10">
 
-      {/* Categorías principales: ya se muestran en la franja del hero */}
+
 
       {/* Abiertos ahora — glassmorphism */}
       {negociosAbiertos.length > 0 && (
