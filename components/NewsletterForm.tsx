@@ -24,7 +24,7 @@ export default function NewsletterForm() {
 
   return (
     <form action={action} className="w-full">
-      <div className="flex w-full flex-col gap-3 rounded-[1.6rem] bg-white p-2 shadow-xl sm:flex-row sm:items-center sm:gap-2">
+      <div className="flex w-full flex-col gap-2 rounded-2xl bg-white p-1.5 shadow-lg sm:flex-row sm:items-center sm:gap-2">
         <label htmlFor="newsletter-email" className="sr-only">Tu correo electrónico</label>
         <input
           ref={inputRef}
@@ -34,12 +34,12 @@ export default function NewsletterForm() {
           required
           autoComplete="email"
           placeholder="Tu correo electrónico"
-          className="min-h-14 min-w-0 flex-1 rounded-2xl border-0 bg-white px-5 text-lg font-medium text-[#173b45] outline-none placeholder:text-[#71838a] focus:ring-2 focus:ring-[#2B6E80] sm:min-h-16 sm:px-6 sm:text-xl"
+          className="min-h-11 min-w-0 flex-1 rounded-xl border-0 bg-white px-3 text-sm font-medium text-[#173b45] outline-none placeholder:text-[#71838a] focus:ring-2 focus:ring-[#2B6E80] sm:min-h-12 sm:px-4 sm:text-base"
         />
         <button
           type="submit"
           disabled={isPending}
-          className="min-h-14 shrink-0 rounded-2xl bg-[#ff4f57] px-7 py-4 text-lg font-extrabold text-white shadow-md transition hover:bg-[#ed3f49] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-wait disabled:opacity-60 active:scale-[0.99] sm:min-h-16 sm:px-9 sm:text-xl"
+          className="min-h-11 shrink-0 rounded-xl bg-[#ff4f57] px-4 py-2.5 text-sm font-extrabold text-white shadow-md transition hover:bg-[#ed3f49] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-wait disabled:opacity-60 active:scale-[0.99] sm:min-h-12 sm:px-5 sm:text-sm"
         >
           {isPending ? "Enviando…" : "Suscribirme gratis →"}
         </button>
