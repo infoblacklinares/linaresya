@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { Store, Star, MapPin } from "lucide-react";
+import { Star } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import JsonLd from "@/components/JsonLd";
-import FavoritoButton from "@/components/FavoritoButton";
 import Hero from "@/components/Hero";
-import HomeIntentNav from "@/components/HomeIntentNav";
+import HomeBusinessCarousel from "@/components/HomeBusinessCarousel";
 import LinaresEsencial from "@/components/LinaresEsencial";
 import AdvertisementBanner from "@/components/AdvertisementBanner";
 import NewsletterForm from "@/components/NewsletterForm";
@@ -13,14 +12,11 @@ import FadeInSection from "@/components/FadeInSection";
 import AnimatedCard from "@/components/AnimatedCard";
 import NudgeArrow from "@/components/NudgeArrow";
 import StoriesBar, { type Historia } from "@/components/StoriesBar";
-import SplashHomeLeon from "@/components/SplashHomeLeon";
 import MarqueeRow from "@/components/MarqueeRow";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { telLink } from "@/lib/contacto";
 import { esPremium } from "@/lib/planes";
 import { getOpenIdsHoy, estaAbierto, badgeAbierto } from "@/lib/horarios";
-import { getRecentPosts } from "@/lib/blog-posts";
-import { RUBROS } from "@/lib/rubros";
 
 /**
  * La portada no tenia canonical. Sin el, `linaresya.cl/?utm_source=instagram`
@@ -467,15 +463,24 @@ export default async function Home() {
       <JsonLd id="ld-organization" data={organizationJsonLd()} />
       <JsonLd id="ld-website"      data={websiteJsonLd()} />
 
-      {/* Splash de bienvenida: el león, cada vez que se abre la portada */}
-      <SplashHomeLeon />
-
-      {/* Hero — full-bleed en desktop, contenido centrado adentro */}
+      {/* Encabezado compacto y buscador */}
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} verificados={verificadosCount ?? 0} />
 
-      {/* UX-01: acciones principales antes del contenido editorial */}
-      <div className="mx-auto w-full max-w-2xl lg:hidden">
-        <HomeIntentNav />
+      {/* Carrusel principal: negocios reales con fotografía disponible */}
+      <div className="mx-auto w-full max-w-2xl lg:max-w-full">
+        <HomeBusinessCarousel
+          slides={destacados.filter((n) => Boolean(n.foto_portada)).slice(0, 5).map((n) => ({
+            id: n.id,
+            nombre: n.nombre,
+            slug: n.slug,
+            categoriaSlug: n.categorias?.slug ?? "",
+            categoriaNombre: n.categorias?.nombre ?? "Negocio local",
+            descripcion: n.descripcion,
+            foto: n.foto_portada as string,
+            premium: esPremium(n),
+            verificado: n.verificado,
+          }))}
+        />
       </div>
 
       {/* Contenido centrado */}
@@ -552,74 +557,58 @@ export default async function Home() {
 
       {/* Bloque editorial principal: destacados + ofertas + vitrinas laterales */}
       <div className="ly-showcase-grid">
-      {/* Negocios destacados — carrusel visual de negocios reales */}
+      {/* Negocios destacados: tarjetas comerciales con fotografías reales */}
       {destacados.length > 0 && (
-        <section className="ly-featured-section pt-9 pb-3" aria-labelledby="ly-featured-title">
-          <div className="mb-5 flex items-end justify-between gap-3 px-4 sm:px-6">
+        <section className="ly-featured-section pt-7 pb-3" aria-labelledby="ly-featured-title">
+          <div className="mb-4 flex items-end justify-between gap-3 px-4 sm:px-6">
             <div className="min-w-0">
-              <div className="mb-1.5 flex items-center gap-2 text-[#2B6E80]">
-                <Store size={21} strokeWidth={2.5} aria-hidden="true" />
-                <span className="text-[11px] font-extrabold uppercase tracking-[0.16em]">Descubre lo local</span>
-              </div>
-              <h2 id="ly-featured-title" className="text-2xl font-black tracking-tight text-[#14283D] sm:text-3xl">Negocios destacados</h2>
-              <p className="mt-1 text-sm text-slate-500 sm:text-base">Conoce y apoya los negocios locales de Linares.</p>
+              <span className="text-[10px] font-extrabold uppercase tracking-[.16em] text-[#2B6E80]">Comercio local</span>
+              <h2 id="ly-featured-title" className="mt-1 text-xl font-extrabold tracking-tight text-[#14283D] sm:text-3xl">Negocios para descubrir</h2>
+              <p className="mt-1 text-xs text-slate-500 sm:text-sm">Conoce quiénes están detrás de los negocios de Linares.</p>
             </div>
-            <Link href="/buscar" className="mb-1 inline-flex shrink-0 items-center gap-1.5 text-sm font-extrabold text-[#16798A] transition hover:text-[#0B5361]">
-              Ver todo <NudgeArrow />
+            <Link href="/buscar" className="mb-1 inline-flex shrink-0 items-center gap-1 text-xs font-extrabold text-[#16798A] transition hover:text-[#0B5361] sm:text-sm">
+              Ver todos <NudgeArrow />
             </Link>
           </div>
-          <div className="ly-featured-track">
-            <MarqueeRow speed={0.7}>
-              {destacados.map((d, i) => {
-                const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
-                const rating = ratingsMap.get(d.id);
-                return (
-                  <Link
-                    key={d.id}
-                    href={url}
-                    className="ly-featured-card group relative block w-[min(78vw,300px)] shrink-0 overflow-hidden rounded-[1.35rem] border border-slate-100 bg-white shadow-[0_8px_24px_rgba(20,40,61,0.10)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(20,40,61,0.17)] sm:w-[320px]"
-                  >
-                    <div className={`relative aspect-[4/3] w-full overflow-hidden ${catColor(i)}`}>
-                      {d.foto_portada
-                        // eslint-disable-next-line @next/next/no-img-element
-                        ? <img loading="lazy" decoding="async" src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                        : <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#DCEEF0] to-[#F4F7F8] text-6xl">{d.categorias?.emoji ?? "📍"}</div>}
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-slate-950/10" />
-                      <span className="absolute left-3 top-3 max-w-[72%] truncate rounded-full bg-[#176E80]/95 px-3 py-1.5 text-xs font-extrabold text-white shadow-lg backdrop-blur-sm">
-                        {d.categorias?.nombre ?? "Negocio local"}
-                      </span>
-                      <div className="absolute right-3 top-3 rounded-full bg-white shadow-lg">
-                        <FavoritoButton negocioId={d.id} variant="icon" />
+          <div className="grid grid-cols-2 gap-3 px-3 sm:grid-cols-3 sm:gap-4 sm:px-6 lg:grid-cols-4">
+            {destacados.slice(0, 8).map((d, i) => {
+              const url = d.categorias ? `/${d.categorias.slug}/${d.slug}` : "#";
+              const rating = ratingsMap.get(d.id);
+              return (
+                <Link key={d.id} href={url} className="group min-w-0 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_4px_16px_rgba(20,40,61,.07)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(20,40,61,.13)]">
+                  <div className="relative aspect-[1.18/1] w-full overflow-hidden bg-[#E8EEF0]">
+                    {d.foto_portada ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img loading={i < 4 ? "eager" : "lazy"} decoding="async" src={d.foto_portada} alt={d.nombre} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    ) : (
+                      <div className="absolute inset-0 flex items-end bg-gradient-to-br from-[#DCE7E9] via-[#EEF2F2] to-[#C9D9DC] p-3">
+                        <span className="text-[10px] font-bold uppercase tracking-[.12em] text-[#41616A]">{d.categorias?.nombre ?? "Negocio local"}</span>
                       </div>
-                      {esPremium(d) && (
-                        <span className="absolute bottom-3 left-3 rounded-full bg-amber-300 px-2.5 py-1 text-[11px] font-extrabold text-slate-900 shadow">Premium</span>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="truncate text-lg font-black leading-tight tracking-tight text-[#14283D] group-hover:text-[#16798A]">{d.nombre}</h3>
-                      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
-                        {rating && rating.count > 0 ? (
-                          <span className="inline-flex items-center gap-1 font-bold text-[#14283D]">
-                            <Star size={17} fill="#F5A900" stroke="#F5A900" aria-hidden="true" />
-                            {(rating.sum / rating.count).toFixed(1)}
-                            <span className="font-medium text-slate-500">({rating.count} reseñas)</span>
-                          </span>
-                        ) : (
-                          <span className="text-slate-500">Negocio local</span>
-                        )}
-                        <span className="inline-flex items-center gap-1 text-slate-500">
-                          <MapPin size={16} strokeWidth={2.2} aria-hidden="true" /> Linares
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/55 to-transparent" />
+                    <span className="absolute bottom-2 left-2 max-w-[85%] truncate rounded-full bg-white/95 px-2.5 py-1 text-[9px] font-bold text-[#23424C] shadow-sm">{d.categorias?.nombre ?? "Negocio local"}</span>
+                    {esPremium(d) && <span className="absolute right-2 top-2 rounded-full bg-[#F4B860] px-2 py-1 text-[9px] font-extrabold text-[#3D2B0C]">Destacado</span>}
+                  </div>
+                  <div className="p-3 sm:p-3.5">
+                    <h3 className="truncate text-[13px] font-extrabold leading-snug text-[#14283D] group-hover:text-[#16798A] sm:text-base">{d.nombre}</h3>
+                    <div className="mt-1.5 flex min-w-0 items-center justify-between gap-2">
+                      {rating && rating.count > 0 ? (
+                        <span className="inline-flex min-w-0 items-center gap-1 text-[10px] font-bold text-[#334155] sm:text-xs">
+                          <Star size={13} fill="#F5A900" stroke="#F5A900" aria-hidden="true" />
+                          {(rating.sum / rating.count).toFixed(1)}
+                          <span className="truncate font-medium text-slate-400">({rating.count})</span>
                         </span>
-                      </div>
-                      <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
-                        {d.verificado ? <span className="text-xs font-bold text-emerald-700">✓ Negocio verificado</span> : <span className="text-xs font-semibold text-slate-400">Conoce su ficha</span>}
-                        <span className="text-sm font-extrabold text-[#16798A]">Ver negocio →</span>
-                      </div>
+                      ) : <span className="truncate text-[10px] text-slate-500 sm:text-xs">Negocio de Linares</span>}
+                      {d.verificado && <span className="shrink-0 text-[9px] font-bold text-emerald-700 sm:text-[10px]">Verificado</span>}
                     </div>
-                  </Link>
-                );
-              })}
-            </MarqueeRow>
+                    <div className="mt-2 flex items-center justify-between border-t border-slate-100 pt-2">
+                      <span className="text-[10px] font-medium text-slate-400">Linares, Maule</span>
+                      <span className="text-[10px] font-extrabold text-[#16798A] sm:text-xs">Ver ficha →</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
       )}

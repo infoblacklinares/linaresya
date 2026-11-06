@@ -333,7 +333,7 @@
   font-size: clamp(1.3rem, 1.8vw, 1.7rem) !important;
   font-weight: 850 !important;
   letter-spacing: -.045em !important;
-  line-height: 1.08 !important;
+  line-height: 1.06 !important;
 }
 .ly-home section { scroll-margin-top: 5rem; }
 .ly-home > div.mx-auto {
@@ -1344,7 +1344,7 @@
     width: 100%;
     min-width: 0 !important;
     max-width: 100%;
-    padding: 2rem 1rem 1.5rem !important;
+    padding: 1.2rem 1rem 1rem !important;
   }
   .ly-mobile-hero > div.relative > div:first-child {
     width: 100%;
@@ -1356,7 +1356,7 @@
     width: 100%;
     max-width: 100% !important;
     margin: 0;
-    font-size: clamp(2rem, 8.2vw, 2.45rem) !important;
+    font-size: clamp(1.5rem, 6.2vw, 1.9rem) !important;
     line-height: 1.08 !important;
     letter-spacing: -.04em !important;
     white-space: normal !important;
@@ -1448,9 +1448,9 @@
   }
   .ly-mobile-hero-pills > a {
     flex: 0 0 auto;
-    min-height: 38px;
-    padding: .5rem .75rem !important;
-    font-size: .8rem !important;
+    min-height: 34px;
+    padding: .42rem .68rem !important;
+    font-size: .72rem !important;
     white-space: nowrap;
   }
 }
