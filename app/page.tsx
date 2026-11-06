@@ -531,7 +531,7 @@ export default async function Home() {
                     </span>
                   </Link>
                   <Link href={url} className="block p-3 pt-2 pb-2">
-                    <p className="text-sm font-bold text-[#1A1410] truncate leading-tight group-hover:text-[#2B6E80] transition-colors">{n.nombre}</p>
+                    <p className="ly-open-card-title group-hover:text-[#2B6E80] transition-colors">{n.nombre}</p>
                     <p className="text-[10px] text-[#8E8279] mt-0.5 truncate">
                       {n.categorias?.emoji} {n.categorias?.nombre}
                     </p>
@@ -593,7 +593,7 @@ export default async function Home() {
                     {esPremium(d) && <span className="absolute right-2 top-2 rounded-full bg-[#F4B860] px-2 py-1 text-[9px] font-extrabold text-[#3D2B0C]">Destacado</span>}
                   </div>
                   <div className="p-3 sm:p-3.5">
-                    <h3 className="truncate text-[13px] font-extrabold leading-snug text-[#14283D] group-hover:text-[#16798A] sm:text-base">{d.nombre}</h3>
+                    <h3 className="line-clamp-2 min-h-[2.3em] text-[13px] font-extrabold leading-[1.15] text-[#14283D] group-hover:text-[#16798A] sm:text-base">{d.nombre}</h3>
                     <div className="mt-1.5 flex min-w-0 items-center justify-between gap-2">
                       {rating && rating.count > 0 ? (
                         <span className="inline-flex min-w-0 items-center gap-1 text-[10px] font-bold text-[#334155] sm:text-xs">
