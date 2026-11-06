@@ -1540,3 +1540,85 @@
 @media (max-width: 639px) {
   .ly-mobile-hero > div.relative { padding-top: 1.5rem !important; padding-bottom: 1rem !important; }
 }
+
+
+/* LY-HOME-09 — encabezado compacto estilo storefront y categorías en marquee continuo */
+@media (max-width: 639px) {
+  .ly-mobile-hero > div.relative {
+    padding: .7rem .8rem .65rem !important;
+  }
+  .ly-mobile-hero h1 {
+    max-width: 22rem;
+    font-size: 1.28rem !important;
+    line-height: 1.08 !important;
+  }
+  .ly-mobile-hero .relative.z-20 {
+    margin-top: .55rem !important;
+    max-width: 100% !important;
+  }
+  .ly-mobile-hero #main-search {
+    min-height: 0 !important;
+    height: 2rem !important;
+    font-size: 12px !important;
+  }
+  .ly-mobile-hero .relative.z-20 button {
+    min-height: 1.75rem !important;
+    height: 1.75rem !important;
+    padding: .25rem .75rem !important;
+    font-size: 10px !important;
+  }
+  .ly-mobile-hero-pills {
+    display: block !important;
+    width: calc(100% + 1.6rem) !important;
+    margin-left: -.8rem !important;
+    margin-top: .55rem !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+  }
+  .ly-mobile-hero-track {
+    display: flex;
+    width: max-content;
+    animation: ly-home-category-marquee 27s linear infinite;
+    will-change: transform;
+  }
+  .ly-mobile-hero-category-group {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: .45rem;
+    padding: 0 .45rem;
+  }
+  .ly-mobile-hero-category-group > a {
+    min-height: 1.7rem !important;
+    padding: .3rem .62rem !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    white-space: nowrap;
+  }
+}
+@media (min-width: 640px) {
+  .ly-mobile-hero-track {
+    display: flex;
+    width: max-content;
+    animation: ly-home-category-marquee 34s linear infinite;
+  }
+  .ly-mobile-hero-category-group {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: .5rem;
+    padding-right: .5rem;
+  }
+}
+@keyframes ly-home-category-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ly-mobile-hero-pills:hover .ly-mobile-hero-track,
+.ly-mobile-hero-pills:focus-within .ly-mobile-hero-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ly-mobile-hero-track { animation: none !important; }
+  .ly-mobile-hero-pills { overflow-x: auto !important; }
+}
