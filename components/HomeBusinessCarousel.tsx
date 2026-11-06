@@ -47,9 +47,6 @@ export default function HomeBusinessCarousel({ slides }: { slides: HomeBusinessS
     );
   }
 
-  const slide = slides[active];
-  const href = slide.categoriaSlug ? `/${slide.categoriaSlug}/${slide.slug}` : "/buscar";
-
   return (
     <section className="px-3 pt-4 sm:px-6 sm:pt-6" aria-label="Negocios destacados" aria-roledescription="carrusel">
       <div className="relative min-h-[230px] overflow-hidden rounded-[1.5rem] bg-[#102d3b] shadow-[0_12px_32px_rgba(16,45,59,.18)] sm:min-h-[330px]">
@@ -58,9 +55,13 @@ export default function HomeBusinessCarousel({ slides }: { slides: HomeBusinessS
             <img src={item.foto} alt="" className="absolute inset-0 h-full w-full object-cover" loading={index === 0 ? "eager" : "lazy"} />
             <div className="absolute inset-0 bg-gradient-to-r from-[#071d2b]/95 via-[#071d2b]/65 to-[#071d2b]/10" />
             <div className="relative flex min-h-[230px] max-w-[78%] flex-col items-start justify-end p-5 text-white sm:min-h-[330px] sm:max-w-[65%] sm:p-8">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-white/90 backdrop-blur">
-                <Store size={12} /> {item.categoriaNombre || "Negocio local"}
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-white/90 backdrop-blur">
+                  <Store size={12} /> {item.categoriaNombre || "Negocio local"}
+                </span>
+                {item.premium && <span className="rounded-full bg-[#F4B860] px-2.5 py-1 text-[9px] font-extrabold text-[#3D2B0C]">Destacado</span>}
+                {item.verificado && <span className="rounded-full bg-emerald-500/90 px-2.5 py-1 text-[9px] font-extrabold text-white">Verificado</span>}
+              </div>
               <h2 className="mt-3 line-clamp-2 text-2xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-4xl">{item.nombre}</h2>
               <p className="mt-2 line-clamp-2 max-w-md text-sm leading-relaxed text-white/85 sm:text-base">{item.descripcion || "Conoce este negocio y descubre lo que ofrece en Linares."}</p>
               <Link href={item.categoriaSlug ? `/${item.categoriaSlug}/${item.slug}` : "/buscar"} tabIndex={index === active ? 0 : -1} className="mt-4 inline-flex min-h-10 items-center rounded-full bg-[#f51e4e] px-5 text-sm font-extrabold text-white shadow-lg transition hover:bg-[#df1743]">
