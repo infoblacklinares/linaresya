@@ -3,6 +3,8 @@
 import SearchAutocomplete from "@/components/SearchAutocomplete";
 import { CarFront, HeartPulse, House, MoreHorizontal, Store, Utensils } from "lucide-react";
 
+interface HeroProps { totalNegocios?: number; abiertosAhora?: number; verificados?: number; }
+
 const CATEGORIAS = [
   { label: "Restaurantes", Icon: Utensils, href: "/buscar?q=restaurantes" },
   { label: "Salud", Icon: HeartPulse, href: "/buscar?q=salud" },
@@ -11,7 +13,7 @@ const CATEGORIAS = [
   { label: "Ver categorías", Icon: MoreHorizontal, href: "/categorias" },
 ];
 
-export default function Hero() {
+export default function Hero(_props: HeroProps) {
   return (
     <section className="ly-mobile-hero relative isolate overflow-hidden text-white">
       <div aria-hidden="true" className="absolute inset-0 bg-cover bg-[center_58%] lg:bg-center" style={{ backgroundImage: "url('/hero-plaza-kiosco.jpg')" }} />
