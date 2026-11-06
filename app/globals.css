@@ -1622,3 +1622,106 @@
   .ly-mobile-hero-track { animation: none !important; }
   .ly-mobile-hero-pills { overflow-x: auto !important; }
 }
+
+
+/* LY-HOME-10 — categorías visibles bajo el buscador y lectura mejorada de tarjetas */
+.ly-home-categories {
+  position: relative;
+  z-index: 5;
+  padding: .85rem 0 .75rem;
+  overflow: hidden;
+  background: #fff;
+  border-bottom: 1px solid #e9eef0;
+}
+.ly-home-categories-viewport {
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent);
+}
+.ly-home-categories-track {
+  display: flex;
+  width: max-content;
+  animation: ly-home-all-categories 42s linear infinite;
+  will-change: transform;
+}
+.ly-home-categories-group {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: .55rem;
+  padding: .15rem .3rem;
+}
+.ly-home-category-chip {
+  display: inline-flex;
+  min-height: 42px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem .85rem;
+  border: 1px solid #e5ecee;
+  border-radius: 999px;
+  background: #f8faf9;
+  color: #23434b;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.15;
+  white-space: nowrap;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.ly-home-category-chip:hover,
+.ly-home-category-chip:focus-visible {
+  border-color: #8eb5bc;
+  background: #edf5f4;
+  outline: none;
+}
+.ly-home-category-emoji { font-size: 16px; line-height: 1; }
+.ly-home-categories:hover .ly-home-categories-track,
+.ly-home-categories:focus-within .ly-home-categories-track {
+  animation-play-state: paused;
+}
+@keyframes ly-home-all-categories {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (max-width: 639px) {
+  .ly-home-categories { padding: .7rem 0 .65rem; }
+  .ly-home-categories .mb-2 { margin-bottom: .45rem; }
+  .ly-home-category-chip {
+    min-height: 38px;
+    padding: .42rem .72rem;
+    font-size: 10px;
+  }
+  .ly-home-category-emoji { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ly-home-categories-track { animation: none; }
+  .ly-home-categories-viewport { overflow-x: auto; }
+}
+
+/* Tarjetas horizontales: títulos completos y jerarquía legible en móvil. */
+.ly-open-now .ly-open-card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: 2.25rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.15;
+  font-weight: 800;
+  color: #17232b;
+}
+.ly-open-now .ly-open-card-category {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: 1.8rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  line-height: 1.25;
+  color: #687780;
+}

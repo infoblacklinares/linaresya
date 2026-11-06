@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import JsonLd from "@/components/JsonLd";
 import Hero from "@/components/Hero";
+import HomeCategories from "@/components/HomeCategories";
 import HomeBusinessCarousel from "@/components/HomeBusinessCarousel";
 import LinaresEsencial from "@/components/LinaresEsencial";
 import AdvertisementBanner from "@/components/AdvertisementBanner";
@@ -179,7 +180,7 @@ export default async function Home() {
     { data: eventosData },
     { data: historiasData },
   ] = await Promise.all([
-    supabase.from("categorias").select("*").order("orden"),
+    supabase.from("categorias").select("*").eq("activa", true).order("orden"),
 
     supabase
       .from("negocios")
@@ -466,6 +467,8 @@ export default async function Home() {
       {/* Encabezado compacto y buscador */}
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} verificados={verificadosCount ?? 0} />
 
+      <HomeCategories categories={cats.map((c) => ({ id: c.id, nombre: c.nombre, slug: c.slug, emoji: c.emoji }))} />
+
       {/* Carrusel principal: negocios reales con fotografía disponible */}
       <div className="mx-auto w-full max-w-2xl lg:max-w-full">
         <HomeBusinessCarousel
@@ -486,7 +489,7 @@ export default async function Home() {
       {/* Contenido centrado */}
       <div className="mx-auto w-full max-w-2xl lg:max-w-full lg:px-4 xl:px-10">
 
-      {/* Categorías principales: ya se muestran en la franja del hero */}
+
 
       {/* Abiertos ahora — glassmorphism */}
       {negociosAbiertos.length > 0 && (
@@ -528,7 +531,7 @@ export default async function Home() {
                     </span>
                   </Link>
                   <Link href={url} className="block p-3 pt-2 pb-2">
-                    <p className="text-sm font-bold text-[#1A1410] truncate leading-tight group-hover:text-[#2B6E80] transition-colors">{n.nombre}</p>
+                    <p className="ly-open-card-title group-hover:text-[#2B6E80] transition-colors">{n.nombre}</p>
                     <p className="text-[10px] text-[#8E8279] mt-0.5 truncate">
                       {n.categorias?.emoji} {n.categorias?.nombre}
                     </p>
@@ -590,7 +593,7 @@ export default async function Home() {
                     {esPremium(d) && <span className="absolute right-2 top-2 rounded-full bg-[#F4B860] px-2 py-1 text-[9px] font-extrabold text-[#3D2B0C]">Destacado</span>}
                   </div>
                   <div className="p-3 sm:p-3.5">
-                    <h3 className="truncate text-[13px] font-extrabold leading-snug text-[#14283D] group-hover:text-[#16798A] sm:text-base">{d.nombre}</h3>
+                    <h3 className="line-clamp-2 min-h-[2.3em] text-[13px] font-extrabold leading-[1.15] text-[#14283D] group-hover:text-[#16798A] sm:text-base">{d.nombre}</h3>
                     <div className="mt-1.5 flex min-w-0 items-center justify-between gap-2">
                       {rating && rating.count > 0 ? (
                         <span className="inline-flex min-w-0 items-center gap-1 text-[10px] font-bold text-[#334155] sm:text-xs">
