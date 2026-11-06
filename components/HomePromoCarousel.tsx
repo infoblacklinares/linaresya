@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 
 const slides = [
   {
-    src: "/LinaresYa--Descubre-Linares-wordpress.webp",
+    src: "https://elestratega.cl/wp-content/uploads/2026/11/LinaresYa-Descubre-Linares-wordpress.webp",
     alt: "LinaresYa: todo Linares al alcance de tu mano",
     label: "Descubre LinaresYa",
     href: "/",
   },
   {
-    src: "/Sabores-Artesanales-de-Linares2-wordpress.webp",
+    src: "https://elestratega.cl/wp-content/uploads/2026/11/Sabores-Artesanales-de-Linares2-wordpress.webp",
     alt: "Jatis Mutis, sabores artesanales de Linares",
     label: "Conoce Jatis Mutis",
     href: "https://jatismutis.com",
