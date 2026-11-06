@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { Store, Star, MapPin } from "lucide-react";
+import { Star } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import JsonLd from "@/components/JsonLd";
-import FavoritoButton from "@/components/FavoritoButton";
 import Hero from "@/components/Hero";
 import HomeBusinessCarousel from "@/components/HomeBusinessCarousel";
 import LinaresEsencial from "@/components/LinaresEsencial";
@@ -18,8 +17,6 @@ import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { telLink } from "@/lib/contacto";
 import { esPremium } from "@/lib/planes";
 import { getOpenIdsHoy, estaAbierto, badgeAbierto } from "@/lib/horarios";
-import { getRecentPosts } from "@/lib/blog-posts";
-import { RUBROS } from "@/lib/rubros";
 
 /**
  * La portada no tenia canonical. Sin el, `linaresya.cl/?utm_source=instagram`
@@ -591,7 +588,6 @@ export default async function Home() {
                     <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/55 to-transparent" />
                     <span className="absolute bottom-2 left-2 max-w-[85%] truncate rounded-full bg-white/95 px-2.5 py-1 text-[9px] font-bold text-[#23424C] shadow-sm">{d.categorias?.nombre ?? "Negocio local"}</span>
                     {esPremium(d) && <span className="absolute right-2 top-2 rounded-full bg-[#F4B860] px-2 py-1 text-[9px] font-extrabold text-[#3D2B0C]">Destacado</span>}
-                    <span className="absolute right-2 bottom-2"><FavoritoButton negocioId={d.id} variant="icon" /></span>
                   </div>
                   <div className="p-3 sm:p-3.5">
                     <h3 className="truncate text-[13px] font-extrabold leading-snug text-[#14283D] group-hover:text-[#16798A] sm:text-base">{d.nombre}</h3>
