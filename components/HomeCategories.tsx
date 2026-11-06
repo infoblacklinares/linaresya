@@ -28,7 +28,7 @@ export default function HomeCategories({ categories }: { categories: HomeCategor
               {categories.map((category) => (
                 <Link
                   key={category.id}
-                  href={`/buscar?q=${encodeURIComponent(category.nombre)}`}
+                  href={`/${category.slug}`}
                   tabIndex={copy === 1 ? -1 : 0}
                   className="ly-home-category-chip"
                 >
