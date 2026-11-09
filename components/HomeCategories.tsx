@@ -20,7 +20,7 @@ export default function HomeCategories({ categories }: { categories: HomeCategor
           <h2 className="text-lg font-extrabold tracking-tight text-[#292521] sm:text-xl">Explora por categoría</h2>
           <p className="mt-1 text-xs text-[#858078]">Encuentra lo que necesitas en Linares</p>
         </div>
-        <Link href="/categorias" className="inline-flex shrink-0 items-center gap-1 text-xs font-bold text-[#d94a35]">Ver todas <ArrowRight size={14}/></Link>
+        <Link href="/buscar" className="inline-flex shrink-0 items-center gap-1 text-xs font-bold text-[#d94a35]">Ver todas <ArrowRight size={14}/></Link>
       </div>
       <div className="ly-category-icons">
         {categories.map((category, index) => (
