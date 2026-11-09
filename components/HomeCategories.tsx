@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export type HomeCategory = {
   id: number;
@@ -13,32 +14,21 @@ export default function HomeCategories({ categories }: { categories: HomeCategor
   if (!categories.length) return null;
 
   return (
-    <section className="ly-home-categories" aria-label="Explora todas las categorías">
-      <div className="mb-2 flex items-center justify-between px-4">
+    <section className="ly-categories-section" aria-label="Explora todas las categorías">
+      <div className="mb-3 flex items-end justify-between gap-3">
         <div>
-          <h2 className="text-sm font-extrabold tracking-tight text-[#17232B] sm:text-base">Explora por categoría</h2>
-          <p className="mt-0.5 text-[10px] text-[#78838A] sm:text-xs">Encuentra justo lo que necesitas en Linares</p>
+          <h2 className="text-lg font-extrabold tracking-tight text-[#292521] sm:text-xl">Explora por categoría</h2>
+          <p className="mt-1 text-xs text-[#858078]">Encuentra lo que necesitas en Linares</p>
         </div>
-        <span className="shrink-0 text-[10px] font-semibold text-[#78838A]">{categories.length} categorías</span>
+        <Link href="/categorias" className="inline-flex shrink-0 items-center gap-1 text-xs font-bold text-[#d94a35]">Ver todas <ArrowRight size={14}/></Link>
       </div>
-      <div className="ly-home-categories-viewport">
-        <div className="ly-home-categories-track">
-          {[0, 1].map((copy) => (
-            <div key={copy} className="ly-home-categories-group" aria-hidden={copy === 1}>
-              {categories.map((category) => (
-                <Link
-                  key={category.id}
-                  href={`/${category.slug}`}
-                  tabIndex={copy === 1 ? -1 : 0}
-                  className="ly-home-category-chip"
-                >
-                  <span aria-hidden="true" className="ly-home-category-emoji">{category.emoji || "🏪"}</span>
-                  <span>{category.nombre}</span>
-                </Link>
-              ))}
-            </div>
-          ))}
-        </div>
+      <div className="ly-category-icons">
+        {categories.map((category, index) => (
+          <Link key={category.id} href={`/${category.slug}`} className="ly-category-icon-card">
+            <span className={`ly-category-icon ly-category-tone-${index % 6}`} aria-hidden="true">{category.emoji || "🏪"}</span>
+            <span className="ly-category-name">{category.nombre}</span>
+          </Link>
+        ))}
       </div>
     </section>
   );
