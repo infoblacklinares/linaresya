@@ -465,8 +465,14 @@ export default async function Home() {
       <JsonLd id="ld-organization" data={organizationJsonLd()} />
       <JsonLd id="ld-website"      data={websiteJsonLd()} />
 
-      {/* Encabezado compacto y buscador */}
+      {/* Cabecera limpia y buscador, siguiendo la referencia visual aprobada */}
       <Hero totalNegocios={totalNegocios} abiertosAhora={abiertosCount} verificados={verificadosCount ?? 0} />
+
+      {/* Publicidad de marcas locales: visible inmediatamente después del buscador */}
+      <div className="ly-promo-top">
+        <HomePromoCarousel />
+        <p className="mt-1.5 text-center text-[9px] font-semibold uppercase tracking-[.12em] text-[#a29b91]">Marcas y promociones locales</p>
+      </div>
 
       <HomeCategories categories={cats.map((c) => ({ id: c.id, nombre: c.nombre, slug: c.slug, emoji: c.emoji }))} />
 
@@ -926,8 +932,7 @@ export default async function Home() {
             </div>
             <div className="min-w-0 flex-1"><NewsletterForm /></div>
           </div>
-          <div className="mt-4"><HomePromoCarousel /></div>
-          <p className="mt-2 text-center text-[10px] text-[#78838A]">Publicidad y novedades de negocios locales de Linares</p>
+
         </div>
       </section>
 
