@@ -18,6 +18,7 @@ type Negocio = {
   tipo: "negocio" | "independiente"; plan: "basico" | "premium";
   verificado: boolean; telefono: string | null; whatsapp: string | null;
   direccion: string | null; a_domicilio: boolean; foto_portada: string | null;
+  categorias?: { slug: string } | null;
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -58,10 +59,17 @@ export default async function CategoriaPage({
   if (!categoria || !categoria.activa) notFound();
   const cat = categoria as Categoria;
 
+  const esListadoEmprendimientos = cat.slug === "emprendimientos";
+
   let query = supabase
     .from("negocios")
-    .select("id,nombre,slug,descripcion,tipo,plan,verificado,telefono,whatsapp,direccion,a_domicilio,foto_portada")
-    .eq("categoria_id", cat.id).eq("activo", true);
+    .select("id,nombre,slug,descripcion,tipo,plan,verificado,telefono,whatsapp,direccion,a_domicilio,foto_portada,categorias!negocios_categoria_id_fkey(slug)")
+    .eq("activo", true);
+
+  // Emprendimientos reúne perfiles independientes de distintas categorías.
+  query = esListadoEmprendimientos
+    ? query.eq("tipo", "independiente")
+    : query.eq("categoria_id", cat.id);
 
   if (filtroPremium)   query = query.eq("plan", "premium");
   if (filtroVerif)     query = query.eq("verificado", true);
@@ -117,7 +125,16 @@ export default async function CategoriaPage({
   };
 
   const breadcrumbData = breadcrumbJsonLd([{ name: "Inicio", url: SITE_URL }, { name: cat.nombre, url: SITE_URL + "/" + cat.slug }]);
-  const itemListData = itemListJsonLd(itemsPagina.map(n => ({ nombre: n.nombre, slug: n.slug })), cat.slug);
+  const itemListData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: itemsPagina.map((n, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${SITE_URL}/${n.categorias?.slug ?? cat.slug}/${n.slug}`,
+      name: n.nombre,
+    })),
+  };
 
   return (
     <main className="flex-1 mx-auto w-full max-w-2xl lg:max-w-full lg:px-8 xl:px-14 bg-[#F9F8F6]">
@@ -199,7 +216,7 @@ export default async function CategoriaPage({
                 const rating = rData && rData.count > 0 ? { avg: rData.sum / rData.count, count: rData.count } : null;
                 return (
                   <AnimatedCard key={n.id} index={i}>
-                    <NegocioCard n={n} categoriaSlug={cat.slug} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
+                    <NegocioCard n={n} categoriaSlug={n.categorias?.slug ?? cat.slug} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
                   </AnimatedCard>
                 );
               })}
