@@ -18,7 +18,7 @@ type Negocio = {
   tipo: "negocio" | "independiente"; plan: "basico" | "premium";
   verificado: boolean; telefono: string | null; whatsapp: string | null;
   direccion: string | null; a_domicilio: boolean; foto_portada: string | null;
-  categorias?: { slug: string }[] | null;
+  categorias?: { slug: string; emoji: string }[] | null;
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -63,7 +63,7 @@ export default async function CategoriaPage({
 
   let query = supabase
     .from("negocios")
-    .select("id,nombre,slug,descripcion,tipo,plan,verificado,telefono,whatsapp,direccion,a_domicilio,foto_portada,categorias!negocios_categoria_id_fkey(slug)")
+    .select("id,nombre,slug,descripcion,tipo,plan,verificado,telefono,whatsapp,direccion,a_domicilio,foto_portada,categorias!negocios_categoria_id_fkey(slug,emoji)")
     .eq("activo", true);
 
   // Emprendimientos reúne perfiles independientes de distintas categorías.
@@ -216,7 +216,7 @@ export default async function CategoriaPage({
                 const rating = rData && rData.count > 0 ? { avg: rData.sum / rData.count, count: rData.count } : null;
                 return (
                   <AnimatedCard key={n.id} index={i}>
-                    <NegocioCard n={n} categoriaSlug={n.categorias?.[0]?.slug ?? cat.slug} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
+                    <NegocioCard n={n} categoriaSlug={n.categorias?.[0]?.slug ?? cat.slug} categoriaEmoji={n.categorias?.[0]?.emoji ?? cat.emoji} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
                   </AnimatedCard>
                 );
               })}
@@ -252,9 +252,9 @@ export default async function CategoriaPage({
 }
 
 function NegocioCard({
-  n, categoriaSlug, isOpen, rating,
+  n, categoriaSlug, categoriaEmoji, isOpen, rating,
 }: {
-  n: Negocio; categoriaSlug: string; isOpen: boolean; rating?: { avg: number; count: number } | null;
+  n: Negocio; categoriaSlug: string; categoriaEmoji: string; isOpen: boolean; rating?: { avg: number; count: number } | null;
 }) {
   const premium = esPremium(n);
   const waUrl = canUseFeature(n, "whatsapp") ? whatsAppLink(n.whatsapp) : null;
@@ -271,7 +271,7 @@ function NegocioCard({
           // eslint-disable-next-line @next/next/no-img-element
           <img loading="lazy" decoding="async" src={n.foto_portada} alt={n.nombre} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
         ) : (
-          <div className="h-full w-full flex items-center justify-center text-4xl opacity-30">🏪</div>
+          <div className="h-full w-full flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-[#E9F1F1] to-[#F0EDE8]"><span className="text-5xl opacity-70">{categoriaEmoji}</span><span className="text-[10px] font-bold uppercase tracking-widest text-[#2B6E80]/60">Negocio local</span></div>
         )}
 
         {/* Overlay gradient abajo */}
@@ -321,7 +321,7 @@ function NegocioCard({
               <span className="text-[11px] font-bold text-amber-600">★ {rating.avg.toFixed(1)}</span>
             )}
             {n.a_domicilio && (
-              <span className="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded-full font-medium">🛵</span>
+              <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">A domicilio</span>
             )}
           </div>
 
