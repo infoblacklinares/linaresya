@@ -216,7 +216,7 @@ export default async function CategoriaPage({
                 const rating = rData && rData.count > 0 ? { avg: rData.sum / rData.count, count: rData.count } : null;
                 return (
                   <AnimatedCard key={n.id} index={i}>
-                    <NegocioCard n={n} categoriaSlug={n.categorias?.slug ?? cat.slug} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
+                    <NegocioCard n={n} categoriaSlug={n.categorias?.[0]?.slug ?? cat.slug} isOpen={estaAbierto(n.id, openIds)} rating={rating} />
                   </AnimatedCard>
                 );
               })}
