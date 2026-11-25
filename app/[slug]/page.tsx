@@ -18,7 +18,7 @@ type Negocio = {
   tipo: "negocio" | "independiente"; plan: "basico" | "premium";
   verificado: boolean; telefono: string | null; whatsapp: string | null;
   direccion: string | null; a_domicilio: boolean; foto_portada: string | null;
-  categorias?: { slug: string } | null;
+  categorias?: { slug: string }[] | null;
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -131,7 +131,7 @@ export default async function CategoriaPage({
     itemListElement: itemsPagina.map((n, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `${SITE_URL}/${n.categorias?.slug ?? cat.slug}/${n.slug}`,
+      url: `${SITE_URL}/${n.categorias?.[0]?.slug ?? cat.slug}/${n.slug}`,
       name: n.nombre,
     })),
   };
