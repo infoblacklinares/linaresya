@@ -95,3 +95,16 @@ Estos hallazgos son observaciones de la vista pública, no correcciones realizad
 - Confirmación de publicación feed + historias: conversación con Willson, 25-11-2026.
 - Métricas de Instagram: captura del panel profesional, período 26-10 a 24-11-2026.
 - No se publicaron historias nuevas ni se modificó el perfil ni el sitio desde esta ejecución.
+
+
+## Revisión adicional de la vista pública — 25-11-2026
+Se contrastaron las observaciones anteriores con la versión pública indexada hoy:
+- La portada consultada muestra un solo bloque «Información local». La duplicación anterior queda como **no confirmada** y no debe tratarse como bug vigente sin reproducirla en navegador.
+- «Topografos Linares» aparece en «Lo más visto» con 12 vistas. La evidencia disponible no confirma que esté duplicado dentro de un mismo módulo; revisar en navegador antes de abrir una corrección.
+- /emprendimientos aparece en el índice público con contador 0 y mensaje «Aún no hay negocios en Emprendimientos», pero el rastreo disponible es antiguo (aprox. dos meses). Confirmar en la aplicación y en la consulta de datos antes de concluir que no hay fichas.
+- La portada actual muestra negocios destacados y listados, además de categorías, turismo, eventos e información local.
+- La página Premium pública muestra $4.990 mensual y $49.900 anual. Verificar que precios, datos de transferencia y condiciones sigan vigentes antes de promocionarlos.
+
+Fuentes públicas consultadas: https://linaresya.cl/ · https://linaresya.cl/emprendimientos · https://linaresya.cl/premium
+
+**Corrección de auditoría:** los dos primeros hallazgos pasan a «pendiente de reproducir»; el contador de Emprendimientos pasa a «verificación prioritaria, evidencia posiblemente desactualizada». No se realizó ningún cambio en producción.
