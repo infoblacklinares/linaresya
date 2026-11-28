@@ -179,17 +179,17 @@ Willson decidió implementar «Linares nos conecta» comenzando con los seis neg
 3. Churraskeitor
 4. Jatis Mutis
 5. Huevos La Casa Blanca
-6. Barbería móvil con Alex
+6. Tita — empresa de GPS para vehículos y software de ventas
 
 La lista identifica participantes del piloto; no implica que todas las piezas estén publicadas ni que todos los permisos/datos estén actualmente verificados.
 
 ### Estado editorial conocido al iniciar esta fase
 - **Volantines Juan:** carrusel de presentación publicado según confirmación previa de Willson. Reorientar futuras piezas hacia persona, oficio, uso del producto o experiencia; evitar repetir el mismo carrusel.
 - **Mueblería Puertas y Ventanas Rocha:** carrusel publicado y compartido en Stories según confirmación de Willson. En futuras piezas priorizar el oficio, proceso y trabajos reales; revisar autorización y disponibilidad de nuevas imágenes.
-- **Churraskeitor:** se preparó carrusel de cuatro láminas y una historia con encuesta; Willson confirmó que la historia fue publicada. Confirmar si el carrusel de feed también fue publicado antes de registrarlo como tal. Para nuevas piezas, usar fotografías distintas y no simular fotos de productos.
+- **Churraskeitor:** carrusel de feed e historia con encuesta publicados, según confirmación actual de Willson. En futuras piezas, usar fotografías distintas y no simular fotos de productos.
 - **Jatis Mutis:** participante pendiente de nueva pieza dentro del piloto; revisar material auténtico, ficha y objetivo narrativo antes de publicar.
 - **Huevos La Casa Blanca:** participante pendiente de nueva pieza; confirmar productos, proceso, cobertura, ficha y material real.
-- **Barbería móvil con Alex:** participante pendiente de nueva pieza; confirmar servicios, cobertura, disponibilidad, datos de contacto y permisos de imágenes/personas.
+- **Tita:** nuevo participante incorporado en reemplazo de Barbería móvil con Alex. Su emprendimiento ofrece GPS para vehículos y software de ventas; es de Linares y declara cobertura en toda la Región del Maule. Pendiente confirmar nombre comercial exacto, productos/planes, funcionalidades, datos de contacto, ficha y material real autorizado antes de preparar la publicación.
 
 ### Nueva regla de producción para los seis
 No producir seis avisos equivalentes. Cada negocio debe aportar un ángulo distinto y verificable:
@@ -223,10 +223,10 @@ No atribuir ventas ni nuevos clientes a LinaresYa sin confirmación verificable 
 |---|---|---|---|
 | LNC-B01 | Comparar rendimiento y documentar publicaciones anteriores | Volantines Juan | Pendiente de métricas comparables |
 | LNC-B02 | Medir y registrar la publicación existente | Mueblería Rocha | Pendiente de métricas |
-| LNC-B03 | Confirmar estado del carrusel de feed y medir Story | Churraskeitor | Story confirmada; feed por confirmar |
+| LNC-B03 | Registrar publicación y medir carrusel de feed + Story | Churraskeitor | Publicados; métricas pendientes |
 | LNC-B04 | Validar ficha, material y ángulo narrativo | Jatis Mutis | Pendiente |
 | LNC-B05 | Validar ficha, productos y material | Huevos La Casa Blanca | Pendiente |
-| LNC-B06 | Validar servicios, cobertura y permisos | Barbería móvil con Alex | Pendiente |
+| LNC-B06 | Validar nombre comercial, oferta, cobertura, ficha y material | Tita (GPS para vehículos y software de ventas) | Pendiente |
 | LNC-B07 | Elegir siguiente negocio según material y diversidad narrativa | Grupo | Pendiente |
 
 **Principio del grupo piloto:** no estamos haciendo publicidad repetida para seis comercios; estamos contando seis formas distintas en que personas y negocios forman parte de Linares.
