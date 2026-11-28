@@ -167,3 +167,66 @@ Al cierre del piloto:
 - Si un pilar no demuestra utilidad, modificarlo en lugar de mantenerlo por calendario.
 
 **Principio rector:** LinaresYa no solo muestra lo que hay en Linares; ayuda a que Linares se descubra, se recomiende y se conecte.
+
+
+## 12. Primera Generación de LinaresYa como grupo piloto
+
+Willson decidió implementar «Linares nos conecta» comenzando con los seis negocios de la Primera Generación. El grupo será el primer caso práctico para probar el modelo híbrido: cada negocio aporta una historia humana, oficio, producto o experiencia local; el directorio conserva la función de facilitar descubrimiento y contacto.
+
+### Participantes
+1. Volantines Juan
+2. Mueblería Puertas y Ventanas Rocha
+3. Churraskeitor
+4. Jatis Mutis
+5. Huevos La Casa Blanca
+6. Barbería móvil con Alex
+
+La lista identifica participantes del piloto; no implica que todas las piezas estén publicadas ni que todos los permisos/datos estén actualmente verificados.
+
+### Estado editorial conocido al iniciar esta fase
+- **Volantines Juan:** carrusel de presentación publicado según confirmación previa de Willson. Reorientar futuras piezas hacia persona, oficio, uso del producto o experiencia; evitar repetir el mismo carrusel.
+- **Mueblería Puertas y Ventanas Rocha:** carrusel publicado y compartido en Stories según confirmación de Willson. En futuras piezas priorizar el oficio, proceso y trabajos reales; revisar autorización y disponibilidad de nuevas imágenes.
+- **Churraskeitor:** se preparó carrusel de cuatro láminas y una historia con encuesta; Willson confirmó que la historia fue publicada. Confirmar si el carrusel de feed también fue publicado antes de registrarlo como tal. Para nuevas piezas, usar fotografías distintas y no simular fotos de productos.
+- **Jatis Mutis:** participante pendiente de nueva pieza dentro del piloto; revisar material auténtico, ficha y objetivo narrativo antes de publicar.
+- **Huevos La Casa Blanca:** participante pendiente de nueva pieza; confirmar productos, proceso, cobertura, ficha y material real.
+- **Barbería móvil con Alex:** participante pendiente de nueva pieza; confirmar servicios, cobertura, disponibilidad, datos de contacto y permisos de imágenes/personas.
+
+### Nueva regla de producción para los seis
+No producir seis avisos equivalentes. Cada negocio debe aportar un ángulo distinto y verificable:
+- Persona y motivación: quién está detrás del negocio y qué lo conecta con Linares.
+- Oficio y proceso: cómo se realiza el trabajo, sin inventar técnicas ni trayectoria.
+- Producto o servicio: qué ofrece y para quién es útil.
+- Conexión local: en qué necesidad, tradición, actividad o experiencia cotidiana de Linares participa.
+
+No es obligatorio cubrir todos los ángulos para cada negocio. Elegir uno por publicación y evitar repetición entre láminas. Usar material real, actual y autorizado. Cuando solo haya fotos del local, hacer una pieza honesta sobre el lugar y el servicio, no simular productos, clientes ni procesos.
+
+### Secuencia propuesta de activación
+1. Revisar métricas de Volantines Juan y Mueblería Rocha a ventanas comparables y registrar la historia publicada de Churraskeitor.
+2. Reutilizar la presencia de los tres primeros negocios como puente narrativo: «Linares nos conecta con quienes hacen, crean y ofrecen en nuestra ciudad».
+3. Seleccionar el siguiente participante según material auténtico disponible y la posibilidad de contar una historia distinta, no solo por orden de la lista.
+4. Para cada participante, validar ficha, datos, permiso y CTA de destino antes de diseñar.
+5. Publicar una pieza principal y una Story participativa vinculada a la misma historia; no duplicar exactamente el mismo contenido.
+6. Medir resultados a 24 h, 72 h y 7 días y registrar comentarios/recomendaciones útiles.
+
+### Indicadores específicos del grupo
+- Participantes con ficha verificada y material autorizado.
+- Piezas publicadas por participante y formato.
+- Alcance a no seguidores, compartidos, guardados y respuestas.
+- Visitas al perfil, clics a la ficha y acciones de contacto atribuibles.
+- Recomendaciones de la comunidad relacionadas con cada rubro.
+- Participantes que comparten la pieza desde sus propios canales, cuando ocurra.
+
+No atribuir ventas ni nuevos clientes a LinaresYa sin confirmación verificable del negocio.
+
+### Cola de ejecución del grupo
+| ID | Acción | Participante | Estado |
+|---|---|---|---|
+| LNC-B01 | Comparar rendimiento y documentar publicaciones anteriores | Volantines Juan | Pendiente de métricas comparables |
+| LNC-B02 | Medir y registrar la publicación existente | Mueblería Rocha | Pendiente de métricas |
+| LNC-B03 | Confirmar estado del carrusel de feed y medir Story | Churraskeitor | Story confirmada; feed por confirmar |
+| LNC-B04 | Validar ficha, material y ángulo narrativo | Jatis Mutis | Pendiente |
+| LNC-B05 | Validar ficha, productos y material | Huevos La Casa Blanca | Pendiente |
+| LNC-B06 | Validar servicios, cobertura y permisos | Barbería móvil con Alex | Pendiente |
+| LNC-B07 | Elegir siguiente negocio según material y diversidad narrativa | Grupo | Pendiente |
+
+**Principio del grupo piloto:** no estamos haciendo publicidad repetida para seis comercios; estamos contando seis formas distintas en que personas y negocios forman parte de Linares.
